@@ -180,8 +180,10 @@ body:not(.show-panel-del) .top-bar .panel-del-btn{display:none!important}
 .panel-fs-drop-wrap{position:relative;display:inline-block}
 .panel-fs-drop-btn{padding:3px 14px;border:1px solid var(--border);border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text);background:var(--card-bg);transition:all .2s;user-select:none;line-height:1.6}
 .panel-fs-drop-btn:hover,.panel-fs-drop-btn.open{border-color:var(--primary);color:var(--primary)}
-.panel-fs-drop-list{display:none;position:absolute;top:100%;right:0;z-index:99;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.15);padding:4px;max-height:240px;overflow-y:auto;min-width:60px;margin-top:4px}
+.panel-fs-drop-list{display:none;position:absolute;right:0;z-index:99;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.15);padding:4px;max-height:240px;overflow-y:auto;min-width:60px}
 .panel-fs-drop-list.open{display:block}
+.panel-fs-drop-list.down{top:100%;margin-top:4px}
+.panel-fs-drop-list.up{bottom:100%;margin-bottom:4px}
 .panel-fs-drop-list span{display:block;padding:3px 12px;font-size:12px;cursor:pointer;color:var(--text);border-radius:4px;text-align:center}
 .panel-fs-drop-list span:hover{background:var(--bg-hover-light);color:var(--primary)}
 .panel-fs-drop-list span.active{background:var(--primary);color:#fff;font-weight:700}
@@ -3708,8 +3710,14 @@ if (e) e.stopPropagation();
 var btn = e.currentTarget;
 var list = btn.nextElementSibling;
 if (!list) return;
+list.classList.remove('up','down');
 var open = list.classList.toggle('open');
 btn.classList.toggle('open', open);
+if (open) {
+var rect = list.getBoundingClientRect();
+var spaceBelow = window.innerHeight - rect.bottom;
+list.classList.add(spaceBelow < 120 ? 'up' : 'down');
+}
 }
 // ===== 统一 click 事件路由 =====
 function toggleMoreMenu(e) {
