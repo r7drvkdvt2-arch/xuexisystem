@@ -180,10 +180,8 @@ body:not(.show-panel-del) .top-bar .panel-del-btn{display:none!important}
 .panel-fs-drop-wrap{position:relative;display:inline-block}
 .panel-fs-drop-btn{padding:3px 14px;border:1px solid var(--border);border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text);background:var(--card-bg);transition:all .2s;user-select:none;line-height:1.6}
 .panel-fs-drop-btn:hover,.panel-fs-drop-btn.open{border-color:var(--primary);color:var(--primary)}
-.panel-fs-drop-list{display:none;position:absolute;right:0;z-index:99;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.15);padding:4px;max-height:240px;overflow-y:auto;min-width:60px}
+.panel-fs-drop-list{display:none;position:absolute;bottom:100%;right:0;z-index:99;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.15);padding:4px;max-height:240px;overflow-y:auto;min-width:60px;margin-bottom:4px}
 .panel-fs-drop-list.open{display:block}
-.panel-fs-drop-list.down{top:100%;margin-top:4px}
-.panel-fs-drop-list.up{bottom:100%;margin-bottom:4px}
 .panel-fs-drop-list span{display:block;padding:3px 12px;font-size:12px;cursor:pointer;color:var(--text);border-radius:4px;text-align:center}
 .panel-fs-drop-list span:hover{background:var(--bg-hover-light);color:var(--primary)}
 .panel-fs-drop-list span.active{background:var(--primary);color:#fff;font-weight:700}
@@ -2845,6 +2843,17 @@ state.activePegSetIds = [saved.activePegSetId];
 }
 // P2: fixStateIntegrity
 fixStateIntegrity(state);
+// textMarks 迁移：旧格式 { articleId: [marks] } → 新格式 { courseName: { articleId: [marks] } }
+if (state.textMarks) {
+	var _tmKeys = Object.keys(state.textMarks);
+	if (_tmKeys.length > 0) {
+		var _tmFirst = state.textMarks[_tmKeys[0]];
+		if (_tmFirst && Array.isArray(_tmFirst)) {
+			state.textMarks = {};
+			state.textMarks[state.activeCourse || '道德经'] = saved.textMarks;
+		}
+	}
+}
 return state;
 }
 } catch(e) { console.warn('loadState failed, returning default', e); }
@@ -3087,7 +3096,7 @@ artHtml = '<div class="article-text" style="margin-bottom:8px;opacity:.7">📝 �
 } else if (dm === 'cloze') {
 artHtml = '<div class="cloze-text" id="clozeText">'+renderClozeText(article.t, article.id)+'</div><div style="display:flex;gap:8px;margin-top:8px"><button class="write-submit" onclick="submitClozeAnswer('+article.id+')">✅ 检查填空</button><button class="r-btn" onclick="clozeRevealAll('+article.id+')">👁 显示答案</button></div>';
 } else {
-var _marksArr = (state.textMarks && state.textMarks[article.id]) || [];
+var _marksArr = (state.textMarks && state.textMarks[state.activeCourse] && state.textMarks[state.activeCourse][article.id]) || [];
 var _markedText = _marksArr.length ? applyTextMarks(article.t, _marksArr) : null;
 if (pegImgHtml) {
 artHtml = '<div class="mpc-original-wrap mpc-article-peg-wrap"><div class="mpc-original-text mpc-article-text" style="display:flex;align-items:center;line-height:1.9;font-size:var(--fs-article, 18px);padding:16px;min-width:0"><div style="flex:1;min-width:0">'+(_markedText || article.t)+'</div></div><div class="mpc-original-peg' + (state._pegImagesHidden ? ' peg-global-hidden' : '') + '" id="artPegColumn_' + article.id + '">' + pegImgHtml + '</div></div>';
@@ -3710,14 +3719,8 @@ if (e) e.stopPropagation();
 var btn = e.currentTarget;
 var list = btn.nextElementSibling;
 if (!list) return;
-list.classList.remove('up','down');
 var open = list.classList.toggle('open');
 btn.classList.toggle('open', open);
-if (open) {
-var rect = list.getBoundingClientRect();
-var spaceBelow = window.innerHeight - rect.bottom;
-list.classList.add(spaceBelow < 120 ? 'up' : 'down');
-}
 }
 // ===== 统一 click 事件路由 =====
 function toggleMoreMenu(e) {
@@ -6399,7 +6402,7 @@ ctx.fillStyle = '#f5e6c8'; ctx.font = '20px "KaiTi","STKaiti",serif';
 ctx.fillText('💬 '+encourage,300,780);
 // 水印
 ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.font = '12px sans-serif';
-ctx.fillText('学习系统 v49 · '+new Date().toLocaleString(),300,850);
+ctx.fillText('学习系统 v43 · '+new Date().toLocaleString(),300,850);
 // 替换弹窗内容为分享图
 var overlay = document.getElementById('checkinOverlay');
 if (overlay) {
@@ -7656,6 +7659,29 @@ return String(s).replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, 
 .replace(/ on\w+\s*=\s*[^\s>]+/gi, '')
 .replace(/javascript\s*:/gi, '');
 }
+// ===== AI 回复质量增强标准 =====
+var PROFESSIONAL_STANDARDS = {
+general: '\n\n【专业标准】\n1. 深度分析：不要停留于表面定义，需揭示深层原理、内在逻辑和本质规律\n2. 精确严谨：每个论断必须有据可依，避免模糊泛泛的表述\n3. 结构清晰：回答应有逻辑框架，层层递进\n4. 专业高度：用该领域专家的思维方式和术语体系进行分析\n5. 批判视角：不仅要解释"是什么"，还要讨论"为什么"和"局限性"',
+education: '\n\n【教学标准】\n1. 诊断性反馈：指出学生理解中的具体偏差和盲区，而非泛泛评价\n2. 可操作建议：每个反馈都附带具体的改进方向和下一步行动\n3. 概念精确：严格区分相似概念，避免混淆\n4. 证据支撑：引用原文或领域公认观点作为论据',
+exam: '\n\n【出题标准】\n1. 考查深层理解：题目必须要求运用、分析、综合或评价，而非事实回忆\n2. 干扰项设计：错误选项必须基于真实常见误解，而非随机编造\n3. 难度递进：题目应按认知层次从理解到应用逐题递进\n4. 答案严谨：每道题的解析必须给出明确的推理链'
+};
+function _applyQuality(opts) {
+if (opts._enhanced || opts.rawResponse) return;
+var hadSys = !!opts.systemPrompt;
+if (opts.systemPrompt) {
+opts.systemPrompt += PROFESSIONAL_STANDARDS.general;
+} else if (opts.prompt && typeof opts.prompt === 'string') {
+opts.prompt = PROFESSIONAL_STANDARDS.general + '\n\n' + opts.prompt;
+}
+if (opts.taskType === 'education') {
+var ed = PROFESSIONAL_STANDARDS.education;
+if (hadSys) opts.systemPrompt += ed; else opts.prompt += '\n\n' + ed;
+} else if (opts.taskType === 'exam') {
+var ex = PROFESSIONAL_STANDARDS.exam;
+if (hadSys) opts.systemPrompt += ex; else opts.prompt += '\n\n' + ex;
+}
+opts._enhanced = true;
+}
 // AI API 调用通用封装（超时 + 错误处理）
 // ===== v15 Phase 5: API 代理调用 =====
 function aiApiCallViaProxy(options) {
@@ -7668,6 +7694,7 @@ var timeout = options.timeout || 60000;
 var rawResponse = !!options.rawResponse;
 var licenseKey = '';
 try { licenseKey = (document.getElementById('licenseKeyInput')||{}).value || ''; } catch(e){}
+_applyQuality(options);
 var msgs = options.messages || [];
 if (msgs.length === 0) {
 if (options.systemPrompt) msgs.push({role:'system', content: options.systemPrompt});
@@ -7709,6 +7736,7 @@ var temperature = options.temperature !== undefined ? +options.temperature : 0.7
 var maxTokens = options.maxTokens || 1024;
 var timeout = options.timeout || 60000;
 var rawResponse = !!options.rawResponse;
+_applyQuality(options);
 var msgs = options.messages || [];
 if (msgs.length === 0) {
 if (options.systemPrompt) msgs.push({role:'system', content: options.systemPrompt});
@@ -7787,6 +7815,7 @@ if (!key) return Promise.reject(new Error('请先配置 API Key'));
 var temperature = options.temperature !== undefined ? +options.temperature : 0.7;
 var maxTokens = options.maxTokens || 1024;
 var timeout = options.timeout || 120000;
+_applyQuality(options);
 var msgs = options.messages || [];
 if (msgs.length === 0) {
 if (options.systemPrompt) msgs.push({role:'system', content: options.systemPrompt});
@@ -7818,6 +7847,7 @@ var maxTokens = options.maxTokens || 1024;
 var timeout = options.timeout || 120000;
 var licenseKey = '';
 try { licenseKey = (document.getElementById('licenseKeyInput')||{}).value || ''; } catch(e){}
+_applyQuality(options);
 var msgs = options.messages || [];
 if (msgs.length === 0) {
 if (options.systemPrompt) msgs.push({role:'system', content: options.systemPrompt});
@@ -11160,10 +11190,10 @@ return '<div style="margin-top:10px;padding-top:6px;border-top:1px dashed #d0c8e
 }
 function getAIFbPrompt(step, article, userText, mn) {
 var prompts = [
-function(){ return '你是一位精通《道德经》的国学导师。学生阅读原文后写下了初步理解。请给出反馈：哪些理解抓住了核心、哪些有偏差、下一步思考的提示。\n\n原文：' + article.t + '\n\n学生的理解：' + userText; },
-function(){ return '你是一位精通《道德经》的国学导师。学生不看原文，尝试回答了一个问题。请对比标准解析给出反馈：哪些一致、哪些偏差、最需要修正的关键点。\n\n原文：' + article.t + '\n\n问题：' + article.q + '\n\n标准解析：' + article.e + '\n\n学生的推导：' + userText; },
-function(){ return '你是一位精通《道德经》的国学导师。学生在对比自己的推导和标准解析后写下了反思。请评价反思质量：是否找对差距、遗漏了什么、能否帮助重构理解。\n\n原文：' + article.t + '\n\n学生的推导：' + ((mn.s2||'').trim()||'未填写') + '\n\n标准解析：' + article.e + '\n\n学生的反思：' + userText; },
-function(){ return '你是一位精通《道德经》的国学导师。学生基于学习和反思，重构了对原文的理解。请对比最初理解评价进步：重构是否准确完整、还有哪些深化方向。\n\n原文：' + article.t + '\n\n标准解析：' + article.e + '\n\n最初理解：' + ((mn.s1||'').trim()||'未填写') + '\n\n重构后的理解：' + userText; }
+function(){ return '学生阅读原文后写下了初步理解。请给出反馈。\n\n原文：' + article.t + '\n\n学生的理解：' + userText; },
+function(){ return '学生不看原文尝试回答了一个问题。请对比标准解析给出反馈。\n\n原文：' + article.t + '\n\n问题：' + article.q + '\n\n标准解析：' + article.e + '\n\n学生的推导：' + userText; },
+function(){ return '学生在对比自己的推导和标准解析后写下了反思。请评价反思质量。\n\n原文：' + article.t + '\n\n学生的推导：' + ((mn.s2||'').trim()||'未填写') + '\n\n标准解析：' + article.e + '\n\n学生的反思：' + userText; },
+function(){ return '学生基于学习和反思重构了对原文的理解。请对比最初理解评价进步。\n\n原文：' + article.t + '\n\n标准解析：' + article.e + '\n\n最初理解：' + ((mn.s1||'').trim()||'未填写') + '\n\n重构后的理解：' + userText; }
 ];
 return prompts[Math.min(step-1, 3)]();
 }
@@ -11182,9 +11212,11 @@ if (btn) btn.innerHTML = '<span class="spinner"></span>';
 if (st) st.textContent = 'AI 分析中...';
 var prompt = getAIFbPrompt(step, article, userText, mn);
 aiApiCall({
+systemPrompt: '你是一位精通《道德经》的国学导师，擅长苏格拉底式教学法。\n\n【反馈原则】\n1. 诊断性：具体指出学生的理解中哪些点准确、哪些有偏差，而非笼统评价\n2. 可操作：每个反馈都附带具体的改进方向和下一步思考提示\n3. 引导性：用提问而非直接告知的方式引导学生自我发现\n\n【分析步骤】\n1. 先逐条分析学生回答中展现的理解点和偏差点\n2. 对比标准解析，找出关键差距\n3. 给出有建设性的改进建议\n4. 提出引导性问题帮助学生深化理解',
 prompt: prompt,
 temperature: 0.5,
-maxTokens: 500
+maxTokens: 500,
+taskType: 'education'
 }).then(function(text){
 if (text && text.length > 0) {
 mn['f' + step] = text;
@@ -11260,7 +11292,7 @@ var mn = state.masterNotes[id];
 if (mn && mn.f4) { completed.push({id:id, mn:mn, article:ARTICLES[parseInt(id)-1]}); }
 }
 if (completed.length === 0) { showToast('没有已完成的数据'); return; }
-var summary = '你是一位认知科学专家，对下面这位学生在《道德经》学霸学习循环中的所有记录进行深度分析。\n\n';
+var summary = '对以下学生在《道德经》学霸学习循环中的所有记录进行深度分析。\n\n';
 summary += '学习记录（共'+completed.length+'篇）\n\n';
 completed.forEach(function(c, i){
 var art = c.article;
@@ -11281,9 +11313,11 @@ var analysisArea = document.getElementById('aiDeepAnalysis');
 if (!analysisArea) { showToast('请先打开学习分析报告'); return; }
 analysisArea.innerHTML = '<div style="text-align:center;color:#4a6a8a;font-size:13px;padding:10px">⏳ AI 深度分析中...</div>';
 aiApiCall({
+systemPrompt: '你是一位认知科学与教育心理学专家，擅长从学生的学习过程数据中诊断其思维模式和认知特点。\n\n【分析框架】\n请从以下5个维度进行深度分析：\n1. 思维习惯诊断：学生是倾向于深入思考还是浅尝辄止？是独立推理还是依赖外源答案？\n2. 薄弱环节识别：哪些类型的知识或思维步骤最容易出错？是否有模式可循？\n3. 进步轨迹评估：对比其最初理解与重构后的理解，评估进步幅度和方向\n4. 认知偏差预警：是否存在过度自信、确认偏误、死记硬背等学习误区？\n5. 个性化建议：基于以上分析，给出3-5条具体可操作的进阶学习策略建议\n\n工作要求：\n1. 每个维度的分析必须基于具体数据（引用学生记录原文），避免空泛评价\n2. 指出具体优势与不足，而非笼统的"表现良好/有待提高"\n3. 建议要具体到可以立即执行，而非抽象的"继续努力"',
 prompt: summary,
 temperature: 0.3,
-maxTokens: 1500
+maxTokens: 1500,
+taskType: 'education'
 }).then(function(text){
 if (text && text.length > 0) {
 analysisArea.innerHTML = '<div style="font-weight:700;color:#4a6a8a;margin-bottom:6px">🤖 AI 分析结果</div>' +
@@ -12993,7 +13027,7 @@ var p = '你是一位顶尖学习策略专家。请你分析“' + s.topic + '�
 if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请给出该领域所有专家都一致认同的 **5 个核心思维模型**。这些思维模型应该是：\n1. 该领域最基础、最底层的思考框架\n2. 所有专家都默认使用的分析工具\n3. 能帮助初学者快速建立专家思维\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "models": [\n    {"name": "思维模型名称", "explanation": "详细解释（100-200字）"}\n  ]\n}';
 showAILoading('正在提取核心思维模型...', 'AI正在分析 "' + s.topic + '" 领域的核心思维模型');
-callAI({systemPrompt: '你是一个顶级学习策略专家。请严格以JSON格式返回。', prompt: p, temperature: 0.3, maxTokens: 4096, timeout: 120000})
+callAI({systemPrompt: '你是一位在目标领域拥有超过20年研究经验的资深教授和学科方法论专家，长期从事该领域的教学与研究工作。\n\n你的核心能力：\n1. 精通该领域的思维模型体系，能从海量知识中提炼最根本的认知框架\n2. 擅长区分"真理解"与"死记硬背"，能剖析一个认知框架为何是底层而非表面的\n3. 对学术界的前沿争论和未解之谜有深入把握，能指出共识与分歧\n\n工作要求：\n1. 每个输出必须体现学者级别的思维深度，而非科普级别的表面介绍\n2. 给出的思维模型必须是该领域专家共同体真正认可的核心框架，而非随意列举\n3. 避免任何泛泛而谈或模板化的套话，每个论断要具体、可验证\n4. 如果某个问题在学术界有不同观点，必须呈现而不是回避单一视角\n5. 每个模型的解释需包含：其核心假设、适用边界、以及与该领域其他模型的关系', prompt: p, temperature: 0.3, maxTokens: 4096, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return;
@@ -13025,7 +13059,7 @@ var p = '基于“' + s.topic + '”领域，请找出目前专家之间 **争�
 if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "debates": [\n    {"topic": "争论核心问题", "sideA": "观点A标题", "argA": "观点A的最强论据（100-200字）", "sideB": "观点B标题", "argB": "观点B的最强论据（100-200字）"}\n  ]\n}';
 showAILoading('正在探索领域争论...', 'AI正在分析 "' + s.topic + '" 领域的学术争论');
-callAI({systemPrompt: '你是一个学术研究方法专家。请严格以JSON格式返回。', prompt: p, temperature: 0.4, maxTokens: 4096, timeout: 120000})
+callAI({systemPrompt: '你是一位治学严谨的学术研究方法论专家，熟悉该领域的主要学术流派、范式演化和关键争论。\n\n你的核心能力：\n1. 精准识别学术共识与分歧的边界，不会将边缘观点当作主流呈现\n2. 擅长剖析争论背后的深层原因：是定义分歧、方法论差异、还是世界观对立\n3. 能评估各派论据的强弱，而非简单地"各打五十大板"\n\n工作要求：\n1. 每个争论焦点的描述必须精确到具体主张和论据，而非含糊的"存在不同看法"\n2. 对于每个观点，需呈现其最强、最有代表性的论据，而非捏造的稻草人\n3. 明确指出哪些问题是已有定论的、哪些仍在争论中\n4. 评估各派观点在学术界的主流程度（是共识？多数派？还是少数派？）', prompt: p, temperature: 0.4, maxTokens: 4096, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return;
@@ -13056,7 +13090,7 @@ if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "questions": [\n    {"id": 0, "type": "open", "question": "问题描述...", "modelAnswer": "标准的深度理解答案要点"},\n    {"id": 5, "type": "choice", "question": "问题描述...", "options": ["A. 选项1", "B. 选项2", "C. 选项3", "D. 选项4"], "correctIndex": 0, "explanation": "为什么这个选项正确"}\n  ]\n}';
 var _gen = ++_aiLearnPhaseCGen;
 showAILoading('正在生成深度测试题...', 'AI正在为 "' + s.topic + '" 设计10道深度理解题');
-callAI({systemPrompt: '你是一个教育测评专家，擅长设计区分真理解和死记硬背的试题。请严格以JSON格式返回。', prompt: p, temperature: 0.4, maxTokens: 8192, timeout: 120000})
+callAI({systemPrompt: '你是一位教育测评与测量学专家，专长于基于认知层次理论（如Bloom认知分类、SOLO分类法）设计高质量测评工具。\n\n你的核心能力：\n1. 精准区分"事实记忆"与"深层理解"，能设计出直击思维方式而非知识储备的题目\n2. 擅长多维度命题：能从概念理解、应用分析、综合评价等不同认知层次设计题目\n3. 深谙干扰项心理学：能基于真实的学习误区设计有诊断价值的错误选项\n\n【出题标准】\n1. 每道题必须考查特定认知层次（在题目标注：理解/应用/分析/评价/创造）\n2. 选择题的干扰项必须基于真实的、常见的理解偏差，不能随意编造\n3. 题干表述精确无歧义，不能通过措辞暗示正确选项\n4. 开放题的modelAnswer需包含评分要点和不同层次答案的区分标准\n5. 整套题目应覆盖不同认知层次，从理解到高阶思维递进', prompt: p, temperature: 0.4, maxTokens: 8192, timeout: 120000, taskType: 'exam'})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return; // 防止旧请求覆盖新数据
@@ -13110,7 +13144,7 @@ if (!allAnswered) { showToast('请回答所有题目后再提交'); return; }
 var evalPrompt = '你是一个严格的学习评估专家。以下是一位学生对“' + s.topic + '”领域深度测试题的回答。\n\n请逐题评估他的回答是否展示了**真正的理解**还是**表面的记忆**。\n\n评分标准：\n- 8-10分：真正理解 - 能用自己的语言解释原理，能举一反三，能分析关联\n- 5-7分：较好理解 - 要点正确但深度不足，有初步的关联分析\n- 3-4分：部分理解 - 答案基本正确但缺乏深度，套用书本语言\n- 1-2分：微弱理解 - 触及表面但未掌握核心\n- 0分：不理解或死记硬背 - 答案错误或只是背诵定义\n\n题目和回答：\n' + JSON.stringify(qas, null, 2) + '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "overallScore": 75,\n  "maxScore": 100,\n  "evaluations": [\n    {"id": 0, "score": 8, "feedback": "你真正理解了...", "suggestion": "可以进一步思考..."}\n  ],\n  "summary": "总体评估和建议..."\n}';
 var _evalGen = _aiLearnPhaseCGen;
 showAILoading('正在评估你的答案...', 'AI正在逐题分析你的理解深度');
-callAI({systemPrompt: '你是一个严格的教育评测专家，擅长识别学生是真理解还是死记硬背。请严格以JSON格式返回。', prompt: evalPrompt, temperature: 0.3, maxTokens: 8192, timeout: 120000})
+callAI({systemPrompt: '你是一位严格的学术评估专家，擅长通过学生的答题表现精确诊断其理解深度。\n\n你的评估方法论：\n1. 逐题分析：对每道题进行独立评估，而非整体印象打分\n2. 多维判断：从"答案正确性"、"推理质量"、"概念关联能力"、"迁移应用能力"四个维度评估\n3. 证据驱动：评分必须有明确依据，指出学生的回答中哪些表述暴露/证明了真正的理解\n\n【评估标准】\n- 8-10分：真正理解 — 能用自己的语言解释原理，能举一反三（不仅限于课程中的例子），能分析关联\n- 5-7分：较好理解 — 要点正确但深度不足，有初步的关联分析但局限于课程内容\n- 3-4分：部分理解 — 答案基本正确但缺乏深度，套用课程语言而非自己的理解\n- 1-2分：微弱理解 — 触及表面但未掌握核心，或存在概念性错误\n- 0分：不理解或死记硬背 — 答案错误、无关，或只是逐字背诵定义而未展现理解\n\n工作要求：\n1. 每个评分必须附上具体的依据（引用学生回答的原文）\n2. 反馈要诊断性而非评价性：告诉学生"哪里没理解"和"为什么"比"答得好/差"更有价值\n3. 改进建议必须有可操作性，而非泛泛的"继续努力"', prompt: evalPrompt, temperature: 0.3, maxTokens: 8192, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 if (_evalGen !== _aiLearnPhaseCGen) return; // 防止旧评估覆盖刷新后的数据
@@ -13533,7 +13567,7 @@ showToast('AI调用失败: ' + err.message);
 }
 function kbExtractConcepts(courseName, refresh) {
 kbAiCall(courseName, 'concepts', '概念提取', '正在提取核心概念...',
-'你是一位知识图谱构建专家。请严格以JSON格式返回。',
+'你是一位知识图谱构建专家，精通概念分析和知识结构化。\n\n你的核心方法论：\n1. 概念粒度把控：选取的概念既不过于粗泛（如整章标题）也不过于细碎（如单句术语），应在可独立教授的单元粒度\n2. 关系精准分类：严格区分因果关系（A导致B）、层级关系（A属于B的类别）、关联关系（A和B相关但非因果/层级）\n3. 难度分层：根据概念的抽象程度、前置依赖和分析深度划分为beginner/intermediate/advanced\n\n工作要求：\n1. 概念描述必须精确，能帮助学习者一眼理解该概念的核心\n2. 关联概念必须真实相关，而非强行关联\n3. 概念之间构成网状结构而非线性列表\n4. 每个概念标注其所属的章节领域，便于后续分析。请严格以JSON格式返回。',
 function(name, cd) {
 var ans = 0;
 if (state && state.answered) {
@@ -13557,7 +13591,7 @@ return '你正在分析课程「' + name + '」的知识体系。\n该课程共 
 }
 function kbAnalyzeGaps(courseName) {
 kbAiCall(courseName, 'gaps', '盲点诊断', '正在分析知识盲区...',
-'你是一位教育诊断专家，擅长发现学习盲区。请严格以JSON格式返回。',
+'你是一位经验丰富的教育诊断专家，专长于基于学习数据分析学生的知识薄弱环节。\n\n你的核心能力：\n1. 能从学习行为数据中识别模式：高频错误、特定概念混淆、知识断点\n2. 擅长区分\"概念未理解"\"与"\"记忆遗忘"\"两种不同类型的薄弱\n3. 能根据错误分布定位问题的根源（是前置知识缺失？还是当前内容理解偏差？）\n\n工作要求：\n1. 每个诊断必须基于数据证据，列出具体的数据支撑\n2. 薄弱环节的描述要精确到具体概念而非笼统的章节\n3. 改进建议必须有针对性，能指导具体的复习或练习行动\n4. 区分严重程度：high=急需处理，medium=需要关注，low=可稍后强化。请严格以JSON格式返回。',
 function(name, cd) {
 var ans = 0, wr = 0;
 if (state && state.answered) {
@@ -13574,14 +13608,14 @@ return '请对课程「' + name + '」进行学习诊断分析。\n学习数据�
 }
 function kbGenerateExpansion(courseName) {
 kbAiCall(courseName, 'expansion', '扩展推荐', '正在生成扩展推荐...',
-'你是一位跨学科学习顾问，擅长发现知识连接点。请严格以JSON格式返回。',
+'你是一位博学的跨学科学习顾问，擅长发现不同知识领域之间的深层联系。\n\n你的核心方法论：\n1. 寻找结构相似性：不被表面术语差异迷惑，识别不同领域中的同构结构\n2. 评估知识迁移价值：推荐的扩展领域应能反哺对原课程的理解\n3. 提供可操作的入门路径：每个推荐都附带具体、可执行的入门方向\n\n工作要求：\n1. 关联度评分必须有理有据，说明为什么两个领域存在联系\n2. 推荐理由应具体到概念层面，而非笼统的\"这两个领域相关"\\n3. 入门资源建议须具体（如经典书籍、知名课程、必读论文），而非泛泛的\"阅读相关资料"\\n4. 优先推荐那些与原课程知识有强协同效应的领域。请严格以JSON格式返回。',
 function(name, cd) {
 return '基于用户在「' + name + '」课程中已学的内容，推荐 4-6 个值得扩展的相关领域或专题。\n每个推荐需包含：领域名称、关联度(0-1)、推荐理由、与已学内容的联系、入门资源建议。\n\n请以JSON格式返回：\n{"expansions": [{"topic":"扩展领域","relevance":0.85,"rationale":"推荐理由","connectionToExisting":"与已学联系","suggestedResource":"入门资源"}]}';
 }, 'expansions');
 }
 function kbGenerateDeepening(courseName) {
 kbAiCall(courseName, 'deepening', '深化路径', '正在生成深化路径...',
-'你是一位学术导师，擅长设计进阶学习路径。请严格以JSON格式返回。',
+'你是一位经验丰富的学术导师，擅长为学习者量身设计进阶学习路径。\n\n你的核心方法论：\n1. 遵循\"最近发展区"\原则：路径设计既不过于简单（已在舒适区）也不过于困难（远超当前水平）\n2. 确保前置依赖完整：每个进阶步骤都建立在前一步已掌握的知识之上\n3. 提供多元化的深化方向：理论深化、实践应用、批判性视角等不同路径\n\n工作要求：\n1. 每个深化路径需明确标注其前置要求（学习者必须先掌握什么）\n2. 学习步骤应具体可执行（如\"阅读X的第三章"\、\"完成Y练习"\），而非抽象的\"深入学习"\\n3. 预估时间须切合实际\n4. 推荐资源应优先选择公认的经典教材或权威资料\n5. 对于每个概念，提供至少2条不同的进阶方向（如一条理论向、一条实践向）。请严格以JSON格式返回。',
 function(name, cd) {
 return '基于课程「' + name + '」的核心概念，请为每个概念设计进阶深化路径。\n每个路径需包含：路径标题、难度级别、3-5个具体学习步骤、预估时间和推荐资源。\n\n请以JSON格式返回：\n{"paths": [{"concept":"概念名","currentLevel":"beginner","paths":[{"title":"路径标题","difficulty":"intermediate","steps":["步骤1","步骤2","步骤3"],"estimatedTime":"2-3周","resources":["资源1"]}]}]}';
 }, 'paths');
@@ -13667,7 +13701,7 @@ if (allConcepts.length < 2) { showToast('至少需要两门课程完成概念分
 _kbProcessing = true;
 var prompt = '请分析以下多门课程的核心概念，构建跨课程知识图谱。\n已分析课程及其核心概念：\n' + courseConceptText + '\n\n要求：\n1. 合并所有概念，去重同义概念\n2. 发现跨课程的概念关联\n3. 标注每个概念来源于哪些课程\n4. 标注概念间的语义关系类型\n\n请以JSON格式返回：\n{"nodes": [{"id":"概念唯一ID","label":"概念显示名","group":"来源课程","mastery":0.7}],"edges": [{"source":"概念ID1","target":"概念ID2","relationship":"支持/互补/对立"}]}';
 showAILoading('正在构建跨课程知识图谱...', 'AI 正在分析多门课程的概念关联');
-callAI({systemPrompt: '你是一位知识图谱专家，擅长发现跨领域知识关联。请严格以JSON格式返回。', prompt: prompt, temperature: 0.3, maxTokens: 4096, timeout: 120000})
+callAI({systemPrompt: '你是一位知识图谱和跨学科分析专家，擅长发现不同知识体系之间的深层结构关联。\n\n你的核心方法论：\n1. 关系类型精准分类：能在因果关系、类比关系、前提-推论关系、互补关系等不同类型间准确区分\n2. 跨域迁移识别：能发现同一抽象结构在不同领域的具体表现（如"反馈回路"在生物学、经济学和工程学中的不同形式）\n3. 整合性思维：不是简单罗列关联，而是构建整合性的知识网络\n\n工作要求：\n1. 每个关联必须有实质性的分析支撑，而非表面术语相似\n2. 标注关联的强度（strong/medium/weak）和类型\n3. 整合后的知识图谱应揭示出单个课程无法呈现的洞见\n4. 按关联强度或主题聚类组织呈现。请严格以JSON格式返回。', prompt: prompt, temperature: 0.3, maxTokens: 4096, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 _kbProcessing = false;
@@ -14705,6 +14739,7 @@ aiSearchGenerating = false; hideAILoading();
 return;
 }
 callAI({
+systemPrompt: '你是一位在教育学和课程设计领域拥有深厚学术背景的专家。\n\n你的核心能力：\n1. 深谙学科知识体系的内在逻辑，能设计出结构严谨、层层递进的课程框架\n2. 精通教学设计原理，能将复杂知识分解为可教授、可学习的单元\n3. 对学科内容有全面深入的把握，能确保课程覆盖的完整性和准确性\n\n【课程设计标准】\n1. 体系完整性：篇章/章节安排须有内在逻辑递进，而非知识点的随意罗列\n2. 内容权威性：课程内容必须基于该领域公认的经典框架和学术共识\n3. 理论联系实际：每个重要概念都应联系实际应用场景\n4. 难度递进：遵循"基础→进阶→高阶"的认知梯度\n5. 不遗漏：确保覆盖所有必要内容，不因篇幅原因省略重要部分',
 prompt: prompt,
 temperature: 0.7,
 maxTokens: AI_MAX_TOKENS_GENERATE,
@@ -15241,6 +15276,7 @@ var role = hasLevel && roleMap[level] ? roleMap[level]
 : (catKey === 'tips' ? '你是一位资深的考试技巧培训专家，擅长各类高效学习方法和应试策略'
 : (catKey === 'life' ? '你是一位经验丰富的生活技能指导专家，擅长用通俗易懂的语言和实例讲解实用生活技巧和方法'
 : '你是一位资深的' + catData.name + '考试培训专家'));
+role += '，拥有20年一线教学经验。\n\n【教学标准】\n1. 每道题标注其考查的认知层次（记忆/理解/应用/分析/评价）\n2. 干扰项必须基于学生真实常见错误，具有诊断价值而非随机编造\n3. 解析需包含：考点定位+解题思路+易错提醒+知识延伸\n4. 题目难度要有梯度，从基础到拔高逐步递进\n5. 所有内容基于该科目最新的考试大纲和标准教材，确保准确可靠';
 // 各学段参数
 var configs = {
 primary: { chapters:'3-4 单元', perCh:'6-8', total:'20-30 题', opts:3, optsDesc:'3 个选项（A/B/C）', style:'语言生动有趣，多用比喻和故事，贴近小学生的日常生活体验。\n- t 字段为趣味精讲风格：先故事引入再解释知识点' },
@@ -17276,7 +17312,7 @@ if (btn) { btn.textContent = '⏳ 生成中...'; btn.disabled = true; }
 var text = item['原文'] || '';
 var core = item['核心内容'] || '';
 callAI({
-systemPrompt: '你是一个学习助手。根据原文内容生成一个问答题，帮助用户理解和记忆。以JSON格式返回，不要包含其他内容：{"question":"问题","answer":"答案"}。问题要针对原文的核心知识点，答案要简洁准确。',
+systemPrompt: '你是一个学习与记忆专家，擅长设计能促进深度理解的问题。\n\n【出题原则】\n1. 问题应考查对原文核心概念的真正理解，而非对细节的事实回忆\n2. 问题应引导学生建立概念之间的联系，而非孤立地记忆知识点\n3. 答案要精确但不过于简短，应包含关键推理过程\n4. 优选需要"为什么"和"如何"的问题类型，而非"是什么"\n5. 确保问题在原文中有明确的依据，不凭空提问\n\n以JSON格式返回：{"question":"问题","answer":"答案"}',
 prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请生成问答题。',
 temperature: 0.3,
 maxTokens: 512
@@ -17360,7 +17396,7 @@ if (btn) { btn.textContent = '⏳ 生成中...'; btn.disabled = true; }
 var text = item['原文'] || '';
 var core = item['核心内容'] || '';
 callAI({
-systemPrompt: '你是一个专业出题专家。根据原文内容生成一道选择题（4个选项），帮助用户检验理解。以JSON格式返回，不要包含其他内容：{"question":"问题","options":["A选项","B选项","C选项","D选项"],"answer":<0-3>,"explanation":"解析"}。answer是正确选项的索引（0-3），必须随机分布。问题要针对原文的核心知识点，各选项文字长度要均衡，正确答案不能总是最长或最短的；错误选项要有迷惑性，与正确选项在措辞风格、详细程度上相似。解析要简明扼要。',
+systemPrompt: '你是一位专业出题专家，深谙测评设计原理，擅长设计能准确诊断学习者理解深度的选择题。\n\n【出题标准】\n1. 每道题必须考查对原文核心概念的真正理解，而非对细节的事实回忆\n2. 干扰项（错误选项）必须基于真实常见的理解偏差或典型错误，具有诊断价值\n3. 各选项文字长度要均衡，正确答案不能总是最长或最短的\n4. 错误选项要有迷惑性，在措辞风格、详细程度上与正确选项相似\n5. 解析需包含：为何正确（正确选项的推理过程）+ 为何错误（各干扰项的典型误解）\n6. 正确答案的索引（0-3）必须随机分布，避免位置偏差\n\n以JSON格式返回：{"question":"问题","options":["A选项","B选项","C选项","D选项"],"answer":<0-3>,"explanation":"解析"}',
 prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请生成选择题。',
 temperature: 0.3,
 maxTokens: 512
@@ -17432,7 +17468,7 @@ showToast('⏳ 正在生成第 ' + (idx + 1) + '/' + total + ' 题...');
 var text = item['原文'] || '';
 var core = item['核心内容'] || '';
 callAI({
-systemPrompt: '你是一个专业出题专家。根据原文内容生成一道选择题（4个选项），帮助用户检验理解。以JSON格式返回，不要包含其他内容：{"question":"问题","options":["A选项","B选项","C选项","D选项"],"answer":<0-3>,"explanation":"解析"}。answer是正确选项的索引（0-3），必须随机分布。问题要针对原文的核心知识点，各选项文字长度要均衡，正确答案不能总是最长或最短的；错误选项要有迷惑性，与正确选项在措辞风格、详细程度上相似。解析要简明扼要。',
+systemPrompt: '你是一位专业出题专家，深谙测评设计原理，擅长设计能准确诊断学习者理解深度的选择题。\n\n【出题标准】\n1. 每道题必须考查对原文核心概念的真正理解，而非对细节的事实回忆\n2. 干扰项（错误选项）必须基于真实常见的理解偏差或典型错误，具有诊断价值\n3. 各选项文字长度要均衡，正确答案不能总是最长或最短的\n4. 错误选项要有迷惑性，在措辞风格、详细程度上与正确选项相似\n5. 解析需包含：为何正确（正确选项的推理过程）+ 为何错误（各干扰项的典型误解）\n6. 正确答案的索引（0-3）必须随机分布，避免位置偏差\n\n以JSON格式返回：{"question":"问题","options":["A选项","B选项","C选项","D选项"],"answer":<0-3>,"explanation":"解析"}',
 prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请生成选择题。',
 temperature: 0.3,
 maxTokens: 512
@@ -17855,7 +17891,7 @@ document.body.appendChild(o);
 var _kwHL_loading = false;
 function _kwAiExtract(text) {
 return callAI({
-systemPrompt: '你是记忆宫殿关键词提取专家。从古文提取3-6个具象关键词用于地点桩联想记忆。',
+systemPrompt: '你是记忆宫殿关键词提取专家，精通记忆编码原理和联想记忆法。\n\n你的核心任务：从古文中提取最能触发视觉联想的具体名词和动作，用于地点桩记忆。\n\n选择标准：\n1. 优先选具象名词（山水、刀剑、龙虎、天地、日月、草木等）— 越具体越容易形成视觉意象\n2. 可选动作动词（攻守、驰骋、击斩、飞走等）— 动态比静态更易记忆\n3. 避免抽象概念（道、仁、义、法、德等）— 抽象词难以与地点桩绑定\n4. 每个关键词必须是原文中存在的原词，不能概括或同义替换\n5. 提取3-6个关键词，覆盖原文的核心内容',
 prompt: '从以下原文中提取3-6个最适合记忆宫殿的关键词。规则：1.优先选具象名词（山水、刀剑、龙虎、天地、日月、草木等），可单字可多字。2.也可选动作动词（攻守、驰骋、击斩、飞走等）。3.避免抽象概念（道、仁、义、法、德等）。4.总数量3-6个。5.关键词必须在原文中逐字存在，不能概括、不能同义替换。\n\n原文：' + text + '\n\n只返回关键词，用逗号分隔，不要多余文字。',
 temperature: 0.1,
 maxTokens: 128
@@ -17866,7 +17902,7 @@ return c.split(/[,，、\s]+/).filter(function(k){return k.length>0;}).slice(0,6
 }
 function _kwAiExtractStructured(text) {
 	return callAI({
-	systemPrompt: '你是记忆宫殿场景编码专家。从古文提取关键词并合成一个可出图的荒诞场景画面。只输出JSON。',
+	systemPrompt: '你是记忆宫殿场景编码专家，擅长运用"荒谬联想记忆法"将抽象文字转化为难忘的画面。\n\n你的核心方法论：\n1. 意象转化：将原文中的抽象概念转化为具体可感的视觉元素\n2. 荒诞性原则：场景越违背常理、越反常识，记忆效果越好\n3. 画面感：场景描述应包含足够多的视觉细节，让人一闭眼就能"看到"\n4. 情感激活：场景应包含情感元素（幽默、恐怖、惊喜），增强记忆编码\n5. 简洁有力：场景描述20-30字，精炼但不失画面感\n\n只输出JSON，不要markdown包裹。',
 	prompt: '从以下原文中提取5-8个关键词并合成一个记忆场景。\n\n要求：\n1. 每个关键词必须在原文逐字存在，名词/动词/数量词优先\n2. 合成一句有画面感的场景描述（20-30字），越荒诞越反常识越好记\n3. 每个关键词给出可直接出图的画面词（2-6字具象名词）\n\n输出JSON，不要markdown包裹：\n{\n  "scene": "荒诞场景描述，20-30字",\n  "keywords": [\n    {"keyword": "词", "image": "2-6字的具象画面词"}\n  ]\n}\n\n原文：' + text,
 	temperature: 0.1,
 	maxTokens: 512
@@ -18016,7 +18052,7 @@ function kwConvertAbstract(btn, keyword) {
 	btn.textContent = '⏳…';
 	btn.disabled = true;
 	callAI({
-		systemPrompt: '将抽象中文词转换为一个2-6字的具象画面词。只返回画面词，不要多余文字。',
+		systemPrompt: '你是记忆编码专家，擅长将抽象概念转化为具象视觉画面词以辅助记忆。\n\n转化原则：\n1. 将抽象概念映射到具体可感的物体、动作或场景\n2. 输出2-6字的具象画面词，必须可以形成清晰的视觉意象\n3. 选择最常见、最易联想的具象词\n4. 只返回画面词，不要多余文字。',
 		prompt: '抽象词：' + keyword + '\n\n画面词：',
 		temperature: 0.3,
 		maxTokens: 16
@@ -18047,21 +18083,22 @@ function _kwUpdateOneImage(keyword, newImage) {
 // ===== 划线笔记 =====
 function addTextMark(articleId, start, end, type, note, color) {
 	if (!state.textMarks) state.textMarks = {};
-	if (!state.textMarks[articleId]) state.textMarks[articleId] = [];
+	if (!state.textMarks[state.activeCourse]) state.textMarks[state.activeCourse] = {};
+	if (!state.textMarks[state.activeCourse][articleId]) state.textMarks[state.activeCourse][articleId] = [];
 	var id = Date.now() + '_' + Math.random().toString(36).slice(2, 8);
-	state.textMarks[articleId].push({ id: id, start: start, end: end, type: type, note: note || '', color: color || (type === 'highlight' ? 'yellow' : ''), createdAt: Date.now() });
+	state.textMarks[state.activeCourse][articleId].push({ id: id, start: start, end: end, type: type, note: note || '', color: color || (type === 'highlight' ? 'yellow' : ''), createdAt: Date.now() });
 	saveState();
 }
 function deleteTextMark(articleId, markId) {
-	if (!state.textMarks || !state.textMarks[articleId]) return;
-	state.textMarks[articleId] = state.textMarks[articleId].filter(function(m) { return m.id !== markId; });
+	if (!state.textMarks || !state.textMarks[state.activeCourse] || !state.textMarks[state.activeCourse][articleId]) return;
+	state.textMarks[state.activeCourse][articleId] = state.textMarks[state.activeCourse][articleId].filter(function(m) { return m.id !== markId; });
 	saveState();
 }
 function updateTextMarkNote(articleId, markId, newNote) {
-	if (!state.textMarks || !state.textMarks[articleId]) return;
-	for (var i = 0; i < state.textMarks[articleId].length; i++) {
-		if (state.textMarks[articleId][i].id === markId) {
-			state.textMarks[articleId][i].note = newNote;
+	if (!state.textMarks || !state.textMarks[state.activeCourse] || !state.textMarks[state.activeCourse][articleId]) return;
+	for (var i = 0; i < state.textMarks[state.activeCourse][articleId].length; i++) {
+		if (state.textMarks[state.activeCourse][articleId][i].id === markId) {
+			state.textMarks[state.activeCourse][articleId][i].note = newNote;
 			saveState();
 			break;
 		}
@@ -18165,7 +18202,7 @@ function _doAddMarkNote(articleId) {
 	addTextMark(articleId, r.start, r.end, 'note');
 	hideMarkToolbar();
 	_rerenderArticleText(articleId);
-	var marks = state.textMarks[articleId] || [];
+	var marks = (state.textMarks && state.textMarks[state.activeCourse] && state.textMarks[state.activeCourse][articleId]) || [];
 	var newMark = marks[marks.length - 1];
 	if (newMark) _showNoteEditor(articleId, newMark);
 }
@@ -18175,7 +18212,7 @@ function _rerenderArticleText(articleId) {
 	if (!el) return;
 	var kwBtn = document.getElementById('kwToggleBtn');
 	if (kwBtn) { kwBtn.setAttribute('data-active', '0'); kwBtn.classList.remove('active'); kwBtn.innerHTML = '🤖 AI标红'; }
-	var marks = state.textMarks[articleId] || [];
+	var marks = (state.textMarks && state.textMarks[state.activeCourse] && state.textMarks[state.activeCourse][articleId]) || [];
 	el.innerHTML = '<div style="flex:1;min-width:0">' + applyTextMarks(currentArticle.t, marks) + '</div>';
 }
 function _deleteMark(articleId, markId) {
@@ -18185,7 +18222,7 @@ function _deleteMark(articleId, markId) {
 	_rerenderArticleText(articleId);
 }
 function _editMarkNote(articleId, markId) {
-	var marks = state.textMarks[articleId] || [];
+	var marks = (state.textMarks && state.textMarks[state.activeCourse] && state.textMarks[state.activeCourse][articleId]) || [];
 	var mark = null;
 	for (var i = 0; i < marks.length; i++) { if (marks[i].id === markId) { mark = marks[i]; break; } }
 	if (!mark) return;
@@ -18230,7 +18267,7 @@ document.addEventListener('click', function(e) {
 	if (!articleId) return;
 	var mid = markEl.getAttribute('data-mid');
 	if (!mid) return;
-	var marks = state.textMarks[articleId] || [];
+	var marks = (state.textMarks && state.textMarks[state.activeCourse] && state.textMarks[state.activeCourse][articleId]) || [];
 	var mark = null;
 	for (var i = 0; i < marks.length; i++) { if (marks[i].id === mid) { mark = marks[i]; break; } }
 	if (!mark) return;
@@ -18346,7 +18383,7 @@ var el = document.querySelector('.article-text, .mpc-original-text');
 if (!el) return;
 if (btn.getAttribute('data-active') === '1') {
 if (currentArticle && currentArticle.t) {
-	var _ms = (state.textMarks && state.textMarks[currentArticle.id]) || [];
+	var _ms = (state.textMarks && state.textMarks[state.activeCourse] && state.textMarks[state.activeCourse][currentArticle.id]) || [];
 	el.innerHTML = _ms.length ? '<div style="flex:1;min-width:0">' + applyTextMarks(currentArticle.t, _ms) + '</div>' : currentArticle.t;
 }
 btn.setAttribute('data-active','0');
