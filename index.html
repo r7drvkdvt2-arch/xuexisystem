@@ -1695,6 +1695,309 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .tcm-history-del:hover{background:var(--bg-active);color:var(--danger)}
 .tcm-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
 
+.idea-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#0a1a2a,#1a3a5a);border-radius:12px;margin-bottom:16px;color:#e0e8f0}
+.idea-hero-icon{font-size:36px;margin-bottom:6px}
+.idea-hero-title{font-size:20px;font-weight:700;letter-spacing:2px}
+.idea-hero-sub{font-size:13px;opacity:.8;margin-top:4px}
+.idea-input-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.idea-textarea{width:100%;min-height:110px;padding:14px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical;box-sizing:border-box;line-height:1.6}
+.idea-textarea:focus{outline:none;border-color:#4a8aba}
+.idea-input-actions{display:flex;gap:10px;margin-top:12px}
+.idea-btn{padding:10px 0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;min-height:42px;white-space:nowrap;line-height:1.4;flex:1}
+.idea-btn-primary{background:linear-gradient(135deg,#2a5a8a,#1a4a7a);color:#e0e8f0}
+.idea-btn-primary:hover{background:linear-gradient(135deg,#3a6a9a,#2a5a8a)}
+.idea-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
+.idea-btn-outline:hover{background:var(--bg-hover)}
+.idea-section{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.idea-section-hdr{font-size:14px;font-weight:600;padding:4px 0;display:flex;justify-content:space-between;align-items:center}
+.idea-dim-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.idea-dim-card{flex:1;text-align:center;padding:14px 10px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;user-select:none}
+.idea-dim-card:hover{background:var(--bg-hover)}
+.idea-dim-card.active{background:#1a2a4a;border-color:#4a8aba;color:#e0e8f0}
+.dark-mode .idea-dim-card.active{background:#2a3a5a;border-color:#5a9aca;color:#d0e0f0}
+.idea-dim-icon{font-size:24px;margin-bottom:4px}
+.idea-dim-label{font-size:16px;font-weight:700}
+.idea-dim-desc{font-size:11px;opacity:.7;margin-top:2px}
+.idea-loading{display:none;align-items:center;justify-content:center;gap:12px;padding:30px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+.idea-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:#4a8aba;border-radius:50%;animation:idea-spin .8s linear infinite}
+@keyframes idea-spin{to{transform:rotate(360deg)}}
+#ideaResult{display:block;margin-bottom:16px;padding:12px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;min-height:60px}
+.idea-output{font-size:14px;line-height:1.9;color:var(--text);padding:4px 0}
+.idea-output h3{font-size:16px;font-weight:700;margin:16px 0 8px;color:#4a8aba}
+.dark-mode .idea-output h3{color:#5a9aca}
+.idea-output h4{font-size:14px;font-weight:600;margin:12px 0 6px;color:#2a6a9a}
+.dark-mode .idea-output h4{color:#4a8aba}
+.idea-output strong{color:#2a6a9a}
+.dark-mode .idea-output strong{color:#5a9aca}
+.idea-output pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;overflow-x:auto;font-size:13px;margin:8px 0}
+.idea-output code{font-family:monospace;font-size:13px}
+.idea-empty{color:var(--text-muted);font-size:13px;text-align:center;padding:12px}
+.idea-history-body{margin-top:8px}
+.idea-history-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border-light);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:background .2s}
+.idea-history-item:hover{background:var(--bg-hover)}
+.idea-history-main{flex:1;overflow:hidden}
+.idea-history-date{font-size:11px;color:var(--text-muted)}
+.idea-history-problem{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.idea-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
+.idea-history-del:hover{background:var(--bg-active);color:var(--danger)}
+.idea-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
+
+.news-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#0a1a1a,#1a3a3a);border-radius:12px;margin-bottom:16px;color:#e0f0f0}
+.news-hero-icon{font-size:36px;margin-bottom:6px}
+.news-hero-title{font-size:20px;font-weight:700;letter-spacing:2px}
+.news-hero-sub{font-size:13px;opacity:.8;margin-top:4px}
+.news-input-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.news-topics-label{font-size:14px;font-weight:600;margin-bottom:8px}
+.news-topic-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:30px}
+.news-topic-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:14px;font-size:12px;cursor:pointer;border:1px solid #3a7a7a;background:#1a3a3a;color:#c0e8e8;transition:all .2s;user-select:none}
+.news-topic-chip:hover{background:#2a4a4a}
+.dark-mode .news-topic-chip{background:#0a2a2a;border-color:#4a8a8a;color:#b0d8d8}
+.news-topic-input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text);outline:none;box-sizing:border-box;min-height:36px}
+.news-topic-input:focus{border-color:#4a9a9a}
+.news-btn-small{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #3a7a7a;background:#1a3a3a;color:#c0e8e8;min-height:36px;white-space:nowrap}
+.news-btn-small:hover{background:#2a4a4a}
+.news-input-actions{display:flex;gap:10px;margin-top:12px}
+.news-btn{padding:10px 0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;min-height:42px;white-space:nowrap;line-height:1.4;flex:1}
+.news-btn-primary{background:linear-gradient(135deg,#2a6a6a,#1a5a5a);color:#e0f0f0}
+.news-btn-primary:hover{background:linear-gradient(135deg,#3a7a7a,#2a6a6a)}
+.news-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
+.news-btn-outline:hover{background:var(--bg-hover)}
+.news-section{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.news-section-hdr{font-size:14px;font-weight:600;padding:4px 0;display:flex;justify-content:space-between;align-items:center}
+.news-dim-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.news-dim-card{flex:1;text-align:center;padding:14px 10px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;user-select:none}
+.news-dim-card:hover{background:var(--bg-hover)}
+.news-dim-card.active{background:#1a3a3a;border-color:#4a9a9a;color:#e0f0f0}
+.dark-mode .news-dim-card.active{background:#2a4a4a;border-color:#5aaaaa;color:#d0f0f0}
+.news-dim-icon{font-size:24px;margin-bottom:4px}
+.news-dim-label{font-size:16px;font-weight:700}
+.news-dim-desc{font-size:11px;opacity:.7;margin-top:2px}
+.news-loading{display:none;align-items:center;justify-content:center;gap:12px;padding:30px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+.news-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:#4a9a9a;border-radius:50%;animation:news-spin .8s linear infinite}
+@keyframes news-spin{to{transform:rotate(360deg)}}
+#newsResult{display:block;margin-bottom:16px;padding:12px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;min-height:60px}
+.news-output{font-size:14px;line-height:1.9;color:var(--text);padding:4px 0}
+.news-output h3{font-size:16px;font-weight:700;margin:16px 0 8px;color:#4a9a9a}
+.dark-mode .news-output h3{color:#5aaaaa}
+.news-output h4{font-size:14px;font-weight:600;margin:12px 0 6px;color:#2a7a7a}
+.dark-mode .news-output h4{color:#4a9a9a}
+.news-output strong{color:#2a7a7a}
+.dark-mode .news-output strong{color:#5aaaaa}
+.news-output pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;overflow-x:auto;font-size:13px;margin:8px 0}
+.news-output code{font-family:monospace;font-size:13px}
+.news-empty{color:var(--text-muted);font-size:13px;text-align:center;padding:12px}
+.news-history-body{margin-top:8px}
+.news-history-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border-light);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:background .2s}
+.news-history-item:hover{background:var(--bg-hover)}
+.news-history-main{flex:1;overflow:hidden}
+.news-history-date{font-size:11px;color:var(--text-muted)}
+.news-history-topics{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.news-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
+.news-history-del:hover{background:var(--bg-active);color:var(--danger)}
+.news-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
+
+.fin-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#1a1a0a,#3a2a0a);border-radius:12px;margin-bottom:16px;color:#f0e8d0}
+.fin-hero-icon{font-size:36px;margin-bottom:6px}
+.fin-hero-title{font-size:20px;font-weight:700;letter-spacing:2px}
+.fin-hero-sub{font-size:13px;opacity:.8;margin-top:4px}
+.fin-input-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.fin-textarea{width:100%;min-height:110px;padding:14px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical;box-sizing:border-box;line-height:1.6}
+.fin-textarea:focus{outline:none;border-color:#c8a040}
+.fin-input-actions{display:flex;gap:10px;margin-top:12px}
+.fin-btn{padding:10px 0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;min-height:42px;white-space:nowrap;line-height:1.4;flex:1}
+.fin-btn-primary{background:linear-gradient(135deg,#8a6a20,#6a4a10);color:#f0e8d0}
+.fin-btn-primary:hover{background:linear-gradient(135deg,#9a7a30,#7a5a20)}
+.fin-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
+.fin-btn-outline:hover{background:var(--bg-hover)}
+.fin-section{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.fin-section-hdr{font-size:14px;font-weight:600;padding:4px 0;display:flex;justify-content:space-between;align-items:center}
+.fin-dim-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.fin-dim-card{flex:1;text-align:center;padding:14px 10px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;user-select:none}
+.fin-dim-card:hover{background:var(--bg-hover)}
+.fin-dim-card.active{background:#2a1a0a;border-color:#c8a040;color:#f0e8d0}
+.dark-mode .fin-dim-card.active{background:#3a2a1a;border-color:#d8b050;color:#f0e8c0}
+.fin-dim-icon{font-size:24px;margin-bottom:4px}
+.fin-dim-label{font-size:16px;font-weight:700}
+.fin-dim-desc{font-size:11px;opacity:.7;margin-top:2px}
+.fin-loading{display:none;align-items:center;justify-content:center;gap:12px;padding:30px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+.fin-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:#c8a040;border-radius:50%;animation:fin-spin .8s linear infinite}
+@keyframes fin-spin{to{transform:rotate(360deg)}}
+#finResult{display:block;margin-bottom:16px;padding:12px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;min-height:60px}
+.fin-output{font-size:14px;line-height:1.9;color:var(--text);padding:4px 0}
+.fin-output h3{font-size:16px;font-weight:700;margin:16px 0 8px;color:#c8a040}
+.dark-mode .fin-output h3{color:#d8b050}
+.fin-output h4{font-size:14px;font-weight:600;margin:12px 0 6px;color:#a08030}
+.dark-mode .fin-output h4{color:#c8a040}
+.fin-output strong{color:#a08030}
+.dark-mode .fin-output strong{color:#d8b050}
+.fin-output pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;overflow-x:auto;font-size:13px;margin:8px 0}
+.fin-output code{font-family:monospace;font-size:13px}
+.fin-empty{color:var(--text-muted);font-size:13px;text-align:center;padding:12px}
+.fin-history-body{margin-top:8px}
+.fin-history-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border-light);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:background .2s}
+.fin-history-item:hover{background:var(--bg-hover)}
+.fin-history-main{flex:1;overflow:hidden}
+.fin-history-date{font-size:11px;color:var(--text-muted)}
+.fin-history-need{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fin-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
+.fin-history-del:hover{background:var(--bg-active);color:var(--danger)}
+.fin-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
+
+.ana-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#0a1a2a,#1a3a5a);border-radius:12px;margin-bottom:16px;color:#e0e8f0}
+.ana-hero-icon{font-size:36px;margin-bottom:6px}
+.ana-hero-title{font-size:20px;font-weight:700;letter-spacing:2px}
+.ana-hero-sub{font-size:13px;opacity:.8;margin-top:4px}
+.ana-input-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.ana-textarea{width:100%;min-height:110px;padding:14px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical;box-sizing:border-box;line-height:1.6}
+.ana-textarea:focus{outline:none;border-color:#4a8aba}
+.ana-input-actions{display:flex;gap:10px;margin-top:12px}
+.ana-btn{padding:10px 0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;min-height:42px;white-space:nowrap;line-height:1.4;flex:1}
+.ana-btn-primary{background:linear-gradient(135deg,#2a5a8a,#1a4a7a);color:#e0e8f0}
+.ana-btn-primary:hover{background:linear-gradient(135deg,#3a6a9a,#2a5a8a)}
+.ana-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
+.ana-btn-outline:hover{background:var(--bg-hover)}
+.ana-section{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.ana-section-hdr{font-size:14px;font-weight:600;padding:4px 0;display:flex;justify-content:space-between;align-items:center}
+.ana-layer-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.ana-layer-card{flex:1;text-align:center;padding:12px 6px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;user-select:none;min-width:70px}
+.ana-layer-card:hover{background:var(--bg-hover)}
+.ana-layer-card.active{background:#1a2a4a;border-color:#4a8aba;color:#e0e8f0}
+.dark-mode .ana-layer-card.active{background:#2a3a5a;border-color:#5a9aca;color:#d0e0f0}
+.ana-layer-icon{font-size:22px;margin-bottom:2px}
+.ana-layer-label{font-size:14px;font-weight:700}
+.ana-layer-desc{font-size:10px;opacity:.7;margin-top:1px}
+.ana-loading{display:none;align-items:center;justify-content:center;gap:12px;padding:30px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+.ana-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:#4a8aba;border-radius:50%;animation:ana-spin .8s linear infinite}
+@keyframes ana-spin{to{transform:rotate(360deg)}}
+#anaResult{display:block;margin-bottom:16px;padding:12px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;min-height:60px}
+.ana-output{font-size:14px;line-height:1.9;color:var(--text);padding:4px 0}
+.ana-output h3{font-size:16px;font-weight:700;margin:16px 0 8px;color:#4a8aba}
+.dark-mode .ana-output h3{color:#5a9aca}
+.ana-output h4{font-size:14px;font-weight:600;margin:12px 0 6px;color:#2a6a9a}
+.dark-mode .ana-output h4{color:#4a8aba}
+.ana-output strong{color:#2a6a9a}
+.dark-mode .ana-output strong{color:#5a9aca}
+.ana-output pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;overflow-x:auto;font-size:13px;margin:8px 0}
+.ana-output code{font-family:monospace;font-size:13px}
+.ana-empty{color:var(--text-muted);font-size:13px;text-align:center;padding:12px}
+.ana-history-body{margin-top:8px}
+.ana-history-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border-light);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:background .2s}
+.ana-history-item:hover{background:var(--bg-hover)}
+.ana-history-main{flex:1;overflow:hidden}
+.ana-history-date{font-size:11px;color:var(--text-muted)}
+.ana-history-problem{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ana-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
+.ana-history-del:hover{background:var(--bg-active);color:var(--danger)}
+.ana-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
+
+.ind-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#0a1a1a,#1a3a2a);border-radius:12px;margin-bottom:16px;color:#e0f0e8}
+.ind-hero-icon{font-size:36px;margin-bottom:6px}
+.ind-hero-title{font-size:20px;font-weight:700;letter-spacing:2px}
+.ind-hero-sub{font-size:13px;opacity:.8;margin-top:4px}
+.ind-input-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.ind-textarea{width:100%;min-height:110px;padding:14px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical;box-sizing:border-box;line-height:1.6}
+.ind-textarea:focus{outline:none;border-color:#3a9a6a}
+.ind-input-actions{display:flex;gap:10px;margin-top:12px}
+.ind-btn{padding:10px 0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;min-height:42px;white-space:nowrap;line-height:1.4;flex:1}
+.ind-btn-primary{background:linear-gradient(135deg,#2a5a3a,#1a4a2a);color:#e0f0e8}
+.ind-btn-primary:hover{background:linear-gradient(135deg,#3a6a4a,#2a5a3a)}
+.ind-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
+.ind-btn-outline:hover{background:var(--bg-hover)}
+.ind-section{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.ind-section-hdr{font-size:14px;font-weight:600;padding:4px 0;display:flex;justify-content:space-between;align-items:center}
+.ind-step-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.ind-step-card{flex:1;text-align:center;padding:12px 6px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;user-select:none;min-width:70px}
+.ind-step-card:hover{background:var(--bg-hover)}
+.ind-step-card.active{background:#1a2a2a;border-color:#3a9a6a;color:#e0f0e8}
+.dark-mode .ind-step-card.active{background:#2a3a3a;border-color:#4aaa7a;color:#d0e8e0}
+.ind-step-icon{font-size:22px;margin-bottom:2px}
+.ind-step-label{font-size:14px;font-weight:700}
+.ind-step-desc{font-size:10px;opacity:.7;margin-top:1px}
+.ind-loading{display:none;align-items:center;justify-content:center;gap:12px;padding:30px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+.ind-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:#3a9a6a;border-radius:50%;animation:ind-spin .8s linear infinite}
+@keyframes ind-spin{to{transform:rotate(360deg)}}
+#indResult{display:block;margin-bottom:16px;padding:12px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;min-height:60px}
+.ind-output{font-size:14px;line-height:1.9;color:var(--text);padding:4px 0}
+.ind-output h3{font-size:16px;font-weight:700;margin:16px 0 8px;color:#3a9a6a}
+.dark-mode .ind-output h3{color:#4aaa7a}
+.ind-output h4{font-size:14px;font-weight:600;margin:12px 0 6px;color:#2a7a4a}
+.dark-mode .ind-output h4{color:#3a9a6a}
+.ind-output strong{color:#2a7a4a}
+.dark-mode .ind-output strong{color:#4aaa7a}
+.ind-output pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;overflow-x:auto;font-size:13px;margin:8px 0}
+.ind-output code{font-family:monospace;font-size:13px}
+.ind-empty{color:var(--text-muted);font-size:13px;text-align:center;padding:12px}
+.ind-history-body{margin-top:8px}
+.ind-history-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border-light);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:background .2s}
+.ind-history-item:hover{background:var(--bg-hover)}
+.ind-history-main{flex:1;overflow:hidden}
+.ind-history-date{font-size:11px;color:var(--text-muted)}
+.ind-history-industry{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ind-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
+.ind-history-del:hover{background:var(--bg-active);color:var(--danger)}
+.ind-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
+
+.adv-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#0a1a0a,#1a3a1a);border-radius:12px;margin-bottom:16px;color:#e0f0e0}
+.adv-hero-icon{font-size:36px;margin-bottom:6px}
+.adv-hero-title{font-size:20px;font-weight:700;letter-spacing:2px}
+.adv-hero-sub{font-size:13px;opacity:.8;margin-top:4px}
+.adv-input-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.adv-textarea{width:100%;min-height:110px;padding:14px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical;box-sizing:border-box;line-height:1.6}
+.adv-textarea:focus{outline:none;border-color:#4a9a4a}
+.adv-input-actions{display:flex;gap:10px;margin-top:12px}
+.adv-btn{padding:10px 0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;min-height:42px;white-space:nowrap;line-height:1.4;flex:1}
+.adv-btn-primary{background:linear-gradient(135deg,#2a6a2a,#1a5a1a);color:#e0f0e0}
+.adv-btn-primary:hover{background:linear-gradient(135deg,#3a7a3a,#2a6a2a)}
+.adv-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
+.adv-btn-outline:hover{background:var(--bg-hover)}
+.adv-section{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.adv-section-hdr{font-size:14px;font-weight:600;padding:4px 0;display:flex;justify-content:space-between;align-items:center}
+.adv-level-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.adv-level-card{flex:1;text-align:center;padding:12px 6px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;user-select:none;min-width:70px}
+.adv-level-card:hover{background:var(--bg-hover)}
+.adv-level-card.active{background:#1a3a1a;border-color:#4a9a4a;color:#e0f0e0}
+.dark-mode .adv-level-card.active{background:#2a4a2a;border-color:#5aaa5a;color:#d0f0d0}
+.adv-level-icon{font-size:22px;margin-bottom:2px}
+.adv-level-label{font-size:14px;font-weight:700}
+.adv-level-desc{font-size:10px;opacity:.7;margin-top:1px}
+.adv-loading{display:none;align-items:center;justify-content:center;gap:12px;padding:30px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+.adv-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:#4a9a4a;border-radius:50%;animation:adv-spin .8s linear infinite}
+@keyframes adv-spin{to{transform:rotate(360deg)}}
+#advResult{display:block;margin-bottom:16px;padding:12px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;min-height:60px}
+.adv-output{font-size:14px;line-height:1.9;color:var(--text);padding:4px 0}
+.adv-output h3{font-size:16px;font-weight:700;margin:16px 0 8px;color:#4a9a4a}
+.dark-mode .adv-output h3{color:#5aaa5a}
+.adv-output h4{font-size:14px;font-weight:600;margin:12px 0 6px;color:#2a7a2a}
+.dark-mode .adv-output h4{color:#4a9a4a}
+.adv-output strong{color:#2a7a2a}
+.dark-mode .adv-output strong{color:#5aaa5a}
+.adv-output pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;overflow-x:auto;font-size:13px;margin:8px 0}
+.adv-output code{font-family:monospace;font-size:13px}
+.adv-empty{color:var(--text-muted);font-size:13px;text-align:center;padding:12px}
+.adv-history-body{margin-top:8px}
+.adv-history-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border-light);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:background .2s}
+.adv-history-item:hover{background:var(--bg-hover)}
+.adv-history-main{flex:1;overflow:hidden}
+.adv-history-date{font-size:11px;color:var(--text-muted)}
+.adv-history-topic{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adv-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
+.adv-history-del:hover{background:var(--bg-active);color:var(--danger)}
+.adv-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
+.formula{text-align:center;padding:12px 8px;margin:10px 0;background:var(--bg-card);border:1px solid var(--border-light);border-radius:6px;font-size:16px;line-height:2;overflow-x:auto}
+.formula-inline{display:inline-block;padding:0 4px;font-size:15px;line-height:1.6}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px}
+.frac .num{padding:0 6px 2px;border-bottom:1px solid var(--text);font-size:13px}
+.frac .den{padding:2px 6px 0;font-size:13px}
+.sup{font-size:11px;vertical-align:super;line-height:1}
+.sub{font-size:11px;vertical-align:sub;line-height:1}
+.sqrt{display:inline-flex;align-items:center;white-space:nowrap}
+.sqrt:before{content:"√";font-size:1.2em;margin-right:1px}
+.radicand{border-top:1px solid var(--text);padding:0 4px;min-width:12px}
+.vec{display:inline-block;position:relative}
+.vec:after{content:"\2192";position:absolute;font-size:11px;top:-.8em;left:50%;margin-left:-.3em}
+.hat{border-top:1px solid var(--text);padding-top:1px}
+.bar{text-decoration:overline}
+
 </style>
 </head>
 <body>
@@ -1802,6 +2105,12 @@ throw new Error('auth_pending');
 <button style="border-color:#5a3a7a;color:#4a2a6a" data-mode="meta">🧠 元学习</button>
 <button style="border-color:#8a6a2a;color:#7a5a1a" data-mode="biz">💰 商道</button>
 <button style="border-color:#8a3a2a;color:#7a2a1a" data-mode="tcm">🏥 医道</button>
+<button style="border-color:#2a5a8a;color:#1a4a7a" data-mode="idea">💡 点子</button>
+<button style="border-color:#2a6a6a;color:#1a5a5a" data-mode="news">🗺 观局</button>
+<button style="border-color:#8a6a20;color:#7a5a10" data-mode="fin">🏦 资道</button>
+<button style="border-color:#2a5a8a;color:#1a4a7a" data-mode="ana">🔬 明辨</button>
+<button style="border-color:#2a6a2a;color:#1a5a1a" data-mode="adv">📖 优解</button>
+<button style="border-color:#2a6a4a;color:#1a4a2a" data-mode="ind">📊 研道</button>
 <button style="border-color:#4a7a5a;color:#3a6a4a" data-mode="cert">📋 考证</button></div>
 </div>
 </div>
@@ -3100,7 +3409,20 @@ pegsetScenes: [],
 		bizSettings: {},
 		tcmSessions: [],
 		tcmSettings: {},
-};
+		ideaSessions: [],
+		newsSessions: [],
+		newsSettings: {},
+		newsTopics: [],
+		ideaSettings: {},
+		finSessions: [],
+		finSettings: {},
+		anaSessions: [],
+		anaSettings: {},
+		advSessions: [],
+			advSettings: {},
+			indSessions: [],
+			indSettings: {},
+	};
 }
 function loadState() {
 try {
@@ -7408,6 +7730,12 @@ else if (mode==='pattern') renderPatternPanel();
 else if (mode==='meta') renderMetaPanel();
 else if (mode==='biz') renderBizPanel();
 else if (mode==='tcm') renderTcmPanel();
+else if (mode==='idea') renderIdeaPanel();
+else if (mode==='news') renderNewsPanel();
+else if (mode==='fin') renderFinPanel();
+else if (mode==='ana') renderAnaPanel();
+else if (mode==='adv') renderAdvPanel();
+else if (mode==='ind') renderIndPanel();
 else renderStats();
 updateUI();
 } catch(e) {
@@ -8204,7 +8532,7 @@ if (options.prompt) msgs.push({role:'user', content: options.prompt});
 return fetchWithTimeout(endpoint, {
 method: 'POST',
 headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
-body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature})
+body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature, search: options.search ? true : undefined})
 }, timeout).then(function(r) {
 if (!r.ok) return r.text().then(function(t) { var err = new Error(t); err.status = r.status; throw err; });
 return r.json();
@@ -8285,7 +8613,7 @@ var timer = setTimeout(function() { controller.abort(); }, timeout);
 return fetch(endpoint, {
 method: 'POST',
 headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
-body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature, stream:true}),
+body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature, stream:true, search: options.search ? true : undefined}),
 signal: controller.signal
 }).then(function(response) {
 clearTimeout(timer);
@@ -8319,7 +8647,7 @@ var timer = setTimeout(function() { controller.abort(); }, timeout);
 return fetch(proxyUrl, {
 method: 'POST',
 headers: headers,
-body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature, stream:true}),
+body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature, stream:true, search: options.search ? true : undefined}),
 signal: controller.signal
 }).then(function(response) {
 clearTimeout(timer);
@@ -21442,7 +21770,7 @@ function buildMetaPrompt() {
   if (!input) return '';
   var text = input.value.trim();
   if (!text) { showToast('请先输入你要学的技能或领域'); return null; }
-  return '你是一位元学习导师，你的使命是帮助学习者掌握「拆-仿-练-创」元学习方法。\n\n学习者想学习: ' + text + '\n\n请严格按照以下4个阶段输出完整分析，每个阶段必须用「【拆】」「【仿】」「【练】」「【创】」作为标题开头，阶段内容要详细有实质性：\n\n【拆】\n拆解知识架构：该领域的核心模块有哪些？关系是什么？最核心的20%是什么？从零到入门的学习路线和推荐资源。\n\n【仿】\n追踪顶级样本：推荐3-5个顶级样本并说明原因，拆解框架和角度，关键引导性问题，常见误区。\n\n【练】\n刻意练习：常见短板分析，针对性的练习动作设计（含目标和标准），进步衡量方法，心态建议。\n\n【创】\n知识连接创造：跨领域连接方向，基于学习者背景的独特创造角度，具体项目建议，反馈和迭代方法。\n\n请用中文回答，内容充实、直接可操作。';
+  return '你是一位元学习导师，你的使命是帮助学习者掌握「拆-仿-练-创」元学习方法。\n\n学习者想学习: ' + text + '\n\n请严格按照以下4个阶段输出完整分析，每个阶段必须用「【拆】」「【仿】」「【练】」「【创】」作为标题开头，阶段内容要详细有实质性：\n\n【拆】\n拆解知识架构：该领域的核心模块有哪些？关系是什么？最核心的20%是什么？从零到入门的学习路线和推荐资源。\n\n【仿】\n追踪顶级样本：推荐3-5个顶级样本并说明原因，拆解框架和角度，关键引导性问题，常见误区。\n\n【练】\n刻意练习：常见短板分析，针对性的练习动作设计（含目标和标准），进步衡量方法，心态建议。\n\n【创】\n知识连接创造：跨领域连接方向，基于学习者背景的独特创造角度，具体项目建议，反馈和迭代方法。\n\n格式要求：如果涉及数学公式、物理公式或化学符号，请使用标准 LaTeX 格式：行内公式用 $...$，独立公式用 $$...$$。化学方程式务必用 _ 表示下标，例如 $\\text{Fe}_2\\text{O}_3$ 而非 $\\text{Fe}2\\text{O}3$。正确示例：$E=mc^2$、$\\vec{F}=m\\vec{a}$、$\\text{H}_2\\text{O}$、$\\frac{1}{2}mv^2$。\n\n请用中文回答，内容充实、直接可操作。';
 }
 function parseMetaStages(text) {
   var stages = { deconstruct: '', imitate: '', practice: '', create: '' };
@@ -21507,6 +21835,7 @@ function formatMetaContent(txt) {
     .replace(/##\s*(.+)/g, '<h3 class="meta-h3">$1</h3>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\n/g, '<br>');
+  html = renderLatex(html);
   return '<div class="meta-output">' + html + '</div>';
 }
 function saveMetaSession(skill, stages) {
@@ -21597,7 +21926,9 @@ function renderBizDimContent() {
   if (!dims) { resultDiv.innerHTML = ''; return; }
   var active = window._bizActiveDim || 'value';
   var content = dims[active];
-  resultDiv.innerHTML = content ? formatBizContent(content) : '<div class="biz-empty">该维度暂无内容</div>';
+  var html = content ? formatBizContent(content) : '<div class="biz-empty">该维度暂无内容</div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="biz-btn biz-btn-outline" onclick="callBizAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  resultDiv.innerHTML = html;
 }
 function renderBizPanel() {
   if (!window._bizInit) { initBizState(); window._bizInit = true; }
@@ -21693,6 +22024,46 @@ function callBizAnalysis() {
     var msg = err && err.message ? err.message : '未知错误';
     showToast('❌ 分析失败：' + msg);
     if (resultDiv) resultDiv.innerHTML = '<div class="biz-empty">❌ ' + msg + '</div>';
+  });
+}
+function buildBizAppendPrompt(dimId) {
+  var input = document.getElementById('bizInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先输入你的赚钱想法'); return null; }
+  var labels = { value:'价值洞察', model:'模式拆解', leverage:'杠杆匹配', action:'行动路线' };
+  var label = labels[dimId] || dimId;
+  var existing = window._bizDims ? (window._bizDims[dimId] || '') : '';
+  return '你是一位商业思维导师。\n\n已有的分析：\n' + (existing.substring(0, 1000) || '暂无') + '\n\n请从更深的层面展开【'+label+'】，补充更多内容。不要简单重复已有内容。\n\n请用「【'+label+'·续】」作为标题开头输出。';
+}
+function callBizAppend(dimId) {
+  var prompt = buildBizAppendPrompt(dimId);
+  if (!prompt) return;
+  var loading = document.getElementById('bizLoading');
+  var resultDiv = document.getElementById('bizResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
+  callAI({
+    prompt: prompt, temperature: 0.7, maxTokens: 8192, timeout: 180000,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    var labels = { value:'价值洞察', model:'模式拆解', leverage:'杠杆匹配', action:'行动路线' };
+    var label = labels[dimId] || dimId;
+    var marker = '【' + label + '·续】';
+    var start = fullText.indexOf(marker);
+    var appendContent = start !== -1 ? fullText.substring(start + marker.length).trim() : fullText;
+    if (!window._bizDims) window._bizDims = {};
+    var existing = window._bizDims[dimId] || '';
+    window._bizDims[dimId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
+    window._bizActiveDim = dimId;
+    switchBizDim(dimId);
+    showToast('✅ 已追加 '+label+' 深度分析');
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 追加失败：'+msg);
   });
 }
 function formatBizContent(txt) {
@@ -21797,7 +22168,9 @@ function renderTcmDimContent() {
   if (!dims) { resultDiv.innerHTML = ''; return; }
   var active = window._tcmActiveDim || 'pattern';
   var content = dims[active];
-  resultDiv.innerHTML = content ? formatTcmContent(content) : '<div class="tcm-empty">该维度暂无内容</div>';
+  var html = content ? formatTcmContent(content) : '<div class="tcm-empty">该维度暂无内容</div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="tcm-btn tcm-btn-outline" onclick="callTcmAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  resultDiv.innerHTML = html;
 }
 function renderTcmPanel() {
   if (!window._tcmInit) { initTcmState(); window._tcmInit = true; }
@@ -21895,6 +22268,46 @@ function callTcmAnalysis() {
     if (resultDiv) resultDiv.innerHTML = '<div class="tcm-empty">❌ ' + msg + '</div>';
   });
 }
+function buildTcmAppendPrompt(dimId) {
+  var input = document.getElementById('tcmInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先输入你的症状'); return null; }
+  var labels = { pattern:'辨证审机', formula:'立法处方', herbs:'用药精解', patent:'中成药+医案' };
+  var label = labels[dimId] || dimId;
+  var existing = window._tcmDims ? (window._tcmDims[dimId] || '') : '';
+  return '你是一位中医专家。\n\n已有的辨证：\n' + (existing.substring(0, 1000) || '暂无') + '\n\n请从更深的层面展开【'+label+'】，补充更多内容。不要简单重复已有内容。\n\n请用「【'+label+'·续】」作为标题开头输出。';
+}
+function callTcmAppend(dimId) {
+  var prompt = buildTcmAppendPrompt(dimId);
+  if (!prompt) return;
+  var loading = document.getElementById('tcmLoading');
+  var resultDiv = document.getElementById('tcmResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加辨证中...'; }
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    var labels = { pattern:'辨证审机', formula:'立法处方', herbs:'用药精解', patent:'中成药+医案' };
+    var label = labels[dimId] || dimId;
+    var marker = '【' + label + '·续】';
+    var start = fullText.indexOf(marker);
+    var appendContent = start !== -1 ? fullText.substring(start + marker.length).trim() : fullText;
+    if (!window._tcmDims) window._tcmDims = {};
+    var existing = window._tcmDims[dimId] || '';
+    window._tcmDims[dimId] = existing + '\n\n---\n\n### 📌 追加深度辨证\n' + appendContent;
+    window._tcmActiveDim = dimId;
+    switchTcmDim(dimId);
+    showToast('✅ 已追加 '+label+' 深度分析');
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 追加失败：'+msg);
+  });
+}
 function formatTcmContent(txt) {
   if (!txt) return '<div class="tcm-empty">暂无内容</div>';
   var html = txt
@@ -21973,6 +22386,1289 @@ function toggleTcmHistory() {
     body.style.display = isHidden ? '' : 'none';
     toggle.textContent = isHidden ? '▼' : '▶';
     if (isHidden) renderTcmHistory();
+  }
+}
+
+
+/* ===== 企策 · 精准点子 ===== */
+function initIdeaState() {
+  if (!state.ideaSettings) state.ideaSettings = {};
+  if (!state.ideaSessions) state.ideaSessions = [];
+}
+function switchIdeaDim(dim) {
+  window._ideaActiveDim = dim;
+  var cards = document.querySelectorAll('.idea-dim-card');
+  for (var i = 0; i < cards.length; i++)
+    cards[i].classList.toggle('active', cards[i].getAttribute('data-dim') === dim);
+  renderIdeaDimContent();
+}
+function renderIdeaDimContent() {
+  var rd = $id('ideaResult');
+  if (!rd) return;
+  var dims = window._ideaDims;
+  if (!dims) { rd.innerHTML = ''; return; }
+  var c = dims[window._ideaActiveDim || 'diagnosis'];
+  rd.innerHTML = c ? formatIdeaContent(c) : '<div class="idea-empty">暂无内容</div>';
+}
+function renderIdeaPanel() {
+  if (!window._ideaInit) { initIdeaState(); window._ideaInit = true; }
+  var area = $id('contentArea');
+  var dims = [
+    { id:'diagnosis', label:'问题诊断', icon:'🔎', desc:'根因分析·本质洞察' },
+    { id:'solution', label:'战略点子', icon:'💡', desc:'核心方案·创新突破' },
+    { id:'action', label:'执行路线', icon:'📋', desc:'行动计划·里程碑' },
+    { id:'resource', label:'资源评估', icon:'📊', desc:'资源需求·ROI风险' }
+  ];
+  var active = window._ideaActiveDim || 'diagnosis';
+  var h = [];
+  h.push('<div class="idea-hero"><div class="idea-hero-icon">💡</div><h2 class="idea-hero-title">企策 · 精准点子</h2><p class="idea-hero-sub">顶级商业顾问 · 可落地执行方案</p></div>');
+  h.push('<div class="idea-input-card"><textarea id="ideaInput" class="idea-textarea" placeholder="描述你面临的问题、困境或想达成的目标…"></textarea>');
+  h.push('<div class="idea-input-actions"><button class="idea-btn idea-btn-primary" onclick="callIdeaAnalysis()">💡 AI 出点子</button></div></div>');
+  h.push('<div class="idea-section"><div class="idea-section-hdr">📊 四维策划</div><div class="idea-dim-row">');
+  for (var si = 0; si < dims.length; si++) {
+    var s = dims[si];
+    h.push('<div class="idea-dim-card' + (active === s.id ? ' active' : '') + '" data-dim="' + s.id + '" onclick="switchIdeaDim(\'' + s.id + '\')">');
+    h.push('<div class="idea-dim-icon">' + s.icon + '</div><div class="idea-dim-label">' + s.label + '</div><div class="idea-dim-desc">' + s.desc + '</div></div>');
+  }
+  h.push('</div></div>');
+  h.push('<div id="ideaLoading" class="idea-loading"><div class="idea-spinner"></div><span>💡 AI 策划中…</span></div>');
+  h.push('<div id="ideaResult"></div>');
+  h.push('<div class="idea-section"><div class="idea-section-hdr" onclick="toggleIdeaHistory()">📋 点子记录 (<span id="ideaHistoryCount">0</span>) <span id="ideaHistToggle">▼</span></div>');
+  h.push('<div id="ideaHistoryBody" class="idea-history-body" style="display:none"><div id="ideaHistoryList"></div></div></div>');
+  h.push('<div class="idea-guide">💡 描述问题 → AI 四维策划 → 点卡片切换查看</div>');
+  area.innerHTML = h.join('');
+  renderIdeaHistory(); renderIdeaDimContent(); updateUI();
+}
+function buildIdeaPrompt() {
+  var input = $id('ideaInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先描述你面临的问题'); return null; }
+  return '你是一位顶级商业顾问，擅长从复杂问题中找到核心矛盾，给出可落地的精准解决方案。\n\n客户问题: ' + text + '\n\n请严格按照以下4个维度输出完整策划方案，每个维度用「【问题诊断】【战略点子】【执行路线】【资源评估】」作为标题开头，内容要详细有实质性、可操作：\n\n【问题诊断】\n1. 核心矛盾：表象现象背后的根本原因是什么？\n2. 利益相关方分析：谁受影响？谁有话语权？\n3. 紧急重要性评估：哪些问题必须马上解决？哪些可以后续处理？\n4. 若不解决的后果预测\n\n【战略点子】\n给出3-5个具体可落地的点子方案：\n- 每个点子的核心思路\n- 预期效果\n- 创新/差异化在哪里\n- 成功的关键因素\n\n【执行路线】\n1. 第一阶段（1-30天）：立即行动项、速赢方案\n2. 第二阶段（31-60天）：体系搭建、团队配置\n3. 第三阶段（61-90天）：优化迭代、扩大成果\n4. 关键里程碑和验收标准\n5. 建议的KPI指标\n\n【资源评估】\n1. 人才需求：需要什么角色、能力\n2. 资金预算：各项投入估算\n3. 技术/工具需求\n4. 潜在风险及应对预案\n5. ROI预估和回报周期\n\n请用中文回答，像麦肯锡顾问写方案一样专业、犀利、直接可操作。';
+}
+function parseIdeaDims(text) {
+  var dims = { diagnosis:'', solution:'', action:'', resource:'' };
+  var markers = [
+    { id:'diagnosis', label:'【问题诊断】' },
+    { id:'solution', label:'【战略点子】' },
+    { id:'action', label:'【执行路线】' },
+    { id:'resource', label:'【资源评估】' }
+  ];
+  for (var i = 0; i < markers.length; i++) {
+    var start = text.indexOf(markers[i].label);
+    if (start === -1) continue;
+    var cs = start + markers[i].label.length;
+    var end = (i < markers.length-1) ? text.indexOf(markers[i+1].label, cs) : -1;
+    dims[markers[i].id] = text.substring(cs, end === -1 ? text.length : end).trim();
+  }
+  return dims;
+}
+function callIdeaAnalysis() {
+  var prompt = buildIdeaPrompt();
+  if (!prompt) return;
+  var loading = $id('ideaLoading');
+  var resultDiv = $id('ideaResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '💡 AI 策划中...'; }
+  if (resultDiv) resultDiv.innerHTML = '';
+  callAI({
+    prompt: prompt, temperature: 0.7, maxTokens: 8192, timeout: 180000,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '💡 AI 策划中 (' + fullText.length + ' 字)...'; }
+      if (resultDiv) resultDiv.innerHTML = formatIdeaContent(fullText);
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    window._ideaDims = parseIdeaDims(fullText);
+    window._ideaActiveDim = 'diagnosis';
+    switchIdeaDim('diagnosis');
+    var input = $id('ideaInput');
+    saveIdeaSession(input ? input.value.trim() : '', window._ideaDims);
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 策划失败：' + msg);
+    if (resultDiv) resultDiv.innerHTML = '<div class="idea-empty">❌ ' + msg + '</div>';
+  });
+}
+function formatIdeaContent(txt) {
+  if (!txt) return '<div class="idea-empty">暂无内容</div>';
+  var html = txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/###\s*(.+)/g,'<h4 class="idea-h4">$1</h4>')
+    .replace(/##\s*(.+)/g,'<h3 class="idea-h3">$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n/g,'<br>');
+  return '<div class="idea-output">' + html + '</div>';
+}
+function saveIdeaSession(problem, dims) {
+  if (!state.ideaSessions) state.ideaSessions = [];
+  state.ideaSessions.unshift({ id:Date.now(), problem:problem, dims:dims, date:new Date().toISOString() });
+  if (state.ideaSessions.length > 50) state.ideaSessions.length = 50;
+  saveState(); renderIdeaHistory();
+}
+function deleteIdeaSession(id) {
+  if (!state.ideaSessions) return;
+  state.ideaSessions = state.ideaSessions.filter(function(a){return a.id!==id});
+  saveState(); renderIdeaHistory();
+}
+function renderIdeaHistory() {
+  var list = $id('ideaHistoryList'), count = $id('ideaHistoryCount');
+  if (!list) return;
+  var sessions = state.ideaSessions || [];
+  if (count) count.textContent = sessions.length;
+  if (!sessions.length) { list.innerHTML = '<div class="idea-empty">还没有点子记录</div>'; return; }
+  var html = '';
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
+    var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+    html += '<div class="idea-history-item" onclick="viewIdeaSession('+s.id+')">';
+    html += '<div class="idea-history-main"><div class="idea-history-date">'+ds+'</div>';
+    html += '<div class="idea-history-problem">'+(s.problem?s.problem.substring(0,40)+(s.problem.length>40?'...':''):'')+'</div></div>';
+    html += '<button class="idea-history-del" onclick="event.stopPropagation();deleteIdeaSession('+s.id+')">✖</button></div>';
+  }
+  list.innerHTML = html;
+}
+function viewIdeaSession(id) {
+  var sessions = state.ideaSessions || [];
+  var session = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+  if (!session) { showToast('记录未找到'); return; }
+  window._ideaDims = session.dims || {};
+  window._ideaActiveDim = 'diagnosis';
+  switchIdeaDim('diagnosis');
+  var hb = $id('ideaHistoryBody'); if (hb) hb.style.display = 'none';
+  var tg = $id('ideaHistToggle'); if (tg) tg.textContent = '▶';
+}
+function toggleIdeaHistory() {
+  var body = $id('ideaHistoryBody'), toggle = $id('ideaHistToggle');
+  if (body && toggle) {
+    var h = body.style.display === 'none';
+    body.style.display = h ? '' : 'none';
+    toggle.textContent = h ? '▼' : '▶';
+    if (h) renderIdeaHistory();
+  }
+}
+
+
+/* ===== 观局 · 时事情报 ===== */
+function initNewsState() {
+  if (!state.newsSettings) state.newsSettings = {};
+  if (!state.newsSessions) state.newsSessions = [];
+  if (!state.newsTopics) state.newsTopics = ['中美关系','AI行业','宏观经济'];
+}
+function switchNewsDim(dim) {
+  window._newsActiveDim = dim;
+  var cards = document.querySelectorAll('.news-dim-card');
+  for (var i = 0; i < cards.length; i++)
+    cards[i].classList.toggle('active', cards[i].getAttribute('data-dim') === dim);
+  renderNewsDimContent();
+}
+function renderNewsDimContent() {
+  var rd = $id('newsResult');
+  if (!rd) return;
+  var dims = window._newsDims;
+  if (!dims) { rd.innerHTML = ''; return; }
+  var c = dims[window._newsActiveDim || 'briefing'];
+  rd.innerHTML = c ? formatNewsContent(c) : '<div class="news-empty">暂无内容</div>';
+}
+function addNewsTopic() {
+  var inp = $id('newsTopicInput');
+  if (!inp) return;
+  var t = inp.value.trim();
+  if (!t) return;
+  if (!state.newsTopics) state.newsTopics = [];
+  if (state.newsTopics.indexOf(t) === -1) state.newsTopics.push(t);
+  inp.value = '';
+  saveState();
+  renderNewsTopics();
+}
+function removeNewsTopic(topic) {
+  if (!state.newsTopics) return;
+  state.newsTopics = state.newsTopics.filter(function(a){return a!==topic});
+  saveState();
+  renderNewsTopics();
+}
+function renderNewsTopics() {
+  var el = $id('newsTopicList');
+  if (!el) return;
+  var topics = state.newsTopics || [];
+  var h = [];
+  for (var i = 0; i < topics.length; i++) {
+    h.push('<span class="news-topic-chip" data-topic="'+escHtml(topics[i])+'">'+escHtml(topics[i])+' ✖</span>');
+  }
+  el.innerHTML = h.join('');
+}
+function renderNewsPanel() {
+  if (!window._newsInit) { initNewsState(); window._newsInit = true; }
+  var area = $id('contentArea');
+  var active = window._newsActiveDim || 'briefing';
+  var h = [];
+  h.push('<div class="news-hero"><div class="news-hero-icon">🗺️</div><h2 class="news-hero-title">观局 · 时事情报</h2><p class="news-hero-sub">联网情报 · 联动分析 · 顶层视角</p></div>');
+  h.push('<div class="news-input-card">');
+  h.push('<div class="news-topics-label">📡 监测话题 <span style="font-size:12px;color:var(--text-muted);font-weight:400">（点击话题移除，回车添加）</span></div>');
+  h.push('<div id="newsTopicList" class="news-topic-row"></div>');
+  h.push('<div style="display:flex;gap:8px;margin-top:8px"><input id="newsTopicInput" class="news-topic-input" placeholder="输入新话题..." onkeydown="if(event.key==\'Enter\')addNewsTopic()"> <button class="news-btn news-btn-small" onclick="addNewsTopic()">＋</button></div>');
+  h.push('<div class="news-input-actions"><button class="news-btn news-btn-primary" onclick="callNewsAnalysis()">🔄 AI 联网情报</button></div></div>');
+  h.push('<div class="news-section"><div class="news-section-hdr">📊 情报分析</div><div class="news-dim-row">');
+  var dims = [
+    { id:'briefing', label:'情报速览', icon:'🔍', desc:'最新动态汇总' },
+    { id:'linkage', label:'联动影响', icon:'🔗', desc:'事件连锁反应' },
+    { id:'policy', label:'政策与趋势', icon:'📜', desc:'政策解读·方向' },
+    { id:'strategy', label:'顶层对策', icon:'🧠', desc:'商机·风险·应对' }
+  ];
+  for (var si = 0; si < dims.length; si++) {
+    var s = dims[si];
+    h.push('<div class="news-dim-card'+(active===s.id?' active':'')+'" data-dim="'+s.id+'" onclick="switchNewsDim(\''+s.id+'\')">');
+    h.push('<div class="news-dim-icon">'+s.icon+'</div><div class="news-dim-label">'+s.label+'</div><div class="news-dim-desc">'+s.desc+'</div></div>');
+  }
+  h.push('</div></div>');
+  h.push('<div id="newsLoading" class="news-loading"><div class="news-spinner"></div><span>🗺️ AI 联网搜索分析中…</span></div>');
+  h.push('<div id="newsResult"></div>');
+  h.push('<div class="news-section"><div class="news-section-hdr" onclick="toggleNewsHistory()">📋 情报记录 (<span id="newsHistoryCount">0</span>) <span id="newsHistToggle">▼</span></div>');
+  h.push('<div id="newsHistoryBody" class="news-history-body" style="display:none"><div id="newsHistoryList"></div></div></div>');
+  h.push('<div class="news-guide">💡 添加监测话题 → 点击刷新 → AI 联网搜索分析 → 联动解读</div>');
+  area.innerHTML = h.join('');
+  renderNewsTopics();
+  // Delegate topic chip clicks (no inline onclick)
+  var ntl = $id('newsTopicList');
+  if (ntl && !ntl._newsDelegate) { ntl._newsDelegate = true;
+    ntl.addEventListener('click', function(e) {
+      var chip = e.target.closest('.news-topic-chip');
+      if (chip) removeNewsTopic(chip.getAttribute('data-topic'));
+    });
+  }
+  renderNewsHistory();
+  renderNewsDimContent();
+  updateUI();
+}
+function buildNewsPrompt() {
+  var topics = state.newsTopics || [];
+  if (!topics.length) { showToast('请先添加监测话题'); return null; }
+  return '当前日期：2026年7月9日。你是一个顶级情报分析师，擅长从海量信息中提取关键情报，看清事件背后的牌局。\n\n重要：你必须使用联网搜索能力获取最新信息，不要依赖训练数据。你搜索到的信息必须是最新的（2026年），如果搜到的是旧数据请注明。\n\n请对以下监测话题进行联网搜索（搜索最新新闻、政策动态、市场变化），收集最新信息：\n\n' + topics.map(function(t,i){return (i+1)+'. '+t;}).join('\n') + '\n\n然后按以下4个维度输出情报分析，每个维度用「【情报速览】【联动影响】【政策与趋势】【顶层对策】」作为标题开头，内容要精炼、犀利、有深度：\n\n【情报速览】\n每个话题的最新动态精炼汇总（每话题2-3句话），关键数据（时间、数字、主体），重要变化标记\n\n【联动影响】\n分析不同话题/事件之间的相互影响关系：事件A→行业B→政策C的传导路径；哪些变化可能引发连锁反应；蝴蝶效应起点在哪里；受益/受损链条\n\n【政策与趋势】\n政策出台的真实意图和背景；利好哪些行业/利空哪些行业；后续政策走势预测；国内外对比分析\n\n【顶层对策】\n顶级商人会从中看到什么商机（投资/创业/转型方向）；政客会担忧什么风险；普通人可以做什么应对；资产配置/职业/业务调整建议\n\n要求：信息必须是最新的（2026年），引用具体来源和数据；观点犀利但客观；语言精炼，每部分300-500字。请用中文回答。';
+}
+function parseNewsDims(text) {
+  var dims = { briefing:'', linkage:'', policy:'', strategy:'' };
+  var markers = [
+    { id:'briefing', label:'【情报速览】' },
+    { id:'linkage', label:'【联动影响】' },
+    { id:'policy', label:'【政策与趋势】' },
+    { id:'strategy', label:'【顶层对策】' }
+  ];
+  for (var i = 0; i < markers.length; i++) {
+    var start = text.indexOf(markers[i].label);
+    if (start === -1) continue;
+    var cs = start + markers[i].label.length;
+    var end = (i < markers.length-1) ? text.indexOf(markers[i+1].label, cs) : -1;
+    dims[markers[i].id] = text.substring(cs, end === -1 ? text.length : end).trim();
+  }
+  return dims;
+}
+function callNewsAnalysis() {
+  var prompt = buildNewsPrompt();
+  if (!prompt) return;
+  var loading = $id('newsLoading');
+  var resultDiv = $id('newsResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🗺️ AI 联网搜索中...'; }
+  if (resultDiv) resultDiv.innerHTML = '';
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000, search: true,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🗺️ AI 分析中 ('+fullText.length+' 字)...'; }
+      if (resultDiv) resultDiv.innerHTML = formatNewsContent(fullText);
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    window._newsDims = parseNewsDims(fullText);
+    window._newsActiveDim = 'briefing';
+    switchNewsDim('briefing');
+    saveNewsSession((state.newsTopics||[]).slice(), window._newsDims);
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 情报分析失败：'+msg);
+    if (resultDiv) resultDiv.innerHTML = '<div class="news-empty">❌ '+msg+'</div>';
+  });
+}
+function formatNewsContent(txt) {
+  if (!txt) return '<div class="news-empty">暂无内容</div>';
+  var html = txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/###\s*(.+)/g,'<h4 class="news-h4">$1</h4>')
+    .replace(/##\s*(.+)/g,'<h3 class="news-h3">$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n/g,'<br>');
+  return '<div class="news-output">'+html+'</div>';
+}
+function saveNewsSession(topics, dims) {
+  if (!state.newsSessions) state.newsSessions = [];
+  state.newsSessions.unshift({ id:Date.now(), topics:topics, dims:dims, date:new Date().toISOString() });
+  if (state.newsSessions.length > 50) state.newsSessions.length = 50;
+  saveState(); renderNewsHistory();
+}
+function deleteNewsSession(id) {
+  if (!state.newsSessions) return;
+  state.newsSessions = state.newsSessions.filter(function(a){return a.id!==id});
+  saveState(); renderNewsHistory();
+}
+function renderNewsHistory() {
+  var list = $id('newsHistoryList'), count = $id('newsHistoryCount');
+  if (!list) return;
+  var sessions = state.newsSessions || [];
+  if (count) count.textContent = sessions.length;
+  if (!sessions.length) { list.innerHTML = '<div class="news-empty">还没有情报记录</div>'; return; }
+  var h = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
+    var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+    var topics = s.topics ? (s.topics.length > 2 ? s.topics.slice(0,2).join(', ')+'...' : s.topics.join(', ')) : '';
+    h.push('<div class="news-history-item" onclick="viewNewsSession('+s.id+')">');
+    h.push('<div class="news-history-main"><div class="news-history-date">'+ds+'</div>');
+    h.push('<div class="news-history-topics">'+escHtml(topics)+'</div></div>');
+    h.push('<button class="news-history-del" onclick="event.stopPropagation();deleteNewsSession('+s.id+')">✖</button></div>');
+  }
+  list.innerHTML = h.join('');
+}
+function viewNewsSession(id) {
+  var sessions = state.newsSessions || [];
+  var session = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+  if (!session) { showToast('记录未找到'); return; }
+  window._newsDims = session.dims || {};
+  window._newsActiveDim = 'briefing';
+  switchNewsDim('briefing');
+  var hb = $id('newsHistoryBody'); if (hb) hb.style.display = 'none';
+  var tg = $id('newsHistToggle'); if (tg) tg.textContent = '▶';
+}
+function toggleNewsHistory() {
+  var body = $id('newsHistoryBody'), toggle = $id('newsHistToggle');
+  if (body && toggle) {
+    var h = body.style.display === 'none';
+    body.style.display = h ? '' : 'none';
+    toggle.textContent = h ? '▼' : '▶';
+    if (h) renderNewsHistory();
+  }
+}
+
+
+/* ===== 资道 · 融资兵法 ===== */
+function initFinState() {
+  if (!state.finSettings) state.finSettings = {};
+  if (!state.finSessions) state.finSessions = [];
+}
+function switchFinDim(dim) {
+  window._finActiveDim = dim;
+  var cards = document.querySelectorAll('.fin-dim-card');
+  for (var i = 0; i < cards.length; i++)
+    cards[i].classList.toggle('active', cards[i].getAttribute('data-dim') === dim);
+  renderFinDimContent();
+}
+function renderFinDimContent() {
+  var rd = $id('finResult');
+  if (!rd) return;
+  var dims = window._finDims;
+  if (!dims) { rd.innerHTML = ''; return; }
+  var active = window._finActiveDim || 'diagnosis';
+  var c = dims[active];
+  var html = c ? formatFinContent(c) : '<div class="fin-empty">暂无内容</div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="fin-btn fin-btn-outline" onclick="callFinAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  rd.innerHTML = html;
+}
+function renderFinPanel() {
+  if (!window._finInit) { initFinState(); window._finInit = true; }
+  var area = $id('contentArea');
+  var dims = [
+    { id:'diagnosis', label:'融资诊断', icon:'🔎', desc:'匹配四种融资方式' },
+    { id:'design', label:'方案设计', icon:'📐', desc:'融资结构·操作步骤' },
+    { id:'risk', label:'风险推演', icon:'⚠️', desc:'成败分析·退出机制' },
+    { id:'advanced', label:'资本进阶', icon:'🏦', desc:'不良资产·杠杆套利' }
+  ];
+  var active = window._finActiveDim || 'diagnosis';
+  var h = [];
+  h.push('<div class="fin-hero"><div class="fin-hero-icon">🏦</div><h2 class="fin-hero-title">资道 · 融资兵法</h2><p class="fin-hero-sub">四种融资方式 · 资本运作之道 · 用资本赚钱</p></div>');
+  h.push('<div class="fin-input-card"><textarea id="finInput" class="fin-textarea" placeholder="描述你的融资需求：需要多少钱？有什么资产？项目情况？目标用途…"></textarea>');
+  h.push('<div class="fin-input-actions"><button class="fin-btn fin-btn-primary" onclick="callFinAnalysis()">🏦 AI 融资策划</button></div></div>');
+  h.push('<div class="fin-section"><div class="fin-section-hdr">📊 四维融资策略</div><div class="fin-dim-row">');
+  for (var si = 0; si < dims.length; si++) {
+    var s = dims[si];
+    h.push('<div class="fin-dim-card'+(active===s.id?' active':'')+'" data-dim="'+s.id+'" onclick="switchFinDim(\''+s.id+'\')">');
+    h.push('<div class="fin-dim-icon">'+s.icon+'</div><div class="fin-dim-label">'+s.label+'</div><div class="fin-dim-desc">'+s.desc+'</div></div>');
+  }
+  h.push('</div></div>');
+  h.push('<div id="finLoading" class="fin-loading"><div class="fin-spinner"></div><span>🏦 AI 融资策划中…</span></div>');
+  h.push('<div id="finResult"></div>');
+  h.push('<div class="fin-section"><div class="fin-section-hdr" onclick="toggleFinHistory()">📋 融资记录 (<span id="finHistoryCount">0</span>) <span id="finHistToggle">▼</span></div>');
+  h.push('<div id="finHistoryBody" class="fin-history-body" style="display:none"><div id="finHistoryList"></div></div></div>');
+  h.push('<div class="fin-guide">💡 描述融资需求 → AI 四维融资策略分析 → 点卡片切换查看</div>');
+  area.innerHTML = h.join('');
+  renderFinHistory(); renderFinDimContent(); updateUI();
+}
+function buildFinPrompt() {
+  var input = $id('finInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先描述你的融资需求'); return null; }
+  return '你是一位顶级资本运作专家，精通债权融资、股权融资、众筹、上市四种融资方式，以及不良资产套利、杠杆收购、跨境资本运作等高级玩法。\n\n融资需求: ' + text + '\n\n请严格按照以下4个维度输出融资策划方案，每个维度用「【融资诊断】【方案设计】【风险推演】【资本进阶】」作为标题开头，内容要专业、犀利、可操作：\n\n【融资诊断】\n1. 评估用户适合哪种融资方式（债权/股权/众筹/上市），说明理由\n2. 资产状况分析：有形资产、无形资产、现金流、信用状况\n3. 四种融资方式的可行性打分和对比\n4. 推荐的融资路径和原因\n\n【方案设计】\n1. 具体融资结构设计\n2. 分步骤操作流程\n3. 融资金额、股份比例、期限、利率建议\n4. 关键条款和谈判要点\n5. 时间表和里程碑\n\n【风险推演】\n1. 各方案的潜在风险\n2. 最坏情况推演（失败后果、债务责任）\n3. 退出机制设计\n4. 保底策略和备选方案\n\n【资本进阶】\n如果用户有资产基础，提供高级资本运作思路：\n1. 资产包/不良资产套利机会\n2. 杠杆结构设计（过桥资金→抵押贷→现金流）\n3. 跨境资本运作可能性\n4. 信用放大路径\n\n要求：用中文回答，像顶级投行顾问写方案一样专业、犀利。引用真实案例佐证。';
+}
+function parseFinDims(text) {
+  var dims = { diagnosis:'', design:'', risk:'', advanced:'' };
+  var markers = [
+    { id:'diagnosis', label:'【融资诊断】' },
+    { id:'design', label:'【方案设计】' },
+    { id:'risk', label:'【风险推演】' },
+    { id:'advanced', label:'【资本进阶】' }
+  ];
+  for (var i = 0; i < markers.length; i++) {
+    var start = text.indexOf(markers[i].label);
+    if (start === -1) continue;
+    var cs = start + markers[i].label.length;
+    var end = (i < markers.length-1) ? text.indexOf(markers[i+1].label, cs) : -1;
+    dims[markers[i].id] = text.substring(cs, end === -1 ? text.length : end).trim();
+  }
+  return dims;
+}
+function callFinAnalysis() {
+  var prompt = buildFinPrompt();
+  if (!prompt) return;
+  var loading = $id('finLoading');
+  var resultDiv = $id('finResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🏦 AI 融资策划中...'; }
+  if (resultDiv) resultDiv.innerHTML = '';
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🏦 AI 策划中 ('+fullText.length+' 字)...'; }
+      if (resultDiv) resultDiv.innerHTML = formatFinContent(fullText);
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    window._finDims = parseFinDims(fullText);
+    window._finActiveDim = 'diagnosis';
+    switchFinDim('diagnosis');
+    var input = $id('finInput');
+    saveFinSession(input ? input.value.trim() : '', window._finDims);
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 融资策划失败：'+msg);
+    if (resultDiv) resultDiv.innerHTML = '<div class="fin-empty">❌ '+escHtml(msg)+'</div>';
+  });
+}
+function buildFinAppendPrompt(dimId) {
+  var input = document.getElementById('finInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先输入你的融资需求'); return null; }
+  var labels = { diagnosis:'融资诊断', design:'方案设计', risk:'风险推演', advanced:'资本进阶' };
+  var label = labels[dimId] || dimId;
+  var existing = window._finDims ? (window._finDims[dimId] || '') : '';
+  return '你是一位融资顾问。\n\n已有的分析：\n' + (existing.substring(0, 1000) || '暂无') + '\n\n请从更深的层面展开【'+label+'】，补充更多内容。不要简单重复已有内容。\n\n请用「【'+label+'·续】」作为标题开头输出。';
+}
+function callFinAppend(dimId) {
+  var prompt = buildFinAppendPrompt(dimId);
+  if (!prompt) return;
+  var loading = document.getElementById('finLoading');
+  var resultDiv = document.getElementById('finResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    var labels = { diagnosis:'融资诊断', design:'方案设计', risk:'风险推演', advanced:'资本进阶' };
+    var label = labels[dimId] || dimId;
+    var marker = '【' + label + '·续】';
+    var start = fullText.indexOf(marker);
+    var appendContent = start !== -1 ? fullText.substring(start + marker.length).trim() : fullText;
+    if (!window._finDims) window._finDims = {};
+    var existing = window._finDims[dimId] || '';
+    window._finDims[dimId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
+    window._finActiveDim = dimId;
+    switchFinDim(dimId);
+    showToast('✅ 已追加 '+label+' 深度分析');
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 追加失败：'+msg);
+  });
+}
+function formatFinContent(txt) {
+  if (!txt) return '<div class="fin-empty">暂无内容</div>';
+  var html = txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/###\s*(.+)/g,'<h4 class="fin-h4">$1</h4>')
+    .replace(/##\s*(.+)/g,'<h3 class="fin-h3">$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n/g,'<br>');
+  return '<div class="fin-output">'+html+'</div>';
+}
+function saveFinSession(need, dims) {
+  if (!state.finSessions) state.finSessions = [];
+  state.finSessions.unshift({ id:Date.now(), need:need, dims:dims, date:new Date().toISOString() });
+  if (state.finSessions.length > 50) state.finSessions.length = 50;
+  saveState(); renderFinHistory();
+}
+function deleteFinSession(id) {
+  if (!state.finSessions) return;
+  state.finSessions = state.finSessions.filter(function(a){return a.id!==id});
+  saveState(); renderFinHistory();
+}
+function renderFinHistory() {
+  var list = $id('finHistoryList'), count = $id('finHistoryCount');
+  if (!list) return;
+  var sessions = state.finSessions || [];
+  if (count) count.textContent = sessions.length;
+  if (!sessions.length) { list.innerHTML = '<div class="fin-empty">还没有融资记录</div>'; return; }
+  var h = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
+    var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+    h.push('<div class="fin-history-item" onclick="viewFinSession('+s.id+')">');
+    h.push('<div class="fin-history-main"><div class="fin-history-date">'+ds+'</div>');
+    h.push('<div class="fin-history-need">'+escHtml(s.need?s.need.substring(0,40)+(s.need.length>40?'...':''):'')+'</div></div>');
+    h.push('<button class="fin-history-del" onclick="event.stopPropagation();deleteFinSession('+s.id+')">✖</button></div>');
+  }
+  list.innerHTML = h.join('');
+}
+function viewFinSession(id) {
+  var sessions = state.finSessions || [];
+  var session = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+  if (!session) { showToast('记录未找到'); return; }
+  window._finDims = session.dims || {};
+  window._finActiveDim = 'diagnosis';
+  switchFinDim('diagnosis');
+  var hb = $id('finHistoryBody'); if (hb) hb.style.display = 'none';
+  var tg = $id('finHistToggle'); if (tg) tg.textContent = '▶';
+}
+function toggleFinHistory() {
+  var body = $id('finHistoryBody'), toggle = $id('finHistToggle');
+  if (body && toggle) {
+    var h = body.style.display === 'none';
+    body.style.display = h ? '' : 'none';
+    toggle.textContent = h ? '▼' : '▶';
+    if (h) renderFinHistory();
+  }
+}
+
+
+/* ===== 明辨 · 五层分析法 ===== */
+function initAnaState() {
+  if (!state.anaSettings) state.anaSettings = {};
+  if (!state.anaSessions) state.anaSessions = [];
+}
+function switchAnaLayer(layer) {
+  window._anaActiveLayer = layer;
+  var cards = document.querySelectorAll('.ana-layer-card');
+  for (var i = 0; i < cards.length; i++)
+    cards[i].classList.toggle('active', cards[i].getAttribute('data-layer') === layer);
+  renderAnaLayerContent();
+}
+function renderAnaLayerContent() {
+  var rd = $id('anaResult');
+  if (!rd) return;
+  var layers = window._anaLayers;
+  if (!layers) { rd.innerHTML = ''; return; }
+  var active = window._anaActiveLayer || 'info';
+  var c = layers[active];
+  var html = c ? formatAnaContent(c) : '<div class="ana-empty">暂无内容</div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="ana-btn ana-btn-outline" onclick="callAnaAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  rd.innerHTML = html;
+}
+function renderAnaPanel() {
+  if (!window._anaInit) { initAnaState(); window._anaInit = true; }
+  var area = $id('contentArea');
+  var layers = [
+    { id:'info', label:'\u{4FE1}\u{606F}\u{5C42}', icon:'\u{1F4F0}', desc:'\u{4E8B}\u{5B9E}\u{00B7}\u{4F20}\u{95FB}\u{00B7}\u{6765}\u{6E90}' },
+    { id:'logic', label:'\u{903B}\u{8F91}\u{5C42}', icon:'\u{1F517}', desc:'\u{56E0}\u{679C}\u{00B7}\u{63A8}\u{7406}\u{00B7}\u{5F52}\u{7EB3}' },
+    { id:'system', label:'\u{7CFB}\u{7EDF}\u{5C42}', icon:'\u{1F578}\u{FE0F}', desc:'\u{7CFB}\u{7EDF}\u{00B7}\u{53CD}\u{9988}\u{00B7}\u{8FDE}\u{9501}' },
+    { id:'human', label:'\u{4EBA}\u{6027}\u{5C42}', icon:'\u{1F9D1}\u{200D}\u{1F91D}\u{200D}\u{1F9D1}', desc:'\u{5229}\u{76CA}\u{00B7}\u{6050}\u{60E7}\u{00B7}\u{52A8}\u{673A}' },
+    { id:'meaning', label:'\u{610F}\u{4E49}\u{5C42}', icon:'\u{1F9ED}', desc:'\u{957F}\u{671F}\u{00B7}\u{4EF7}\u{503C}\u{00B7}\u{6210}\u{957F}' }
+  ];
+  var active = window._anaActiveLayer || 'info';
+  var h = [];
+  h.push('<div class="ana-hero"><div class="ana-hero-icon">\u{1F52C}</div><h2 class="ana-hero-title">\u{660E}\u{8FA8} \u{00B7} \u{4E94}\u{5C42}\u{5206}\u{6790}\u{6CD5}</h2><p class="ana-hero-sub">\u{4FE1}\u{606F}\u{5C42}\u{2192}\u{903B}\u{8F91}\u{5C42}\u{2192}\u{7CFB}\u{7EDF}\u{5C42}\u{2192}\u{4EBA}\u{6027}\u{5C42}\u{2192}\u{610F}\u{4E49}\u{5C42} \u{00B7} \u{770B}\u{6E05}\u{6BCF}\u{4E00}\u{9897}\u{68CB}\u{5B50}</p></div>');
+  h.push('<div class="ana-input-card"><textarea id="anaInput" class="ana-textarea" placeholder="\u{63CF}\u{8FF0}\u{4F60}\u{9047}\u{5230}\u{7684}\u{95EE}\u{9898}\u{3001}\u{56F0}\u{5883}\u{3001}\u{51B3}\u{7B56}\u{6216}\u{51B2}\u{7A81}\u{2026}"></textarea>');
+  h.push('<div class="ana-input-actions"><button class="ana-btn ana-btn-primary" onclick="callAnaAnalysis()">\u{1F52C} AI \u{4E94}\u{5C42}\u{5206}\u{6790}</button></div></div>');
+  h.push('<div class="ana-section"><div class="ana-section-hdr">\u{1F4CA} \u{4E94}\u{5C42}\u{5256}\u{6790}</div><div class="ana-layer-row">');
+  for (var si = 0; si < layers.length; si++) {
+    var s = layers[si];
+    h.push('<div class="ana-layer-card'+(active===s.id?' active':'')+'" data-layer="'+s.id+'" onclick="switchAnaLayer(\''+s.id+'\')">');
+    h.push('<div class="ana-layer-icon">'+s.icon+'</div><div class="ana-layer-label">'+s.label+'</div><div class="ana-layer-desc">'+s.desc+'</div></div>');
+  }
+  h.push('</div></div>');
+  h.push('<div id="anaLoading" class="ana-loading"><div class="ana-spinner"></div><span>\u{1F52C} AI \u{4E94}\u{5C42}\u{5206}\u{6790}\u{4E2D}\u{2026}</span></div>');
+  h.push('<div id="anaResult"></div>');
+  h.push('<div class="ana-section"><div class="ana-section-hdr" onclick="toggleAnaHistory()">\u{1F4CB} \u{5206}\u{6790}\u{8BB0}\u{5F55} (<span id="anaHistoryCount">0</span>) <span id="anaHistToggle">\u{25BC}</span></div>');
+  h.push('<div id="anaHistoryBody" class="ana-history-body" style="display:none"><div id="anaHistoryList"></div></div></div>');
+  h.push('<div class="ana-guide">\u{1F4A1} \u{8F93}\u{5165}\u{95EE}\u{9898} \u{2192} AI \u{4E94}\u{5C42}\u{5256}\u{6790} \u{2192} \u{70B9}\u{5C42}\u{5207}\u{6362}\u{67E5}\u{770B}</div>');
+  area.innerHTML = h.join('');
+  renderAnaHistory(); renderAnaLayerContent(); updateUI();
+}
+function buildAnaPrompt() {
+  var input = $id('anaInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('\u{8BF7}\u{5148}\u{63CF}\u{8FF0}\u{4F60}\u{9047}\u{5230}\u{7684}\u{95EE}\u{9898}'); return null; }
+  return '\u{4F60}\u{662F}\u{4E00}\u{4F4D}\u{9876}\u{7EA7}\u{8BA4}\u{77E5}\u{5206}\u{6790}\u{5E08}\u{FF0C}\u{7CBE}\u{901A}\u{4E94}\u{5C42}\u{5206}\u{6790}\u{6CD5}\u{2014}\u{2014}\u{4ECE}\u{4FE1}\u{606F}\u{3001}\u{903B}\u{8F91}\u{3001}\u{7CFB}\u{7EDF}\u{3001}\u{4EBA}\u{6027}\u{3001}\u{610F}\u{4E49}\u{4E94}\u{4E2A}\u{5C42}\u{6B21}\u{62C6}\u{89E3}\u{4EFB}\u{4F55}\u{95EE}\u{9898}\u{3002}\n\n\u{9700}\u{8981}\u{5206}\u{6790}\u{7684}\u{95EE}\u{9898}: ' + text + '\n\n\u{8BF7}\u{4E25}\u{683C}\u{6309}\u{7167}\u{4EE5}\u{4E0B}5\u{4E2A}\u{5C42}\u{6B21}\u{8F93}\u{51FA}\u{5206}\u{6790}\u{FF0C}\u{6BCF}\u{5C42}\u{7528}\u{300C}\u{3010}\u{4FE1}\u{606F}\u{5C42}\u{3011}\u{3010}\u{903B}\u{8F91}\u{5C42}\u{3011}\u{3010}\u{7CFB}\u{7EDF}\u{5C42}\u{3011}\u{3010}\u{4EBA}\u{6027}\u{5C42}\u{3011}\u{3010}\u{610F}\u{4E49}\u{5C42}\u{3011}\u{300D}\u{4F5C}\u{4E3A}\u{6807}\u{9898}\u{5F00}\u{5934}\u{FF0C}\u{5185}\u{5BB9}\u{8981}\u{725B}\u{5229}\u{3001}\u{6709}\u{7A7F}\u{900F}\u{529B}\u{FF1A}\n\n\u{3010}\u{4FE1}\u{606F}\u{5C42}\u{3011}\n1. \u{533A}\u{5206}\u{4E8B}\u{5B9E}\u{4E0E}\u{4F20}\u{95FB}\u{FF1A}\u{54EA}\u{4E9B}\u{662F}\u{786E}\u{5B9A}\u{7684}\u{4E8B}\u{5B9E}\u{FF1F}\u{54EA}\u{4E9B}\u{662F}\u{4E8C}\u{624B}\u{4FE1}\u{606F}\u{6216}\u{63A8}\u{6D4B}\u{FF1F}\n2. \u{4FE1}\u{606F}\u{6765}\u{6E90}\u{53EF}\u{9760}\u{6027}\u{8BC4}\u{4F30}\n3. \u{8BC6}\u{522B}\u{4FE1}\u{606F}\u{76F2}\u{533A}\u{FF1A}\u{4F60}\u{53EF}\u{80FD}\u{5FFD}\u{7565}\u{4E86}\u{4EC0}\u{4E48}\u{FF1F}\u{8FD8}\u{9700}\u{8981}\u{4EC0}\u{4E48}\u{4FE1}\u{606F}\u{FF1F}\n4. \u{5217}\u{51FA}\u{5DF2}\u{77E5}\u{4FE1}\u{606F}vs\u{672A}\u{77E5}\u{4FE1}\u{606F}\n\n\u{3010}\u{903B}\u{8F91}\u{5C42}\u{3011}\n1. \u{6838}\u{5FC3}\u{56E0}\u{679C}\u{94FE}\u{5206}\u{6790}\u{FF1A}A\u{2192}B\u{2192}C\u{7684}\u{63A8}\u{5BFC}\n2. \u{68C0}\u{67E5}\u{903B}\u{8F91}\u{6F0F}\u{6D1E}\u{FF1A}\u{662F}\u{5426}\u{5B58}\u{5728}\u{76F8}\u{5173}\u{5F53}\u{56E0}\u{679C}\u{FF1F}\u{662F}\u{5426}\u{4EE5}\u{504F}\u{6982}\u{5168}\u{FF1F}\n3. \u{66FF}\u{4EE3}\u{89E3}\u{91CA}\u{FF1A}\u{9664}\u{4E86}\u{6700}\u{660E}\u{663E}\u{7684}\u{7ED3}\u{8BBA}\u{FF0C}\u{8FD8}\u{6709}\u{4EC0}\u{4E48}\u{5408}\u{7406}\u{89E3}\u{91CA}\u{FF1F}\n4. \u{5F52}\u{7EB3}\u{4E0E}\u{6F14}\u{7ECE}\u{FF1A}\u{4ECE}\u{5177}\u{4F53}\u{5230}\u{4E00}\u{822C}\u{FF0C}\u{4ECE}\u{4E00}\u{822C}\u{5230}\u{5177}\u{4F53}\n\n\u{3010}\u{7CFB}\u{7EDF}\u{5C42}\u{3011}\n1. \u{5B9A}\u{4F4D}\u{66F4}\u{5927}\u{7CFB}\u{7EDF}\u{FF1A}\u{8FD9}\u{4E2A}\u{95EE}\u{9898}\u{662F}\u{54EA}\u{4E2A}\u{66F4}\u{5927}\u{7CFB}\u{7EDF}\u{7684}\u{8868}\u{73B0}\u{FF1F}\n2. \u{53CD}\u{9988}\u{56DE}\u{8DEF}\u{FF1A}\u{6B63}\u{5411}\u{5FAA}\u{73AF}\u{8FD8}\u{662F}\u{8D1F}\u{5411}\u{5FAA}\u{73AF}\u{FF1F}\u{4F1A}\u{81EA}\u{4FEE}\u{590D}\u{8FD8}\u{662F}\u{81EA}\u{6076}\u{5316}\u{FF1F}\n3. \u{53D8}\u{91CF}\u{8FDE}\u{9501}\u{53CD}\u{5E94}\u{FF1A}\u{6539}\u{53D8}\u{4E00}\u{4E2A}\u{53D8}\u{91CF}\u{4F1A}\u{5F15}\u{53D1}\u{4EC0}\u{4E48}\u{FF1F}\n4. \u{7CFB}\u{7EDF}\u{8D8B}\u{52BF}\u{FF1A}\u{8FD9}\u{662F}\u{5B64}\u{7ACB}\u{4E8B}\u{4EF6}\u{8FD8}\u{662F}\u{7CFB}\u{7EDF}\u{6027}\u{8D8B}\u{52BF}\u{FF1F}\n\n\u{3010}\u{4EBA}\u{6027}\u{5C42}\u{3011}\n1. \u{5229}\u{76CA}\u{76F8}\u{5173}\u{65B9}\u{5206}\u{6790}\u{FF1A}\u{8C01}\u{5728}\u{63A8}\u{52A8}\u{FF1F}\u{8C01}\u{5728}\u{963B}\u{6320}\u{FF1F}\u{8C01}\u{6709}\u{8BDD}\u{8BED}\u{6743}\u{FF1F}\n2. \u{9690}\u{6027}\u{52A8}\u{673A}\u{FF1A}\u{8868}\u{9762}\u{8BF4}\u{8F9E}\u{80CC}\u{540E}\u{7684}\u{771F}\u{5B9E}\u{8BF7}\u{6C42}\n3. \u{6050}\u{60E7}\u{4E0E}\u{6B32}\u{671B}\u{FF1A}\u{6BCF}\u{4E2A}\u{4EBA}\u{5BB3}\u{6015}\u{5931}\u{53BB}\u{4EC0}\u{4E48}\u{FF1F}\u{60F3}\u{8981}\u{5F97}\u{5230}\u{4EC0}\u{4E48}\u{FF1F}\n4. \u{6362}\u{4F4D}\u{601D}\u{8003}\u{FF1A}\u{5982}\u{679C}\u{6211}\u{662F}\u{5BF9}\u{65B9}\u{4F1A}\u{600E}\u{4E48}\u{505A}\u{FF1F}\n\n\u{3010}\u{610F}\u{4E49}\u{5C42}\u{3011}\n1. \u{957F}\u{671F}\u{89C6}\u{89D2}\u{FF1A}5\u{5E74}\u{540E}\u{56DE}\u{5934}\u{770B}\u{FF0C}\u{8FD9}\u{4EF6}\u{4E8B}\u{8FD8}\u{91CD}\u{8981}\u{5417}\u{FF1F}\n2. \u{4E2A}\u{4EBA}\u{610F}\u{4E49}\u{FF1A}\u{8FD9}\u{4E2A}\u{95EE}\u{9898}\u{5728}\u{5851}\u{9020}\u{4F60}\u{6210}\u{4E3A}\u{4EC0}\u{4E48}\u{6837}\u{7684}\u{4EBA}\u{FF1F}\n3. \u{673A}\u{4F1A}\u{89C6}\u{89D2}\u{FF1A}\u{9664}\u{4E86}\u{635F}\u{5931}\u{FF0C}\u{4F60}\u{4ECE}\u{4E2D}\u{83B7}\u{5F97}\u{4E86}\u{4EC0}\u{4E48}\u{FF1F}\n4. \u{884C}\u{52A8}\u{65B9}\u{5411}\u{FF1A}\u{57FA}\u{4E8E}\u{4EE5}\u{4E0A}\u{5206}\u{6790}\u{FF0C}\u{4F60}\u{4E0B}\u{4E00}\u{6B65}\u{8BE5}\u{505A}\u{4EC0}\u{4E48}\u{FF1F}\n\n\u{8981}\u{6C42}\u{FF1A}\u{7528}\u{4E2D}\u{6587}\u{56DE}\u{7B54}\u{FF0C}\u{8BED}\u{8A00}\u{7CBE}\u{70BC}\u{6DF1}\u{523B}\u{FF0C}\u{50CF}\u{9876}\u{7EA7}\u{8BA4}\u{77E5}\u{987E}\u{95EE}\u{4E00}\u{6837}\u{76F4}\u{51FB}\u{8981}\u{5BB3}\u{3002}';
+}
+function parseAnaLayers(text) {
+  var layers = { info:'', logic:'', system:'', human:'', meaning:'' };
+  var markers = [
+    { id:'info', label:'\u{3010}\u{4FE1}\u{606F}\u{5C42}\u{3011}' },
+    { id:'logic', label:'\u{3010}\u{903B}\u{8F91}\u{5C42}\u{3011}' },
+    { id:'system', label:'\u{3010}\u{7CFB}\u{7EDF}\u{5C42}\u{3011}' },
+    { id:'human', label:'\u{3010}\u{4EBA}\u{6027}\u{5C42}\u{3011}' },
+    { id:'meaning', label:'\u{3010}\u{610F}\u{4E49}\u{5C42}\u{3011}' }
+  ];
+  for (var i = 0; i < markers.length; i++) {
+    var start = text.indexOf(markers[i].label);
+    if (start === -1) continue;
+    var cs = start + markers[i].label.length;
+    var end = (i < markers.length-1) ? text.indexOf(markers[i+1].label, cs) : -1;
+    layers[markers[i].id] = text.substring(cs, end === -1 ? text.length : end).trim();
+  }
+  return layers;
+}
+function callAnaAnalysis() {
+  var prompt = buildAnaPrompt();
+  if (!prompt) return;
+  var loading = $id('anaLoading');
+  var resultDiv = $id('anaResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F52C} AI \u{4E94}\u{5C42}\u{5206}\u{6790}\u{4E2D}...'; }
+  if (resultDiv) resultDiv.innerHTML = '';
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F52C} AI \u{5206}\u{6790}\u{4E2D} ('+fullText.length+' \u{5B57})...'; }
+      if (resultDiv) resultDiv.innerHTML = formatAnaContent(fullText);
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    window._anaLayers = parseAnaLayers(fullText);
+    window._anaActiveLayer = 'info';
+    switchAnaLayer('info');
+    var input = $id('anaInput');
+    saveAnaSession(input ? input.value.trim() : '', window._anaLayers);
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '\u{672A}\u{77E5}\u{9519}\u{8BEF}';
+    showToast('\u{274C} \u{5206}\u{6790}\u{5931}\u{8D25}\u{FF1A}'+msg);
+    if (resultDiv) resultDiv.innerHTML = '<div class="ana-empty">\u{274C} '+msg+'</div>';
+  });
+}
+function buildAnaAppendPrompt(layerId) {
+  var input = document.getElementById('anaInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先描述你遇到的问题'); return null; }
+  var labels = { info:'信息层', logic:'逻辑层', system:'系统层', human:'人性层', meaning:'意义层' };
+  var label = labels[layerId] || layerId;
+  var existing = window._anaLayers ? (window._anaLayers[layerId] || '') : '';
+  return '你是一位顶级认知分析师。\n\n已有的分析：\n' + (existing.substring(0, 1000) || '暂无') + '\n\n请从更深的层面展开【'+label+'】，补充更多内容。不要简单重复已有内容。\n\n请用「【'+label+'·续】」作为标题开头输出。';
+}
+function callAnaAppend(layerId) {
+  var prompt = buildAnaAppendPrompt(layerId);
+  if (!prompt) return;
+  var loading = document.getElementById('anaLoading');
+  var resultDiv = document.getElementById('anaResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    var labels = { info:'信息层', logic:'逻辑层', system:'系统层', human:'人性层', meaning:'意义层' };
+    var label = labels[layerId] || layerId;
+    var marker = '【' + label + '·续】';
+    var start = fullText.indexOf(marker);
+    var appendContent = start !== -1 ? fullText.substring(start + marker.length).trim() : fullText;
+    if (!window._anaLayers) window._anaLayers = {};
+    var existing = window._anaLayers[layerId] || '';
+    window._anaLayers[layerId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
+    window._anaActiveLayer = layerId;
+    switchAnaLayer(layerId);
+    showToast('✅ 已追加 '+label+' 深度分析');
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 追加失败：'+msg);
+  });
+}
+function formatAnaContent(txt) {
+  if (!txt) return '<div class="ana-empty">\u{6682}\u{65E0}\u{5185}\u{5BB9}</div>';
+  var html = txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/###\s*(.+)/g,'<h4 class="ana-h4">$1</h4>')
+    .replace(/##\s*(.+)/g,'<h3 class="ana-h3">$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n/g,'<br>');
+  return '<div class="ana-output">'+html+'</div>';
+}
+function saveAnaSession(problem, layers) {
+  if (!state.anaSessions) state.anaSessions = [];
+  state.anaSessions.unshift({ id:Date.now(), problem:problem, layers:layers, date:new Date().toISOString() });
+  if (state.anaSessions.length > 50) state.anaSessions.length = 50;
+  saveState(); renderAnaHistory();
+}
+function deleteAnaSession(id) {
+  if (!state.anaSessions) return;
+  state.anaSessions = state.anaSessions.filter(function(a){return a.id!==id});
+  saveState(); renderAnaHistory();
+}
+function renderAnaHistory() {
+  var list = $id('anaHistoryList'), count = $id('anaHistoryCount');
+  if (!list) return;
+  var sessions = state.anaSessions || [];
+  if (count) count.textContent = sessions.length;
+  if (!sessions.length) { list.innerHTML = '<div class="ana-empty">\u{8FD8}\u{6CA1}\u{6709}\u{5206}\u{6790}\u{8BB0}\u{5F55}</div>'; return; }
+  var h = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
+    var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+    h.push('<div class="ana-history-item" onclick="viewAnaSession('+s.id+')">');
+    h.push('<div class="ana-history-main"><div class="ana-history-date">'+ds+'</div>');
+    h.push('<div class="ana-history-problem">'+escHtml(s.problem?s.problem.substring(0,40)+(s.problem.length>40?'...':''):'')+'</div></div>');
+    h.push('<button class="ana-history-del" onclick="event.stopPropagation();deleteAnaSession('+s.id+')">\u{2716}</button></div>');
+  }
+  list.innerHTML = h.join('');
+}
+function viewAnaSession(id) {
+  var sessions = state.anaSessions || [];
+  var session = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+  if (!session) { showToast('\u{8BB0}\u{5F55}\u{672A}\u{627E}\u{5230}'); return; }
+  window._anaLayers = session.layers || {};
+  window._anaActiveLayer = 'info';
+  switchAnaLayer('info');
+  var hb = $id('anaHistoryBody'); if (hb) hb.style.display = 'none';
+  var tg = $id('anaHistToggle'); if (tg) tg.textContent = '\u{25B6}';
+}
+function toggleAnaHistory() {
+  var body = $id('anaHistoryBody'), toggle = $id('anaHistToggle');
+  if (body && toggle) {
+    var h = body.style.display === 'none';
+    body.style.display = h ? '' : 'none';
+    toggle.textContent = h ? '\u{25BC}' : '\u{25B6}';
+    if (h) renderAnaHistory();
+  }
+}
+
+
+/* ===== 优解 · 进阶讲题 ===== */
+function initAdvState() {
+  if (!state.advSettings) state.advSettings = {};
+  if (!state.advSessions) state.advSessions = [];
+}
+function switchAdvLevel(level) {
+  window._advActiveLevel = level;
+  var cards = document.querySelectorAll('.adv-level-card');
+  for (var i = 0; i < cards.length; i++)
+    cards[i].classList.toggle('active', cards[i].getAttribute('data-level') === level);
+  renderAdvLevelContent();
+}
+function renderAdvLevelContent() {
+  var rd = $id('advResult');
+  if (!rd) return;
+  var levels = window._advLevels;
+  if (!levels) { rd.innerHTML = ''; return; }
+  var active = window._advActiveLevel || 'basic';
+  var c = levels[active];
+  var html = c ? formatAdvContent(c) : '<div class="adv-empty">暂无内容</div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="adv-btn adv-btn-outline" onclick="callAdvAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  rd.innerHTML = html;
+}
+function renderAdvPanel() {
+  if (!window._advInit) { initAdvState(); window._advInit = true; }
+  var area = $id('contentArea');
+  var levels = [
+    { id:'basic', label:'\u{1F4D7}\u{57FA}\u{7840}', icon:'\u{1F4D7}', desc:'\u{6807}\u{51C6}\u{89E3}\u{6CD5}' },
+    { id:'medium', label:'\u{1F4D8}\u{8FDB}\u{9636}', icon:'\u{1F4D8}', desc:'\u{5DE7}\u{5999}\u{601D}\u{8DEF}' },
+    { id:'expert', label:'\u{1F4D5}\u{9AD8}\u{624B}', icon:'\u{1F4D5}', desc:'\u{7ADE}\u{8D5B}\u{7EA7}' },
+    { id:'principle', label:'\u{1F52C}\u{539F}\u{7406}', icon:'\u{1F52C}', desc:'\u{62C6}\u{89E3}\u{672C}\u{8D28}' },
+    { id:'extend', label:'\u{1F9E9}\u{4E3E}\u{4E00}', icon:'\u{1F9E9}', desc:'\u{53D8}\u{5F0F}\u{6269}\u{5C55}' }
+  ];
+  var active = window._advActiveLevel || 'basic';
+  var h = [];
+  h.push('<div class="adv-hero"><div class="adv-hero-icon">\u{1F4D6}</div><h2 class="adv-hero-title">\u{4F18}\u{89E3} \u{00B7} \u{8FDB}\u{9636}\u{8BB2}\u{9898}</h2><p class="adv-hero-sub">\u{57FA}\u{7840}\u{89E3}\u{2192}\u{8FDB}\u{9636}\u{89E3}\u{2192}\u{9AD8}\u{624B}\u{89E3}\u{2192}\u{539F}\u{7406}\u{2192}\u{4E3E}\u{4E00}\u{53CD}\u{4E09} \u{00B7} \u{62D3}\u{5BBD}\u{773C}\u{754C}\u{4E30}\u{5BCC}\u{65B9}\u{6CD5}</p></div>');
+  h.push('<div class="adv-input-card"><textarea id="advInput" class="adv-textarea" placeholder="\u{8F93}\u{5165}\u{4F60}\u{7684}\u{9898}\u{76EE}\u{FF0C}\u{5305}\u{62EC}\u{5B66}\u{79D1}\u{3001}\u{9898}\u{76EE}\u{5168}\u{6587}\u{548C}\u{4F60}\u{7684}\u{7591}\u{95EE}\u{2026}"></textarea>');
+  h.push('<div class="adv-input-actions"><button class="adv-btn adv-btn-primary" onclick="callAdvAnalysis()">\u{1F4D6} AI \u{8BB2}\u{9898}</button></div></div>');
+  h.push('<div class="adv-section"><div class="adv-section-hdr">\u{1F4CA} \u{4E94}\u{5C42}\u{9012}\u{8FDB}</div><div class="adv-level-row">');
+  for (var si = 0; si < levels.length; si++) {
+    var s = levels[si];
+    h.push('<div class="adv-level-card'+(active===s.id?' active':'')+'" data-level="'+s.id+'" onclick="switchAdvLevel(\''+s.id+'\')">');
+    h.push('<div class="adv-level-icon">'+s.icon+'</div><div class="adv-level-label">'+s.label+'</div><div class="adv-level-desc">'+s.desc+'</div></div>');
+  }
+  h.push('</div></div>');
+  h.push('<div id="advLoading" class="adv-loading"><div class="adv-spinner"></div><span>\u{1F4D6} AI \u{8BB2}\u{9898}\u{4E2D}\u{2026}</span></div>');
+  h.push('<div id="advResult"></div>');
+  h.push('<div class="adv-section"><div class="adv-section-hdr" onclick="toggleAdvHistory()">\u{1F4CB} \u{8BB2}\u{9898}\u{8BB0}\u{5F55} (<span id="advHistoryCount">0</span>) <span id="advHistToggle">\u{25BC}</span></div>');
+  h.push('<div id="advHistoryBody" class="adv-history-body" style="display:none"><div id="advHistoryList"></div></div></div>');
+  h.push('<div class="adv-guide">\u{1F4A1} \u{8F93}\u{5165}\u{9898}\u{76EE} \u{2192} AI \u{4E94}\u{5C42}\u{9012}\u{8FDB}\u{8BB2}\u{89E3} \u{2192} \u{70B9}\u{5361}\u{7247}\u{5207}\u{6362}\u{67E5}\u{770B}</div>');
+  area.innerHTML = h.join('');
+  renderAdvHistory(); renderAdvLevelContent(); updateUI();
+}
+function buildAdvPrompt() {
+  var input = $id('advInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('\u{8BF7}\u{5148}\u{8F93}\u{5165}\u{4F60}\u{7684}\u{9898}\u{76EE}'); return null; }
+  return '\u{5F53}\u{524D}\u{65E5}\u{671F}\u{FF1A}2026\u{5E74}7\u{6708}9\u{65E5}\u{3002}\n\n\u{4F60}\u{662F}\u{4E00}\u{4F4D}\u{9876}\u{7EA7}\u{6559}\u{5B66}\u{540D}\u{5E08}\u{FF0C}\u{7CBE}\u{901A}\u{5404}\u{79D1}\u{6559}\u{5B66}\u{3002}\u{4F60}\u{7684}\u{7279}\u{70B9}\u{662F}\u{4E0D}\u{4EC5}\u{4F1A}\u{8BB2}\u{89E3}\u{FF0C}\u{8FD8}\u{4F1A}\u{8054}\u{7F51}\u{641C}\u{7D22}\u{6700}\u{65B0}\u{7684}\u{89E3}\u{9898}\u{65B9}\u{6CD5}\u{3001}\u{70ED}\u{95E8}\u{7C7B}\u{578B}\u{548C}\u{9876}\u{5C16}\u{6559}\u{80B2}\u{8D44}\u{6E90}\u{FF0C}\u{4E0D}\u{8981}\u{4F7F}\u{7528}\u{8FC7}\u{65F6}\u{7684}\u{6559}\u{5B66}\u{5185}\u{5BB9}\u{FF0C}\u{8981}\u{7528}\u{6700}\u{65B0}\u{3001}\u{6700}\u{6709}\u{6548}\u{7684}\u{65B9}\u{6CD5}\u{3002}\n\n\u{5B66}\u{751F}\u{7684}\u{9898}\u{76EE}: ' + text + '\n\n\u{8BF7}\u{4E25}\u{683C}\u{6309}\u{7167}\u{4EE5}\u{4E0B}5\u{4E2A}\u{5C42}\u{6B21}\u{8F93}\u{51FA}\u{8BB2}\u{89E3}\u{FF0C}\u{6BCF}\u{5C42}\u{7528}\u{300C}\u{3010}\u{57FA}\u{7840}\u{89E3}\u{3011}\u{3010}\u{8FDB}\u{9636}\u{89E3}\u{3011}\u{3010}\u{9AD8}\u{624B}\u{89E3}\u{3011}\u{3010}\u{539F}\u{7406}\u{5C42}\u{3011}\u{3010}\u{4E3E}\u{4E00}\u{53CD}\u{4E09}\u{3011}\u{300D}\u{4F5C}\u{4E3A}\u{6807}\u{9898}\u{5F00}\u{5934}\u{FF0C}\u{5185}\u{5BB9}\u{8981}\u{8BE6}\u{7EC6}\u{3001}\u{6E05}\u{6670}\u{3001}\u{8BA9}\u{5B66}\u{751F}\u{80FD}\u{770B}\u{61C2}\u{FF1A}\n\n\u{3010}\u{57FA}\u{7840}\u{89E3}\u{3011}\n\u{6807}\u{51C6}\u{89E3}\u{6CD5}\u{FF0C}\u{6B65}\u{9AA4}\u{6E05}\u{6670}\u{FF0C}\u{7A33}\u{624E}\u{7A33}\u{6253}\u{3002}\u{8FD9}\u{662F}\u{6559}\u{6750}\u{7EA7}\u{522B}\u{7684}\u{89E3}\u{6CD5}\u{FF0C}\u{786E}\u{4FDD}\u{6240}\u{6709}\u{5B66}\u{751F}\u{90FD}\u{80FD}\u{8DDF}\u{4E0A}\u{3002}\n\n\u{3010}\u{8FDB}\u{9636}\u{89E3}\u{3011}\n\u{66F4}\u{5FEB}\u{3001}\u{66F4}\u{5DE7}\u{5999}\u{7684}\u{65B9}\u{6CD5}\u{3002}\u{7528}\u{4E8C}\u{7EA7}\u{7ED3}\u{8BBA}\u{3001}\u{7279}\u{6B8A}\u{503C}\u{3001}\u{6570}\u{5F62}\u{7ED3}\u{5408}\u{7B49}\u{6280}\u{5DE7}\u{7B80}\u{5316}\u{8FC7}\u{7A0B}\u{3002}\u{89E3}\u{91CA}\u{4E3A}\u{4EC0}\u{4E48}\u{8FD9}\u{79CD}\u{65B9}\u{6CD5}\u{66F4}\u{5FEB}\u{3002}\n\n\u{3010}\u{9AD8}\u{624B}\u{89E3}\u{3011}\n\u{7ADE}\u{8D5B}\u{7EA7}\u{89E3}\u{6CD5}\u{3002}\u{7528}\u{9AD8}\u{7EA7}\u{5B9A}\u{7406}\u{3001}\u{4E09}\u{7EA7}\u{7ED3}\u{8BBA}\u{3001}\u{964D}\u{7EF4}\u{6253}\u{51FB}\u{3002}\u{5982}\u{679C}\u{5B66}\u{751F}\u{80FD}\u{638C}\u{63E1}\u{FF0C}\u{53EF}\u{4EE5}\u{5F88}\u{591A}\u{9898}\u{76EE}\u{79D2}\u{89E3}\u{3002}\n\n\u{3010}\u{539F}\u{7406}\u{5C42}\u{3011}\n\u{8FD9}\u{9053}\u{9898}\u{80CC}\u{540E}\u{7684}\u{6838}\u{5FC3}\u{539F}\u{7406}\u{3002}\u{516C}\u{5F0F}\u{7684}\u{6765}\u{9F99}\u{53BB}\u{8109}\u{3001}\u{77E5}\u{8BC6}\u{70B9}\u{4E4B}\u{95F4}\u{7684}\u{8054}\u{7CFB}\u{3001}\u{4E3A}\u{4EC0}\u{4E48}\u{8FD9}\u{4E2A}\u{65B9}\u{6CD5}\u{80FD}\u{884C}\u{3002}\u{628A}\u{201C}\u{4ED6}\u{4EEC}\u{4E0D}\u{544A}\u{8BC9}\u{4F60}\u{7684}\u{201D}\u{90A3}\u{5C42}\u{7A97}\u{6237}\u{7EB8}\u{622E}\u{5F00}\u{3002}\n\n\u{3010}\u{4E3E}\u{4E00}\u{53CD}\u{4E09}\u{3011}\n1. \u{53D8}\u{5F0F}\u{7EC3}\u{4E60}\u{FF1A}\u{7C7B}\u{4F3C}\u{9898}\u{76EE}2-3\u{9053}\u{FF0C}\u{4E0D}\u{540C}\u{7684}\u{53D8}\u{5316}\u{65B9}\u{5411}\n2. \u{8BC6}\u{522B}\u{65B9}\u{6CD5}\u{FF1A}\u{600E}\u{6837}\u{770B}\u{51FA}\u{4E00}\u{9053}\u{9898}\u{662F}\u{8FD9}\u{79CD}\u{7C7B}\u{578B}\u{FF1F}\u{95EE}\u{9898}\u{7684}\u{201C}\u{76AE}\u{76F8}\u{201D}\u{548C}\u{201C}\u{6838}\u{5FC3}\u{201D}\n3. \u{8DE8}\u{79D1}\u{8FC1}\u{79FB}\u{FF1A}\u{8FD9}\u{79CD}\u{601D}\u{8DEF}\u{8FD8}\u{80FD}\u{7528}\u{5728}\u{54EA}\u{4E9B}\u{5176}\u{4ED6}\u{5B66}\u{79D1}\u{6216}\u{7C7B}\u{578B}\u{4E0A}\u{FF1F}\n\n\u{8981}\u{6C42}\u{FF1A}\u{7528}\u{4E2D}\u{6587}\u{56DE}\u{7B54}\u{FF0C}\u{50CF}\u{540D}\u{6821}\u{8001}\u{5E08}\u{5728}\u{8BB2}\u{53F0}\u{4E0A}\u{7ED9}\u{5B66}\u{751F}\u{8BB2}\u{9898}\u{4E00}\u{6837}\u{8BE6}\u{7EC6}\u{3001}\u{6E05}\u{6670}\u{3001}\u{6709}\u{6DF1}\u{5EA6}\u{3002}\u{4E0D}\u{8981}\u{592A}\u{591A}\u{5BA2}\u{5957}\u{8BDD}\u{FF0C}\u{76F4}\u{63A5}\u{8BB2}\u{9898}\u{3002}';
+}
+function parseAdvLevels(text) {
+  var levels = { basic:'', medium:'', expert:'', principle:'', extend:'' };
+  var markers = [
+    { id:'basic', label:'\u{3010}\u{57FA}\u{7840}\u{89E3}\u{3011}' },
+    { id:'medium', label:'\u{3010}\u{8FDB}\u{9636}\u{89E3}\u{3011}' },
+    { id:'expert', label:'\u{3010}\u{9AD8}\u{624B}\u{89E3}\u{3011}' },
+    { id:'principle', label:'\u{3010}\u{539F}\u{7406}\u{5C42}\u{3011}' },
+    { id:'extend', label:'\u{3010}\u{4E3E}\u{4E00}\u{53CD}\u{4E09}\u{3011}' }
+  ];
+  for (var i = 0; i < markers.length; i++) {
+    var start = text.indexOf(markers[i].label);
+    if (start === -1) continue;
+    var cs = start + markers[i].label.length;
+    var end = (i < markers.length-1) ? text.indexOf(markers[i+1].label, cs) : -1;
+    levels[markers[i].id] = text.substring(cs, end === -1 ? text.length : end).trim();
+  }
+  return levels;
+}
+function callAdvAnalysis() {
+  var prompt = buildAdvPrompt();
+  if (!prompt) return;
+  var loading = $id('advLoading');
+  var resultDiv = $id('advResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F4D6} AI \u{8BB2}\u{9898}\u{4E2D}...'; }
+  if (resultDiv) resultDiv.innerHTML = '';
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000, search: true,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F4D6} AI \u{8BB2}\u{9898}\u{4E2D} ('+fullText.length+' \u{5B57})...'; }
+      if (resultDiv) resultDiv.innerHTML = formatAdvContent(fullText);
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    window._advLevels = parseAdvLevels(fullText);
+    window._advActiveLevel = 'basic';
+    switchAdvLevel('basic');
+    var input = $id('advInput');
+    saveAdvSession(input ? input.value.trim() : '', window._advLevels);
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '\u{672A}\u{77E5}\u{9519}\u{8BEF}';
+    showToast('\u{274C} \u{8BB2}\u{9898}\u{5931}\u{8D25}\u{FF1A}'+msg);
+    if (resultDiv) resultDiv.innerHTML = '<div class="adv-empty">\u{274C} '+escHtml(msg)+'</div>';
+  });
+}
+function buildAdvAppendPrompt(levelId) {
+  var input = document.getElementById('advInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先输入你的题目'); return null; }
+  var labels = { basic:'基础解', medium:'进阶解', expert:'高手解', principle:'原理层', extend:'举一反三' };
+  var label = labels[levelId] || levelId;
+  var existing = window._advLevels ? (window._advLevels[levelId] || '') : '';
+  return '你是一位顶级教学名师。\n\n已有的讲解：\n' + (existing.substring(0, 1000) || '暂无') + '\n\n请从更深的层面展开【'+label+'】，补充更多内容。不要简单重复已有内容。\n\n请用「【'+label+'·续】」作为标题开头输出。';
+}
+function callAdvAppend(levelId) {
+  var prompt = buildAdvAppendPrompt(levelId);
+  if (!prompt) return;
+  var loading = document.getElementById('advLoading');
+  var resultDiv = document.getElementById('advResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加讲解中...'; }
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000, search: true,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    var labels = { basic:'基础解', medium:'进阶解', expert:'高手解', principle:'原理层', extend:'举一反三' };
+    var label = labels[levelId] || levelId;
+    var marker = '【' + label + '·续】';
+    var start = fullText.indexOf(marker);
+    var appendContent = start !== -1 ? fullText.substring(start + marker.length).trim() : fullText;
+    if (!window._advLevels) window._advLevels = {};
+    var existing = window._advLevels[levelId] || '';
+    window._advLevels[levelId] = existing + '\n\n---\n\n### 📌 追加深度讲解\n' + appendContent;
+    window._advActiveLevel = levelId;
+    switchAdvLevel(levelId);
+    showToast('✅ 已追加 '+label+' 深度讲解');
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 追加失败：'+msg);
+  });
+}
+function convertLatexInline(eq) {
+  var s = eq;
+  // \text{Fe}2 → Fe_2 (AI often misses _ before subscripts in chemistry)
+  s = s.replace(/\\text\{([^{}]*)\}(\d+)/g, '$1_$2');
+  s = s.replace(/\\text\{([^{}]*)\}/g, '$1');
+  // Iterative inside-out processing for nested braces
+  for (var iter = 0; iter < 15; iter++) {
+    var ch = false;
+    s = s.replace(/\\sqrt(?:\[[^\]]*\])?\{([^{}]*)\}/, function(m,c){ch=true;return '<span class="sqrt"><span class="radicand">'+c+'</span></span>';});
+    s = s.replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/, function(m,a,b){ch=true;return '<span class="frac"><span class="num">'+a+'</span><span class="den">'+b+'</span></span>';});
+    s = s.replace(/\^\{([^{}]*)\}/, function(m,c){ch=true;return '<span class="sup">'+c+'</span>';});
+    s = s.replace(/_\{([^{}]*)\}/, function(m,c){ch=true;return '<span class="sub">'+c+'</span>';});
+    s = s.replace(/\\vec\{([^{}]*)\}/, function(m,c){ch=true;return '<span class="vec">'+c+'</span>';});
+    s = s.replace(/\\hat\{([^{}]*)\}/, function(m,c){ch=true;return '<span class="hat">'+c+'</span>';});
+    s = s.replace(/\\bar\{([^{}]*)\}/, function(m,c){ch=true;return '<span class="bar">'+c+'</span>';});
+    if (!ch) break;
+  }
+  // Non-brace versions (superscript/subscript without {} braces)
+  s = s.replace(/\^([a-zA-Z0-9])/g, '<span class="sup">$1</span>');
+  s = s.replace(/_([a-zA-Z0-9])/g, '<span class="sub">$1</span>');
+  // Greek letters
+  s = s.replace(/\\alpha/g, 'α').replace(/\\beta/g, 'β');
+  s = s.replace(/\\gamma/g, 'γ').replace(/\\delta/g, 'δ');
+  s = s.replace(/\\epsilon/g, 'ε').replace(/\\theta/g, 'θ');
+  s = s.replace(/\\lambda/g, 'λ').replace(/\\mu/g, 'μ');
+  s = s.replace(/\\pi/g, 'π').replace(/\\sigma/g, 'σ');
+  s = s.replace(/\\phi/g, 'φ').replace(/\\omega/g, 'ω');
+  s = s.replace(/\\Delta/g, 'Δ').replace(/\\Omega/g, 'Ω');
+  // Operators
+  s = s.replace(/\\cdot/g, '·').replace(/\\times/g, '×').replace(/\\div/g, '÷');
+  s = s.replace(/\\pm/g, '±').replace(/\\mp/g, '∓');
+  s = s.replace(/\\neq/g, '≠').replace(/\\approx/g, '≈').replace(/\\equiv/g, '≡');
+  s = s.replace(/\\le/g, '≤').replace(/\\ge/g, '≥').replace(/\\ll/g, '≪').replace(/\\gg/g, '≫');
+  s = s.replace(/\\subset/g, '⊂').replace(/\\supset/g, '⊃');
+  s = s.replace(/\\subseteq/g, '⊆').replace(/\\supseteq/g, '⊇');
+  s = s.replace(/\\cup/g, '∪').replace(/\\cap/g, '∩');
+  s = s.replace(/\\in/g, '∈').replace(/\\notin/g, '∉');
+  s = s.replace(/\\emptyset/g, '∅').replace(/\\varnothing/g, '∅');
+  s = s.replace(/\\forall/g, '∀').replace(/\\exists/g, '∃');
+  s = s.replace(/\\infty/g, '∞').replace(/\\partial/g, '∂').replace(/\\nabla/g, '∇');
+  s = s.replace(/\\int/g, '∫').replace(/\\iint/g, '∬').replace(/\\iiint/g, '∭');
+  s = s.replace(/\\sum/g, '∑').replace(/\\prod/g, '∏').replace(/\\coprod/g, '∐');
+  s = s.replace(/\\to/g, '→').replace(/\\rightarrow/g, '→').replace(/\\Rightarrow/g, '⇒');
+  s = s.replace(/\\leftarrow/g, '←').replace(/\\Leftarrow/g, '⇐');
+  s = s.replace(/\\leftrightarrow/g, '↔').replace(/\\Leftrightarrow/g, '⇔');
+  s = s.replace(/\\Longrightarrow/g, '⇒').replace(/\\Longleftrightarrow/g, '⇔');
+  s = s.replace(/\\mapsto/g, '↦').replace(/\\longmapsto/g, '⟼');
+  s = s.replace(/\\left\(/g, '(').replace(/\\right\)/g, ')');
+  s = s.replace(/\\left\[/g, '[').replace(/\\right\]/g, ']');
+  s = s.replace(/\\left\\{/g, '{').replace(/\\right\\}/g, '}');
+  s = s.replace(/\\left\./g, '').replace(/\\right\./g, '');
+  s = s.replace(/\\sin/g, 'sin').replace(/\\cos/g, 'cos').replace(/\\tan/g, 'tan');
+  s = s.replace(/\\cot/g, 'cot').replace(/\\sec/g, 'sec').replace(/\\csc/g, 'csc');
+  s = s.replace(/\\arcsin/g, 'arcsin').replace(/\\arccos/g, 'arccos').replace(/\\arctan/g, 'arctan');
+  s = s.replace(/\\log/g, 'log').replace(/\\ln/g, 'ln').replace(/\\lg/g, 'lg');
+  s = s.replace(/\\lim/g, 'lim').replace(/\\max/g, 'max').replace(/\\min/g, 'min');
+  s = s.replace(/\\sup/g, 'sup').replace(/\\inf/g, 'inf').replace(/\\det/g, 'det');
+  s = s.replace(/\\deg/g, '°').replace(/\\prime/g, '′');
+  s = s.replace(/\\circ/g, '°').replace(/\\angle/g, '∠');
+  s = s.replace(/\\triangle/g, '△').replace(/\\triangleq/g, '≜');
+  s = s.replace(/\\perp/g, '⊥').replace(/\\parallel/g, '∥');
+  s = s.replace(/\\sim/g, '∼').replace(/\\simeq/g, '≃');
+  s = s.replace(/\\cong/g, '≅').replace(/\\propto/g, '∝');
+  s = s.replace(/\\dots/g, '…').replace(/\\cdots/g, '⋯').replace(/\\vdots/g, '⋮').replace(/\\ddots/g, '⋱');
+  s = s.replace(/\\,/g, ' ').replace(/\\;/g, ' ').replace(/\\:/g, ' ');
+  s = s.replace(/\\qquad/g, ' ').replace(/\\quad/g, ' ');
+  return s;
+}
+function renderLatex(text) {
+  text = text.replace(/```([\s\S]*?)```/g, function(m, c) {
+    return '%%CODEBLOCK%%' + c.replace(/\$/g,'%%DOLLAR%%').replace(/\\/g,'%%BS%%') + '%%ENDCODEBLOCK%%';
+  });
+  text = text.replace(/\$\$([\s\S]*?)\$\$/g, function(_, eq) {
+    return '<div class="formula">' + convertLatexInline(eq.trim()) + '</div>';
+  });
+  text = text.replace(/\\\[([\s\S]*?)\\\]/g, function(_, eq) {
+    return '<div class="formula">' + convertLatexInline(eq.trim()) + '</div>';
+  });
+  text = text.replace(/\$([^\$]{1,120}?)\$/g, function(_, eq) {
+    return '<span class="formula-inline">' + convertLatexInline(eq.trim()) + '</span>';
+  });
+  text = text.replace(/\\\(([\s\S]*?)\\\)/g, function(_, eq) {
+    return '<span class="formula-inline">' + convertLatexInline(eq.trim()) + '</span>';
+  });
+  text = text.replace(/%%CODEBLOCK%%(.*?)%%ENDCODEBLOCK%%/g, function(_, c) {
+    return '```' + c.replace(/%%BS%%/g,'\\').replace(/%%DOLLAR%%/g,'$') + '```';
+  });
+  return text;
+}
+function formatAdvContent(txt) {
+  if (!txt) return '<div class="adv-empty">\u{6682}\u{65E0}\u{5185}\u{5BB9}</div>';
+  var html = txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/###\s*(.+)/g,'<h4 class="adv-h4">$1</h4>')
+    .replace(/##\s*(.+)/g,'<h3 class="adv-h3">$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n/g,'<br>');
+  html = renderLatex(html);
+  return '<div class="adv-output">'+html+'</div>';
+}
+function saveAdvSession(topic, levels) {
+  if (!state.advSessions) state.advSessions = [];
+  state.advSessions.unshift({ id:Date.now(), topic:topic, levels:levels, date:new Date().toISOString() });
+  if (state.advSessions.length > 50) state.advSessions.length = 50;
+  saveState(); renderAdvHistory();
+}
+function deleteAdvSession(id) {
+  if (!state.advSessions) return;
+  state.advSessions = state.advSessions.filter(function(a){return a.id!==id});
+  saveState(); renderAdvHistory();
+}
+function renderAdvHistory() {
+  var list = $id('advHistoryList'), count = $id('advHistoryCount');
+  if (!list) return;
+  var sessions = state.advSessions || [];
+  if (count) count.textContent = sessions.length;
+  if (!sessions.length) { list.innerHTML = '<div class="adv-empty">\u{8FD8}\u{6CA1}\u{6709}\u{8BB2}\u{9898}\u{8BB0}\u{5F55}</div>'; return; }
+  var h = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
+    var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+    h.push('<div class="adv-history-item" onclick="viewAdvSession('+s.id+')">');
+    h.push('<div class="adv-history-main"><div class="adv-history-date">'+ds+'</div>');
+    h.push('<div class="adv-history-topic">'+escHtml(s.topic?s.topic.substring(0,40)+(s.topic.length>40?'...':''):'')+'</div></div>');
+    h.push('<button class="adv-history-del" onclick="event.stopPropagation();deleteAdvSession('+s.id+')">\u{2716}</button></div>');
+  }
+  list.innerHTML = h.join('');
+}
+function viewAdvSession(id) {
+  var sessions = state.advSessions || [];
+  var session = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+  if (!session) { showToast('\u{8BB0}\u{5F55}\u{672A}\u{627E}\u{5230}'); return; }
+  window._advLevels = session.levels || {};
+  window._advActiveLevel = 'basic';
+  switchAdvLevel('basic');
+  var hb = $id('advHistoryBody'); if (hb) hb.style.display = 'none';
+  var tg = $id('advHistToggle'); if (tg) tg.textContent = '\u{25B6}';
+}
+function toggleAdvHistory() {
+  var body = $id('advHistoryBody'), toggle = $id('advHistToggle');
+  if (body && toggle) {
+    var h = body.style.display === 'none';
+    body.style.display = h ? '' : 'none';
+    toggle.textContent = h ? '\u{25BC}' : '\u{25B6}';
+    if (h) renderAdvHistory();
+  }
+}
+
+
+
+/* ===== 研道 · 行业研究六步法 ===== */
+function initIndState() {
+  if (!state.indSettings) state.indSettings = {};
+  if (!state.indSessions) state.indSessions = [];
+}
+function switchIndStep(step) {
+  window._indActiveStep = step;
+  var cards = document.querySelectorAll('.ind-step-card');
+  for (var i = 0; i < cards.length; i++)
+    cards[i].classList.toggle('active', cards[i].getAttribute('data-step') === step);
+  renderIndStepContent();
+}
+function renderIndStepContent() {
+  var rd = $id('indResult');
+  if (!rd) return;
+  var steps = window._indSteps;
+  if (!steps) { rd.innerHTML = ''; return; }
+  var active = window._indActiveStep || 'market';
+  var c = steps[active];
+  var labels = { market:'市场规模', lifecycle:'生命周期', chain:'产业链', landscape:'竞争格局', pest:'宏观环境', profit:'盈利模式' };
+  var html = c ? formatIndContent(c) : '<div class="ind-empty">暂无内容</div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="ind-btn ind-btn-outline" onclick="callIndAppend(\''+active+'\')">🔍 追加深度分析 - '+labels[active]+'</button></div>';
+  rd.innerHTML = html;
+}
+function renderIndPanel() {
+  if (!window._indInit) { initIndState(); window._indInit = true; }
+  var area = $id('contentArea');
+  var steps = [
+    { id:'market',    label:'市场规模', icon:'📐', desc:'市场有多大·天花板在哪' },
+    { id:'lifecycle', label:'生命周期', icon:'🌱', desc:'起步·成长·成熟·衰退' },
+    { id:'chain',     label:'产业链',   icon:'⛓️', desc:'微笑曲线·卡脖子环节' },
+    { id:'landscape', label:'竞争格局', icon:'⚔️', desc:'一家独大·几家分制·遍地开花' },
+    { id:'pest',      label:'宏观环境', icon:'🌏', desc:'政策·经济·社会·技术' },
+    { id:'profit',    label:'盈利模式', icon:'💰', desc:'靠什么赚钱·能否持续' }
+  ];
+  var active = window._indActiveStep || 'market';
+  var h = [];
+  h.push('<div class="ind-hero"><div class="ind-hero-icon">📊</div><h2 class="ind-hero-title">研道 · 行业研究六步法</h2><p class="ind-hero-sub">市场规模→生命周期→产业链→竞争格局→宏观环境→盈利模式 · 从外行到内行</p></div>');
+  h.push('<div class="ind-input-card"><textarea id="indInput" class="ind-textarea" placeholder="输入你想研究的行业名称（如：新能源汽车、直播电商、预制菜、养老服务…）"></textarea>');
+  h.push('<div class="ind-input-actions"><button class="ind-btn ind-btn-primary" onclick="callIndAnalysis()">📊 AI 行业分析</button></div></div>');
+  h.push('<div class="ind-section"><div class="ind-section-hdr">📊 六步研究框架</div><div class="ind-step-row">');
+  for (var si = 0; si < steps.length; si++) {
+    var s = steps[si];
+    h.push('<div class="ind-step-card'+(active===s.id?' active':'')+'" data-step="'+s.id+'" onclick="switchIndStep(\''+s.id+'\')">');
+    h.push('<div class="ind-step-icon">'+s.icon+'</div><div class="ind-step-label">'+s.label+'</div><div class="ind-step-desc">'+s.desc+'</div></div>');
+  }
+  h.push('</div></div>');
+  h.push('<div id="indLoading" class="ind-loading"><div class="ind-spinner"></div><span>📊 AI 行业分析中…</span></div>');
+  h.push('<div id="indResult"></div>');
+  h.push('<div class="ind-section"><div class="ind-section-hdr" onclick="toggleIndHistory()">📋 分析记录 (<span id="indHistoryCount">0</span>) <span id="indHistToggle">▼</span></div>');
+  h.push('<div id="indHistoryBody" class="ind-history-body" style="display:none"><div id="indHistoryList"></div></div></div>');
+  h.push('<div class="ind-guide">💡 输入行业 → AI 六步全面分析 → 点击步骤卡片切换查看 → 可对单步追加深度</div>');
+  area.innerHTML = h.join('');
+  renderIndHistory(); renderIndStepContent(); updateUI();
+}
+function buildIndPrompt() {
+  var input = $id('indInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先输入你要研究的行业'); return null; }
+  return '你是一位顶尖行业研究分析师，精通六步行业研究框架。请对以下行业进行全面、深入的分析。\n\n研究的行业: ' + text + '\n\n请严格按照以下6个步骤输出分析，每步用「【市场规模】【生命周期】【产业链】【竞争格局】【宏观环境】【盈利模式】」作为标题开头，内容要详细、有数据支撑、有洞察：\n\n【市场规模】\n1. 当前市场规模多大（年产值/交易额）？用费米估算逻辑推算\n2. 潜在市场（TAM）vs 可触达市场（SAM）分别是多少？\n3. 近年增长趋势如何？年复合增长率CAGR约多少？\n4. 天花板在哪？市场饱和度的判断依据\n5. 细分市场结构：哪些细分领域最大、增长最快？\n\n【生命周期】\n1. 这个行业处于哪个阶段：萌芽期 / 成长期 / 成熟期 / 衰退期？\n2. 判断依据：年增长率、市场集中度、用户渗透率、玩家数量\n3. 这个阶段的核心策略应该是什么？（如成长期抢份额、成熟期拼差异化）\n4. 从历史看，这个行业是怎么走到今天的？关键转折点？\n5. 未来3-5年趋势判断\n\n【产业链】\n1. 从上游到下游有哪些关键环节？\n2. 画一个微笑曲线分析：哪个环节利润最高？哪个环节利润最低？\n3. 找出“卡脖子”环节：谁掌握了核心资源/技术/渠道？\n4. 各环节的毛利率大约是多少？\n5. 如果你是创业者，从哪个环节切入最合理？\n\n【竞争格局】\n1. 属于哪种竞争类型：完全竞争 / 垄断竞争 / 寡头垄断 / 完全垄断？\n2. 头部企业有哪些？各自的市场份额约多少？\n3. 竞争的核心要素是什么？（技术/品牌/渠道/价格/规模？）\n4. 新玩家进入的门槛有多高？\n5. 行业集中度（CR3/CR5）趋势：在提高还是降低？\n\n【宏观环境】\n1. 政治/政策：是扶持还是限制？有哪些关键政策法规？\n2. 经济面：与经济周期的关系？受益于经济上行还是下行？\n3. 社会面：人口结构、消费习惯变化带来什么影响？\n4. 技术面：新技术（AI、自动化等）如何改变这个行业？\n5. 综合判断：现在的东风是顺风还是逆风？\n\n【盈利模式】\n1. 行业里的企业主要靠什么赚钱？（卖产品/卖服务/会员费/平台抽成/广告/多种组合？）\n2. 典型企业的毛利率、净利率水平如何？\n3. 这个盈利模式稳定吗？靠补贴撑着的还是可持续的？\n4. 商业模式是否有网络效应/规模效应/锁定效应？\n5. 未来的盈利增长点可能在哪？\n\n要求：用中文回答，语言精炼深刻，像顶尖咨询公司的行业研究报告一样专业。每个步骤都要有具体数据（哪怕是估算值）、有逻辑推理、有可操作的洞察。不要空话套话。';
+}
+function buildIndAppendPrompt(stepId) {
+  var input = $id('indInput');
+  if (!input) return '';
+  var industry = input.value.trim();
+  var labels = { market:'市场规模', lifecycle:'生命周期', chain:'产业链', landscape:'竞争格局', pest:'宏观环境', profit:'盈利模式' };
+  var stepLabel = labels[stepId] || stepId;
+  var existing = window._indSteps ? (window._indSteps[stepId] || '') : '';
+  return '你是一位顶尖行业研究分析师。之前我对“' + industry + '”行业做了初步分析，现在请对【' + stepLabel + '】这一步进行深度展开和补充。\n\n已有的初步分析：\n' + (existing.substring(0, 1000) || '暂无') + '\n\n请从更深的层面分析【' + stepLabel + '】，补充更多数据、案例、逻辑推演和洞察。不要简单重复已有内容，要提供新的视角和更深度的分析。\n\n请用「【' + stepLabel + '·续】」作为标题开头输出。';
+}
+function parseIndSteps(text) {
+  var steps = { market:'', lifecycle:'', chain:'', landscape:'', pest:'', profit:'' };
+  var markers = [
+    { id:'market', label:'【市场规模】' },
+    { id:'lifecycle', label:'【生命周期】' },
+    { id:'chain', label:'【产业链】' },
+    { id:'landscape', label:'【竞争格局】' },
+    { id:'pest', label:'【宏观环境】' },
+    { id:'profit', label:'【盈利模式】' }
+  ];
+  for (var i = 0; i < markers.length; i++) {
+    var start = text.indexOf(markers[i].label);
+    if (start === -1) continue;
+    var cs = start + markers[i].label.length;
+    var end = (i < markers.length-1) ? text.indexOf(markers[i+1].label, cs) : -1;
+    steps[markers[i].id] = text.substring(cs, end === -1 ? text.length : end).trim();
+  }
+  return steps;
+}
+function callIndAnalysis() {
+  var prompt = buildIndPrompt();
+  if (!prompt) return;
+  var loading = $id('indLoading');
+  var resultDiv = $id('indResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '📊 AI 行业分析中...'; }
+  if (resultDiv) resultDiv.innerHTML = '';
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '📊 AI 分析中 ('+fullText.length+' 字)...'; }
+      if (resultDiv) resultDiv.innerHTML = formatIndContent(fullText);
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    window._indSteps = parseIndSteps(fullText);
+    window._indActiveStep = 'market';
+    switchIndStep('market');
+    var input = $id('indInput');
+    saveIndSession(input ? input.value.trim() : '', window._indSteps);
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 分析失败：'+msg);
+    if (resultDiv) resultDiv.innerHTML = '<div class="ind-empty">❌ '+escHtml(msg)+'</div>';
+  });
+}
+function callIndAppend(stepId) {
+  var prompt = buildIndAppendPrompt(stepId);
+  if (!prompt) return;
+  var loading = $id('indLoading');
+  var resultDiv = $id('indResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '📊 AI 追加分析中...'; }
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '📊 AI 追加中 ('+fullText.length+' 字)...'; }
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    var labels = { market:'市场规模', lifecycle:'生命周期', chain:'产业链', landscape:'竞争格局', pest:'宏观环境', profit:'盈利模式' };
+    var stepLabel = labels[stepId] || stepId;
+    var appendMarker = '【' + stepLabel + '·续】';
+    var appendStart = fullText.indexOf(appendMarker);
+    var appendContent = appendStart !== -1 ? fullText.substring(appendStart + appendMarker.length).trim() : fullText;
+    if (!window._indSteps) window._indSteps = {};
+    var existing = window._indSteps[stepId] || '';
+    window._indSteps[stepId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
+    window._indActiveStep = stepId;
+    switchIndStep(stepId);
+    showToast('✅ 已追加 '+stepLabel+' 深度分析');
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 追加失败：'+msg);
+  });
+}
+function formatIndContent(txt) {
+  if (!txt) return '<div class="ind-empty">暂无内容</div>';
+  var html = txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/###\s*(.+)/g,'<h4 class="ind-h4">$1</h4>')
+    .replace(/##\s*(.+)/g,'<h3 class="ind-h3">$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n/g,'<br>');
+  return '<div class="ind-output">'+html+'</div>';
+}
+function saveIndSession(industry, steps) {
+  if (!state.indSessions) state.indSessions = [];
+  state.indSessions.unshift({ id:Date.now(), industry:industry, steps:steps, date:new Date().toISOString() });
+  if (state.indSessions.length > 50) state.indSessions.length = 50;
+  saveState(); renderIndHistory();
+}
+function deleteIndSession(id) {
+  if (!state.indSessions) return;
+  state.indSessions = state.indSessions.filter(function(a){return a.id!==id});
+  saveState(); renderIndHistory();
+}
+function renderIndHistory() {
+  var list = $id('indHistoryList'), count = $id('indHistoryCount');
+  if (!list) return;
+  var sessions = state.indSessions || [];
+  if (count) count.textContent = sessions.length;
+  if (!sessions.length) { list.innerHTML = '<div class="ind-empty">还没有分析记录</div>'; return; }
+  var h = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
+    var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+    h.push('<div class="ind-history-item" onclick="viewIndSession('+s.id+')">');
+    h.push('<div class="ind-history-main"><div class="ind-history-date">'+ds+'</div>');
+    h.push('<div class="ind-history-industry">'+escHtml(s.industry?s.industry.substring(0,40)+(s.industry.length>40?'...':''):'')+'</div></div>');
+    h.push('<button class="ind-history-del" onclick="event.stopPropagation();deleteIndSession('+s.id+')">✖</button></div>');
+  }
+  list.innerHTML = h.join('');
+}
+function viewIndSession(id) {
+  var sessions = state.indSessions || [];
+  var session = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+  if (!session) { showToast('记录未找到'); return; }
+  window._indSteps = session.steps || {};
+  window._indActiveStep = 'market';
+  switchIndStep('market');
+  var hb = $id('indHistoryBody'); if (hb) hb.style.display = 'none';
+  var tg = $id('indHistToggle'); if (tg) tg.textContent = '▶';
+}
+function toggleIndHistory() {
+  var body = $id('indHistoryBody'), toggle = $id('indHistToggle');
+  if (body && toggle) {
+    var h = body.style.display === 'none';
+    body.style.display = h ? '' : 'none';
+    toggle.textContent = h ? '▼' : '▶';
+    if (h) renderIndHistory();
   }
 }
 
