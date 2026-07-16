@@ -1998,6 +1998,65 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .hat{border-top:1px solid var(--text);padding-top:1px}
 .bar{text-decoration:overline}
 
+/* ===== 法道 · 律师天团咨询 ===== */
+.law-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#0a1a2a,#1a2a4a);border-radius:12px;margin-bottom:16px;color:#c9d8e8}
+.law-hero-icon{font-size:36px;margin-bottom:6px}
+.law-hero-title{font-size:20px;font-weight:700;letter-spacing:2px;color:#c9a84c}
+.law-hero-sub{font-size:13px;opacity:.8;margin-top:4px}
+.law-input-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.law-textarea{width:100%;min-height:110px;padding:14px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical;box-sizing:border-box;line-height:1.6}
+.law-textarea:focus{outline:none;border-color:#4a7aaa}
+.law-input-actions{display:flex;gap:10px;margin-top:12px}
+.law-btn{padding:10px 0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;min-height:42px;white-space:nowrap;line-height:1.4;flex:1}
+.law-btn-primary{background:linear-gradient(135deg,#1a3a6a,#2a4a8a);color:#e0d8c8}
+.law-btn-primary:hover{background:linear-gradient(135deg,#2a4a8a,#3a5aaa)}
+.law-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
+.law-btn-outline:hover{background:var(--bg-hover)}
+.law-section{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.law-section-hdr{font-size:14px;font-weight:600;padding:4px 0;display:flex;justify-content:space-between;align-items:center}
+.law-dim-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.law-dim-card{flex:1;text-align:center;padding:12px 6px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;user-select:none;min-width:70px}
+.law-dim-card:hover{background:var(--bg-hover)}
+.law-dim-card.active{background:#0a1a3a;border-color:#4a7aaa;color:#c9d8e8}
+.dark-mode .law-dim-card.active{background:#1a2a5a;border-color:#5a8abb;color:#d0e0f0}
+.law-dim-icon{font-size:22px;margin-bottom:2px}
+.law-dim-label{font-size:14px;font-weight:700}
+.law-dim-desc{font-size:10px;opacity:.7;margin-top:1px}
+.law-loading{display:none;align-items:center;justify-content:center;gap:12px;padding:30px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+.law-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:#c9a84c;border-radius:50%;animation:law-spin .8s linear infinite}
+@keyframes law-spin{to{transform:rotate(360deg)}}
+.law-role-bar{display:none;align-items:center;justify-content:center;gap:16px;padding:12px 18px;background:linear-gradient(135deg,#0a1a2a,#1a2a4a);border-radius:10px;margin-bottom:12px;color:#c9d8e8;font-size:14px;flex-wrap:wrap}
+.law-role-bar.show{display:flex}
+.law-role-avatar{width:36px;height:36px;border-radius:50%;background:#c9a84c;color:#0a1a2a;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0}
+.law-role-name{font-weight:600;color:#c9a84c}
+.law-role-title{opacity:.8}
+.law-role-dots{display:flex;gap:4px}
+.law-role-dot{width:6px;height:6px;border-radius:50%;background:#4a6a8a;animation:law-dot-pulse 1.2s ease-in-out infinite}
+.law-role-dot:nth-child(2){animation-delay:.4s}
+.law-role-dot:nth-child(3){animation-delay:.8s}
+@keyframes law-dot-pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.law-output{font-size:14px;line-height:1.9;color:var(--text);padding:4px 0}
+.law-output h3{font-size:16px;font-weight:700;margin:16px 0 8px;color:#4a7aaa}
+.dark-mode .law-output h3{color:#5a8abb}
+.law-output h4{font-size:14px;font-weight:600;margin:12px 0 6px;color:#2a5a8a}
+.dark-mode .law-output h4{color:#4a7aaa}
+.law-output strong{color:#2a5a8a}
+.dark-mode .law-output strong{color:#5a8abb}
+.law-output .law-role-badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;background:#e8dcc8;color:#1a2a4a;font-weight:600;margin-right:6px}
+.dark-mode .law-output .law-role-badge{background:#2a3a5a;color:#c9d8e8}
+.law-output pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;overflow-x:auto;font-size:13px;margin:8px 0}
+.law-output code{font-family:monospace;font-size:13px}
+.law-empty{color:var(--text-muted);font-size:13px;text-align:center;padding:12px}
+.law-history-body{margin-top:8px}
+.law-history-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border-light);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:background .2s}
+.law-history-item:hover{background:var(--bg-hover)}
+.law-history-main{flex:1;overflow:hidden}
+.law-history-date{font-size:11px;color:var(--text-muted)}
+.law-history-topic{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.law-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
+.law-history-del:hover{background:var(--bg-active);color:var(--danger)}
+.law-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
+
 </style>
 </head>
 <body>
@@ -2087,31 +2146,32 @@ throw new Error('auth_pending');
 <div class="more-menu" id="moreMenu">
 <button style="border-color:#8a6a4a;color:#6a4a3a" data-mode="pegimg">🏛️ 桩图集</button>
 <button style="border-color:#6a4a8a;color:#6a4a8a" data-mode="master">🧠 学霸</button>
-<button data-mode="rhythm">🎵 节奏</button>
+<button data-mode="rhythm">🎵 节奏诵记</button>
 <button data-mode="wrongset">❌ 错题集 <span class="badge" id="wrongSetBadge">0</span></button>
 <button data-mode="bookmark">📌 收藏 <span class="badge" id="bookmarkBadge">0</span></button>
 <button data-mode="dashboard">📈 仪表盘</button>
 <button data-mode="stats">📊 统计</button>
-<button style="border-color:#e8a020;color:#8a6a20" data-mode="dailyreview">📋 日报</button>
+<button style="border-color:#e8a020;color:#8a6a20" data-mode="dailyreview">📋 学习日报</button>
 <button style="border-color:#6a8a4a;color:#4a7a3a" data-mode="community">🌐 社区</button>
 <button style="border-color:#3a6a8a;color:#2a5a7a" data-mode="aisearch">🔍 AI搜索</button>
-<button style="border-color:#d4a030;color:#8a6a20" data-mode="market">📦 题库</button>
-<button style="border-color:#8a4a6a;color:#7a3a5a" data-mode="memorypalace">🧠 宫殿记忆</button>
+<button style="border-color:#d4a030;color:#8a6a20" data-mode="market">📦 课程市场</button>
+<button style="border-color:#8a4a6a;color:#7a3a5a" data-mode="memorypalace">🧠 记忆宫殿</button>
 <button style="border-color:#4a6a8a;color:#3a5a7a" data-mode="knowledgebase">📚 知识库</button>
 <button style="border-color:#7a3a7a;color:#7a3a7a" data-mode="structextract">🔧 提取结构</button>
 <button style="border-color:#8a6a4a;color:#8a6a4a" data-mode="habits">🌱 习惯</button>
 <button style="border-color:#8a4a2a;color:#7a3a1a" data-mode="thinktank">🏛️ 智囊团</button>
-<button style="border-color:#3a5a8a;color:#2a4a7a" data-mode="pattern">🌌 格物</button>
+<button style="border-color:#3a5a8a;color:#2a4a7a" data-mode="pattern">🌌 格物致知</button>
 <button style="border-color:#5a3a7a;color:#4a2a6a" data-mode="meta">🧠 元学习</button>
-<button style="border-color:#8a6a2a;color:#7a5a1a" data-mode="biz">💰 商道</button>
-<button style="border-color:#8a3a2a;color:#7a2a1a" data-mode="tcm">🏥 医道</button>
+<button style="border-color:#8a6a2a;color:#7a5a1a" data-mode="biz">💰 商业思维</button>
+<button style="border-color:#8a3a2a;color:#7a2a1a" data-mode="tcm">🏥 中医辨证</button>
 <button style="border-color:#2a5a8a;color:#1a4a7a" data-mode="idea">💡 点子</button>
-<button style="border-color:#2a6a6a;color:#1a5a5a" data-mode="news">🗺 观局</button>
-<button style="border-color:#8a6a20;color:#7a5a10" data-mode="fin">🏦 资道</button>
-<button style="border-color:#2a5a8a;color:#1a4a7a" data-mode="ana">🔬 明辨</button>
-<button style="border-color:#2a6a2a;color:#1a5a1a" data-mode="adv">📖 优解</button>
-<button style="border-color:#2a6a4a;color:#1a4a2a" data-mode="ind">📊 研道</button>
-<button style="border-color:#4a7a5a;color:#3a6a4a" data-mode="cert">📋 考证</button></div>
+<button style="border-color:#2a6a6a;color:#1a5a5a" data-mode="news">🗺 热点观察</button>
+<button style="border-color:#8a6a20;color:#7a5a10" data-mode="fin">🏦 融资策划</button>
+<button style="border-color:#2a5a8a;color:#1a4a7a" data-mode="ana">🔬 深度分析</button>
+<button style="border-color:#2a6a2a;color:#1a5a1a" data-mode="adv">📖 进阶讲题</button>
+<button style="border-color:#2a6a4a;color:#1a4a2a" data-mode="ind">📊 行业研究</button>
+<button style="border-color:#4a7a5a;color:#3a6a4a" data-mode="cert">📋 考证</button>
+<button style="border-color:#1a2a5a;color:#c9a84c" data-mode="law">⚖️ 法律咨询</button></div>
 </div>
 </div>
 <div class="dm-toggle" id="dmToggle">
@@ -3422,6 +3482,8 @@ pegsetScenes: [],
 			advSettings: {},
 			indSessions: [],
 			indSettings: {},
+			lawSessions: [],
+			lawSettings: {},
 	};
 }
 function loadState() {
@@ -7736,6 +7798,7 @@ else if (mode==='fin') renderFinPanel();
 else if (mode==='ana') renderAnaPanel();
 else if (mode==='adv') renderAdvPanel();
 else if (mode==='ind') renderIndPanel();
+else if (mode==='law') renderLawPanel();
 else renderStats();
 updateUI();
 } catch(e) {
@@ -14776,15 +14839,15 @@ var PANEL_DEFS = [
 {mode:'random', label:'🔀 随机'},
 {mode:'pegimg', label:'🏛️ 桩图集'},
 {mode:'master', label:'🧠 学霸'},
-{mode:'rhythm', label:'🎵 节奏'},
+{mode:'rhythm', label:'🎵 节奏诵记'},
 {mode:'wrongset', label:'❌ 错题集'},
 {mode:'bookmark', label:'📌 收藏'},
 {mode:'dashboard', label:'📈 仪表盘'},
 {mode:'stats', label:'📊 统计'},
 {mode:'community', label:'🌐 社区'},
 {mode:'aisearch', label:'🔍 AI搜索'},
-{mode:'market', label:'📦 题库'},
-{mode:'memorypalace', label:'🧠 宫殿记忆'},
+{mode:'market', label:'📦 课程市场'},
+{mode:'memorypalace', label:'🧠 记忆宫殿'},
 {mode:'knowledgebase', label:'📚 知识库'},
 ];
 function applyPanelVisibility() {
@@ -19018,6 +19081,7 @@ switchCourse(finalName);
 showToast('✅ 已部署为课程「' + finalName + '」');
 } catch(e) { showToast('❌ 部署失败: ' + (e.message || e)); }
 }
+
 function deployAllStructToCourse() {
 var saved = getSavedResults();
 if (!saved || saved.length === 0) { showToast('❌ 暂无保存记录'); return; }
@@ -19044,6 +19108,34 @@ safeSetItem(COURSES_DATA_KEY, JSON.stringify(all));
 switchCourse(finalName);
 showToast('✅ 已部署合集课程「' + finalName + '」（' + chapters.length + '章共' + articles.length + '篇文章）');
 } catch(e) { showToast('❌ 部署失败: ' + (e.message || e)); }
+}
+
+function _parseEqualsSections(text) {
+  var sections = [], lines = text.split('\n'), curH = '', curC = [], re = /^===\s+(.+?)\s+===/;
+  for (var i = 0; i < lines.length; i++) {
+    var m = lines[i].match(re);
+    if (m) { if (curH) sections.push({heading:curH,content:curC.join('\n').trim()}); curH = m[1].trim(); curC = []; }
+    else { curC.push(lines[i]); }
+  }
+  if (curH) sections.push({heading:curH,content:curC.join('\n').trim()});
+  if (!sections.length) sections.push({heading:'全文',content:text});
+  return sections;
+}
+function deployAsCourse(baseName, chapterList, sourceTag) {
+  var all = JSON.parse(safeGetItem(COURSES_DATA_KEY) || '{}');
+  var finalName = baseName, suffix = 1;
+  while (all[finalName]) { finalName = baseName + ' (' + suffix + ')'; suffix++; }
+  var chapters = [], articles = [], id = 1;
+  for (var ci = 0; ci < chapterList.length; ci++) {
+    var ch = chapterList[ci]; chapters.push(ch.name);
+    for (var ai = 0; ai < ch.articles.length; ai++) {
+      var art = ch.articles[ai];
+      articles.push({id:id++, c:ch.name, t:art.title, p:art.content, source:sourceTag||'deploy'});
+    }
+  }
+  var cd = {chapters:chapters, articles:articles, coreFramework:[], conceptNames:[], chapterCoreMap:[], colors:[]};
+  try { all[finalName] = cd; safeSetItem(COURSES_DATA_KEY, JSON.stringify(all)); switchCourse(finalName); showToast('✅ 已部署为课程「'+finalName+'」（'+chapters.length+'章 '+articles.length+'节）'); }
+  catch(e) { showToast('❌ 部署失败: '+(e.message||e)); }
 }
 function formatDate(ts) {
 var d = new Date(ts);
@@ -19107,48 +19199,63 @@ h.push('<div class="help-card">');
 h.push('<button class="help-card-close" onclick="document.body.removeChild(this.closest(\'.help-overlay\'))">✕</button>');
 h.push('<div class="help-card-title">📜 学习系统使用说明</div>');
 h.push('<div class="help-card-sub">点击外部或 ✕ 关闭</div>');
-h.push('<div class="help-group"><div class="help-group-title">🎯 核心学习</div>');
-h.push(helpItem('🤖','AI深度学','AI 驱动的深度学习模块。自动分析当前文章内容，生成结构化知识点、思维导图和关联知识，帮助你深入理解文章内涵。'));
-h.push(helpItem('🧠','核心','核心知识框架。展示每篇文章的核心概念、逻辑结构和关键知识点，快速把握文章精髓，建立整体认知。'));
-h.push(helpItem('📖','顺序','按文章编号顺序逐篇学习。适合系统化学习路径，从头到尾不遗漏任何一篇内容。'));
-h.push(helpItem('🔀','随机','随机抽取文章进行学习。适合复习阶段，检验自己对任意文章的掌握程度，打破固定顺序带来的惯性。'));
-h.push('</div>');
-h.push('<div class="help-group"><div class="help-group-title">🚀 高级学习</div>');
-h.push(helpItem('🏛️','桩图集','桩图集管理。为每篇文章设置记忆桩图（图片/视频），构建记忆宫殿，利用视觉联想强化长期记忆。'));
-h.push(helpItem('🧠','学霸','学霸强化模式。集中攻克难点文章，对掌握薄弱的内容进行针对性强化训练，提升学习效率。'));
-h.push(helpItem('🎵','节奏','节奏学习模式。按设定的时间间隔和节奏进行学习，科学安排复习节奏，避免疲劳。'));
-h.push(helpItem('❌','错题集','错题查看与复习。汇总所有答错的题目，可逐一重做直至完全掌握；支持按章节筛选。'));
-h.push(helpItem('📌','收藏','收藏管理。收藏你认为重要的文章，方便后续快速访问和重点复习。'));
-h.push('</div>');
-h.push('<div class="help-group"><div class="help-group-title">📊 数据分析</div>');
-h.push(helpItem('📈','仪表盘','学习仪表盘。展示学习进度、正确率趋势图表、知识图谱雷达图、学习天数预估和成就系统，全面掌握学习状况。'));
-h.push(helpItem('📊','统计','学习统计。详细统计各章节正确率、学习时长、每日打卡数据等，支持多种时间维度查看。'));
-h.push(helpItem('📋','日报','每日复习。根据艾宾浩斯遗忘曲线生成每日复习计划，智能安排需要复习的文章，巩固长期记忆。'));
-h.push('</div>');
-h.push('<div class="help-group"><div class="help-group-title">🔧 扩展功能</div>');
-h.push(helpItem('🌐','社区','课程社区。分享学习心得、笔记和资源，与其他学习者交流互动，共同进步。'));
-h.push(helpItem('🔍','AI搜索','AI 智能搜索。通过自然语言描述搜索知识库内容，快速定位相关知识点和文章。'));
-h.push(helpItem('📦','题库','题库市场。浏览、下载和导入各类题库资源，扩展学习内容范围。'));
-h.push(helpItem('🧠','宫殿记忆','记忆宫殿。将知识点与空间位置关联，利用位置记忆法强化长期记忆。'));
-h.push(helpItem('📚','知识库','知识库管理。对学习内容进行分类、整理、归类和归档，构建个人知识体系。'));
-h.push(helpItem('🔧','提取结构','结构提取。从文章中自动提取结构化信息，生成知识卡片和内容摘要，便于复习和整理。'));
-h.push('</div>');
-h.push('<div class="help-group"><div class="help-group-title">🔄 学习模式</div>');
-h.push(helpItem('📖','学习','标准学习模式。查看文章内容并作答题目，是默认的学习方式。'));
-h.push(helpItem('✏️','考试','限时考试模式。模拟真实考试环境，在限定时间内完成所有题目。'));
-h.push(helpItem('🧠','背诵','逐步背诵模式。先查看文章内容，然后隐藏部分内容进行回忆，逐步强化记忆。'));
-h.push(helpItem('✍️','默写','默写练习模式。根据题目或提示，默写完整的文章内容，检验掌握程度。'));
-h.push(helpItem('🔤','填空','填空题模式。文章中的关键词被隐藏，需要补全缺失的内容。'));
-h.push(helpItem('💭','回忆','回忆模式。通过提示和线索，回忆完整的文章内容，强化长期记忆。'));
-h.push('</div>');
-h.push('<div class="help-group"><div class="help-group-title">⚙️ 数据与设置</div>');
-h.push(helpItem('🗑️','重置','重置学习数据。可选择保留图片/视频或全部清除，灵活管理数据。'));
-h.push(helpItem('📤','导出','导出完整或选择性备份，包含学习进度、课程数据、AI会话、知识库、图片视频等。'));
-h.push(helpItem('📥','导入','导入之前导出的备份文件，恢复学习数据到任意状态。'));
-h.push(helpItem('⚙️','面板管理','自定义功能面板显示。在"☰ 更多"菜单中可找到"面板管理"，隐藏不常用的功能模块，精简界面。'));
-h.push(helpItem('🌓','深色模式','切换深色/浅色主题，保护视力。可在任意界面点击切换。'));
-h.push('</div>');
-h.push('</div>');
+	h.push('<div class="help-group"><div class="help-group-title">🎯 核心学习</div>');
+	h.push(helpItem('🤖','AI深度学','AI 驱动的深度学习模块。自动分析当前文章内容，生成结构化知识点、思维导图和关联知识，帮助你深入理解文章内涵。'));
+	h.push(helpItem('🧠','核心','核心知识框架。展示每篇文章的核心概念、逻辑结构和关键知识点，快速把握文章精髓，建立整体认知。'));
+	h.push(helpItem('📖','顺序','按文章编号顺序逐篇学习。适合系统化学习路径，从头到尾不遗漏任何一篇内容。'));
+	h.push(helpItem('🔀','随机','随机抽取文章进行学习。适合复习阶段，检验自己对任意文章的掌握程度，打破固定顺序带来的惯性。'));
+	h.push('</div>');
+	h.push('<div class="help-group"><div class="help-group-title">🚀 高级学习</div>');
+	h.push(helpItem('🏛️','桩图集','桩图集管理。为每篇文章设置记忆桩图（图片/视频），构建记忆宫殿，利用视觉联想强化长期记忆。'));
+	h.push(helpItem('🧠','学霸','学霸强化模式。集中攻克难点文章，对掌握薄弱的内容进行针对性强化训练，提升学习效率。'));
+	h.push(helpItem('🎵','节奏诵记','节奏学习模式。按设定的时间间隔和节奏进行学习，科学安排复习节奏。'));
+	h.push(helpItem('❌','错题集','错题查看与复习。汇总所有答错的题目，可逐一重做直至完全掌握；支持按章节筛选。'));
+	h.push(helpItem('📌','收藏','收藏管理。收藏你认为重要的文章，方便后续快速访问和重点复习。'));
+	h.push(helpItem('🧠','记忆宫殿','记忆宫殿。将知识点与空间位置关联，利用位置记忆法强化长期记忆。'));
+	h.push(helpItem('📚','知识库','知识库管理。对学习内容进行分类、整理、归类和归档，构建个人知识体系。'));
+	h.push(helpItem('🔧','提取结构','结构提取。从文章中自动提取结构化信息，生成知识卡片和内容摘要，便于复习和整理。'));
+	h.push(helpItem('📦','课程市场','课程市场。浏览、下载和安装各类课程题库资源，扩展学习内容范围。'));
+	h.push(helpItem('📋','考证','考证备考。针对各类职业资格考试进行专项学习和模拟考试。'));
+	h.push(helpItem('🌱','习惯','习惯养成与追踪。设定每日学习目标，培养持续学习的习惯。'));
+	h.push('</div>');
+	h.push('<div class="help-group"><div class="help-group-title">📊 数据分析</div>');
+	h.push(helpItem('📈','仪表盘','学习仪表盘。展示学习进度、正确率趋势图表、知识图谱雷达图、学习天数预估和成就系统，全面掌握学习状况。'));
+	h.push(helpItem('📊','统计','学习统计。详细统计各章节正确率、学习时长、每日打卡数据等，支持多种时间维度查看。'));
+	h.push(helpItem('📋','学习日报','每日复习。根据艾宾浩斯遗忘曲线生成每日复习计划，智能安排需要复习的文章，巩固长期记忆。'));
+	h.push('</div>');
+	h.push('<div class="help-group"><div class="help-group-title">🤖 AI 深度工具</div>');
+	h.push(helpItem('📖','进阶讲题','五层递进讲题法。基础解→进阶解→高手解→原理层→举一反三，AI 帮你彻底吃透每道题。'));
+	h.push(helpItem('📊','行业研究','六步行业研究框架。市场规模→生命周期→产业链→竞争格局→宏观环境→盈利模式，从外行到内行。'));
+	h.push(helpItem('🏦','融资策划','四维融资策略。融资诊断→方案设计→风险推演→资本进阶，像顶级投行顾问一样策划融资方案。'));
+	h.push(helpItem('⚖️','法律咨询','AI 律师天团联合诊断。六维度分析 + 多角色视角，提供顶级律所级法律咨询服务。'));
+	h.push(helpItem('🔬','深度分析','多维度深度分析框架。从不同角度深入剖析复杂问题，提供穿透性洞察。'));
+	h.push(helpItem('🌌','格物致知','规律发现引擎。穿透事物表象，自动发现底层规律和思维模型，一通百通。'));
+	h.push(helpItem('💰','商业思维','商业案例深度分析。用顶级商业思维框架拆解商业模式和盈利逻辑。'));
+	h.push(helpItem('🏥','中医辨证','中医辨证分析。通过六经辨证、八纲辨证等中医方法分析健康问题。'));
+	h.push(helpItem('🗺','热点观察','时事热点分析。快速洞察新闻事件背后的逻辑、影响和趋势。'));
+	h.push('</div>');
+	h.push('<div class="help-group"><div class="help-group-title">💡 创意智库</div>');
+	h.push(helpItem('🏛️','智囊团','AI 智囊团。多个 AI 专家角色从不同角度为你出谋划策，提供全方位建议。'));
+	h.push(helpItem('💡','点子','创意灵感激发。AI 驱动的头脑风暴工具，帮助你产生和筛选创意。'));
+	h.push(helpItem('🧠','元学习','元学习方法论。学习教育如何学习，掌握高效学习的方法和技巧。'));
+	h.push(helpItem('🌐','社区','课程社区。分享学习心得、笔记和资源，与其他学习者交流互动，共同进步。'));
+	h.push(helpItem('🔍','AI搜索','AI 智能搜索。通过自然语言描述搜索知识库内容，快速定位相关知识点和文章。'));
+	h.push('</div>');
+	h.push('<div class="help-group"><div class="help-group-title">🔄 学习模式</div>');
+	h.push(helpItem('📖','学习','标准学习模式。查看文章内容并作答题目，是默认的学习方式。'));
+	h.push(helpItem('✏️','考试','限时考试模式。模拟真实考试环境，在限定时间内完成所有题目。'));
+	h.push(helpItem('🧠','背诵','逐步背诵模式。先查看文章内容，然后隐藏部分内容进行回忆，逐步强化记忆。'));
+	h.push(helpItem('✍️','默写','默写练习模式。根据题目或提示，默写完整的文章内容，检验掌握程度。'));
+	h.push(helpItem('🔤','填空','填空题模式。文章中的关键词被隐藏，需要补全缺失的内容。'));
+	h.push(helpItem('💭','回忆','回忆模式。通过提示和线索，回忆完整的文章内容，强化长期记忆。'));
+	h.push('</div>');
+	h.push('<div class="help-group"><div class="help-group-title">⚙️ 数据与设置</div>');
+	h.push(helpItem('🗑️','重置','重置学习数据。可选择保留图片/视频或全部清除，灵活管理数据。'));
+	h.push(helpItem('📤','导出','导出完整或选择性备份，包含学习进度、课程数据、AI会话、知识库、图片视频等。'));
+	h.push(helpItem('📥','导入','导入之前导出的备份文件，恢复学习数据到任意状态。'));
+	h.push(helpItem('⚙️','面板管理','自定义功能面板显示。在"☰ 更多"菜单中可找到"面板管理"，隐藏不常用的功能模块，精简界面。'));
+	h.push(helpItem('🌓','深色模式','切换深色/浅色主题，保护视力。可在任意界面点击切换。'));
+	h.push('</div>');
 o.innerHTML = h.join('');
 o.onclick = function(e) { if (e.target === o) o.remove(); };
 document.body.appendChild(o);
@@ -21345,6 +21452,38 @@ function deleteThinkTankAnalysis(id) {
   renderThinkTankHistory();
 }
 
+
+function deployThinkTankSession(id) {
+  var analyses = state.thinktankAnalyses || [];
+  var found = null;
+  for (var i = 0; i < analyses.length; i++) { if (analyses[i].id === id) { found = analyses[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var sections = _parseEqualsSections(found.text);
+  var ch = { name: found.problem, articles: [] };
+  for (var si = 0; si < sections.length; si++) {
+    ch.articles.push({ title: sections[si].heading, content: sections[si].content });
+  }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.problem, [ch], 'thinktank_deploy');
+}
+function deployAllThinkTankToCourse() {
+  var analyses = state.thinktankAnalyses || [];
+  if (!analyses.length) { showToast('❌ 暂无保存记录'); return; }
+  var chapterList = [];
+  for (var i = 0; i < analyses.length; i++) {
+    var a = analyses[i];
+    var sections = _parseEqualsSections(a.text);
+    if (!sections.length) continue;
+    var arts = [];
+    for (var si = 0; si < sections.length; si++) {
+      arts.push({ title: sections[si].heading, content: sections[si].content });
+    }
+    chapterList.push({ name: a.problem, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('智囊团合集', chapterList, 'thinktank_deploy');
+}
+
 function renderThinkTankHistory() {
   var list = $id('ttHistoryList');
   var count = $id('ttHistoryCount');
@@ -21367,11 +21506,26 @@ function renderThinkTankHistory() {
     html += '<div class="tt-history-date">'+dateStr+'</div>';
     html += '<div class="tt-history-problem">'+escHtml(shortProblem)+'</div>';
     html += '</div>';
-    html += '<button class="tt-history-del" onclick="deleteThinkTankAnalysis(\''+a.id+'\')">✕</button>';
+    html += '<button class="tt-history-deploy" onclick="event.stopPropagation();deployThinkTankSession(\''+a.id+'\')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="tt-history-del" onclick="deleteThinkTankAnalysis(\''+a.id+'\')">✕</button>';
     html += '</div>';
   }
-  list.innerHTML = html;
+  if (analyses.length > 0) html += '<div style="margin-top:6px;text-align:center"><button class="next-btn" onclick="deployAllThinkTankToCourse()" style="width:100%;font-size:12px;background:#5a4a7a">\ud83d\udce4 全部部署为合集课程</button></div>';
+  var sessions = state.ideaSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {diagnosis:'问题诊断',solution:'战略点子',action:'执行路线',resource:'资源评估'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.dims || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.problem, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('点子合集', chapterList, 'idea_deploy');
 }
+
+
 
 function viewTTHistory(id) {
   var analyses = state.thinktankAnalyses || [];
@@ -21396,6 +21550,7 @@ function toggleTTHistory() {
     toggle.textContent = isHidden ? '▼' : '▶';
   }
 }
+
 
 
 /* ===== 格物 · 规律发现引擎 ===== */
@@ -21659,6 +21814,39 @@ function deletePatternAnalysis(id) {
   var resultDiv = $id('ptResult');
   if (resultDiv) resultDiv.innerHTML = '';
 }
+
+function deployPatternSession(id) {
+  var analyses = state.patternAnalyses || [];
+  var found = null;
+  for (var i = 0; i < analyses.length; i++) { if (analyses[i].id === id) { found = analyses[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var sections = _parseEqualsSections(found.text);
+  var ch = { name: found.problem, articles: [] };
+  for (var si = 0; si < sections.length; si++) {
+    ch.articles.push({ title: sections[si].heading, content: sections[si].content });
+  }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.problem, [ch], 'pattern_deploy');
+}
+function deployAllPatternToCourse() {
+  var analyses = state.patternAnalyses || [];
+  if (!analyses.length) { showToast('❌ 暂无保存记录'); return; }
+  var chapterList = [];
+  for (var i = 0; i < analyses.length; i++) {
+    var a = analyses[i];
+    var sections = _parseEqualsSections(a.text);
+    if (!sections.length) continue;
+    var arts = [];
+    for (var si = 0; si < sections.length; si++) {
+      arts.push({ title: sections[si].heading, content: sections[si].content });
+    }
+    chapterList.push({ name: a.problem, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('格物致知合集', chapterList, 'pattern_deploy');
+}
+
+
 function renderPatternHistory() {
   var list = $id('ptHistoryList');
   var count = $id('ptHistoryCount');
@@ -21676,9 +21864,10 @@ function renderPatternHistory() {
     html += '<div class="pt-history-item" onclick="viewPatternHistory('+a.id+')">';
     html += '<span>\u{1F30C}</span>';
     html += '<div class="pt-history-main"><div class="pt-history-date">'+escHtml(a.date)+'</div><div class="pt-history-problem">'+escHtml(short)+'</div></div>';
-    html += '<button class="pt-history-del" onclick="event.stopPropagation();deletePatternAnalysis('+a.id+')" title="\u{5220}\u{9664}">✖</button>';
+    html += '<button class="pt-history-deploy" onclick="event.stopPropagation();deployPatternSession('+a.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="pt-history-del" onclick="event.stopPropagation();deletePatternAnalysis('+a.id+')" title="\u{5220}\u{9664}">✖</button>';
     html += '</div>';
   }
+  if (analyses.length > 0) html += '<div style="margin-top:6px;text-align:center"><button class="next-btn" onclick="deployAllPatternToCourse()" style="width:100%;font-size:12px;background:#5a4a7a">📤 全部部署为合集课程</button></div>';
   list.innerHTML = html;
 }
 function viewPatternHistory(id) {
@@ -21702,6 +21891,7 @@ function togglePTHistory() {
     if (isHidden) renderPatternHistory();
   }
 }
+
 
 
 /* ===== 元学习 · 拆-仿-练-创 ===== */
@@ -21856,6 +22046,36 @@ function deleteMetaSession(id) {
   saveState();
   renderMetaHistory();
 }
+
+function deployMetaSession(id) {
+  var sessions = state.metaSessions || [];
+  var found = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var labels = {deconstruct:'拆',imitate:'仿',practice:'练',create:'创'};
+  var ch = { name: found.skill, articles: [] };
+  var obj = found.stages || {};
+  for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.skill, [ch], 'meta_deploy');
+}
+function deployAllMetaToCourse() {
+  var sessions = state.metaSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {deconstruct:'拆',imitate:'仿',practice:'练',create:'创'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.stages || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.skill, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('元学习合集', chapterList, 'meta_deploy');
+}
+
+
 function renderMetaHistory() {
   var list = $id('metaHistoryList');
   var count = $id('metaHistoryCount');
@@ -21874,9 +22094,10 @@ function renderMetaHistory() {
     html += '<div class="meta-history-item" onclick="viewMetaSession(' + s.id + ')">';
     html += '<div class="meta-history-main"><div class="meta-history-date">' + dateStr + '</div>';
     html += '<div class="meta-history-skill">' + (s.skill ? s.skill.substring(0, 40) + (s.skill.length > 40 ? '...' : '') : '') + '</div></div>';
-    html += '<button class="meta-history-del" onclick="event.stopPropagation();deleteMetaSession(' + s.id + ')">✖</button>';
+    html += '<button class="meta-history-deploy" onclick="event.stopPropagation();deployMetaSession(' + s.id + ')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="meta-history-del" onclick="event.stopPropagation();deleteMetaSession(' + s.id + ')">✖</button>';
     html += '</div>';
   }
+  if (sessions.length > 0) html += '<div style="margin-top:6px;text-align:center"><button class="next-btn" onclick="deployAllMetaToCourse()" style="width:100%;font-size:12px;background:#5a4a7a">📤 全部部署为合集课程</button></div>';
   list.innerHTML = html;
 }
 function viewMetaSession(id) {
@@ -21904,6 +22125,7 @@ function toggleMetaHistory() {
     if (isHidden) renderMetaHistory();
   }
 }
+
 
 
 /* ===== 商道 · 赚钱思维引擎 ===== */
@@ -22098,6 +22320,36 @@ function deleteBizSession(id) {
   saveState();
   renderBizHistory();
 }
+
+function deployBizSession(id) {
+  var sessions = state.bizSessions || [];
+  var found = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var labels = {value:'价值洞察',model:'模式拆解',leverage:'杠杆匹配',action:'行动路线'};
+  var ch = { name: found.idea, articles: [] };
+  var obj = found.dims || {};
+  for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.idea, [ch], 'biz_deploy');
+}
+function deployAllBizToCourse() {
+  var sessions = state.bizSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {value:'价值洞察',model:'模式拆解',leverage:'杠杆匹配',action:'行动路线'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.dims || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.idea, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('商业思维合集', chapterList, 'biz_deploy');
+}
+
+
 function renderBizHistory() {
   var list = $id('bizHistoryList');
   var count = $id('bizHistoryCount');
@@ -22116,9 +22368,10 @@ function renderBizHistory() {
     html += '<div class="biz-history-item" onclick="viewBizSession(' + s.id + ')">';
     html += '<div class="biz-history-main"><div class="biz-history-date">' + dateStr + '</div>';
     html += '<div class="biz-history-idea">' + (s.idea ? s.idea.substring(0, 40) + (s.idea.length > 40 ? '...' : '') : '') + '</div></div>';
-    html += '<button class="biz-history-del" onclick="event.stopPropagation();deleteBizSession(' + s.id + ')">✖</button>';
+    html += '<button class="biz-history-deploy" onclick="event.stopPropagation();deployBizSession(' + s.id + ')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="biz-history-del" onclick="event.stopPropagation();deleteBizSession(' + s.id + ')">✖</button>';
     html += '</div>';
   }
+  if (sessions.length > 0) html += '<div style="margin-top:6px;text-align:center"><button class="next-btn" onclick="deployAllBizToCourse()" style="width:100%;font-size:12px;background:#5a4a7a">📤 全部部署为合集课程</button></div>';
   list.innerHTML = html;
 }
 function viewBizSession(id) {
@@ -22146,6 +22399,7 @@ function toggleBizHistory() {
     if (isHidden) renderBizHistory();
   }
 }
+
 
 
 /* ===== 医道 · 中医辨证 ===== */
@@ -22340,6 +22594,36 @@ function deleteTcmSession(id) {
   saveState();
   renderTcmHistory();
 }
+
+function deployTcmSession(id) {
+  var sessions = state.tcmSessions || [];
+  var found = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var labels = {pattern:'辩证审机',formula:'立法处方',herbs:'用药精解',patent:'中成药+医案'};
+  var ch = { name: found.symptoms, articles: [] };
+  var obj = found.dims || {};
+  for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.symptoms, [ch], 'tcm_deploy');
+}
+function deployAllTcmToCourse() {
+  var sessions = state.tcmSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {pattern:'辩证审机',formula:'立法处方',herbs:'用药精解',patent:'中成药+医案'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.dims || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.symptoms, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('中医辩证合集', chapterList, 'tcm_deploy');
+}
+
+
 function renderTcmHistory() {
   var list = $id('tcmHistoryList');
   var count = $id('tcmHistoryCount');
@@ -22358,9 +22642,10 @@ function renderTcmHistory() {
     html += '<div class="tcm-history-item" onclick="viewTcmSession(' + s.id + ')">';
     html += '<div class="tcm-history-main"><div class="tcm-history-date">' + dateStr + '</div>';
     html += '<div class="tcm-history-symptoms">' + (s.symptoms ? s.symptoms.substring(0, 40) + (s.symptoms.length > 40 ? '...' : '') : '') + '</div></div>';
-    html += '<button class="tcm-history-del" onclick="event.stopPropagation();deleteTcmSession(' + s.id + ')">✖</button>';
+    html += '<button class="tcm-history-deploy" onclick="event.stopPropagation();deployTcmSession(' + s.id + ')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="tcm-history-del" onclick="event.stopPropagation();deleteTcmSession(' + s.id + ')">✖</button>';
     html += '</div>';
   }
+  if (sessions.length > 0) html += '<div style="margin-top:6px;text-align:center"><button class="next-btn" onclick="deployAllTcmToCourse()" style="width:100%;font-size:12px;background:#5a4a7a">📤 全部部署为合集课程</button></div>';
   list.innerHTML = html;
 }
 function viewTcmSession(id) {
@@ -22386,6 +22671,77 @@ function toggleTcmHistory() {
     body.style.display = isHidden ? '' : 'none';
     toggle.textContent = isHidden ? '▼' : '▶';
     if (isHidden) renderTcmHistory();
+  }
+}
+
+
+
+
+function deployIdeaSession(id) {
+  var sessions = state.ideaSessions || [];
+  var found = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var labels = {diagnosis:'问题诊断',solution:'战略点子',action:'执行路线',resource:'资源评估'};
+  var ch = { name: found.problem, articles: [] };
+  var obj = found.dims || {};
+  for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.problem, [ch], 'idea_deploy');
+}
+function deployAllIdeaToCourse() {
+  var sessions = state.ideaSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {diagnosis:'问题诊断',solution:'战略点子',action:'执行路线',resource:'资源评估'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.dims || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.problem, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('点子合集', chapterList, 'idea_deploy');
+}
+
+
+function renderIdeaHistory() {
+  var list = $id('ideaHistoryList'), count = $id('ideaHistoryCount');
+  if (!list) return;
+  var sessions = state.ideaSessions || [];
+  if (count) count.textContent = sessions.length;
+  if (!sessions.length) { list.innerHTML = '<div class="idea-empty">还没有点子记录</div>'; return; }
+  var html = '';
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
+    var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+    html += '<div class="idea-history-item" onclick="viewIdeaSession('+s.id+')">';
+    html += '<div class="idea-history-main"><div class="idea-history-date">'+ds+'</div>';
+    html += '<div class="idea-history-problem">'+(s.problem?s.problem.substring(0,40)+(s.problem.length>40?'...':''):'')+'</div></div>';
+    html += '<button class="idea-history-deploy" onclick="event.stopPropagation();deployIdeaSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">\ud83d\udce4</button><button class="idea-history-del" onclick="event.stopPropagation();deleteIdeaSession('+s.id+')">✖</button></div>';
+  }
+  if (sessions.length > 0) html += '<div style="margin-top:6px;text-align:center"><button class="next-btn" onclick="deployAllIdeaToCourse()" style="width:100%;font-size:12px;background:#5a4a7a">📤 全部部署为合集课程</button></div>';
+  list.innerHTML = html;
+}
+function viewIdeaSession(id) {
+  var sessions = state.ideaSessions || [];
+  var session = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+  if (!session) { showToast('记录未找到'); return; }
+  window._ideaDims = session.dims || {};
+  window._ideaActiveDim = 'diagnosis';
+  switchIdeaDim('diagnosis');
+  var hb = $id('ideaHistoryBody'); if (hb) hb.style.display = 'none';
+  var tg = $id('ideaHistToggle'); if (tg) tg.textContent = '▶';
+}
+function toggleIdeaHistory() {
+  var body = $id('ideaHistoryBody'), toggle = $id('ideaHistToggle');
+  if (body && toggle) {
+    var h = body.style.display === 'none';
+    body.style.display = h ? '' : 'none';
+    toggle.textContent = h ? '▼' : '▶';
+    if (h) renderIdeaHistory();
   }
 }
 
@@ -22513,45 +22869,6 @@ function deleteIdeaSession(id) {
   state.ideaSessions = state.ideaSessions.filter(function(a){return a.id!==id});
   saveState(); renderIdeaHistory();
 }
-function renderIdeaHistory() {
-  var list = $id('ideaHistoryList'), count = $id('ideaHistoryCount');
-  if (!list) return;
-  var sessions = state.ideaSessions || [];
-  if (count) count.textContent = sessions.length;
-  if (!sessions.length) { list.innerHTML = '<div class="idea-empty">还没有点子记录</div>'; return; }
-  var html = '';
-  for (var i = 0; i < sessions.length; i++) {
-    var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
-    var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
-    html += '<div class="idea-history-item" onclick="viewIdeaSession('+s.id+')">';
-    html += '<div class="idea-history-main"><div class="idea-history-date">'+ds+'</div>';
-    html += '<div class="idea-history-problem">'+(s.problem?s.problem.substring(0,40)+(s.problem.length>40?'...':''):'')+'</div></div>';
-    html += '<button class="idea-history-del" onclick="event.stopPropagation();deleteIdeaSession('+s.id+')">✖</button></div>';
-  }
-  list.innerHTML = html;
-}
-function viewIdeaSession(id) {
-  var sessions = state.ideaSessions || [];
-  var session = null;
-  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
-  if (!session) { showToast('记录未找到'); return; }
-  window._ideaDims = session.dims || {};
-  window._ideaActiveDim = 'diagnosis';
-  switchIdeaDim('diagnosis');
-  var hb = $id('ideaHistoryBody'); if (hb) hb.style.display = 'none';
-  var tg = $id('ideaHistToggle'); if (tg) tg.textContent = '▶';
-}
-function toggleIdeaHistory() {
-  var body = $id('ideaHistoryBody'), toggle = $id('ideaHistToggle');
-  if (body && toggle) {
-    var h = body.style.display === 'none';
-    body.style.display = h ? '' : 'none';
-    toggle.textContent = h ? '▼' : '▶';
-    if (h) renderIdeaHistory();
-  }
-}
-
-
 /* ===== 观局 · 时事情报 ===== */
 function initNewsState() {
   if (!state.newsSettings) state.newsSettings = {};
@@ -22714,6 +23031,35 @@ function deleteNewsSession(id) {
   state.newsSessions = state.newsSessions.filter(function(a){return a.id!==id});
   saveState(); renderNewsHistory();
 }
+
+function deployNewsSession(id) {
+  var sessions = state.newsSessions || [];
+  var found = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var labels = {briefing:'情报速览',linkage:'联动影响',policy:'政策与趋势',strategy:'顶层对策'};
+  var ch = { name: found.topics, articles: [] };
+  var obj = found.dims || {};
+  for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.topics, [ch], 'news_deploy');
+}
+function deployAllNewsToCourse() {
+  var sessions = state.newsSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {briefing:'情报速览',linkage:'联动影响',policy:'政策与趋势',strategy:'顶层对策'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.dims || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.topics, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('热点观察合集', chapterList, 'news_deploy');
+}
+
 function renderNewsHistory() {
   var list = $id('newsHistoryList'), count = $id('newsHistoryCount');
   if (!list) return;
@@ -22728,8 +23074,9 @@ function renderNewsHistory() {
     h.push('<div class="news-history-item" onclick="viewNewsSession('+s.id+')">');
     h.push('<div class="news-history-main"><div class="news-history-date">'+ds+'</div>');
     h.push('<div class="news-history-topics">'+escHtml(topics)+'</div></div>');
-    h.push('<button class="news-history-del" onclick="event.stopPropagation();deleteNewsSession('+s.id+')">✖</button></div>');
+    h.push('<button class="news-history-deploy" onclick="event.stopPropagation();deployNewsSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">\ud83d\udce4</button><button class="news-history-del" onclick="event.stopPropagation();deleteNewsSession('+s.id+')">✖</button></div>');
   }
+  if (sessions.length > 0) h.push('<div style="margin-top:6px;text-align:center"><button class="next-btn" onclick="deployAllNewsToCourse()" style="width:100%;font-size:12px;background:#5a4a7a">\ud83d\udce4 全部部署为合集课程</button></div>');
   list.innerHTML = h.join('');
 }
 function viewNewsSession(id) {
@@ -22920,6 +23267,35 @@ function deleteFinSession(id) {
   state.finSessions = state.finSessions.filter(function(a){return a.id!==id});
   saveState(); renderFinHistory();
 }
+
+function deployFinSession(id) {
+  var sessions = state.finSessions || [];
+  var found = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var labels = {diagnosis:'融资诊断',design:'方案设计',risk:'风险推演',advanced:'资本进阶'};
+  var ch = { name: found.need, articles: [] };
+  var obj = found.dims || {};
+  for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.need, [ch], 'fin_deploy');
+}
+function deployAllFinToCourse() {
+  var sessions = state.finSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {diagnosis:'融资诊断',design:'方案设计',risk:'风险推演',advanced:'资本进阶'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.dims || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.need, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('融资策划合集', chapterList, 'fin_deploy');
+}
+
 function renderFinHistory() {
   var list = $id('finHistoryList'), count = $id('finHistoryCount');
   if (!list) return;
@@ -22933,7 +23309,7 @@ function renderFinHistory() {
     h.push('<div class="fin-history-item" onclick="viewFinSession('+s.id+')">');
     h.push('<div class="fin-history-main"><div class="fin-history-date">'+ds+'</div>');
     h.push('<div class="fin-history-need">'+escHtml(s.need?s.need.substring(0,40)+(s.need.length>40?'...':''):'')+'</div></div>');
-    h.push('<button class="fin-history-del" onclick="event.stopPropagation();deleteFinSession('+s.id+')">✖</button></div>');
+    h.push('<button class="fin-history-deploy" onclick="event.stopPropagation();deployFinSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">\ud83d\udce4</button><button class="fin-history-del" onclick="event.stopPropagation();deleteFinSession('+s.id+')">✖</button></div>');
   }
   list.innerHTML = h.join('');
 }
@@ -23127,6 +23503,35 @@ function deleteAnaSession(id) {
   state.anaSessions = state.anaSessions.filter(function(a){return a.id!==id});
   saveState(); renderAnaHistory();
 }
+
+function deployAnaSession(id) {
+  var sessions = state.anaSessions || [];
+  var found = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var labels = {info:'信息层',logic:'逻辑层',system:'系统层',human:'人性层',meaning:'意义层'};
+  var ch = { name: found.problem, articles: [] };
+  var obj = found.layers || {};
+  for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.problem, [ch], 'ana_deploy');
+}
+function deployAllAnaToCourse() {
+  var sessions = state.anaSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {info:'信息层',logic:'逻辑层',system:'系统层',human:'人性层',meaning:'意义层'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.layers || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.problem, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('深度分析合集', chapterList, 'ana_deploy');
+}
+
 function renderAnaHistory() {
   var list = $id('anaHistoryList'), count = $id('anaHistoryCount');
   if (!list) return;
@@ -23140,8 +23545,9 @@ function renderAnaHistory() {
     h.push('<div class="ana-history-item" onclick="viewAnaSession('+s.id+')">');
     h.push('<div class="ana-history-main"><div class="ana-history-date">'+ds+'</div>');
     h.push('<div class="ana-history-problem">'+escHtml(s.problem?s.problem.substring(0,40)+(s.problem.length>40?'...':''):'')+'</div></div>');
-    h.push('<button class="ana-history-del" onclick="event.stopPropagation();deleteAnaSession('+s.id+')">\u{2716}</button></div>');
+    h.push('<button class="ana-history-deploy" onclick="event.stopPropagation();deployAnaSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="ana-history-del" onclick="event.stopPropagation();deleteAnaSession('+s.id+')">\u{2716}</button></div>');
   }
+  if (sessions.length > 0) h.push('<div style="margin-top:6px;text-align:center"><button class="next-btn" onclick="deployAllAnaToCourse()" style="width:100%;font-size:12px;background:#5a4a7a">📤 全部部署为合集课程</button></div>');
   list.innerHTML = h.join('');
 }
 function viewAnaSession(id) {
@@ -23424,6 +23830,35 @@ function deleteAdvSession(id) {
   state.advSessions = state.advSessions.filter(function(a){return a.id!==id});
   saveState(); renderAdvHistory();
 }
+
+function deployAdvSession(id) {
+  var sessions = state.advSessions || [];
+  var found = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var labels = {basic:'基础解',medium:'进阶解',expert:'高手解',principle:'原理层',extend:'举一反三'};
+  var ch = { name: found.topic, articles: [] };
+  var obj = found.levels || {};
+  for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.topic, [ch], 'adv_deploy');
+}
+function deployAllAdvToCourse() {
+  var sessions = state.advSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {basic:'基础解',medium:'进阶解',expert:'高手解',principle:'原理层',extend:'举一反三'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.levels || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.topic, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('进阶讲题合集', chapterList, 'adv_deploy');
+}
+
 function renderAdvHistory() {
   var list = $id('advHistoryList'), count = $id('advHistoryCount');
   if (!list) return;
@@ -23437,8 +23872,9 @@ function renderAdvHistory() {
     h.push('<div class="adv-history-item" onclick="viewAdvSession('+s.id+')">');
     h.push('<div class="adv-history-main"><div class="adv-history-date">'+ds+'</div>');
     h.push('<div class="adv-history-topic">'+escHtml(s.topic?s.topic.substring(0,40)+(s.topic.length>40?'...':''):'')+'</div></div>');
-    h.push('<button class="adv-history-del" onclick="event.stopPropagation();deleteAdvSession('+s.id+')">\u{2716}</button></div>');
+    h.push('<button class="adv-history-deploy" onclick="event.stopPropagation();deployAdvSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="adv-history-del" onclick="event.stopPropagation();deleteAdvSession('+s.id+')">\u{2716}</button></div>');
   }
+  if (sessions.length > 0) h.push('<div style="margin-top:6px;text-align:center"><button class="next-btn" onclick="deployAllAdvToCourse()" style="width:100%;font-size:12px;background:#5a4a7a">📤 全部部署为合集课程</button></div>');
   list.innerHTML = h.join('');
 }
 function viewAdvSession(id) {
@@ -23634,6 +24070,35 @@ function deleteIndSession(id) {
   state.indSessions = state.indSessions.filter(function(a){return a.id!==id});
   saveState(); renderIndHistory();
 }
+
+function deployIndSession(id) {
+  var sessions = state.indSessions || [];
+  var found = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var labels = {market:'市场规模',lifecycle:'生命周期',chain:'产业链',landscape:'竞争格局',pest:'宏观环境',profit:'盈利模式'};
+  var ch = { name: found.industry, articles: [] };
+  var obj = found.steps || {};
+  for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.industry, [ch], 'ind_deploy');
+}
+function deployAllIndToCourse() {
+  var sessions = state.indSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {market:'市场规模',lifecycle:'生命周期',chain:'产业链',landscape:'竞争格局',pest:'宏观环境',profit:'盈利模式'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.steps || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.industry, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('行业研究合集', chapterList, 'ind_deploy');
+}
+
 function renderIndHistory() {
   var list = $id('indHistoryList'), count = $id('indHistoryCount');
   if (!list) return;
@@ -23647,7 +24112,7 @@ function renderIndHistory() {
     h.push('<div class="ind-history-item" onclick="viewIndSession('+s.id+')">');
     h.push('<div class="ind-history-main"><div class="ind-history-date">'+ds+'</div>');
     h.push('<div class="ind-history-industry">'+escHtml(s.industry?s.industry.substring(0,40)+(s.industry.length>40?'...':''):'')+'</div></div>');
-    h.push('<button class="ind-history-del" onclick="event.stopPropagation();deleteIndSession('+s.id+')">✖</button></div>');
+    h.push('<button class="ind-history-deploy" onclick="event.stopPropagation();deployIndSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">\ud83d\udce4</button><button class="ind-history-del" onclick="event.stopPropagation();deleteIndSession('+s.id+')">✖</button></div>');
   }
   list.innerHTML = h.join('');
 }
@@ -23669,6 +24134,348 @@ function toggleIndHistory() {
     body.style.display = h ? '' : 'none';
     toggle.textContent = h ? '▼' : '▶';
     if (h) renderIndHistory();
+  }
+}
+
+/* ===== 法道 · 律师天团咨询 ===== */
+function initLawState() {
+  if (!state.lawSettings) state.lawSettings = {};
+  if (!state.lawSessions) state.lawSessions = [];
+}
+var LAW_ROLES = [
+  { id:'litigation', name:'陈律', title:'首席诉讼律师', desc:'20年出庭经验，擅长复杂民商事诉讼' },
+  { id:'commercial', name:'林律', title:'资深商事律师', desc:'公司治理、股权纠纷、投融资法律' },
+  { id:'criminal', name:'张律', title:'刑事辩护律师', desc:'经济犯罪、职务犯罪辩护' },
+  { id:'compliance', name:'李律', title:'合规顾问', desc:'监管合规、行政处罚、数据合规' },
+  { id:'family', name:'王律', title:'婚姻家事律师', desc:'婚姻继承、家庭财产分割' },
+  { id:'ip', name:'赵律', title:'知识产权律师', desc:'专利商标、著作权、商业秘密' }
+];
+var _lawRoleTimer = null;
+function startLawRoleRotation(loadingEl) {
+  if (!loadingEl) return;
+  var idx = 0;
+  function showNext() {
+    loadingEl.innerHTML =
+      '<div class="law-role-avatar">' + LAW_ROLES[idx].name.charAt(0) + '</div>' +
+      '<div><div class="law-role-name">' + LAW_ROLES[idx].name + '</div>' +
+      '<div class="law-role-title">' + LAW_ROLES[idx].title + ' · ' + LAW_ROLES[idx].desc + '</div></div>' +
+      '<div class="law-role-dots"><span class="law-role-dot"></span><span class="law-role-dot"></span><span class="law-role-dot"></span></div>';
+    idx = (idx + 1) % LAW_ROLES.length;
+  }
+  showNext();
+  _lawRoleTimer = setInterval(showNext, 2500);
+}
+function stopLawRoleRotation() {
+  if (_lawRoleTimer) { clearInterval(_lawRoleTimer); _lawRoleTimer = null; }
+}
+function switchLawDim(dim) {
+  window._lawActiveDim = dim;
+  var cards = document.querySelectorAll('.law-dim-card');
+  for (var i = 0; i < cards.length; i++)
+    cards[i].classList.toggle('active', cards[i].getAttribute('data-dim') === dim);
+  renderLawDimContent();
+}
+function renderLawDimContent() {
+  var rd = document.getElementById('lawResult');
+  if (!rd) return;
+  var dims = window._lawDims;
+  if (!dims) { rd.innerHTML = ''; return; }
+  var active = window._lawActiveDim || 'facts';
+  var c = dims[active];
+  var labels = { facts:'案情诊断', laws:'法律依据', risk:'风险评估', strategy:'策略方案', evidence:'证据规划', insight:'深度洞察' };
+  var html = c ? formatLawContent(c) : '<div class="law-empty">暂无内容</div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="law-btn law-btn-outline" onclick="callLawAppend(\''+active+'\')">🔍 追加深度分析 - '+labels[active]+'</button></div>';
+  rd.innerHTML = html;
+}
+function renderLawPanel() {
+  if (!window._lawInit) { initLawState(); window._lawInit = true; }
+  var area = document.getElementById('contentArea');
+  var dims = [
+    { id:'facts',    label:'案情诊断', icon:'🔍', desc:'事实梳理·法律关系' },
+    { id:'laws',     label:'法律依据', icon:'⚖️', desc:'法条索引·案例援引' },
+    { id:'risk',     label:'风险评估', icon:'⚠️', desc:'胜率预判·利弊分析' },
+    { id:'strategy', label:'策略方案', icon:'🎯', desc:'诉讼·调解·谈判' },
+    { id:'evidence', label:'证据规划', icon:'📋', desc:'举证清单·取证指引' },
+    { id:'insight',  label:'深度洞察', icon:'💎', desc:'对方反推·非常规思路' }
+  ];
+  var active = window._lawActiveDim || 'facts';
+  var h = [];
+  h.push('<div class="law-hero"><div class="law-hero-icon">⚖️</div><h2 class="law-hero-title">法道 · 律师天团咨询</h2><p class="law-hero-sub">顶级律所联合诊断 · 多角色多维度分析 · 想到想不到的全帮你分析</p></div>');
+  h.push('<div class="law-input-card"><textarea id="lawInput" class="law-textarea" placeholder="📝 描述你的法律问题或案情：&#10;&#10;例：我和合伙人签了协议合作开公司，现在他私自把公司资产转移走了，我该怎么办？&#10;&#10;尽可能详细描述：时间、人物、金额、合同情况、目前进展…"></textarea>');
+  h.push('<div class="law-input-actions"><button class="law-btn law-btn-primary" onclick="callLawAnalysis()">⚖️ AI 律师会诊</button></div></div>');
+  h.push('<div class="law-section"><div class="law-section-hdr">📊 六维分析框架</div><div class="law-dim-row">');
+  for (var si = 0; si < dims.length; si++) {
+    var s = dims[si];
+    h.push('<div class="law-dim-card'+(active===s.id?' active':'')+'" data-dim="'+s.id+'" onclick="switchLawDim(\''+s.id+'\')">');
+    h.push('<div class="law-dim-icon">'+s.icon+'</div><div class="law-dim-label">'+s.label+'</div><div class="law-dim-desc">'+s.desc+'</div></div>');
+  }
+  h.push('</div></div>');
+  h.push('<div id="lawRoleBar" class="law-role-bar"></div>');
+  h.push('<div id="lawLoading" class="law-loading"><div class="law-spinner"></div><span>⚖️ AI 律师团分析中…</span></div>');
+  h.push('<div id="lawResult"></div>');
+  h.push('<div class="law-section"><div class="law-section-hdr" onclick="toggleLawHistory()">📋 咨询记录 (<span id="lawHistoryCount">0</span>) <span id="lawHistToggle">▼</span></div>');
+  h.push('<div id="lawHistoryBody" class="law-history-body" style="display:none"><div id="lawHistoryList"></div></div></div>');
+  h.push('<div class="law-guide">💡 描述案情 → AI 律师团六维联合诊断 → 点击维度卡片切换查看 → 可对单维度追加深度分析</div>');
+  area.innerHTML = h.join('');
+  renderLawHistory(); renderLawDimContent(); updateUI();
+}
+function buildLawPrompt() {
+  var input = document.getElementById('lawInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先描述你的法律问题或案情'); return null; }
+  return '你是一个由多位顶级律师组成的「律师天团」，正在为客户提供专业的法律咨询服务。\n\n' +
+    '律师团队包括：\n' +
+    '- 陈律（首席诉讼律师，20年出庭经验，擅长复杂民商事诉讼，精通诉讼策略与庭审技巧）\n' +
+    '- 林律（资深商事律师，专注公司治理、股权纠纷、投融资法律事务，擅长商业谈判）\n' +
+    '- 张律（刑事辩护律师，擅长经济犯罪、职务犯罪辩护，精通刑民交叉案件）\n' +
+    '- 李律（合规顾问，精通监管合规、行政处罚应对、数据合规、行业准入）\n' +
+    '- 王律（婚姻家事律师，擅长婚姻继承、家庭财产分割、子女抚养权纠纷）\n' +
+    '- 赵律（知识产权律师，专利商标、著作权、商业秘密、不正当竞争）\n\n' +
+    '客户的法律问题/案情：\n' + text + '\n\n' +
+    '请严格按照以下6个维度输出律师团联合分析报告，每个维度用「【案情诊断】【法律依据】【风险评估】【策略方案】【证据规划】【深度洞察】」作为标题开头。每个维度请标注"本维度由XXX律师主笔"。内容要专业、犀利、实用、有深度，像顶级律所出具的正式法律分析意见书：\n\n' +
+    '【案情诊断】\n（本维度由首席诉讼律师 陈律 主笔）\n' +
+    '1. 事实梳理：剥离情绪和无关信息，提取关键法律事实\n' +
+    '2. 法律关系：确定属于哪种法律关系（合同纠纷/侵权/物权/婚姻/劳动…）\n' +
+    '3. 主体资格：各方当事人的法律地位和责任能力\n' +
+    '4. 争议焦点：核心争议是什么，分点列出\n' +
+    '5. 初步判断：案子的性质严重程度、紧迫性评估\n' +
+    '6. 时效检查：是否在诉讼时效/除斥期间内\n\n' +
+    '【法律依据】\n（本维度由法律研究团队主笔，联合各专业领域律师）\n' +
+    '1. 核心法条：索引适用的法律条款（民法典/公司法/刑法/劳动法等），含条款编号和内容\n' +
+    '2. 司法解释：相关最高人民法院司法解释要点\n' +
+    '3. 指导案例：引用类似指导案例或参考案例的裁判要旨\n' +
+    '4. 法律适用分析：结合本案事实，分析法律如何适用\n' +
+    '5. 最新动态：相关法律法规最近是否有修订或新规出台？\n' +
+    '6. 地域差异提示：不同地区法院对类似案件的裁判倾向差异\n\n' +
+    '【风险评估】\n（本维度由首席诉讼律师 陈律 主笔，联合全体律师）\n' +
+    '1. 胜率预判：从法律和证据两个维度评估，给出百分比范围和理由\n' +
+    '2. 败诉风险点：最大的3-5个败诉风险，按严重程度排序\n' +
+    '3. 执行风险：即使胜诉，能否执行到位？（对方财产状况、转移资产可能性）\n' +
+    '4. 成本分析：预估诉讼费、保全费、鉴定费、律师费、差旅费等\n' +
+    '5. 时间成本：一审、二审、再审、执行各阶段大约需要多久\n' +
+    '6. 间接影响：对声誉、商业关系、家庭、工作等的负面影响评估\n' +
+    '7. 最坏情况推演：如果败诉会有什么后果\n\n' +
+    '【策略方案】\n（本维度由全体律师合议，首席诉讼律师 陈律 主笔）\n' +
+    '1. 方案A（诉讼策略）：\n' +
+    '   - 诉讼请求设计\n' +
+    '   - 管辖法院选择及理由\n' +
+    '   - 保全措施建议（财产保全/证据保全）\n' +
+    '   - 诉讼策略核心思路\n' +
+    '2. 方案B（调解/和解）：\n' +
+    '   - 调解可行性评估\n' +
+    '   - 可接受的让步空间\n' +
+    '   - 谈判底线和筹码\n' +
+    '3. 方案C（非诉讼替代方案）：\n' +
+    '   - 仲裁/行政复议/投诉举报等\n' +
+    '4. 方案D（庭外谈判）：\n' +
+    '   - 谈判策略和话术建议\n' +
+    '5. 方案对比表：各方案的优劣分析、可行性评分（1-10分）、推荐指数\n' +
+    '6. 综合推荐方案和理由\n\n' +
+    '【证据规划】\n（本维度由证据专家 林律 主笔）\n' +
+    '1. 必备证据清单：按重要性排序，列明需要收集的证据\n' +
+    '2. 证据类型：书证/物证/电子数据/证人证言/鉴定意见/勘验笔录\n' +
+    '3. 取证指引：如何获取关键证据（特别是对方持有的证据）\n' +
+    '4. 证据链完整性分析：现有证据能否形成完整证据链？缺口在哪？\n' +
+    '5. 对方可能提出的证据预判：对方会拿出什么证据反驳？\n' +
+    '6. 证据薄弱环节及补强建议\n' +
+    '7. 举证期限和证据交换注意事项\n\n' +
+    '【深度洞察】\n（本维度由全体律师贡献非常规思路）\n' +
+    '1. 对方律师反推：如果对方请了最好的律师，会从哪些角度攻击你？\n' +
+    '2. 隐藏风险点：99%的人会忽略但可能翻盘的3个关键点\n' +
+    '3. 非常规解决路径：除了打官司还有什么出人意料的解法？\n' +
+    '4. 谈判筹码分析：你手里有哪些对方在意的东西（不只是法律层面的）\n' +
+    '5. 时间窗口：现在做什么、什么时候做什么（分紧急/重要排序）\n' +
+    '6. ⚠️ 立即行动项：接下去24小时内必须做的3件事\n\n' +
+    '要求：\n' +
+    '- 用中文回答，像顶级律所出具的法律分析意见书一样专业、犀利、实用\n' +
+    '- 每个维度至少300字，要有具体分析和可操作的建议\n' +
+    '- 标注每个维度由哪位律师主笔\n' +
+    '- 不要套话，直接切入正题\n' +
+    '- 对不确定的法律问题要如实说明，不要编造法条';
+}
+function buildLawAppendPrompt(dimId) {
+  var input = document.getElementById('lawInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先描述你的法律问题'); return null; }
+  var labels = { facts:'案情诊断', laws:'法律依据', risk:'风险评估', strategy:'策略方案', evidence:'证据规划', insight:'深度洞察' };
+  var label = labels[dimId] || dimId;
+  var existing = window._lawDims ? (window._lawDims[dimId] || '') : '';
+  var roleMap = { facts:'litigation', laws:'commercial', risk:'litigation', strategy:'litigation', evidence:'commercial', insight:'litigation' };
+  var role = LAW_ROLES[roleMap[dimId] || 0];
+  return '你是一位顶级律师。之前我对以下案情做了初步分析，现在请对【' + label + '】这一维度进行深度展开。\n\n' +
+    '案情：' + text + '\n\n已有的分析：\n' + (existing.substring(0, 1500) || '暂无') + '\n\n' +
+    '请从更深的层面展开【' + label + '】，补充更多细节、法律分析、案例援引和实操建议。不要简单重复已有内容。\n\n' +
+    '请用「【' + label + '·续】」作为标题开头输出。';
+}
+function parseLawDims(text) {
+  var dims = { facts:'', laws:'', risk:'', strategy:'', evidence:'', insight:'' };
+  var markers = [
+    { id:'facts',    label:'【案情诊断】' },
+    { id:'laws',     label:'【法律依据】' },
+    { id:'risk',     label:'【风险评估】' },
+    { id:'strategy', label:'【策略方案】' },
+    { id:'evidence', label:'【证据规划】' },
+    { id:'insight',  label:'【深度洞察】' }
+  ];
+  for (var i = 0; i < markers.length; i++) {
+    var start = text.indexOf(markers[i].label);
+    if (start === -1) continue;
+    var cs = start + markers[i].label.length;
+    var end = (i < markers.length - 1) ? text.indexOf(markers[i+1].label, cs) : -1;
+    dims[markers[i].id] = text.substring(cs, end === -1 ? text.length : end).trim();
+  }
+  return dims;
+}
+function callLawAnalysis() {
+  var prompt = buildLawPrompt();
+  if (!prompt) return;
+  var loading = document.getElementById('lawLoading');
+  var roleBar = document.getElementById('lawRoleBar');
+  var resultDiv = document.getElementById('lawResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '⚖️ AI 律师团分析中...'; }
+  if (roleBar) { roleBar.classList.add('show'); startLawRoleRotation(roleBar); }
+  if (resultDiv) resultDiv.innerHTML = '';
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000, search: true,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '⚖️ AI 律师团分析中 ('+fullText.length+' 字)...'; }
+      if (resultDiv) resultDiv.innerHTML = formatLawContent(fullText);
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    if (roleBar) { roleBar.classList.remove('show'); stopLawRoleRotation(); }
+    window._lawDims = parseLawDims(fullText);
+    window._lawActiveDim = 'facts';
+    switchLawDim('facts');
+    var input = document.getElementById('lawInput');
+    saveLawSession(input ? input.value.trim() : '', window._lawDims);
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    if (roleBar) { roleBar.classList.remove('show'); stopLawRoleRotation(); }
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 分析失败：' + msg);
+    if (resultDiv) resultDiv.innerHTML = '<div class="law-empty">❌ ' + escHtml(msg) + '</div>';
+  });
+}
+function callLawAppend(dimId) {
+  var prompt = buildLawAppendPrompt(dimId);
+  if (!prompt) return;
+  var loading = document.getElementById('lawLoading');
+  var resultDiv = document.getElementById('lawResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
+  callAI({
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    stream: function(chunk, fullText) {
+      if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    var labels = { facts:'案情诊断', laws:'法律依据', risk:'风险评估', strategy:'策略方案', evidence:'证据规划', insight:'深度洞察' };
+    var label = labels[dimId] || dimId;
+    var appendMarker = '【' + label + '·续】';
+    var appendStart = fullText.indexOf(appendMarker);
+    var appendContent = appendStart !== -1 ? fullText.substring(appendStart + appendMarker.length).trim() : fullText;
+    if (!window._lawDims) window._lawDims = {};
+    var existing = window._lawDims[dimId] || '';
+    window._lawDims[dimId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
+    window._lawActiveDim = dimId;
+    switchLawDim(dimId);
+    showToast('✅ 已追加 ' + label + ' 深度分析');
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.message ? err.message : '未知错误';
+    showToast('❌ 追加失败：' + msg);
+  });
+}
+function formatLawContent(txt) {
+  if (!txt) return '<div class="law-empty">暂无内容</div>';
+  var html = txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/###\s*(.+)/g,'<h4>$1</h4>')
+    .replace(/##\s*(.+)/g,'<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n/g,'<br>');
+  return '<div class="law-output">' + html + '</div>';
+}
+function saveLawSession(topic, dims) {
+  if (!state.lawSessions) state.lawSessions = [];
+  state.lawSessions.unshift({ id:Date.now(), topic:topic, dims:dims, date:new Date().toISOString() });
+  if (state.lawSessions.length > 50) state.lawSessions.length = 50;
+  saveState(); renderLawHistory();
+}
+function deleteLawSession(id) {
+  if (!state.lawSessions) return;
+  state.lawSessions = state.lawSessions.filter(function(a){return a.id!==id});
+  saveState(); renderLawHistory();
+}
+
+function deployLawSession(id) {
+  var sessions = state.lawSessions || [];
+  var found = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
+  if (!found) { showToast('❌ 记录未找到'); return; }
+  var labels = {facts:'案情诊断',laws:'法律依据',risk:'风险评估',strategy:'策略方案',evidence:'证据规划',insight:'深度洞察'};
+  var ch = { name: found.topic, articles: [] };
+  var obj = found.dims || {};
+  for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
+  if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse(found.topic, [ch], 'law_deploy');
+}
+function deployAllLawToCourse() {
+  var sessions = state.lawSessions || [];
+  if (!sessions.length) { showToast('❌ 暂无保存记录'); return; }
+  var labels = {facts:'案情诊断',laws:'法律依据',risk:'风险评估',strategy:'策略方案',evidence:'证据规划',insight:'深度洞察'};
+  var chapterList = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var arts = [];
+    var obj = s.dims || {};
+    for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
+    if (arts.length) chapterList.push({ name: s.topic, articles: arts });
+  }
+  if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
+  deployAsCourse('法律咨询合集', chapterList, 'law_deploy');
+}
+
+function renderLawHistory() {
+  var list = document.getElementById('lawHistoryList'), count = document.getElementById('lawHistoryCount');
+  if (!list) return;
+  var sessions = state.lawSessions || [];
+  if (count) count.textContent = sessions.length;
+  if (!sessions.length) { list.innerHTML = '<div class="law-empty">还没有咨询记录</div>'; return; }
+  var h = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
+    var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+    h.push('<div class="law-history-item" onclick="viewLawSession('+s.id+')">');
+    h.push('<div class="law-history-main"><div class="law-history-date">'+ds+'</div>');
+    h.push('<div class="law-history-topic">'+escHtml(s.topic?s.topic.substring(0,40)+(s.topic.length>40?'...':''):'')+'</div></div>');
+    h.push('<button class="law-history-deploy" onclick="event.stopPropagation();deployLawSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">\ud83d\udce4</button><button class="law-history-del" onclick="event.stopPropagation();deleteLawSession('+s.id+')">✖</button></div>');
+  }
+  list.innerHTML = h.join('');
+}
+function viewLawSession(id) {
+  var sessions = state.lawSessions || [];
+  var session = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+  if (!session) { showToast('记录未找到'); return; }
+  window._lawDims = session.dims || {};
+  window._lawActiveDim = 'facts';
+  switchLawDim('facts');
+  var hb = document.getElementById('lawHistoryBody'); if (hb) hb.style.display = 'none';
+  var tg = document.getElementById('lawHistToggle'); if (tg) tg.textContent = '▶';
+}
+function toggleLawHistory() {
+  var body = document.getElementById('lawHistoryBody'), toggle = document.getElementById('lawHistToggle');
+  if (body && toggle) {
+    var h = body.style.display === 'none';
+    body.style.display = h ? '' : 'none';
+    toggle.textContent = h ? '▼' : '▶';
+    if (h) renderLawHistory();
   }
 }
 
