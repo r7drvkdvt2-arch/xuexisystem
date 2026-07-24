@@ -5910,15 +5910,6 @@ if (state.textMarks) {
 		}
 	}
 }
-// v?? migration: old hiddenPanels to panelOrder
-if (!saved.panelOrder && saved.hiddenPanels) {
-	state.panelOrder = [];
-	PANEL_DEFS.forEach(function(p) {
-		if (state.hiddenPanels.indexOf(p.mode) === -1 && state.deletedPanels.indexOf(p.mode) === -1) {
-			state.panelOrder.push(p.mode);
-		}
-	});
-}
 return state;
 }
 } catch(e) { console.warn('loadState failed, returning default', e); }
@@ -7953,7 +7944,7 @@ try { var c = safeGetItem(COURSES_DATA_KEY); if (c) data.ddj_courses = JSON.pars
 try { var al = safeGetItem('ddj_ailearn_sessions'); if (al) data.ddj_ailearn_sessions = JSON.parse(al); } catch(e) {}
 try { var kb = safeGetItem('ddj_knowledgebase'); if (kb) data.ddj_knowledgebase = JSON.parse(kb); } catch(e) {}
 try { var rb = safeGetItem('ddj_recycle_bin'); if (rb) data.ddj_recycle_bin = JSON.parse(rb); } catch(e) {}
-var _ps = (data.ddj_progress && data.ddj_progress.pegImageSets) || [];var _as = (data.ddj_progress && data.ddj_progress.activePegSetIds) || [];var meta = { version:3, exportedAt:new Date().toISOString(), appName:'学习系统', data:data, _pegImageSets:_ps, _activePegSetIds:_as };
+var meta = { version:3, exportedAt:new Date().toISOString(), appName:'学习系统', data:data };
 var pre = JSON.stringify(meta); pre = pre.substring(0, pre.length-1) + ',"ddj_images":[';
 var close = ']}';
 // 尝试获取文件句柄（必须在用户手势同步阶段调用）
@@ -8222,7 +8213,6 @@ return true;
 });
 var imgIdx = 0, imgTotal = imgs.length;
 var BATCH_SIZE = 20;
-var _savedPs = (extracted.data && extracted.data.ddj_progress && extracted.data.ddj_progress.pegImageSets) || [];var _savedAps = (extracted.data && extracted.data.ddj_progress && extracted.data.ddj_progress.activePegSetIds) || [];if (!_savedPs.length && extracted._pegImageSets && extracted._pegImageSets.length) { _savedPs = extracted._pegImageSets; _savedAps = extracted._activePegSetIds || []; }
 function doLocalStorage() {
 if (lsIdx < lsSteps.length) {
 var cfg = lsSteps[lsIdx];
@@ -8242,7 +8232,6 @@ lsIdx++;
 setTimeout(doLocalStorage, 10);
 return;
 }
-try { var _vp = safeGetItem(STORAGE_KEY); if (_vp) { var _vpo = JSON.parse(_vp); if ((!_vpo.pegImageSets || !_vpo.pegImageSets.length) && _savedPs && _savedPs.length) { _vpo.pegImageSets = _savedPs; if (_savedAps && _savedAps.length) _vpo.activePegSetIds = _savedAps; safeSetItem(STORAGE_KEY, JSON.stringify(_vpo)); console.log('import: restored ' + _savedPs.length + ' peg image sets'); } } } catch(e) { console.warn('import verify error', e); }
 openDbAndProcessImages();
 }
 function decodeItem(item) {
@@ -8462,7 +8451,6 @@ var lsSteps = [
 ];
 var lsIdx = 0;
 var BATCH_SIZE = 20;
-var _savedPs2 = (data && data.ddj_progress && data.ddj_progress.pegImageSets) || [];var _savedAps2 = (data && data.ddj_progress && data.ddj_progress.activePegSetIds) || [];
 var imgBatch = [];
 var processedCount = 0;
 // 根据 filter 判断某 localStorage key 是否应恢复
@@ -8531,7 +8519,6 @@ lsIdx++;
 setTimeout(doLocalStorage, 10);
 return;
 }
-try { var _vp2 = safeGetItem(STORAGE_KEY); if (_vp2) { var _vpo2 = JSON.parse(_vp2); if ((!_vpo2.pegImageSets || !_vpo2.pegImageSets.length) && _savedPs2 && _savedPs2.length) { _vpo2.pegImageSets = _savedPs2; if (_savedAps2 && _savedAps2.length) _vpo2.activePegSetIds = _savedAps2; safeSetItem(STORAGE_KEY, JSON.stringify(_vpo2)); console.log('import stream: restored ' + _savedPs2.length + ' peg image sets'); } } } catch(e) { console.warn('import stream verify error', e); }
 if (!scanner) {
 if (onProgress) onProgress(100, '导入完成');
 showToast('✅ 导入完成！页面即将刷新');
@@ -10758,7 +10745,6 @@ try { updateGoalUI(); } catch(e){}
 try { updateDiffFilterUI(); } catch(e){}
 try { initPanelManager(); } catch(e){}
 try { migratePegImagesToIDB(); } catch(e){}
-try { if (state.pegImageSets && state.pegImageSets.length > 0 && (!state.activePegSetIds || !state.activePegSetIds.length)) { state.activePegSetIds = state.pegImageSets.map(function(s){ return s.id; }); saveState(); console.log('init: auto-activated ' + state.activePegSetIds.length + ' peg sets'); } } catch(e){}
 try { migratePegSetVideos(); } catch(e){}
 try { StorageManager.init(); } catch(e){}
 try { checkTrialStatus(); } catch(e){}
@@ -17309,6 +17295,17 @@ var PANEL_DEFS = [
 			{mode:'acu', label:'🪡 针灸灵枢'},
 			{mode:'decomp', label:'🧩 AI 任务拆解'},
 ];
+
+// panelOrder migration: move from loadState to after PANEL_DEFS to avoid undefined crash
+if (!state.panelOrder && state.hiddenPanels) {
+	state.panelOrder = [];
+	PANEL_DEFS.forEach(function(p) {
+		if (state.hiddenPanels.indexOf(p.mode) === -1 && state.deletedPanels.indexOf(p.mode) === -1) {
+			state.panelOrder.push(p.mode);
+		}
+	});
+	saveState();
+}
 var PANEL_STYLES = {
 ailearn:'border-color:#2a6a4a;color:#1a5a3a', pegimg:'border-color:#8a6a4a;color:#6a4a3a',
 master:'border-color:#6a4a8a;color:#6a4a8a', dailyreview:'border-color:#e8a020;color:#8a6a20',
