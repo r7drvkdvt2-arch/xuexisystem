@@ -1179,6 +1179,23 @@ a[href]:after{content:none!important}
 .mpc-nav button:hover{border-color:var(--primary);color:var(--primary);background:var(--bg-hover-light)}
 .mpc-nav .counter{font-size:14px;color:var(--text-muted);font-weight:600}
 .mpc-nav .counter .current{color:var(--primary);font-size:18px}
+.mpc-mcq-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px}
+.mpc-mcq-modal{background:#fff;border-radius:12px;max-width:600px;width:100%;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.2)}
+.mpc-mcq-modal .header{padding:16px 20px;border-bottom:1px solid #eee;font-weight:700;font-size:16px;display:flex;justify-content:space-between;align-items:center}
+.mpc-mcq-modal .body{padding:16px 20px;overflow-y:auto;flex:1}
+.mpc-mcq-modal .footer{padding:12px 20px;border-top:1px solid #eee;display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.mpc-mcq-progress{margin-bottom:16px}
+.mpc-mcq-progress .bar{height:10px;background:#e0e0e0;border-radius:5px;overflow:hidden}
+.mpc-mcq-progress .bar .fill{height:100%;width:0%;background:linear-gradient(90deg,#4a7a6a,#6aaa8a);border-radius:5px;transition:width .3s}
+.mpc-mcq-progress .label{font-size:12px;color:#666;margin-top:4px;text-align:center}
+.mpc-mcq-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0f0f0;font-size:13px}
+.mpc-mcq-row .idx{flex-shrink:0;width:28px;color:#999;font-weight:600}
+.mpc-mcq-row .text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#333}
+.mpc-mcq-row .status{flex-shrink:0;font-size:13px;font-weight:600}
+.mpc-mcq-row .status.s{color:#4caf50}
+.mpc-mcq-row .status.f{color:#f44336}
+.mpc-mcq-row .status.g{color:#ff9800}
+.mpc-mcq-row .status.p{color:#bbb}
 @media(max-width:600px){.mpc-grid{grid-template-columns:1fr}.mpc-course-card{flex-direction:column;align-items:stretch;gap:8px}.mpc-course-card .actions{justify-content:flex-end}.mpc-field-header{font-size:13px;padding:8px 10px}.mpc-field-content{font-size:14px}.mpc-nav button{padding:8px 16px;font-size:13px;min-height:44px}}
 
 /* v22: 语言宫殿 */
@@ -6148,9 +6165,9 @@ artHtml = '<div class="cloze-text" id="clozeText">'+renderClozeText(article.t, a
 var _marksArr = (state.textMarks && state.textMarks[state.activeCourse] && state.textMarks[state.activeCourse][article.id]) || [];
 var _markedText = _marksArr.length ? applyTextMarks(article.t, _marksArr) : null;
 if (pegImgHtml) {
-artHtml = '<div class="mpc-original-wrap mpc-article-peg-wrap"><div class="mpc-original-text mpc-article-text" style="display:flex;align-items:center;line-height:1.9;font-size:var(--fs-article, 18px);padding:16px;min-width:0"><div style="flex:1;min-width:0">'+(_markedText || simpleMarkdown(article.t))+'</div></div><div class="mpc-original-peg' + (state._pegImagesHidden ? ' peg-global-hidden' : '') + '" id="artPegColumn_' + article.id + '">' + pegImgHtml + '</div></div>';
+artHtml = '<div class="mpc-original-wrap mpc-article-peg-wrap"><div class="mpc-original-text mpc-article-text" style="display:flex;align-items:center;line-height:1.9;font-size:var(--fs-article, 18px);padding:16px;min-width:0"><div style="flex:1;min-width:0">'+(_markedText || (currentMode === 'sequential' || currentMode === 'random' ? sentenceMarkdown(article.t) : simpleMarkdown(article.t)))+'</div></div><div class="mpc-original-peg' + (state._pegImagesHidden ? ' peg-global-hidden' : '') + '" id="artPegColumn_' + article.id + '">' + pegImgHtml + '</div></div>';
 } else {
-artHtml = '<div class="article-text">'+(_markedText || simpleMarkdown(article.t))+'</div>';
+artHtml = '<div class="article-text">'+(_markedText || (currentMode === 'sequential' || currentMode === 'random' ? sentenceMarkdown(article.t) : simpleMarkdown(article.t)))+'</div>';
 }
 }
 // 展示模式
@@ -10988,7 +11005,7 @@ if (options.prompt) msgs.push({role:'user', content: options.prompt});
 return fetchWithTimeout(endpoint, {
 method: 'POST',
 headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
-body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature, search: options.search ? true : undefined})
+body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature, search: options.search ? true : undefined, response_format: options.responseFormat})
 }, timeout).then(function(r) {
 if (!r.ok) return r.text().then(function(t) { var err = new Error(t); err.status = r.status; throw err; });
 return r.json();
@@ -20898,7 +20915,7 @@ html += '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">✅ 
 html += '<button onclick="generateItemMcq(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;border:1px solid var(--border);border-radius:4px;background:var(--card-bg);cursor:pointer;margin-top:4px">🔄 重新生成</button>';
 } else {
 html += '<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">未生成选择题</div>';
-html += '<button id="mpcItemMcqBtn" onclick="generateItemMcq(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;background:#5a6a8a;color:#fff;border:none;border-radius:4px;cursor:pointer">🤖 生成本题选择题</button>';
+html += '<button id="mpcItemMcqBtn_'+item.id+'" onclick="generateItemMcq(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;background:#5a6a8a;color:#fff;border:none;border-radius:4px;cursor:pointer">🤖 生成本题选择题</button>';
 }
 html += '</div>';
 html += '<div style="text-align:right;margin-top:8px;display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap">';
@@ -21338,6 +21355,158 @@ saveState();
 if (course.items.length === 0) { showToast('✅ 课程已为空'); renderMemoryPalaceList(); }
 else { renderMemoryPalaceCard(courseId); showToast('✅ 已删除'); }
 }
+function showMcqProgressModal(total, courseName) {
+var old = document.getElementById('mpcMcqOverlay');
+if (old) old.remove();
+var overlay = document.createElement('div');
+overlay.id = 'mpcMcqOverlay';
+overlay.className = 'mpc-mcq-overlay';
+var rows = '';
+for (var i = 1; i <= total; i++) {
+rows += '<div class="mpc-mcq-row" id="mcqRow_' + i + '"><span class="idx">#' + i + '</span><span class="text">等待中...</span><span class="status p">\u23f3 \u7b49\u5f85\u4e2d</span></div>';
+}
+overlay.innerHTML = '<div class="mpc-mcq-modal"><div class="header"><span>\ud83e\udd16 \u300c' + escHtml(courseName) + '\u300d\u9009\u62e9\u9898\u751f\u6210\u4e2d</span><span style="font-size:13px;color:#999" id="mcqModalCount">0/' + total + '</span></div><div class="body"><div class="mpc-mcq-progress"><div class="bar"><div class="fill" id="mcqProgressFill"></div></div><div class="label" id="mcqProgressLabel">\u51c6\u5907\u4e2d...</div></div><div id="mcqRowContainer">' + rows + '</div></div><div class="footer" id="mcqModalFooter"><button onclick="closeMcqProgressModal()" style="padding:6px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">\u53d6\u6d88</button></div></div>';
+document.body.appendChild(overlay);
+}
+function updateMcqProgressItem(index, itemText, status, reason) {
+var row = document.getElementById('mcqRow_' + (index + 1));
+if (!row) return;
+var dot = itemText ? itemText.slice(0, 35) : '';
+if (itemText && itemText.length > 35) dot += '...';
+var statusHtml = '', statusCls = '';
+switch (status) {
+case 'generating': statusHtml = '\u23f3 \u751f\u6210\u4e2d'; statusCls = 'g'; break;
+case 'success': statusHtml = '\u2705'; statusCls = 's'; break;
+case 'failed': statusHtml = '\u274c ' + (reason || '\u5931\u8d25'); statusCls = 'f'; break;
+default: statusHtml = '\u23f3 \u7b49\u5f85\u4e2d'; statusCls = 'p';
+}
+row.querySelector('.text').textContent = dot || '\uff08\u7a7a\uff09';
+row.querySelector('.status').className = 'status ' + statusCls;
+row.querySelector('.status').textContent = statusHtml;
+var done = document.querySelectorAll('#mcqRowContainer .status.s,#mcqRowContainer .status.f').length;
+var total = document.querySelectorAll('#mcqRowContainer .mpc-mcq-row').length;
+var fill = document.getElementById('mcqProgressFill');
+var label = document.getElementById('mcqProgressLabel');
+var count = document.getElementById('mcqModalCount');
+if (fill) fill.style.width = (done / total * 100) + '%';
+if (label) label.textContent = done + '/' + total + ' \u5df2\u5b8c\u6210';
+if (count) count.textContent = done + '/' + total;
+}
+function closeMcqProgressModal() {
+var el = document.getElementById('mpcMcqOverlay');
+if (el) el.remove();
+}
+function retryFailedMcqs(courseId) {
+var courses = state.memoryPalaceCourses || [];
+var course = null;
+for (var ci = 0; ci < courses.length; ci++) {
+if (courses[ci].id === courseId) { course = courses[ci]; break; }
+}
+if (!course || !course.items || course.items.length === 0) { showToast('\u274c \u8bfe\u7a0b\u4e3a\u7a7a'); return; }
+var mcqs = state.memoryPalaceMcqs || {};
+var failed = [];
+for (var i = 0; i < course.items.length; i++) {
+var key = courseId + '_' + course.items[i].id;
+if (!mcqs[key]) failed.push(i);
+}
+if (failed.length === 0) { showToast('\u2705 \u6ca1\u6709\u9700\u8981\u91cd\u8bd5\u7684\u9898\u76ee'); return; }
+showMcqProgressModal(failed.length, course.name + '\uff08\u91cd\u8bd5\u5931\u8d25\u9879\uff09');
+var fi = 0;
+function nextFailed() {
+if (fi >= failed.length) {
+state.memoryPalaceMcqs = mcqs;
+saveState();
+var succ = 0;
+for (var si = 0; si < failed.length; si++) { if (mcqs[courseId + '_' + course.items[failed[si]].id]) succ++; }
+var footer = document.getElementById('mcqModalFooter');
+if (footer) {
+footer.innerHTML = '<span style="font-size:13px;color:#666;flex:1">\u91cd\u8bd5\u5b8c\u6210\uff1a\u6210\u529f ' + succ + '/' + failed.length + '</span><button onclick="closeMcqProgressModal()" style="padding:6px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">\u5173\u95ed</button>';
+if (succ < failed.length) {
+footer.innerHTML += '<button onclick="closeMcqProgressModal();retryFailedMcqs(\'' + courseId + '\')" style="padding:6px 16px;border:none;border-radius:6px;background:#ff9800;color:#fff;cursor:pointer;font-size:13px">\ud83d\udd04 \u518d\u8bd5\u5269\u4f59\u5931\u8d25\u9879</button>';
+}
+}
+renderMemoryPalaceList();
+return;
+}
+var idx = failed[fi];
+var item = course.items[idx];
+var key = courseId + '_' + item.id;
+updateMcqProgressItem(fi, item['\u539f\u6587'] || '', 'generating');
+var text = item['\u539f\u6587'] || '';
+var core = item['\u6838\u5fc3\u5185\u5bb9'] || '';
+callAI({
+systemPrompt: '你是一位专业出题专家，深谙测评设计原理，擅长设计能准确诊断学习者理解深度的选择题。\n\n【出题标准】\n1. 每道题必须考查对原文核心概念的真正理解，而非对细节的事实回忆\n2. 干扰项（错误选项）必须基于真实常见的理解偏差或典型错误，具有诊断价值\n3. 各选项文字长度要均衡，正确答案不能总是最长或最短的\n4. 错误选项要有迷惑性，在措辞风格、详细程度上与正确选项相似\n5. 解析需包含：为何正确（正确选项的推理过程）+ 为何错误（各干扰项的典型误解）\n6. 正确答案的索引（0-3）必须随机分布，避免位置偏差\n\n以JSON格式返回：{"question":"问题","options":["A选项","B选项","C选项","D选项"],"answer":<0-3>,"explanation":"解析"}',
+prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请生成选择题。',
+temperature: 0.3,
+maxTokens: 2048,
+responseFormat: {type: "json_object"}
+}).then(function(resp) {
+var _mcqRetries = window._mcqRetries = window._mcqRetries || {};
+var rk = 'retry_' + key;
+var parsed = extractMcqJson(resp);
+if (parsed && parsed.question && parsed.options && parsed.options.length === 4) {
+mcqs[key] = { question: parsed.question, options: parsed.options, answer: parsed.answer, explanation: parsed.explanation || '' };
+updateMcqProgressItem(fi, item['原文'] || '', 'success');
+} else if (!_mcqRetries[rk]) {
+_mcqRetries[rk] = 1;
+callAI({
+systemPrompt: '你是一位专业出题专家，深谙测评设计原理，擅长设计能准确诊断学习者理解深度的选择题。\n\n【出题标准】\n1. 每道题必须考查对原文核心概念的真正理解，而非对细节的事实回忆\n2. 干扰项（错误选项）必须基于真实常见的理解偏差或典型错误，具有诊断价值\n3. 各选项文字长度要均衡，正确答案不能总是最长或最短的\n4. 错误选项要有迷惑性，在措辞风格、详细程度上与正确选项相似\n5. 解析需包含：为何正确（正确选项的推理过程）+ 为何错误（各干扰项的典型误解）\n6. 正确答案的索引（0-3）必须随机分布，避免位置偏差\n\n以JSON格式返回：{"question":"问题","options":["A选项","B选项","C选项","D选项"],"answer":<0-3>,"explanation":"解析"}',
+prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请重新生成选择题，必须输出有效的JSON格式。',
+temperature: 0.3,
+maxTokens: 2048,
+responseFormat: {type: "json_object"}
+}).then(function(r2) {
+var p2 = extractMcqJson(r2);
+if (p2 && p2.question && p2.options && p2.options.length === 4) {
+mcqs[key] = { question: p2.question, options: p2.options, answer: p2.answer, explanation: p2.explanation || '' };
+updateMcqProgressItem(fi, item['原文'] || '', 'success');
+} else {
+updateMcqProgressItem(fi, item['原文'] || '', 'failed', 'JSON解析失败');
+}
+fi++;
+setTimeout(nextFailed, 300);
+}).catch(function(e) {
+updateMcqProgressItem(fi, item['原文'] || '', 'failed', e.message || '网络错误');
+fi++;
+setTimeout(nextFailed, 300);
+});
+return;
+} else {
+updateMcqProgressItem(fi, item['原文'] || '', 'failed', 'JSON解析失败');
+}
+fi++;
+setTimeout(nextFailed, 300);
+}).catch(function(err) {
+updateMcqProgressItem(fi, item['原文'] || '', 'failed', err.message || '网络错误');
+fi++;
+setTimeout(nextFailed, 300);
+});
+}
+nextFailed();
+}
+
+function extractMcqJson(text) {
+	if (!text) return null;
+	var s = text;
+	// strip markdown code fences
+	s = s.replace(/```[\s\S]*?```/g, function(m) { return m.replace(/```\w*\n?/g, '').replace(/\n?```/g, ''); });
+	// strip everything before first { and after last }
+	var start = s.indexOf('{');
+	var end = s.lastIndexOf('}');
+	if (start === -1 || end === -1 || end <= start) return null;
+	s = s.substring(start, end + 1);
+	// fix trailing commas before } and ]
+	s = s.replace(/,(\s*[}\]])/g, '$1');
+	try {
+		return JSON.parse(s);
+	} catch(e) {
+		// try harder: unescape common issues
+		try {
+			s = s.replace(/\\(?!["\\/bfnrtu])/g, '\\\\');
+			return JSON.parse(s);
+		} catch(e2) { return null; }
+	}
+}
 function generateItemMcq(courseId, itemId) {
 var courses = state.memoryPalaceCourses || [];
 var course = null;
@@ -21350,19 +21519,20 @@ for (var ii = 0; ii < course.items.length; ii++) {
 if (course.items[ii].id === itemId) { item = course.items[ii]; break; }
 }
 if (!item) return;
-var btn = document.getElementById('mpcItemMcqBtn');
+var btn = document.getElementById('mpcItemMcqBtn_' + itemId);
 if (btn) { btn.textContent = '⏳ 生成中...'; btn.disabled = true; }
 var text = item['原文'] || '';
 var core = item['核心内容'] || '';
+var retriesItem = 2;
+function tryGenItem() {
 callAI({
 systemPrompt: '你是一位专业出题专家，深谙测评设计原理，擅长设计能准确诊断学习者理解深度的选择题。\n\n【出题标准】\n1. 每道题必须考查对原文核心概念的真正理解，而非对细节的事实回忆\n2. 干扰项（错误选项）必须基于真实常见的理解偏差或典型错误，具有诊断价值\n3. 各选项文字长度要均衡，正确答案不能总是最长或最短的\n4. 错误选项要有迷惑性，在措辞风格、详细程度上与正确选项相似\n5. 解析需包含：为何正确（正确选项的推理过程）+ 为何错误（各干扰项的典型误解）\n6. 正确答案的索引（0-3）必须随机分布，避免位置偏差\n\n以JSON格式返回：{"question":"问题","options":["A选项","B选项","C选项","D选项"],"answer":<0-3>,"explanation":"解析"}',
 prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请生成选择题。',
 temperature: 0.3,
-maxTokens: 512
+maxTokens: 2048,
+responseFormat: {type: "json_object"}
 }).then(function(resp) {
-try {
-var m = resp.match(/\{[\s\S]*\}/);
-var parsed = m ? JSON.parse(m[0]) : null;
+var parsed = extractMcqJson(resp);
 if (parsed && parsed.question && parsed.options && parsed.options.length === 4) {
 var mcqs = state.memoryPalaceMcqs || {};
 mcqs[courseId + '_' + itemId] = { question: parsed.question, options: parsed.options, answer: parsed.answer, explanation: parsed.explanation || '' };
@@ -21371,13 +21541,16 @@ saveState();
 renderMemoryPalaceCard(courseId);
 return;
 }
-} catch(e) {}
+if (retriesItem > 0) { retriesItem--; setTimeout(tryGenItem, 500); return; }
 showToast('❌ AI 生成失败，请重试');
 if (btn) { btn.textContent = '🤖 生成本题选择题'; btn.disabled = false; }
 }).catch(function(err) {
+if (retriesItem > 0) { retriesItem--; setTimeout(tryGenItem, 500); return; }
 showToast('❌ ' + (err.message || 'AI 生成失败'));
 if (btn) { btn.textContent = '🤖 生成本题选择题'; btn.disabled = false; }
 });
+}
+tryGenItem();
 }
 function generateCourseMcqs(courseId) {
 var courses = state.memoryPalaceCourses || [];
@@ -21386,7 +21559,7 @@ for (var ci = 0; ci < courses.length; ci++) {
 if (courses[ci].id === courseId) { course = courses[ci]; break; }
 }
 if (!course || !course.items || course.items.length === 0) {
-showToast('❌ 课程为空');
+showToast('\u274c \u8bfe\u7a0b\u4e3a\u7a7a');
 return;
 }
 var mcqs = state.memoryPalaceMcqs || {};
@@ -21395,54 +21568,86 @@ for (var ei = 0; ei < course.items.length; ei++) {
 if (mcqs[courseId + '_' + course.items[ei].id]) existingCount++;
 }
 var remain = course.items.length - existingCount;
-var msg = '为「' + course.name + '」中 ' + course.items.length + ' 条内容逐条生成选择题';
-if (existingCount > 0) {
-msg += '（已有 ' + existingCount + ' 道，尚余 ' + remain + ' 道未生成）';
-}
-msg += '，确定开始吗？';
-if (!confirm(msg)) return;
+var msg = '\u4e3a\u300c' + course.name + '\u300d\u4e2d ' + course.items.length + ' \u6761\u5185\u5bb9\u9010\u6761\u751f\u6210\u9009\u62e9\u9898';
+if (existingCount > 0) msg += '\uff08\u5df2\u6709 ' + existingCount + ' \u9053\uff0c\u5c1a\u4f59 ' + remain + ' \u9053\u672a\u751f\u6210\uff09';
+if (!confirm(msg + '\uff0c\u786e\u5b9a\u5f00\u59cb\u5417\uff1f')) return;
+showMcqProgressModal(course.items.length, course.name);
 var idx = 0;
 var total = course.items.length;
+var successCount = 0;
 function nextItem() {
 if (idx >= total) {
 state.memoryPalaceMcqs = mcqs;
 saveState();
-var finalSuccess = 0;
-for (var si = 0; si < total; si++) {
-if (mcqs[courseId + '_' + course.items[si].id]) finalSuccess++;
+var footer = document.getElementById('mcqModalFooter');
+if (footer) {
+var sumHtml = '<span style="font-size:13px;color:#666;flex:1">\u5df2\u751f\u6210 ' + successCount + '/' + total + ' \u9053' + (total - successCount > 0 ? '\uff0c' + (total - successCount) + ' \u9053\u5931\u8d25' : '') + '</span><button onclick="closeMcqProgressModal()" style="padding:6px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">\u5173\u95ed</button>';
+if (successCount < total) {
+sumHtml += '<button onclick="closeMcqProgressModal();retryFailedMcqs(\'' + courseId + '\')" style="padding:6px 16px;border:none;border-radius:6px;background:#ff9800;color:#fff;cursor:pointer;font-size:13px">\ud83d\udd04 \u91cd\u8bd5\u5931\u8d25\u9879</button>';
 }
-var finalFail = total - finalSuccess;
-if (finalFail > 0) {
-showToast('⚠️ 已生成 ' + finalSuccess + '/' + total + ' 道，' + finalFail + ' 道失败，可再次点击生成重试');
+footer.innerHTML = sumHtml;
+}
+if (total - successCount > 0) {
+showToast('\u26a0\ufe0f \u5df2\u751f\u6210 ' + successCount + '/' + total + ' \u9053\uff0c' + (total - successCount) + ' \u9053\u5931\u8d25');
 } else {
-showToast('✅ 已为全部 ' + total + ' 条生成选择题！');
+showToast('\u2705 \u5df2\u4e3a\u5168\u90e8 ' + total + ' \u6761\u751f\u6210\u9009\u62e9\u9898\uff01');
 }
 renderMemoryPalaceList();
 return;
 }
 var item = course.items[idx];
 var key = courseId + '_' + item.id;
-if (mcqs[key]) { idx++; nextItem(); return; }
-showToast('⏳ 正在生成第 ' + (idx + 1) + '/' + total + ' 题...');
-var text = item['原文'] || '';
-var core = item['核心内容'] || '';
+if (mcqs[key]) { updateMcqProgressItem(idx, item['\u539f\u6587'] || '', 'success'); idx++; successCount++; nextItem(); return; }
+updateMcqProgressItem(idx, item['\u539f\u6587'] || '', 'generating');
+var text = item['\u539f\u6587'] || '';
+var core = item['\u6838\u5fc3\u5185\u5bb9'] || '';
 callAI({
 systemPrompt: '你是一位专业出题专家，深谙测评设计原理，擅长设计能准确诊断学习者理解深度的选择题。\n\n【出题标准】\n1. 每道题必须考查对原文核心概念的真正理解，而非对细节的事实回忆\n2. 干扰项（错误选项）必须基于真实常见的理解偏差或典型错误，具有诊断价值\n3. 各选项文字长度要均衡，正确答案不能总是最长或最短的\n4. 错误选项要有迷惑性，在措辞风格、详细程度上与正确选项相似\n5. 解析需包含：为何正确（正确选项的推理过程）+ 为何错误（各干扰项的典型误解）\n6. 正确答案的索引（0-3）必须随机分布，避免位置偏差\n\n以JSON格式返回：{"question":"问题","options":["A选项","B选项","C选项","D选项"],"answer":<0-3>,"explanation":"解析"}',
 prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请生成选择题。',
 temperature: 0.3,
-maxTokens: 512
+maxTokens: 2048,
+responseFormat: {type: "json_object"}
 }).then(function(resp) {
-try {
-var m = resp.match(/\{[\s\S]*\}/);
-var parsed = m ? JSON.parse(m[0]) : null;
+var _mcqRetries = window._mcqRetries = window._mcqRetries || {};
+var rk = 'mcq_' + key;
+var parsed = extractMcqJson(resp);
 if (parsed && parsed.question && parsed.options && parsed.options.length === 4) {
 mcqs[key] = { question: parsed.question, options: parsed.options, answer: parsed.answer, explanation: parsed.explanation || '' };
-}
-} catch(e) {}
+updateMcqProgressItem(idx, item['原文'] || '', 'success');
+successCount++;
 idx++;
 setTimeout(nextItem, 300);
+} else if (!_mcqRetries[rk]) {
+_mcqRetries[rk] = 1;
+callAI({
+systemPrompt: '你是一位专业出题专家，深谙测评设计原理，擅长设计能准确诊断学习者理解深度的选择题。\n\n【出题标准】\n1. 每道题必须考查对原文核心概念的真正理解，而非对细节的事实回忆\n2. 干扰项（错误选项）必须基于真实常见的理解偏差或典型错误，具有诊断价值\n3. 各选项文字长度要均衡，正确答案不能总是最长或最短的\n4. 错误选项要有迷惑性，在措辞风格、详细程度上与正确选项相似\n5. 解析需包含：为何正确（正确选项的推理过程）+ 为何错误（各干扰项的典型误解）\n6. 正确答案的索引（0-3）必须随机分布，避免位置偏差\n\n以JSON格式返回：{"question":"问题","options":["A选项","B选项","C选项","D选项"],"answer":<0-3>,"explanation":"解析"}',
+prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请重新生成选择题，必须输出有效的JSON格式，不要包含其他文字。',
+temperature: 0.3,
+maxTokens: 2048,
+responseFormat: {type: "json_object"}
+}).then(function(r2) {
+var p2 = extractMcqJson(r2);
+if (p2 && p2.question && p2.options && p2.options.length === 4) {
+mcqs[key] = { question: p2.question, options: p2.options, answer: p2.answer, explanation: p2.explanation || '' };
+updateMcqProgressItem(idx, item['原文'] || '', 'success');
+successCount++;
+} else {
+updateMcqProgressItem(idx, item['原文'] || '', 'failed', 'JSON解析失败');
+}
+idx++;
+setTimeout(nextItem, 300);
+}).catch(function(e) {
+updateMcqProgressItem(idx, item['原文'] || '', 'failed', e.message || '网络错误');
+idx++;
+setTimeout(nextItem, 300);
+});
+} else {
+updateMcqProgressItem(idx, item['原文'] || '', 'failed', 'JSON解析失败');
+idx++;
+setTimeout(nextItem, 300);
+}
 }).catch(function(err) {
-showToast('❌ 第 ' + (idx + 1) + ' 题生成失败: ' + (err.message || '未知错误'));
+updateMcqProgressItem(idx, item['原文'] || '', 'failed', err.message || '网络错误');
 idx++;
 setTimeout(nextItem, 300);
 });
@@ -21460,10 +21665,7 @@ showToast('❌ 课程为空，无法部署');
 return;
 }
 var courseName = course.name;
-try {
-var allCourses = JSON.parse(safeGetItem(COURSES_DATA_KEY) || '{}');
-} catch(e) { var allCourses = {}; }
-if (allCourses[courseName]) {
+if (StorageManager.loadCourse(courseName)) {
 if (!confirm('课程「' + courseName + '」已存在，是否覆盖？')) return;
 }
 var mcqs = state.memoryPalaceMcqs || {};
@@ -21486,11 +21688,10 @@ e: mcq ? mcq.explanation : e,
 p: p
 });
 }
-allCourses[courseName] = {
+StorageManager.saveCourse(courseName, {
 chapters: [courseName],
 articles: articles
-};
-safeSetItem(COURSES_DATA_KEY, JSON.stringify(allCourses));
+});
 showToast('✅ 已部署! 正在切换到「' + courseName + '」');
 switchCourse(courseName);
 }
@@ -22799,7 +23000,10 @@ result.push('<p>' + p.replace(/\n/g, '<br>') + '</p>');
 }
 return result.join('\n');
 }
-
+function sentenceMarkdown(text) {
+var s = text.replace(/([。！？；;?])/g, '$1\n');
+return simpleMarkdown(s);
+}
 function _enhanceContent(html) {
 	if (!html) return html;
 	// *** critical emphasis (red)
