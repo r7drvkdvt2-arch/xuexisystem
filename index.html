@@ -33389,7 +33389,13 @@ var STEP_MODES = {
   ind:{steps:['market','lifecycle','chain','landscape','pest','profit'],active:function(){return window._indActiveStep||'market';},sw:function(id){switchIndStep(id);}},
   acu:{steps:['meridian','points','location','needle','deqi','aftercare'],active:function(){return window._acuActiveStep||null;},sw:function(id){switchAcuStep(id);}},
   decomp:{steps:['conclusion','tasks','path','division','acceptance','deliverables'],active:function(){return window._decompActiveStep||null;},sw:function(id){switchDecompStep(id);}},
-  cyber:{steps:['modeling','controllability','observability','identification','correctability','achievability'],active:function(){return _cyberActiveStep||'modeling';},sw:function(id){switchCyberStep(id);}}
+  cyber:{steps:['modeling','controllability','observability','identification','correctability','achievability'],active:function(){return _cyberActiveStep||'modeling';},sw:function(id){switchCyberStep(id);}},
+  sz:{steps:['know','plan','resource','strength','creative','adapt'],active:function(){return window._szActiveStep||'know';},sw:function(id){switchSzStep(id);}},
+  qm:{steps:['id','see','mind','risk','break','shield'],active:function(){return window._qmActiveStep||'id';},sw:function(id){switchQmStep(id);}},
+  zh:{steps:['read','frame','emotion','logic','object','action'],active:function(){return window._zhActiveStep||'read';},sw:function(id){switchZhStep(id);}},
+  mou:{steps:['assess','design','superior','medium','inferior','venom'],active:function(){return window._mouActiveStep||'assess';},sw:function(id){switchMouStep(id);}},
+  law:{steps:['facts','laws','risk','strategy','evidence','insight'],active:function(){return window._lawActiveDim||'facts';},sw:function(id){switchLawDim(id);}},
+  painpoint:{steps:['scan','rank','solve','money'],active:function(){return window._ppActiveDim||'scan';},sw:function(id){switchPPDim(id);}}
 };
 var _swipeData = {startX:0, startY:0, startTime:0, swiping:false, locked:false};
 function isTouchDevice() {
