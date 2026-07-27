@@ -33407,7 +33407,7 @@ function swipeStep(dir) {
   if (t < 0 || t >= steps.length) return;
   cfg.sw(steps[t]);
   // reset visual drag offset from _onMove
-  var a = ('contentArea');
+  var a = $id('contentArea');
   if (a) { a.style.transition = 'transform .2s ease'; a.style.transform = ''; }
 }
 function getAdjacentPanel(dir) {
