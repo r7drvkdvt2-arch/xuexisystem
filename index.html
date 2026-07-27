@@ -925,6 +925,9 @@ body{background:#fff!important;color:#000!important}
 @page{margin:1.5cm}
 a[href]:after{content:none!important}
 }
+/* 手势翻页 - 触屏滑动切换板块 */
+.container.swipe-lock{overflow:hidden!important}
+#contentArea.swipe-animating{transition:transform .28s cubic-bezier(.4,0,.2,1);will-change:transform}
 /* AI 加载覆盖层 */
 .ai-loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:99999;align-items:center;justify-content:center}
 .ai-loading-overlay.show{display:flex}
@@ -2133,6 +2136,59 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .news-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
 .news-history-del:hover{background:var(--bg-active);color:var(--danger)}
 .news-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
+.pp-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#2a1a0a,#4a2a1a);border-radius:12px;margin-bottom:16px;color:#f0e0c0}
+.pp-hero-icon{font-size:36px;margin-bottom:6px}
+.pp-hero-title{font-size:20px;font-weight:700;letter-spacing:2px}
+.pp-hero-sub{font-size:13px;opacity:.8;margin-top:4px}
+.pp-input-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.pp-topics-label{font-size:14px;font-weight:600;margin-bottom:8px}
+.pp-topic-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:30px}
+.pp-topic-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:14px;font-size:12px;cursor:pointer;border:1px solid #b8860b;background:#2a1a0a;color:#f0d8a0;transition:all .2s;user-select:none}
+.pp-topic-chip:hover{background:#3a2a1a}
+.dark-mode .pp-topic-chip{background:#1a0a00;border-color:#d4a030;color:#e0c890}
+.pp-topic-input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text);outline:none;box-sizing:border-box;min-height:36px}
+.pp-topic-input:focus{border-color:#d4a030}
+.pp-btn{padding:10px 0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;min-height:42px;white-space:nowrap;line-height:1.4;flex:1}
+.pp-btn-primary{background:linear-gradient(135deg,#b8860b,#8a6a10);color:#f0e8d0}
+.pp-btn-primary:hover{background:linear-gradient(135deg,#d4a030,#b8860b)}
+.pp-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
+.pp-btn-outline:hover{background:var(--bg-hover)}
+.pp-section{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.pp-section-hdr{font-size:14px;font-weight:600;padding:4px 0;display:flex;justify-content:space-between;align-items:center}
+.pp-dim-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.pp-dim-card{flex:1;text-align:center;padding:14px 10px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;user-select:none}
+.pp-dim-card:hover{background:var(--bg-hover)}
+.pp-dim-card.active{background:#2a1a0a;border-color:#d4a030;color:#f0e0c0}
+.dark-mode .pp-dim-card.active{background:#3a2a1a;border-color:#d4a030;color:#f0e0c0}
+.pp-dim-icon{font-size:24px;margin-bottom:4px}
+.pp-dim-label{font-size:16px;font-weight:700}
+.pp-dim-desc{font-size:11px;opacity:.7;margin-top:2px}
+.pp-loading{display:none;align-items:center;justify-content:center;gap:12px;padding:30px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+.pp-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:#d4a030;border-radius:50%;animation:pp-spin .8s linear infinite}
+@keyframes pp-spin{to{transform:rotate(360deg)}}
+#ppResult{display:block;margin-bottom:16px;padding:12px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;min-height:60px}
+.pp-output{font-size:14px;line-height:1.9;color:var(--text);padding:4px 0}
+.pp-output h3{font-size:16px;font-weight:700;margin:16px 0 8px;color:#b8860b}
+.dark-mode .pp-output h3{color:#d4a030}
+.pp-output h4{font-size:14px;font-weight:600;margin:12px 0 6px;color:#8a6a20}
+.dark-mode .pp-output h4{color:#b8860b}
+.pp-output strong{color:#8a6a20}
+.dark-mode .pp-output strong{color:#d4a030}
+.pp-output pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;overflow-x:auto;font-size:13px;margin:8px 0}
+.pp-output code{font-family:monospace;font-size:13px}
+.pp-output ul,.pp-output ol{margin:8px 0;padding-left:20px}
+.pp-output li{margin:4px 0}
+.pp-output blockquote{border-left:3px solid #b8860b;margin:8px 0;padding:4px 12px;color:var(--text-secondary);background:rgba(184,134,11,0.06)}
+.pp-output hr{border:none;border-top:1px solid var(--border);margin:12px 0}
+.pp-empty{color:var(--text-muted);font-size:13px;text-align:center;padding:12px}
+.pp-history-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border-light);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:background .2s}
+.pp-history-item:hover{background:var(--bg-hover)}
+.pp-history-main{flex:1;overflow:hidden}
+.pp-history-date{font-size:11px;color:var(--text-muted)}
+.pp-history-topics{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
+.pp-history-del:hover{background:var(--bg-active);color:var(--danger)}
+.pp-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
 
 .fin-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#1a1a0a,#3a2a0a);border-radius:12px;margin-bottom:16px;color:#f0e8d0}
 .fin-hero-icon{font-size:36px;margin-bottom:6px}
@@ -4559,6 +4615,47 @@ else{n.style.display='none';if(h)h.style.display='none';}
 <div style="font-size:10px;color:#8a7a6a;margin-top:4px">使用 Cloudflare Worker 代管 API Key，无需自行配置</div>
 </div>
 </div>
+<div class="ai-config-bar" id="mediaGenToggle" onclick="toggleMediaGenPanel()" style="cursor:pointer;padding:10px 12px;margin:6px 0 2px;background:#f0ece4;border-radius:8px;display:flex;align-items:center;gap:8px;user-select:none;-webkit-user-select:none;-moz-user-select:none">
+<span class="text-base">🎨 图片/视频生成</span>
+<span style="margin-left:auto;font-size:11px;color:#8a7a6a" id="mediaGenArrow">▶</span>
+</div>
+<div id="mediaGenConfigArea" style="display:none;padding:12px 14px;margin:0 0 6px;background:#f8f4ee;border:1px solid #e0d8c8;border-radius:8px">
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+<span style="font-size:12px;color:#6b4a2a;white-space:nowrap">📡 服务商</span>
+<select id="mediaGenProviderSelect" onchange="onMediaGenProviderSelect(this.value)" style="flex:1;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--card-bg);color:var(--text)">
+<option value="off">关闭</option>
+<option value="zhipu">智谱AI (CogView-4)</option>
+<option value="volc">火山引擎 (Seedream)</option>
+</select>
+</div>
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+<span style="font-size:12px;color:#6b4a2a;white-space:nowrap">🔑 API密钥</span>
+<input id="mediaGenApiKeyInput" type="password" style="flex:1;padding:5px 8px;border:1px solid #d4c8b8;border-radius:4px;font-size:13px;background:#fff;color:#2c1810;min-width:0" placeholder="智谱/火山引擎 API Key">
+</div>
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+<span style="font-size:12px;color:#6b4a2a;white-space:nowrap">🧠 模型</span>
+<select id="mediaGenModelSelect" style="flex:1;padding:4px 6px;border:1px solid #d4c8b8;border-radius:4px;font-size:12px;background:#fff;color:#2c1810">
+<option value="cogview-3-flash">cogview-3-flash（免费）</option>
+<option value="cogview-4">cogview-4</option>
+<option value="cogview-4-250304">cogview-4-250304</option>
+</select>
+<span style="font-size:12px;color:#6b4a2a;white-space:nowrap">📐 尺寸</span>
+<select id="mediaGenSizeSelect" style="padding:4px 6px;border:1px solid #d4c8b8;border-radius:4px;font-size:12px;background:#fff;color:#2c1810">
+<option value="1024x1024">1024x1024</option>
+<option value="768x1344">768x1344（竖屏）</option>
+<option value="1344x768">1344x768（横屏）</option>
+<option value="1440x720">1440x720（横屏）</option>
+</select>
+</div>
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+<span style="font-size:12px;color:#6b4a2a;white-space:nowrap">📡 接口</span>
+<input id="mediaGenEndpointInput" style="flex:1;min-width:120px;padding:5px 8px;border:1px solid #d4c8b8;border-radius:4px;font-size:12px;background:#fff;color:#2c1810" placeholder="https://open.bigmodel.cn/api/paas/v4/images/generations">
+</div>
+<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+<button class="ai-test-btn" onclick="testMediaGenConnection()">🔌 测试连接</button>
+<span id="mediaGenTestResult" style="font-size:12px;margin-left:8px"></span>
+</div>
+</div>
 <div class="ai-config-bar" id="licenseExpToggle" onclick="toggleLicensePanel()" style="cursor:pointer;padding:10px 12px;margin:6px 0 2px;background:#f0ece4;border-radius:8px;display:flex;align-items:center;gap:8px;user-select:none;-webkit-user-select:none;-moz-user-select:none">
 <span class="text-base">🔑 许可证</span>
 <span style="margin-left:auto;font-size:11px;color:#8a7a6a" id="licenseExpArrow">▶</span>
@@ -5773,6 +5870,13 @@ memoryPalaceFieldInteracted: false,  // 用户是否手动操作过折叠
 memoryPalaceFieldOrder: null,  // 字段显示顺序，null=使用默认顺序
 memoryPalaceAiQuestions: {},  // AI 生成的问答题缓存 {courseId_itemId: {question,answer}}
 memoryPalaceMcqs: {},  // AI 生成的选择题缓存 {courseId_itemId: {question,options,answer,explanation}}
+	memoryPalacePlainExpls: {},  // AI 生成的白话解析缓存 {courseId_itemId: {explanation}}
+	memoryPalaceScenes: {},
+	mediaGenProvider: 'off',
+	mediaGenApiKey: '',
+	mediaGenModel: 'cogview-4',
+	mediaGenEndpoint: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
+	mediaGenSize: '1024x1024',      // AI 生成的记忆宫殿场景缓存 {courseId_itemId: {scene,keywords}}
 // v14: 付费系统
 licenseType: 'free',
 licenseKey: '',
@@ -5820,6 +5924,8 @@ pegsetScenes: [],
 		newsSettings: {},
 		tavilyApiKey: '',
 		newsTopics: [],
+		ppSessions: [],
+		ppSettings: { targetAreas: ['远程办公','宠物经济','亲子教育'], autoGenerateQueries: true },
 		ideaSettings: {},
 		finSessions: [],
 		finSettings: {},
@@ -10213,8 +10319,10 @@ else if (mode==='viral') renderViralPanel();
 		else if (mode==='cyber') renderCyberPanel();
 			else if (mode==='acu') renderAcuPanel();
 			else if (mode==='decomp') renderDecompPanel();
+			else if (mode==='painpoint') renderPainPointPanel();
 else renderStats();
 updateUI();
+if (!window._panelSwipeInit) { initPanelSwipe(); window._panelSwipeInit = true; }
 } catch(e) {
 console.error("switchMode error:", e, "mode:", mode);
 showToast("⚠️ 该功能暂时不可用，但不影响其他功能");
@@ -11023,6 +11131,32 @@ if (!text) text = '生成失败：API 返回空结果';
 return text;
 });
 }
+
+function callMediaGenAPI(prompt) {
+var provider = state.mediaGenProvider || 'off';
+if (provider === 'off') return Promise.reject(new Error('图片生成未启用，请在设置中配置'));
+var key = state.mediaGenApiKey || '';
+if (!key) return Promise.reject(new Error('请配置图片生成 API Key'));
+var ep = state.mediaGenEndpoint || 'https://open.bigmodel.cn/api/paas/v4/images/generations';
+var model = state.mediaGenModel || 'cogview-4';
+var size = state.mediaGenSize || '1024x1024';
+return fetchWithTimeout(ep, {
+method: 'POST',
+headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
+body: JSON.stringify({model:model, prompt:prompt, size:size})
+}, 60000).then(function(r){
+if (!r.ok) return r.text().then(function(t){ var e=new Error(t); e.status=r.status; throw e; });
+return r.json();
+}).then(function(data){
+if (data && data.data && data.data[0] && data.data[0].url) {
+return data.data[0].url;
+}
+if (data && data.data && data.data[0] && data.data[0].b64_json) {
+return 'data:image/png;base64,' + data.data[0].b64_json;
+}
+throw new Error('API 返回格式异常');
+});
+}
 // ===== SSE 流式读取（aiApiCallStream 和 aiApiCallViaProxyStream 共享） =====
 function readSSEStream(response, onChunk) {
 var reader = response.body.getReader();
@@ -11290,6 +11424,16 @@ area.style.display = show ? '' : 'none';
 arrow.textContent = show ? '▼' : '▶';
 }
 }
+
+function toggleMediaGenPanel() {
+var area = document.getElementById('mediaGenConfigArea');
+var arrow = document.getElementById('mediaGenArrow');
+if (area && arrow) {
+var show = area.style.display === 'none';
+area.style.display = show ? '' : 'none';
+arrow.textContent = show ? '▼' : '▶';
+}
+}
 function toggleLicenseSwitch(enabled) {
 state.licenseEnabled = enabled;
 saveState();
@@ -11306,6 +11450,61 @@ showToast('许可功能已关闭');
 // ===== Feature Gate =====
 function checkProFeature(source) {
 return true;
+}
+
+function onMediaGenProviderSelect(provider) {
+state.mediaGenProvider = provider;
+saveState();
+var ep = document.getElementById('mediaGenEndpointInput');
+var ms = document.getElementById('mediaGenModelSelect');
+if (provider === 'off') { if (ep) ep.value = ''; }
+else if (provider === 'zhipu') {
+if (ep) ep.value = 'https://open.bigmodel.cn/api/paas/v4/images/generations';
+if (ms) { ms.innerHTML = '<option value="cogview-3-flash">cogview-3-flash（免费）</option><option value="cogview-4">cogview-4</option><option value="cogview-4-250304">cogview-4-250304</option>'; ms.value = 'cogview-3-flash'; }
+state.mediaGenEndpoint = ep ? ep.value : state.mediaGenEndpoint;
+state.mediaGenModel = ms ? ms.value : state.mediaGenModel;
+} else if (provider === 'volc') {
+if (ep) ep.value = 'https://ark.cn-beijing.volces.com/api/v3/images/generations';
+if (ms) { ms.innerHTML = '<option value="seedream-5-0-pro-260628">seedream-5-0-pro-260628</option>'; ms.value = 'seedream-5-0-pro-260628'; }
+state.mediaGenEndpoint = ep ? ep.value : state.mediaGenEndpoint;
+state.mediaGenModel = ms ? ms.value : state.mediaGenModel;
+}
+saveState();
+}
+
+function initMediaGenConfig() {
+var sel = document.getElementById('mediaGenProviderSelect');
+var keyInp = document.getElementById('mediaGenApiKeyInput');
+if (keyInp && state.mediaGenApiKey) keyInp.value = state.mediaGenApiKey;
+if (sel && state.mediaGenProvider) sel.value = state.mediaGenProvider;
+if (sel) onMediaGenProviderSelect(sel.value);
+var ep = document.getElementById('mediaGenEndpointInput');
+if (ep && state.mediaGenEndpoint) ep.value = state.mediaGenEndpoint;
+var ms = document.getElementById('mediaGenModelSelect');
+if (ms && state.mediaGenModel) ms.value = state.mediaGenModel;
+var sz = document.getElementById('mediaGenSizeSelect');
+if (sz && state.mediaGenSize) sz.value = state.mediaGenSize;
+}
+
+function testMediaGenConnection() {
+var btn = document.querySelector('.ai-test-btn[onclick*="testMediaGenConnection"]');
+var resultEl = document.getElementById('mediaGenTestResult');
+if (btn) btn.disabled = true;
+if (resultEl) resultEl.textContent = '⏳ 测试中...';
+var provider = state.mediaGenProvider || 'off';
+if (provider === 'off') { if (resultEl) resultEl.textContent = '⚠️ 请选择服务商'; if (btn) btn.disabled = false; return; }
+var key = state.mediaGenApiKey || '';
+if (!key) { if (resultEl) resultEl.textContent = '⚠️ 请填写 API Key'; if (btn) btn.disabled = false; return; }
+var ep = state.mediaGenEndpoint || '';
+var model = state.mediaGenModel || 'cogview-4';
+saveState();
+callMediaGenAPI('测试连接，请回复“连接成功”').then(function(url) {
+if (resultEl) resultEl.textContent = '✅ 连接成功';
+if (btn) btn.disabled = false;
+}).catch(function(err) {
+if (resultEl) resultEl.textContent = '❌ ' + (err.message || '连接失败');
+if (btn) btn.disabled = false;
+});
 }
 // ===== Upgrade Modal =====
 function showUpgradeModal(source) {
@@ -12056,6 +12255,22 @@ state._palaceImgCache[key] = dataUrl;
 saveState();
 return Promise.resolve('localStorage');
 }
+}
+
+function fetchImageAsBase64(url) {
+return new Promise(function(resolve, reject) {
+var xhr = new XMLHttpRequest();
+xhr.responseType = 'blob';
+xhr.onload = function() {
+var reader = new FileReader();
+reader.onloadend = function() { resolve(reader.result); };
+reader.onerror = reject;
+reader.readAsDataURL(xhr.response);
+};
+xhr.onerror = reject;
+xhr.open('GET', url);
+xhr.send();
+});
 }
 function loadPalaceImage(key) {
 var meta = state._palaceImgMeta || {};
@@ -14698,7 +14913,7 @@ if (proxyEpField && state.aiProxyEndpoint) proxyEpField.value = state.aiProxyEnd
 // 确保 state 与 DOM 一致
 syncAIConfigToState();
 updateAIProviderBadge();
-}
+initMediaGenConfig();}
 function onProviderSelect(provider) {
 state.aiProvider = provider;
 saveState();
@@ -16001,7 +16216,17 @@ if (sc.webdavPass) { var el=document.getElementById('webdavPass'); if(el) el.val
 if (sc.lastSync) { var el=document.getElementById('lastSyncTime'); if(el) el.textContent='\u4e0a\u6b21\u540c\u6b65: '+sc.lastSync; }
 } catch(e){}
 document.addEventListener('change', function(e) {
-if (e.target.id === 'aiApiKeyInput') { state.aiApiKey = e.target.value; if (state.aiKeyDuration && e.target.value) state.aiKeySetAt = Date.now(); saveState(); updateAIKeyCountdown(); }
+if (e.target.id === 'aiApiKeyInput') { state.aiApiKey = e.target.value; if (state.aiKeyDuration && e.target.value) state.aiKeySetAt = Date.now(); saveState(); }
+if (e.target.id === 'mediaGenApiKeyInput') { state.mediaGenApiKey = e.target.value; saveState(); }
+if (e.target.id === 'mediaGenEndpointInput') { state.mediaGenEndpoint = e.target.value; saveState(); }
+if (e.target.id === 'mediaGenModelSelect') { state.mediaGenModel = e.target.value; saveState(); }
+if (e.target.id === 'mediaGenSizeSelect') { state.mediaGenSize = e.target.value; saveState(); }
+if (e.target.id === 'mediaGenProviderSelect') { onMediaGenProviderSelect(e.target.value); }
+if (e.target.id === 'mediaGenApiKeyInput') { state.mediaGenApiKey = e.target.value; saveState(); }
+if (e.target.id === 'mediaGenEndpointInput') { state.mediaGenEndpoint = e.target.value; saveState(); }
+if (e.target.id === 'mediaGenModelSelect') { state.mediaGenModel = e.target.value; saveState(); }
+if (e.target.id === 'mediaGenSizeSelect') { state.mediaGenSize = e.target.value; saveState(); }
+if (e.target.id === 'mediaGenProviderSelect') { onMediaGenProviderSelect(e.target.value); }; updateAIKeyCountdown();
 if (e.target.id === 'aiEndpointInput') { state.aiEndpoint = e.target.value; saveState(); }
 if (e.target.id === 'aiModelSelect') { state.aiModel = e.target.value; saveState(); }
 if (e.target.id === 'aiTranscribeEndpoint') { state.aiTranscribeEndpoint = e.target.value; saveState(); }
@@ -16013,6 +16238,11 @@ if (e.target.id === 'aiApiKeyInput') { state.aiApiKey = e.target.value; if (stat
 if (e.target.id === 'aiEndpointInput') { state.aiEndpoint = e.target.value; saveState(); }
 if (e.target.id === 'aiProxyEndpointField') { state.aiProxyEndpoint = e.target.value; saveState(); }
 if (e.target.id === 'aiTranscribeEndpoint') { state.aiTranscribeEndpoint = e.target.value; saveState(); }
+	if (e.target.id === 'mediaGenApiKeyInput') { state.mediaGenApiKey = e.target.value; saveState(); }
+	if (e.target.id === 'mediaGenEndpointInput') { state.mediaGenEndpoint = e.target.value; saveState(); }
+	if (e.target.id === 'mediaGenModelSelect') { state.mediaGenModel = e.target.value; saveState(); }
+	if (e.target.id === 'mediaGenSizeSelect') { state.mediaGenSize = e.target.value; saveState(); }
+	if (e.target.id === 'mediaGenProviderSelect') { onMediaGenProviderSelect(e.target.value); }
 });
 // ===== v18.1: AI 搜索 + 课程生成 =====
 function renderAISearchPanel() {
@@ -16341,7 +16571,7 @@ var p = '你是一位顶尖学习策略专家。请你分析“' + s.topic + '�
 if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请给出该领域所有专家都一致认同的 **5 个核心思维模型**。这些思维模型应该是：\n1. 该领域最基础、最底层的思考框架\n2. 所有专家都默认使用的分析工具\n3. 能帮助初学者快速建立专家思维\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "models": [\n    {"name": "思维模型名称", "explanation": "详细解释（100-200字）"}\n  ]\n}';
 showAILoading('正在提取核心思维模型...', 'AI正在分析 "' + s.topic + '" 领域的核心思维模型');
-callAI({systemPrompt: '你是一位在目标领域拥有超过20年研究经验的资深教授和学科方法论专家，长期从事该领域的教学与研究工作。\n\n你的核心能力：\n1. 精通该领域的思维模型体系，能从海量知识中提炼最根本的认知框架\n2. 擅长区分"真理解"与"死记硬背"，能剖析一个认知框架为何是底层而非表面的\n3. 对学术界的前沿争论和未解之谜有深入把握，能指出共识与分歧\n\n工作要求：\n1. 每个输出必须体现学者级别的思维深度，而非科普级别的表面介绍\n2. 给出的思维模型必须是该领域专家共同体真正认可的核心框架，而非随意列举\n3. 避免任何泛泛而谈或模板化的套话，每个论断要具体、可验证\n4. 如果某个问题在学术界有不同观点，必须呈现而不是回避单一视角\n5. 每个模型的解释需包含：其核心假设、适用边界、以及与该领域其他模型的关系', prompt: p, temperature: 0.3, maxTokens: 8192, timeout: 120000, taskType: 'education'})
+callAI({systemPrompt: '你是一位在目标领域拥有超过20年研究经验的资深教授和学科方法论专家，长期从事该领域的教学与研究工作。\n\n你的核心能力：\n1. 精通该领域的思维模型体系，能从海量知识中提炼最根本的认知框架\n2. 擅长区分"真理解"与"死记硬背"，能剖析一个认知框架为何是底层而非表面的\n3. 对学术界的前沿争论和未解之谜有深入把握，能指出共识与分歧\n\n工作要求：\n1. 每个输出必须体现学者级别的思维深度，而非科普级别的表面介绍\n2. 给出的思维模型必须是该领域专家共同体真正认可的核心框架，而非随意列举\n3. 避免任何泛泛而谈或模板化的套话，每个论断要具体、可验证\n4. 如果某个问题在学术界有不同观点，必须呈现而不是回避单一视角\n5. 每个模型的解释需包含：其核心假设、适用边界、以及与该领域其他模型的关系', prompt: p, temperature: 0.3, maxTokens: 12288, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return;
@@ -16373,7 +16603,7 @@ var p = '基于“' + s.topic + '”领域，请找出目前专家之间 **争�
 if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "debates": [\n    {"topic": "争论核心问题", "sideA": "观点A标题", "argA": "观点A的最强论据（100-200字）", "sideB": "观点B标题", "argB": "观点B的最强论据（100-200字）"}\n  ]\n}';
 showAILoading('正在探索领域争论...', 'AI正在分析 "' + s.topic + '" 领域的学术争论');
-callAI({systemPrompt: '你是一位治学严谨的学术研究方法论专家，熟悉该领域的主要学术流派、范式演化和关键争论。\n\n你的核心能力：\n1. 精准识别学术共识与分歧的边界，不会将边缘观点当作主流呈现\n2. 擅长剖析争论背后的深层原因：是定义分歧、方法论差异、还是世界观对立\n3. 能评估各派论据的强弱，而非简单地"各打五十大板"\n\n工作要求：\n1. 每个争论焦点的描述必须精确到具体主张和论据，而非含糊的"存在不同看法"\n2. 对于每个观点，需呈现其最强、最有代表性的论据，而非捏造的稻草人\n3. 明确指出哪些问题是已有定论的、哪些仍在争论中\n4. 评估各派观点在学术界的主流程度（是共识？多数派？还是少数派？）', prompt: p, temperature: 0.4, maxTokens: 8192, timeout: 120000, taskType: 'education'})
+callAI({systemPrompt: '你是一位治学严谨的学术研究方法论专家，熟悉该领域的主要学术流派、范式演化和关键争论。\n\n你的核心能力：\n1. 精准识别学术共识与分歧的边界，不会将边缘观点当作主流呈现\n2. 擅长剖析争论背后的深层原因：是定义分歧、方法论差异、还是世界观对立\n3. 能评估各派论据的强弱，而非简单地"各打五十大板"\n\n工作要求：\n1. 每个争论焦点的描述必须精确到具体主张和论据，而非含糊的"存在不同看法"\n2. 对于每个观点，需呈现其最强、最有代表性的论据，而非捏造的稻草人\n3. 明确指出哪些问题是已有定论的、哪些仍在争论中\n4. 评估各派观点在学术界的主流程度（是共识？多数派？还是少数派？）', prompt: p, temperature: 0.4, maxTokens: 12288, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return;
@@ -16404,7 +16634,7 @@ if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "questions": [\n    {"id": 0, "type": "open", "question": "问题描述...", "modelAnswer": "标准的深度理解答案要点"},\n    {"id": 1, "type": "open", "question": "问题描述...", "modelAnswer": "标准的深度理解答案要点（包含评分要点）"}\n  ]\n}';
 var _gen = ++_aiLearnPhaseCGen;
 showAILoading('正在生成深度测试题...', 'AI正在为 "' + s.topic + '" 设计10道深度问答题');
-callAI({systemPrompt: '你是一位教育测评与测量学专家，专长于基于认知层次理论（如Bloom认知分类、SOLO分类法）设计高质量测评工具。\n\n你的核心能力：\n1. 精准区分"事实记忆"与"深层理解"，能设计出直击思维方式而非知识储备的题目\n2. 擅长多维度命题：能从概念理解、应用分析、综合评价等不同认知层次设计题目\n【出题标准】\n1. 每道题必须考查特定认知层次（在题目标注：理解/应用/分析/评价/创造）\n2. 题干表述精确无歧义，不能通过措辞暗示正确选项\n3. 开放题的modelAnswer需包含评分要点和不同层次答案的区分标准\n4. 整套题目应覆盖不同认知层次，从理解到高阶思维递进', prompt: p, temperature: 0.4, maxTokens: 8192, timeout: 120000, taskType: 'exam'})
+callAI({systemPrompt: '你是一位教育测评与测量学专家，专长于基于认知层次理论（如Bloom认知分类、SOLO分类法）设计高质量测评工具。\n\n你的核心能力：\n1. 精准区分"事实记忆"与"深层理解"，能设计出直击思维方式而非知识储备的题目\n2. 擅长多维度命题：能从概念理解、应用分析、综合评价等不同认知层次设计题目\n【出题标准】\n1. 每道题必须考查特定认知层次（在题目标注：理解/应用/分析/评价/创造）\n2. 题干表述精确无歧义，不能通过措辞暗示正确选项\n3. 开放题的modelAnswer需包含评分要点和不同层次答案的区分标准\n4. 整套题目应覆盖不同认知层次，从理解到高阶思维递进', prompt: p, temperature: 0.4, maxTokens: 12288, timeout: 120000, taskType: 'exam'})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return; // 防止旧请求覆盖新数据
@@ -16458,7 +16688,7 @@ if (!allAnswered) { showToast('请回答所有题目后再提交'); return; }
 var evalPrompt = '你是一个严格的学习评估专家。以下是一位学生对“' + s.topic + '”领域深度测试题的回答。\n\n请逐题评估他的回答是否展示了**真正的理解**还是**表面的记忆**。\n\n评分标准：\n- 8-10分：真正理解 - 能用自己的语言解释原理，能举一反三，能分析关联\n- 5-7分：较好理解 - 要点正确但深度不足，有初步的关联分析\n- 3-4分：部分理解 - 答案基本正确但缺乏深度，套用书本语言\n- 1-2分：微弱理解 - 触及表面但未掌握核心\n- 0分：不理解或死记硬背 - 答案错误或只是背诵定义\n\n题目和回答：\n' + JSON.stringify(qas, null, 2) + '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "overallScore": 75,\n  "maxScore": 100,\n  "evaluations": [\n    {"id": 0, "score": 8, "feedback": "你真正理解了...", "suggestion": "可以进一步思考..."}\n  ],\n  "summary": "总体评估和建议..."\n}';
 var _evalGen = _aiLearnPhaseCGen;
 showAILoading('正在评估你的答案...', 'AI正在逐题分析你的理解深度');
-callAI({systemPrompt: '你是一位严格的学术评估专家，擅长通过学生的答题表现精确诊断其理解深度。\n\n你的评估方法论：\n1. 逐题分析：对每道题进行独立评估，而非整体印象打分\n2. 多维判断：从"答案正确性"、"推理质量"、"概念关联能力"、"迁移应用能力"四个维度评估\n3. 证据驱动：评分必须有明确依据，指出学生的回答中哪些表述暴露/证明了真正的理解\n\n【评估标准】\n- 8-10分：真正理解 — 能用自己的语言解释原理，能举一反三（不仅限于课程中的例子），能分析关联\n- 5-7分：较好理解 — 要点正确但深度不足，有初步的关联分析但局限于课程内容\n- 3-4分：部分理解 — 答案基本正确但缺乏深度，套用课程语言而非自己的理解\n- 1-2分：微弱理解 — 触及表面但未掌握核心，或存在概念性错误\n- 0分：不理解或死记硬背 — 答案错误、无关，或只是逐字背诵定义而未展现理解\n\n工作要求：\n1. 每个评分必须附上具体的依据（引用学生回答的原文）\n2. 反馈要诊断性而非评价性：告诉学生"哪里没理解"和"为什么"比"答得好/差"更有价值\n3. 改进建议必须有可操作性，而非泛泛的"继续努力"', prompt: evalPrompt, temperature: 0.3, maxTokens: 8192, timeout: 120000, taskType: 'education'})
+callAI({systemPrompt: '你是一位严格的学术评估专家，擅长通过学生的答题表现精确诊断其理解深度。\n\n你的评估方法论：\n1. 逐题分析：对每道题进行独立评估，而非整体印象打分\n2. 多维判断：从"答案正确性"、"推理质量"、"概念关联能力"、"迁移应用能力"四个维度评估\n3. 证据驱动：评分必须有明确依据，指出学生的回答中哪些表述暴露/证明了真正的理解\n\n【评估标准】\n- 8-10分：真正理解 — 能用自己的语言解释原理，能举一反三（不仅限于课程中的例子），能分析关联\n- 5-7分：较好理解 — 要点正确但深度不足，有初步的关联分析但局限于课程内容\n- 3-4分：部分理解 — 答案基本正确但缺乏深度，套用课程语言而非自己的理解\n- 1-2分：微弱理解 — 触及表面但未掌握核心，或存在概念性错误\n- 0分：不理解或死记硬背 — 答案错误、无关，或只是逐字背诵定义而未展现理解\n\n工作要求：\n1. 每个评分必须附上具体的依据（引用学生回答的原文）\n2. 反馈要诊断性而非评价性：告诉学生"哪里没理解"和"为什么"比"答得好/差"更有价值\n3. 改进建议必须有可操作性，而非泛泛的"继续努力"', prompt: evalPrompt, temperature: 0.3, maxTokens: 12288, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 if (_evalGen !== _aiLearnPhaseCGen) return; // 防止旧评估覆盖刷新后的数据
@@ -16909,7 +17139,7 @@ var cd = kbGetCourseData(courseName);
 if (!cd) { _kbProcessing = false; showToast('课程数据不存在'); return; }
 var prompt = buildPrompt(courseName, cd);
 showAILoading(loadingMsg, '正在分析 "' + courseName + '"');
-callAI({systemPrompt: systemPrompt, prompt: prompt, temperature: 0.3, maxTokens: 8192, timeout: 120000})
+callAI({systemPrompt: systemPrompt, prompt: prompt, temperature: 0.3, maxTokens: 12288, timeout: 120000})
 .then(function(resp) {
 hideAILoading();
 _kbProcessing = false;
@@ -17066,7 +17296,7 @@ if (allConcepts.length < 2) { showToast('至少需要两门课程完成概念分
 _kbProcessing = true;
 var prompt = '请分析以下多门课程的核心概念，构建跨课程知识图谱。\n已分析课程及其核心概念：\n' + courseConceptText + '\n\n要求：\n1. 合并所有概念，去重同义概念\n2. 发现跨课程的概念关联\n3. 标注每个概念来源于哪些课程\n4. 标注概念间的语义关系类型\n\n请以JSON格式返回：\n{"nodes": [{"id":"概念唯一ID","label":"概念显示名","group":"来源课程","mastery":0.7}],"edges": [{"source":"概念ID1","target":"概念ID2","relationship":"支持/互补/对立"}]}';
 showAILoading('正在构建跨课程知识图谱...', 'AI 正在分析多门课程的概念关联');
-callAI({systemPrompt: '你是一位知识图谱和跨学科分析专家，擅长发现不同知识体系之间的深层结构关联。\n\n你的核心方法论：\n1. 关系类型精准分类：能在因果关系、类比关系、前提-推论关系、互补关系等不同类型间准确区分\n2. 跨域迁移识别：能发现同一抽象结构在不同领域的具体表现（如"反馈回路"在生物学、经济学和工程学中的不同形式）\n3. 整合性思维：不是简单罗列关联，而是构建整合性的知识网络\n\n工作要求：\n1. 每个关联必须有实质性的分析支撑，而非表面术语相似\n2. 标注关联的强度（strong/medium/weak）和类型\n3. 整合后的知识图谱应揭示出单个课程无法呈现的洞见\n4. 按关联强度或主题聚类组织呈现。请严格以JSON格式返回。', prompt: prompt, temperature: 0.3, maxTokens: 8192, timeout: 120000, taskType: 'education'})
+callAI({systemPrompt: '你是一位知识图谱和跨学科分析专家，擅长发现不同知识体系之间的深层结构关联。\n\n你的核心方法论：\n1. 关系类型精准分类：能在因果关系、类比关系、前提-推论关系、互补关系等不同类型间准确区分\n2. 跨域迁移识别：能发现同一抽象结构在不同领域的具体表现（如"反馈回路"在生物学、经济学和工程学中的不同形式）\n3. 整合性思维：不是简单罗列关联，而是构建整合性的知识网络\n\n工作要求：\n1. 每个关联必须有实质性的分析支撑，而非表面术语相似\n2. 标注关联的强度（strong/medium/weak）和类型\n3. 整合后的知识图谱应揭示出单个课程无法呈现的洞见\n4. 按关联强度或主题聚类组织呈现。请严格以JSON格式返回。', prompt: prompt, temperature: 0.3, maxTokens: 12288, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 _kbProcessing = false;
@@ -17311,21 +17541,21 @@ var PANEL_DEFS = [
 {mode:'meta', label:'🎯 元学习'},
 {mode:'biz', label:'💼 商业思维'},
 {mode:'tcm', label:'🌿 中医辨证'},
-{mode:'idea', label:'💡 点子'},
+{mode:'idea', label:'💡 企策点子'},
 {mode:'news', label:'📰 热点观察'},
 {mode:'fin', label:'💰 融资策划'},
 {mode:'ana', label:'📊 深度分析'},
 {mode:'adv', label:'🚀 进阶讲题'},
 {mode:'ind', label:'📈 行业研究'},
-	{mode:'yang', label:'🌿 养道·六维养生'},
-	{mode:'chuang', label:'💡 创道·核检创新'},
-		{mode:'ask', label:'🤔 问道·提问之力'},
-	{mode:'he', label:'🎯 合道·综合视角'},
+	{mode:'yang', label:'🌿 六维养生'},
+	{mode:'chuang', label:'💡 创新核检'},
+		{mode:'ask', label:'🤔 提问之力'},
+	{mode:'he', label:'🎯 综合视角'},
 {mode:'ggz', label:'📜 鬼谷子'},
 {mode:'sz', label:'📖 孙子兵法'},
 {mode:'qm', label:'🚪 千门八将'},
 			{mode:'mou', label:'🧠 谋略布局'},
-{mode:'zh', label:'⚔️ 纵横之术'},
+{mode:'zh', label:'⚔️ 纵横话术'},
 {mode:'cert', label:'🎓 考证'},
 {mode:'law', label:'⚖️ 法律咨询'},
 {mode:'viral', label:'🔥 爆款视频'},
@@ -17334,6 +17564,7 @@ var PANEL_DEFS = [
 		{mode:'cyber', label:'🤖 工程控制论'},
 			{mode:'acu', label:'🪡 针灸灵枢'},
 			{mode:'decomp', label:'🧩 AI 任务拆解'},
+			{mode:'painpoint', label:'🔍 痛点雷达'},
 ];
 
 // panelOrder migration: move from loadState to after PANEL_DEFS to avoid undefined crash
@@ -17364,7 +17595,8 @@ memorytrain:'border-color:#e74c3c;color:#e74c3c',
 	iching:'border-color:#8B4513;color:#6B3410',
 		cyber:'border-color:#2a5a8a;color:#1a3a6a',
 			acu:'border-color:#c0392b;color:#8a1a1a',
-			decomp:'border-color:#6c5ce7;color:#4834d4'
+			decomp:'border-color:#6c5ce7;color:#4834d4',
+			painpoint:'border-color:#b8860b;color:#8a6a10'
 };
 function getBadgeHTML(mode) {
 if (mode==='wrongset') return ' <span class="badge" id="wrongSetBadge">0</span>';
@@ -20643,7 +20875,10 @@ html += '<div class="actions">';
 html += '<button onclick="enterMemoryPalaceCourse(\'' + c.id + '\')">▶ 学习</button>';
 html += '<button onclick="deployMemoryPalaceToSystem(\'' + c.id + '\')" style="padding:4px 10px;font-size:12px;background:#4a7a6a;color:#fff;border:none;border-radius:4px;cursor:pointer">🚀 部署</button>';
 html += '<button onclick="generateCourseMcqs(\'' + c.id + '\')" style="padding:4px 10px;font-size:12px;background:#5a6a8a;color:#fff;border:none;border-radius:4px;cursor:pointer">🤖 生成选择题</button>';
-html += '<button class="del" onclick="deleteMemoryPalaceCourse(\'' + c.id + '\')">🗑</button>';
+		html += '<button onclick="generateCoursePlainExpls(\'' + c.id + '\')" style="padding:4px 10px;font-size:12px;background:#5a6a8a;color:#fff;border:none;border-radius:4px;cursor:pointer">📖 白话解析</button>';
+		html += '<button onclick="generateCourseScenes(\'' + c.id + '\')" style="padding:4px 10px;font-size:12px;background:#5a6a8a;color:#fff;border:none;border-radius:4px;cursor:pointer">🏛️ 记忆宫殿场景</button>';
+html += '<button onclick="batchGeneratePalaceImages(\'' + c.id + '\')" style="padding:4px 10px;font-size:12px;background:#8a4a6a;color:#fff;border:none;border-radius:4px;cursor:pointer">🎨 批量出图</button>';
+		html += '<button class="del" onclick="deleteMemoryPalaceCourse(\'' + c.id + '\')">🗑</button>';
 html += '</div></div>';
 }
 html += '</div>';
@@ -20959,11 +21194,48 @@ html += '<div style="padding:3px 6px;margin:2px 0;background:var(--card-header);
 html += '</div>';
 html += '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">✅ 正确答案：' + String.fromCharCode(65 + itemMcq.answer) + '</div>';
 html += '<button onclick="generateItemMcq(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;border:1px solid var(--border);border-radius:4px;background:var(--card-bg);cursor:pointer;margin-top:4px">🔄 重新生成</button>';
+html += '<button onclick="generatePalaceSceneImage(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;background:#8a4a6a;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-top:4px">🎨 生成图片</button>';
+html += '<div id="mpcGenImg_' + item.id + '" style="margin-top:6px"></div>';
 } else {
 html += '<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">未生成选择题</div>';
 html += '<button id="mpcItemMcqBtn_'+item.id+'" onclick="generateItemMcq(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;background:#5a6a8a;color:#fff;border:none;border-radius:4px;cursor:pointer">🤖 生成本题选择题</button>';
 }
-html += '</div>';
+	html += '</div>';
+	// ---- Plain Explanation section ----
+	var peKey = course.id + '_' + item.id;
+	var peData = (state.memoryPalacePlainExpls || {})[peKey];
+	html += '<div class="mpc-field-section" style="margin-top:6px;border-top:1px dashed var(--border);padding-top:6px">';
+	html += '<div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">📖 白话解析</div>';
+	if (peData && peData.explanation) {
+		html += '<div style="font-size:13px;line-height:1.6;color:var(--text);padding:6px 8px;background:var(--card-header);border-radius:4px">' + escHtml(peData.explanation) + '</div>';
+		html += '<button onclick="generateItemPlainExpl(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;border:1px solid var(--border);border-radius:4px;background:var(--card-bg);cursor:pointer;margin-top:4px">🔄 重新生成</button>';
+	} else {
+		html += '<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">未生成白话解析</div>';
+		html += '<button id="mpcItemPlainBtn_'+item.id+'" onclick="generateItemPlainExpl(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;background:#5a6a8a;color:#fff;border:none;border-radius:4px;cursor:pointer">📖 生成白话解析</button>';
+	}
+	html += '</div>';
+	// ---- Memory Palace Scene section ----
+	var scKey = course.id + '_' + item.id;
+	var scData = (state.memoryPalaceScenes || {})[scKey];
+	html += '<div class="mpc-field-section" style="margin-top:6px;border-top:1px dashed var(--border);padding-top:6px">';
+	html += '<div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">🏛️ 记忆宫殿场景</div>';
+	if (scData && scData.scene) {
+		html += '<div style="font-size:13px;line-height:1.6;color:var(--text);padding:6px 8px;background:var(--card-header);border-radius:4px">' + escHtml(scData.scene) + '</div>';
+		if (scData.keywords && scData.keywords.length > 0) {
+			html += '<div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">';
+			for (var ki = 0; ki < scData.keywords.length; ki++) {
+				html += '<span style="padding:2px 8px;font-size:11px;background:#e8e0c8;color:#555;border-radius:10px">' + escHtml(scData.keywords[ki]) + '</span>';
+			}
+			html += '</div>';
+		}
+		html += '<button onclick="generateItemScene(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;border:1px solid var(--border);border-radius:4px;background:var(--card-bg);cursor:pointer;margin-top:4px">🔄 重新生成</button>';
+	} else {
+		html += '<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">未生成记忆宫殿场景</div>';
+		html += '<button id="mpcItemSceneBtn_'+item.id+'" onclick="generateItemScene(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;background:#5a6a8a;color:#fff;border:none;border-radius:4px;cursor:pointer">🏛️ 生成记忆宫殿场景</button>';
+html += '<button onclick="generatePalaceSceneImage(\'' + course.id + '\',\'' + item.id + '\')" style="padding:3px 10px;font-size:11px;background:#8a4a6a;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-top:4px">🎨 生成图片</button>';
+html += '<div id="mpcGenImg_' + item.id + '" style="margin-top:6px"></div>';
+	}
+	html += '</div>';
 html += '<div style="text-align:right;margin-top:8px;display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap">';
 html += '<button class="r-btn" onclick="moveMemoryPalaceItem(-1)" class="text-xs">↑ 上移</button>';
 html += '<button class="r-btn" onclick="moveMemoryPalaceItem(1)" class="text-xs">↓ 下移</button>';
@@ -21008,6 +21280,13 @@ loadPalaceImage(imgKey2).then(function(dataUrl) {
 var c = document.getElementById('mpcImg_' + item.id);
 if (c) { c.innerHTML = dataUrl ? '<img src="' + dataUrl + '" alt="记忆宫殿出图">' : '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">🖼 图片加载失败</div>';
 }
+});
+}// Async load generated scene image
+if (item._hasGeneratedImage && item.imageIndex) {
+var imgKey3 = 'memorypalace_' + course.id + '_' + item.imageIndex;
+loadPalaceImage(imgKey3).then(function(dataUrl) {
+var c2 = document.getElementById('mpcGenImg_' + item.id);
+if (c2) { c2.innerHTML = dataUrl ? '<img src="' + dataUrl + '" style="width:100%;max-width:400px;border-radius:8px;margin-top:4px" alt="生成图片">' : '<div style="text-align:center;padding:10px;color:var(--text-muted);font-size:12px">🖼 图片加载失败</div>'; }
 });
 }
 }
@@ -21401,7 +21680,7 @@ saveState();
 if (course.items.length === 0) { showToast('✅ 课程已为空'); renderMemoryPalaceList(); }
 else { renderMemoryPalaceCard(courseId); showToast('✅ 已删除'); }
 }
-function showMcqProgressModal(total, courseName) {
+function showMcqProgressModal(total, courseName, label) {
 var old = document.getElementById('mpcMcqOverlay');
 if (old) old.remove();
 var overlay = document.createElement('div');
@@ -21411,7 +21690,7 @@ var rows = '';
 for (var i = 1; i <= total; i++) {
 rows += '<div class="mpc-mcq-row" id="mcqRow_' + i + '"><span class="idx">#' + i + '</span><span class="text">等待中...</span><span class="status p">\u23f3 \u7b49\u5f85\u4e2d</span></div>';
 }
-overlay.innerHTML = '<div class="mpc-mcq-modal"><div class="header"><span>\ud83e\udd16 \u300c' + escHtml(courseName) + '\u300d\u9009\u62e9\u9898\u751f\u6210\u4e2d</span><span style="font-size:13px;color:#999" id="mcqModalCount">0/' + total + '</span></div><div class="body"><div class="mpc-mcq-progress"><div class="bar"><div class="fill" id="mcqProgressFill"></div></div><div class="label" id="mcqProgressLabel">\u51c6\u5907\u4e2d...</div></div><div id="mcqRowContainer">' + rows + '</div></div><div class="footer" id="mcqModalFooter"><button onclick="closeMcqProgressModal()" style="padding:6px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">\u53d6\u6d88</button></div></div>';
+overlay.innerHTML = '<div class="mpc-mcq-modal"><div class="header"><span>\ud83e\udd16 \u300c' + escHtml(courseName) + '\u300d' + (label || '\u9009\u62e9\u9898') + '\u751f\u6210\u4e2d</span><span style="font-size:13px;color:#999" id="mcqModalCount">0/' + total + '</span></div><div class="body"><div class="mpc-mcq-progress"><div class="bar"><div class="fill" id="mcqProgressFill"></div></div><div class="label" id="mcqProgressLabel">\u51c6\u5907\u4e2d...</div></div><div id="mcqRowContainer">' + rows + '</div></div><div class="footer" id="mcqModalFooter"><button onclick="closeMcqProgressModal()" style="padding:6px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">\u53d6\u6d88</button></div></div>';
 document.body.appendChild(overlay);
 }
 function updateMcqProgressItem(index, itemText, status, reason) {
@@ -21553,6 +21832,26 @@ function extractMcqJson(text) {
 		} catch(e2) { return null; }
 	}
 }
+
+function extractJsonResponse(text) {
+	if (!text) return null;
+	var s = text;
+	s = s.replace(/```[\s\S]*?```/g, function(m) { return m.replace(/```\w*\n?/g, '').replace(/\n?```/g, ''); });
+	var start = s.indexOf('{');
+	var end = s.lastIndexOf('}');
+	if (start === -1 || end === -1 || end <= start) return null;
+	s = s.substring(start, end + 1);
+	s = s.replace(/,(\s*[}\]])/g, '$1');
+	try {
+		return JSON.parse(s);
+	} catch(e) {
+		try {
+			s = s.replace(/\\(?!["\\/bfnrtu])/g, '\\\\');
+			return JSON.parse(s);
+		} catch(e2) { return null; }
+	}
+}
+
 function generateItemMcq(courseId, itemId) {
 var courses = state.memoryPalaceCourses || [];
 var course = null;
@@ -21700,6 +21999,307 @@ setTimeout(nextItem, 300);
 }
 nextItem();
 }
+function generateItemPlainExpl(courseId, itemId) {
+	var courses = state.memoryPalaceCourses || [];
+	var course = null;
+	for (var ci = 0; ci < courses.length; ci++) {
+		if (courses[ci].id === courseId) { course = courses[ci]; break; }
+	}
+	if (!course || !course.items) return;
+	var item = null;
+	for (var ii = 0; ii < course.items.length; ii++) {
+		if (course.items[ii].id === itemId) { item = course.items[ii]; break; }
+	}
+	if (!item) return;
+	var btn = document.getElementById('mpcItemPlainBtn_' + itemId);
+	if (btn) { btn.textContent = '⏳ 生成中...'; btn.disabled = true; }
+	var text = item['原文'] || '';
+	var core = item['核心内容'] || '';
+	var retries = 2;
+	function tryGen() {
+		callAI({
+			systemPrompt: '你是一位知识通俗化专家。用最直白、易懂的语言解释以下内容，就像给一个完全不懂这个领域的人讲解。使用生活化的比喻、类比和例子。避免术语，如果必须使用术语则立即解释。要求输出JSON格式：{"explanation": "白话解析文本"}',
+			prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请用白话解析。',
+			temperature: 0.5,
+			maxTokens: 2048,
+			responseFormat: {type: "json_object"}
+		}).then(function(resp) {
+			var parsed = extractJsonResponse(resp);
+			if (parsed && parsed.explanation) {
+				var store = state.memoryPalacePlainExpls || {};
+				store[courseId + '_' + itemId] = { explanation: parsed.explanation };
+				state.memoryPalacePlainExpls = store;
+				saveState();
+				renderMemoryPalaceCard(courseId);
+				return;
+			}
+			if (retries > 0) { retries--; setTimeout(tryGen, 500); return; }
+			showToast('❌ AI 生成白话解析失败');
+			if (btn) { btn.textContent = '生成白话解析'; btn.disabled = false; }
+		}).catch(function(err) {
+			if (retries > 0) { retries--; setTimeout(tryGen, 500); return; }
+			showToast('' + (err.message || '❌ AI 生成失败'));
+			if (btn) { btn.textContent = '生成白话解析'; btn.disabled = false; }
+		});
+	}
+	tryGen();
+}
+
+function generateCoursePlainExpls(courseId) {
+	var courses = state.memoryPalaceCourses || [];
+	var course = null;
+	for (var ci = 0; ci < courses.length; ci++) {
+		if (courses[ci].id === courseId) { course = courses[ci]; break; }
+	}
+	if (!course || !course.items || course.items.length === 0) { showToast('课程为空'); return; }
+	var store = state.memoryPalacePlainExpls || {};
+	var existingCount = 0;
+	for (var ei = 0; ei < course.items.length; ei++) {
+		if (store[courseId + '_' + course.items[ei].id]) existingCount++;
+	}
+	var remain = course.items.length - existingCount;
+	var msg = '为「' + course.name + '」中 ' + course.items.length + ' 条内容逐条生成白话解析';
+	if (existingCount > 0) msg += '（已有 ' + existingCount + ' 条，尚余 ' + remain + ' 条未生成）';
+	if (!confirm(msg + '，确定开始吗？')) return;
+	showMcqProgressModal(course.items.length, course.name, '白话解析');
+	var idx = 0;
+	var total = course.items.length;
+	var successCount = 0;
+	function nextItem() {
+		if (idx >= total) {
+			saveState();
+			var failCount = total - successCount;
+			closeMcqProgressModal();
+			if (failCount === 0) {
+				showToast('✅ 白话解析全部生成成功');
+			} else {
+				showToast('白话解析生成完成：成功 ' + successCount + ' 条，失败 ' + failCount + ' 条');
+			}
+			renderMemoryPalaceList();
+			return;
+		}
+		var item = course.items[idx];
+		var key = courseId + '_' + item.id;
+		if (store[key]) { updateMcqProgressItem(idx, item['原文'] || '', 'success'); idx++; successCount++; nextItem(); return; }
+		updateMcqProgressItem(idx, item['原文'] || '', 'generating');
+		var text = item['原文'] || '';
+		var core = item['核心内容'] || '';
+		callAI({
+			systemPrompt: '你是一位知识通俗化专家。用最直白、易懂的语言解释以下内容，就像给一个完全不懂这个领域的人讲解。使用生活化的比喻、类比和例子。避免术语，如果必须使用术语则立即解释。要求输出JSON格式：{"explanation": "白话解析文本"}',
+			prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请用白话解析。',
+			temperature: 0.5,
+			maxTokens: 2048,
+			responseFormat: {type: "json_object"}
+		}).then(function(resp) {
+			var parsed = extractJsonResponse(resp);
+			if (parsed && parsed.explanation) {
+				store[key] = { explanation: parsed.explanation };
+				updateMcqProgressItem(idx, item['原文'] || '', 'success');
+				successCount++;
+			} else {
+				updateMcqProgressItem(idx, item['原文'] || '', 'failed', 'JSON解析失败');
+			}
+			idx++;
+			setTimeout(nextItem, 300);
+		}).catch(function(err) {
+			updateMcqProgressItem(idx, item['原文'] || '', 'failed', err.message || '网络错误');
+			idx++;
+			setTimeout(nextItem, 300);
+		});
+	}
+	nextItem();
+}
+
+function generateItemScene(courseId, itemId) {
+	var courses = state.memoryPalaceCourses || [];
+	var course = null;
+	for (var ci = 0; ci < courses.length; ci++) {
+		if (courses[ci].id === courseId) { course = courses[ci]; break; }
+	}
+	if (!course || !course.items) return;
+	var item = null;
+	for (var ii = 0; ii < course.items.length; ii++) {
+		if (course.items[ii].id === itemId) { item = course.items[ii]; break; }
+	}
+	if (!item) return;
+	var btn = document.getElementById('mpcItemSceneBtn_' + itemId);
+	if (btn) { btn.textContent = '⏳ 生成中...'; btn.disabled = true; }
+	var text = item['原文'] || '';
+	var core = item['核心内容'] || '';
+	var retries = 2;
+	function tryGen() {
+		callAI({
+			systemPrompt: '你是一位记忆宫殿构建师。将以下知识内容转化为一个生动、夸张、令人难忘的记忆宫殿场景。运用：夸张（放大幅度）、运动（动态画面）、感官（视觉/听觉/触觉/嗅觉）、幽默（有趣的联想）、情感共鸣。场景描述要有画面感，让人一闭眼就能"看见"。同时提取3-5个记忆关键词，帮助回忆这个知识点。要求输出JSON格式：{"scene": "场景描述文本（100-200字）", "keywords": ["关键词1", "关键词2", ...]}',
+			prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请构建记忆宫殿场景。',
+			temperature: 0.7,
+			maxTokens: 4096,
+			responseFormat: {type: "json_object"}
+		}).then(function(resp) {
+			var parsed = extractJsonResponse(resp);
+			if (parsed && parsed.scene) {
+				var store = state.memoryPalaceScenes || {};
+				store[courseId + '_' + itemId] = { scene: parsed.scene, keywords: parsed.keywords || [] };
+				state.memoryPalaceScenes = store;
+				saveState();
+				renderMemoryPalaceCard(courseId);
+				return;
+			}
+			if (retries > 0) { retries--; setTimeout(tryGen, 500); return; }
+			showToast('❌ AI 生成记忆宫殿场景失败');
+			if (btn) { btn.textContent = '生成记忆宫殿场景'; btn.disabled = false; }
+		}).catch(function(err) {
+			if (retries > 0) { retries--; setTimeout(tryGen, 500); return; }
+			showToast('' + (err.message || '❌ AI 生成失败'));
+			if (btn) { btn.textContent = '生成记忆宫殿场景'; btn.disabled = false; }
+		});
+	}
+	tryGen();
+}
+
+function generateCourseScenes(courseId) {
+	var courses = state.memoryPalaceCourses || [];
+	var course = null;
+	for (var ci = 0; ci < courses.length; ci++) {
+		if (courses[ci].id === courseId) { course = courses[ci]; break; }
+	}
+	if (!course || !course.items || course.items.length === 0) { showToast('课程为空'); return; }
+	var store = state.memoryPalaceScenes || {};
+	var existingCount = 0;
+	for (var ei = 0; ei < course.items.length; ei++) {
+		if (store[courseId + '_' + course.items[ei].id]) existingCount++;
+	}
+	var remain = course.items.length - existingCount;
+	var msg = '为「' + course.name + '」中 ' + course.items.length + ' 条内容逐条生成记忆宫殿场景';
+	if (existingCount > 0) msg += '（已有 ' + existingCount + ' 条，尚余 ' + remain + ' 条未生成）';
+	if (!confirm(msg + '，确定开始吗？')) return;
+	showMcqProgressModal(course.items.length, course.name, '记忆宫殿场景');
+	var idx = 0;
+	var total = course.items.length;
+	var successCount = 0;
+	function nextItem() {
+		if (idx >= total) {
+			saveState();
+			var failCount = total - successCount;
+			closeMcqProgressModal();
+			if (failCount === 0) {
+				showToast('✅ 记忆宫殿场景全部生成成功');
+			} else {
+				showToast('记忆宫殿场景生成完成：成功 ' + successCount + ' 条，失败 ' + failCount + ' 条');
+			}
+			renderMemoryPalaceList();
+			return;
+		}
+		var item = course.items[idx];
+		var key = courseId + '_' + item.id;
+		if (store[key]) { updateMcqProgressItem(idx, item['原文'] || '', 'success'); idx++; successCount++; nextItem(); return; }
+		updateMcqProgressItem(idx, item['原文'] || '', 'generating');
+		var text = item['原文'] || '';
+		var core = item['核心内容'] || '';
+		callAI({
+			systemPrompt: '你是一位记忆宫殿构建师。将以下知识内容转化为一个生动、夸张、令人难忘的记忆宫殿场景。运用：夸张（放大幅度）、运动（动态画面）、感官（视觉/听觉/触觉/嗅觉）、幽默（有趣的联想）、情感共鸣。场景描述要有画面感，让人一闭眼就能"看见"。同时提取3-5个记忆关键词，帮助回忆这个知识点。要求输出JSON格式：{"scene": "场景描述文本（100-200字）", "keywords": ["关键词1", "关键词2", ...]}',
+			prompt: '原文：' + text + '\n\n核心内容：' + (core || '无') + '\n\n请构建记忆宫殿场景。',
+			temperature: 0.7,
+			maxTokens: 4096,
+			responseFormat: {type: "json_object"}
+		}).then(function(resp) {
+			var parsed = extractJsonResponse(resp);
+			if (parsed && parsed.scene) {
+				store[key] = { scene: parsed.scene, keywords: parsed.keywords || [] };
+				updateMcqProgressItem(idx, item['原文'] || '', 'success');
+				successCount++;
+			} else {
+				updateMcqProgressItem(idx, item['原文'] || '', 'failed', 'JSON解析失败');
+			}
+			idx++;
+			setTimeout(nextItem, 300);
+		}).catch(function(err) {
+			updateMcqProgressItem(idx, item['原文'] || '', 'failed', err.message || '网络错误');
+			idx++;
+			setTimeout(nextItem, 300);
+		});
+	}
+	nextItem();
+}
+
+function generatePalaceSceneImage(courseId, itemId) {
+var courses = state.memoryPalaceCourses || [];
+var course = null, item = null;
+for (var ci = 0; ci < courses.length; ci++) { if (courses[ci].id === courseId) { course = courses[ci]; break; } }
+if (!course || !course.items) return;
+for (var ii = 0; ii < course.items.length; ii++) { if (course.items[ii].id === itemId) { item = course.items[ii]; break; } }
+if (!item) return;
+var provider = state.mediaGenProvider || 'off';
+if (provider === 'off') { showToast('⚠️ 请在设置中启用图片生成并配置 API Key'); return; }
+var prompt = item['图片出图提示词'] || item['imgPrompt'] || '';
+if (!prompt) {
+var scKey = courseId + '_' + itemId;
+var scData = (state.memoryPalaceScenes || {})[scKey];
+if (scData && scData.scene) {
+prompt = '记忆宫殿场景：' + scData.scene;
+if (scData.keywords && scData.keywords.length > 0) prompt += '\n关键词：' + scData.keywords.join('、');
+} else {
+prompt = item['原文'] || '';
+}
+}
+if (!prompt) { showToast('❌ 无可用的生成内容'); return; }
+showToast('🎨 正在生成图片...');
+return callMediaGenAPI(prompt).then(function(imageUrl) {
+return fetchImageAsBase64(imageUrl).then(function(dataUrl) {
+var idx = -1;
+for (var j = 0; j < course.items.length; j++) { if (course.items[j].id === itemId) { idx = j; break; } }
+if (idx < 0) return;
+if (!item.imageIndex) {
+var maxIdx = 0;
+for (var k = 0; k < course.items.length; k++) { if (course.items[k].imageIndex && course.items[k].imageIndex > maxIdx) maxIdx = course.items[k].imageIndex; }
+item.imageIndex = maxIdx + 1;
+}
+var imgKey = 'memorypalace_' + course.id + '_' + item.imageIndex;
+item._hasGeneratedImage = true;
+item._hasImage = true;
+return storePalaceImage(imgKey, dataUrl, 'indexedDB').then(function() {
+saveState();
+renderMemoryPalaceCard(courseId);
+showToast('✅ 图片生成完成');
+});
+});
+}).catch(function(err) {
+showToast('❌ ' + (err.message || '生成失败'));
+});
+}
+
+function batchGeneratePalaceImages(courseId) {
+var courses = state.memoryPalaceCourses || [];
+var course = null;
+for (var ci = 0; ci < courses.length; ci++) { if (courses[ci].id === courseId) { course = courses[ci]; break; } }
+if (!course || !course.items || course.items.length === 0) { showToast('课程为空'); return; }
+var total = course.items.length;
+if (!confirm('为「' + course.name + '」中 ' + total + ' 条内容逐条生成图片（需要 AI 图片 API，会产生费用），确定开始吗？')) return;
+showMcqProgressModal(total, course.name, '图片生成');
+var idx = 0, success = 0, fail = 0;
+function nextItem() {
+if (idx >= total) {
+saveState();
+closeMcqProgressModal();
+if (fail === 0) showToast('✅ 图片全部生成成功');
+else showToast('完成：成功 ' + success + ' 条，失败 ' + fail + ' 条');
+renderMemoryPalaceList();
+return;
+}
+var item = course.items[idx];
+updateMcqProgressItem(idx, item['原文'] || '', 'generating');
+(function(itemIdx) {
+generatePalaceSceneImage(courseId, course.items[itemIdx].id).then(function() {
+success++; updateMcqProgressItem(itemIdx, course.items[itemIdx]['原文'] || '', 'success');
+idx++; setTimeout(nextItem, 500);
+}).catch(function() {
+fail++; updateMcqProgressItem(itemIdx, course.items[itemIdx]['原文'] || '', 'fail', '生成失败');
+idx++; setTimeout(nextItem, 500);
+});
+})(idx);
+}
+nextItem();
+}
+
 function deployMemoryPalaceToSystem(courseId) {
 var courses = state.memoryPalaceCourses || [];
 var course = null;
@@ -24113,7 +24713,7 @@ prompt: '你是一个考试大纲分析专家。请将以下考试大纲内容�
 + '}\n\n'
 + '大纲内容：\n' + text.slice(0, 20000),
 temperature: 0.3,
-maxTokens: 8192,
+maxTokens: 12288,
 timeout: 60000,
 stream: function(chunk, fullText) {
 statusEl.textContent = '⏳ 正在解析考纲... (' + fullText.length + ' 字符已接收)';
@@ -24245,7 +24845,7 @@ return callAI({
 prompt: prompt,
 systemPrompt: '你是一位资深的认证考试培训专家，擅长将考试大纲知识点转化为高质量的学习内容。',
 temperature: 0.5,
-maxTokens: 8192,
+maxTokens: 12288,
 timeout: 120000,
 stream: function(chunk, fullText) { statusEl.textContent = '⏳ 生成中 (' + (idx+1) + '/' + articles.length + ')...'; }
 }).then(function(resp) {
@@ -25392,7 +25992,7 @@ function callThinkTank() {
     systemPrompt: systemPrompt,
     prompt: result.prompt,
     temperature: 0.7,
-    maxTokens: 8192,
+    maxTokens: 12288,
     timeout: 120000
   }).then(function(text) {
     if (loading) loading.style.display = 'none';
@@ -26068,7 +26668,7 @@ function callMetaAnalysis() {
   callAI({
     prompt: prompt,
     temperature: 0.7,
-    maxTokens: 8192,
+    maxTokens: 12288,
     timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) {
@@ -26304,7 +26904,7 @@ function callBizAnalysis() {
   callAI({
     prompt: prompt,
     temperature: 0.7,
-    maxTokens: 8192,
+    maxTokens: 12288,
     timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) {
@@ -26344,7 +26944,7 @@ function callBizAppend(dimId) {
   var resultDiv = document.getElementById('bizResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.7, maxTokens: 8192, timeout: 180000,
+    prompt: prompt, temperature: 0.7, maxTokens: 12288, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
     }
@@ -26579,7 +27179,7 @@ function callTcmAnalysis() {
   callAI({
     prompt: prompt,
     temperature: 0.5,
-    maxTokens: 8192,
+    maxTokens: 12288,
     timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) {
@@ -26619,7 +27219,7 @@ function callTcmAppend(dimId) {
   var resultDiv = document.getElementById('tcmResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加辨证中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000,
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
     }
@@ -27351,7 +27951,7 @@ function callAskAppend(dimId) {
   var resultDiv = document.getElementById('askResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 追加追问 ' + dimId + '...'; }
   callAI({
-    prompt: buildAskAppendPrompt(dimId), temperature: 0.7, maxTokens: 8192, timeout: 120000,
+    prompt: buildAskAppendPrompt(dimId), temperature: 0.7, maxTokens: 12288, timeout: 120000,
     stream: function(chunk, fullText) {
       if (resultDiv) resultDiv.innerHTML = '<div class="ask-output">' + formatAskContent(fullText) + '</div>';
     }
@@ -27958,7 +28558,7 @@ function callIdeaAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '💡 AI 策划中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.7, maxTokens: 8192, timeout: 180000,
+    prompt: prompt, temperature: 0.7, maxTokens: 12288, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '💡 AI 策划中 (' + fullText.length + ' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatIdeaContent(fullText);
@@ -28201,7 +28801,7 @@ function callNewsAnalysis() {
     var prompt = buildNewsPrompt(searchResults);
     if (!prompt) { if (loading) loading.style.display = 'none'; return; }
     return callAI({
-      prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000, search: false,
+      prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000, search: false,
       stream: function(chunk, fullText) {
         if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🧠 DeepSeek 分析中 ('+fullText.length+' 字)...'; }
         if (resultDiv) resultDiv.innerHTML = formatNewsContent(fullText);
@@ -28325,6 +28925,304 @@ function toggleNewsHistory() {
   }
 }
 
+/* ===== 痛点雷达 · 商机发现 ===== */
+function initPainPointState() {
+  if (!state.ppSettings) state.ppSettings = {};
+  if (!state.ppSettings.targetAreas) state.ppSettings.targetAreas = ['远程办公','宠物经济','亲子教育'];
+  if (state.ppSettings.autoGenerateQueries === undefined) state.ppSettings.autoGenerateQueries = true;
+  if (!state.ppSessions) state.ppSessions = [];
+  if (!window._ppDims) {
+    window._ppDims = { scan:'', rank:'', solve:'', money:'' };
+    window._ppActiveDim = 'scan';
+  }
+}
+function switchPPDim(dim) {
+  window._ppActiveDim = dim;
+  var cards = document.querySelectorAll('.pp-dim-card');
+  for (var i = 0; i < cards.length; i++)
+    cards[i].classList.toggle('active', cards[i].getAttribute('data-dim') === dim);
+  renderPPDimContent();
+}
+function renderPPDimContent() {
+  var area = $id('ppResult');
+  if (!area) return;
+  var dim = window._ppActiveDim || 'scan';
+  var content = window._ppDims ? window._ppDims[dim] : '';
+  if (content) {
+    area.innerHTML = '<div class="pp-output">' + formatPPContent(content) + '</div>';
+  } else {
+    area.innerHTML = '<div class="pp-empty">暂无内容，请点击上方「AI 痛点扫描」开始分析</div>';
+  }
+}
+function renderPPTargetView() { renderPPAreaChips(); return ''; }
+function addPPArea() {
+  var inp = $id('ppAreaInput');
+  if (!inp || !inp.value.trim()) return;
+  var area = inp.value.trim();
+  var areas = state.ppSettings.targetAreas;
+  if (areas.indexOf(area) !== -1) { showToast('该领域已存在'); return; }
+  areas.push(area);
+  saveState();
+  inp.value = '';
+  renderPPAreaChips();
+}
+function removePPArea(area) {
+  state.ppSettings.targetAreas = (state.ppSettings.targetAreas || []).filter(function(a){return a!==area});
+  saveState();
+  renderPPAreaChips();
+}
+function renderPPAreaChips() {
+  var list = $id('ppAreaList');
+  if (!list) return;
+  var areas = state.ppSettings.targetAreas || [];
+  var h = [];
+  for (var i = 0; i < areas.length; i++) {
+    h.push('<span class="pp-topic-chip" data-area="' + escHtml(areas[i]) + '">' + escHtml(areas[i]) + ' ✕</span>');
+  }
+  list.innerHTML = h.join('');
+  var chips = list.querySelectorAll('.pp-topic-chip');
+  for (var j = 0; j < chips.length; j++) {
+    chips[j].onclick = function(){removePPArea(this.getAttribute('data-area'));};
+  }
+}
+function renderPainPointPanel() {
+  initPainPointState();
+  var h = [];
+  // Hero
+  h.push('<div class="pp-hero"><div class="pp-hero-icon">🔍</div><div class="pp-hero-title">痛点雷达 · 商机发现</div><div class="pp-hero-sub">全网扫描用户痛点 → AI 提取分析 → 方案变现闭环</div></div>');
+  // Input Card (area management + main action button) — matches news layout
+  h.push('<div class="pp-input-card">');
+  h.push('<div class="pp-topics-label">🎯 监控领域 <span style="font-size:12px;color:var(--text-muted);font-weight:400">（点击移除，回车添加）</span></div>');
+  h.push('<div class="pp-topic-row" id="ppAreaList"></div>');
+  h.push('<div style="display:flex;gap:8px;margin-top:8px"><input class="pp-topic-input" id="ppAreaInput" placeholder="输入领域名称，如：远程办公" onkeydown="if(event.key===\'Enter\')addPPArea()"> <button class="news-btn-small" onclick="addPPArea()">＋</button></div>');
+  h.push('<div style="margin-top:10px;font-size:12px;color:var(--text-muted)">系统将对每个领域自动生成多组搜索词，覆盖痛点/吐槽/需求/求助等方向</div>');
+  h.push('<div class="news-input-actions" style="margin-top:10px"><button class="news-btn news-btn-primary" onclick="callPPScan()">🔍 AI 痛点扫描</button></div></div>');
+  // Dim tabs (4 pipeline stages — no target, now handled by input card)
+  var dims = [
+    {id:'scan', icon:'🔍', label:'全网扫描', desc:'搜索+痛点提取'},
+    {id:'rank', icon:'📊', label:'痛点排行', desc:'评分排序筛选'},
+    {id:'solve', icon:'💡', label:'方案生成', desc:'解决方案&MVP'},
+    {id:'money', icon:'💰', label:'变现路径', desc:'商业模式设计'}
+  ];
+  h.push('<div class="pp-dim-row">');
+  for (var i = 0; i < dims.length; i++) {
+    var d = dims[i];
+    var act = d.id === (window._ppActiveDim || 'scan') ? ' active' : '';
+    h.push('<div class="pp-dim-card' + act + '" data-dim="' + d.id + '" onclick="switchPPDim(\'' + d.id + '\')">');
+    h.push('<div class="pp-dim-icon">' + d.icon + '</div>');
+    h.push('<div class="pp-dim-label">' + d.label + '</div>');
+    h.push('<div class="pp-dim-desc">' + d.desc + '</div></div>');
+  }
+  h.push('</div>');
+  // Loading
+  h.push('<div class="pp-loading" id="ppLoading" style="display:none"><div class="pp-spinner"></div><span id="ppLoadingText">正在扫描...</span></div>');
+  // Result area
+  h.push('<div id="ppResult"></div>');
+  // History
+  h.push('<div class="pp-section" style="margin-top:8px"><div class="pp-section-hdr" onclick="togglePPHistory()" style="cursor:pointer"><span>📋 历史记录</span><span id="ppHistToggle">▶</span></div><div id="ppHistoryBody" style="display:none;margin-top:8px"></div></div>');
+  // Guide
+  h.push('<div class="pp-guide">需在设置中配置 Tavily API Key。AI 分析需配置 AI API Key。</div>');
+  $id('contentArea').innerHTML = h.join('');
+  renderPPAreaChips();
+  renderPPDimContent();
+  renderPPHistory();
+}
+function buildPPQueries() {
+  var areas = state.ppSettings.targetAreas || [];
+  if (areas.length === 0) { showToast('请先添加监控领域'); return null; }
+  var queries = [];
+  var suffixes = ['痛点','太难了 问题','吐槽 避坑','需求 求助','行业 待解决','有什么好办法','麻烦 怎么办','体验差'];
+  for (var i = 0; i < areas.length; i++) {
+    for (var j = 0; j < suffixes.length; j++) {
+      queries.push(areas[i] + ' ' + suffixes[j]);
+    }
+  }
+  return queries;
+}
+async function callPPScan() {
+  initPainPointState();
+  var queries = buildPPQueries();
+  if (!queries) return;
+  var loading = $id('ppLoading');
+  var resultArea = $id('ppResult');
+  if (loading) loading.style.display = 'flex';
+  if (resultArea) resultArea.innerHTML = '';
+  var lt = $id('ppLoadingText');
+  var allResults = [];
+  try {
+    for (var i = 0; i < queries.length; i++) {
+      if (lt) lt.textContent = '正在搜索: ' + queries[i] + ' (' + (i+1) + '/' + queries.length + ')';
+      try {
+        var res = await callTavilySearch([queries[i]]);
+        if (res && res.length > 0 && res[0].results) {
+          allResults = allResults.concat(res[0].results.map(function(r){
+            r.query = queries[i]; return r;
+          }));
+        }
+      } catch(e) { console.warn('Search failed:', queries[i], e); }
+      await new Promise(function(r){setTimeout(r,200)});
+    }
+    if (allResults.length === 0) {
+      if (loading) loading.style.display = 'none';
+      showToast('未获取到搜索结果，请检查 Tavily API Key');
+      return;
+    }
+    // Single AI call — stream full text to result area (like news panel)
+    if (lt) lt.textContent = 'AI 分析中...';
+    var fullText = await callAI({
+      prompt: buildPPCombinedPrompt(allResults),
+      temperature: 0.5, maxTokens: 16384, timeout: 300000, search: false,
+      stream: function(chunk, full) {
+        if (resultArea) resultArea.innerHTML = '<div class="pp-output">' + formatPPContent(full) + '</div>';
+      }
+    });
+    if (loading) loading.style.display = 'none';
+    if (!fullText) return;
+    // Parse into dims (like parseNewsDims)
+    window._ppDims = parsePPDims(fullText);
+    window._ppActiveDim = 'scan';
+    switchPPDim('scan');
+    showToast('✅ 扫描完成！');
+    savePPSession();
+  } catch(e) {
+    console.error('PP Scan error:', e);
+    if (loading) loading.style.display = 'none';
+    showToast('扫描出错: ' + e.message);
+  }
+}
+function buildPPExtractPrompt(results) {
+  var context = results.map(function(r){
+    var c = (r.content || '').substring(0,300);
+    return '- [' + (r.title||'') + '](' + (r.url||'') + ')\n  内容: ' + c;
+  }).join('\n');
+  return '你是一个痛点挖掘分析师。请从以下全网搜索结果中，提取出用户真实的痛点和未满足需求。\n\n【搜索结果】\n' + context + '\n\n请按以下格式输出：\n\n## 痛点发现报告\n\n### 痛点 1：[痛点名称]\n- **现象描述**：\n- **来源证据**：\n- **受影响人群**：\n- **出现频率**：高频/中频/低频\n\n... 列出所有识别的痛点 ...\n\n要求：\n1. 只输出真实存在的痛点和需求\n2. 每个痛点必须能从搜索结果中找到依据\n3. 区分「真痛点」和「潜在需求」';
+}
+function buildPPScorePrompt(extractResult) {
+  return '基于以下痛点分析结果，请对每个痛点进行五维评分（1-10分），按综合得分排序。\n\n【痛点分析】\n' + (extractResult || '') + '\n\n按以下格式输出：\n\n## 痛点评分排行\n\n### 🥇 第1名：[痛点名称]（综合评分：9.2/10）\n- 🔴 紧急性：9/10 — [说明]\n- 📈 市场规模：8/10 — [说明]\n- ✅ 解决可行性：7/10 — [说明]\n- ⚔️ 竞争程度：6/10（分越高越不激烈）\n- 💰 变现潜力：9/10 — [说明]\n- **综合建议**：\n\n列出所有痛点排名。按综合得分从高到低排序。';
+}
+function buildPPSolutionPrompt(scoreResult) {
+  return '基于以下痛点评分排行，针对评分最高的前 5-8 个痛点生成具体解决方案和 MVP。\n\n【评分排行】\n' + (scoreResult || '') + '\n\n按以下格式输出：\n\n## 解决方案\n\n### 痛点：[痛点名称]\n\n**方案一：[方案名称]**\n- **解决方案描述**：\n- **MVP**：\n- **所需资源**：\n- **预期周期**：\n- **核心竞争力**：\n\n**方案二（可选）**\n- ...\n\n要求：方案具体可执行，MVP 描述第一步做什么，指出差异化优势。';
+}
+function buildPPMoneyPrompt(solveResult) {
+  return '基于以下解决方案，针对每个方案设计变现路径和商业模式。\n\n【解决方案】\n' + (solveResult || '') + '\n\n按以下格式输出：\n\n## 变现路径\n\n### 痛点：[痛点名称] → [方案名称]\n\n**变现模式**：\n- **产品形态**：课程/工具/咨询服务/社群/...\n- **定价策略**：\n- **目标客户**：\n- **获客渠道**：\n- **收入预估**：\n- **下一步行动**：\n\n要求：定价具体，获客渠道结合中文互联网生态（抖音、小红书、微信等）。';
+}
+function buildPPCombinedPrompt(results) {
+  var context = results.map(function(r){
+    var c = (r.content || '').substring(0,300);
+    return '- [' + (r.title||'') + '](' + (r.url||'') + ')\n  内容: ' + c;
+  }).join('\n');
+  return '你是一个痛点挖掘分析师。请基于以下全网搜索结果，完成完整的痛点分析流程。\n\n【搜索结果】\n' + context + '\n\n请按顺序输出以下4个部分，每个部分用指定标题开头：\n\n【痛点发现报告】\n提取用户真实的痛点和未满足需求。\n每个痛点包含：痛点名称、现象描述、来源证据、受影响人群、出现频率（高频/中频/低频）。\n\n【痛点评分排行】\n对每个痛点进行五维评分（1-10分），按综合得分排序。\n格式：痛点名称（综合评分），包含：紧急性、市场规模、解决可行性、竞争程度、变现潜力。\n\n【解决方案】\n针对评分最高的前 5-8 个痛点生成具体解决方案和 MVP。\n每个痛点包含：方案描述、MVP、所需资源、预期周期、核心竞争力。\n\n【变现路径】\n针对每个方案设计变现路径和商业模式。\n包含：产品形态、定价策略、目标客户、获客渠道、收入预估、下一步行动。\n\n要求：\n1. 只输出真实存在的痛点和需求\n2. 每个痛点必须能从搜索结果中找到依据\n3. 内容具体可执行\n4. 定价具体，获客渠道结合中文互联网生态（抖音、小红书、微信等）\n5. 用中文回答';
+}
+function parsePPDims(text) {
+  var dims = { scan:'', rank:'', solve:'', money:'' };
+  var markers = [
+    { id:'scan', label:'【痛点发现报告】' },
+    { id:'rank', label:'【痛点评分排行】' },
+    { id:'solve', label:'【解决方案】' },
+    { id:'money', label:'【变现路径】' }
+  ];
+  for (var i = 0; i < markers.length; i++) {
+    var start = text.indexOf(markers[i].label);
+    if (start === -1) continue;
+    var cs = start + markers[i].label.length;
+    var end = (i < markers.length-1) ? text.indexOf(markers[i+1].label, cs) : -1;
+    dims[markers[i].id] = text.substring(cs, end === -1 ? text.length : end).trim();
+  }
+  return dims;
+}
+function formatPPContent(text) {
+  if (!text) return '';
+  var s = escHtml(text);
+  s = s.replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+  s = s.replace(/### (.+)/g, '<h3>$1</h3>');
+  s = s.replace(/## (.+)/g, '<h2>$1</h2>');
+  s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/^[-*]{3,}\s*$/gm, '<hr>');
+  s = s.replace(/^>(.+)$/gm, '<blockquote>$1</blockquote>');
+  var lines = s.split('\n');
+  var out = [], lt = null;
+  for (var i = 0; i < lines.length; i++) {
+    var ln = lines[i];
+    var um = ln.match(/^- (.+)/);
+    var om = ln.match(/^(\d+)[\.\)] (.+)/);
+    if (um) {
+      if (lt !== 'ul') { if (lt) out.push('</' + lt + '>'); out.push('<ul>'); lt = 'ul'; }
+      out.push('<li>' + um[1] + '</li>');
+    } else if (om) {
+      if (lt !== 'ol') { if (lt) out.push('</' + lt + '>'); out.push('<ol>'); lt = 'ol'; }
+      out.push('<li>' + om[2] + '</li>');
+    } else {
+      if (lt) { out.push('</' + lt + '>'); lt = null; }
+      out.push(ln);
+    }
+  }
+  if (lt) out.push('</' + lt + '>');
+  s = out.join('\n');
+  s = _enhanceContent(s);
+  s = s.replace(/\n{2,}/g, '\n');
+  s = s.replace(/\n/g, '<br>');
+  return s;
+}
+
+function savePPSession() {
+  if (!state.ppSessions) state.ppSessions = [];
+  var session = { id: Date.now(), date: new Date().toLocaleString(), areas: JSON.parse(JSON.stringify(state.ppSettings.targetAreas || [])), dims: JSON.parse(JSON.stringify(window._ppDims || {})), sources: JSON.parse(JSON.stringify(window._ppSources || {})) };
+  state.ppSessions.unshift(session);
+  if (state.ppSessions.length > 50) state.ppSessions.length = 50;
+  saveState();
+  renderPPHistory();
+}
+function viewPPSession(id) {
+  if (!state.ppSessions) return;
+  var session = null;
+  for (var i = 0; i < state.ppSessions.length; i++) {
+    if (state.ppSessions[i].id === id) { session = state.ppSessions[i]; break; }
+  }
+  if (!session) return;
+  window._ppDims = JSON.parse(JSON.stringify(session.dims || {}));
+  window._ppSources = session.sources || {};
+  switchPPDim('scan');
+  var hb = $id('ppHistoryBody'); if (hb) hb.style.display = 'none';
+  var tg = $id('ppHistToggle'); if (tg) tg.textContent = '▶';
+}
+function deletePPSession(id) {
+  if (!state.ppSessions) return;
+  state.ppSessions = state.ppSessions.filter(function(s){return s.id!==id});
+  saveState();
+  renderPPHistory();
+}
+function renderPPHistory() {
+  var body = $id('ppHistoryBody');
+  if (!body) return;
+  var sessions = state.ppSessions || [];
+  if (sessions.length === 0) { body.innerHTML = '<div class="pp-empty">暂无历史记录</div>'; return; }
+  var h = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var areas = (s.areas || []).join(', ');
+    h.push('<div class="pp-history-item" onclick="viewPPSession(' + s.id + ')"><div class="pp-history-main"><div class="pp-history-date">' + escHtml(s.date) + '</div><div class="pp-history-topics">' + escHtml(areas) + '</div></div><button class="pp-history-del" onclick="event.stopPropagation();deletePPSession(' + s.id + ')">🗑️</button></div>');
+  }
+  body.innerHTML = h.join('');
+}
+function togglePPHistory() {
+  var body = $id('ppHistoryBody'), toggle = $id('ppHistToggle');
+  if (body && toggle) {
+    var h = body.style.display === 'none';
+    body.style.display = h ? '' : 'none';
+    toggle.textContent = h ? '▼' : '▶';
+    if (h) renderPPHistory();
+  }
+}
+function deployPPToCourse() {
+  var dims = window._ppDims || {};
+  var labels = {scan:'痛点发现报告',rank:'痛点评分排行',solve:'解决方案',money:'变现路径'};
+  var ch = { name: (state.ppSettings.targetAreas || []).join(',') || '痛点雷达', articles: [] };
+  for (var k in labels) { if (dims[k]) ch.articles.push({ title: labels[k], content: dims[k] }); }
+  if (!ch.articles.length) { showToast('暂无内容可部署'); return; }
+  deployAsCourse('痛点雷达', [ch], 'painpoint');
+}
+
 
 /* ===== 资道 · 融资兵法 ===== */
 function initFinState() {
@@ -28410,7 +29308,7 @@ function callFinAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🏦 AI 融资策划中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000,
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🏦 AI 策划中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatFinContent(fullText);
@@ -28446,7 +29344,7 @@ function callFinAppend(dimId) {
   var resultDiv = document.getElementById('finResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000,
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
     }
@@ -28647,7 +29545,7 @@ function callAnaAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F52C} AI \u{4E94}\u{5C42}\u{5206}\u{6790}\u{4E2D}...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000,
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F52C} AI \u{5206}\u{6790}\u{4E2D} ('+fullText.length+' \u{5B57})...'; }
       if (resultDiv) resultDiv.innerHTML = formatAnaContent(fullText);
@@ -28683,7 +29581,7 @@ function callAnaAppend(layerId) {
   var resultDiv = document.getElementById('anaResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000,
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
     }
@@ -28885,7 +29783,7 @@ function callAdvAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F4D6} AI \u{8BB2}\u{9898}\u{4E2D}...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000, search: true,
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000, search: true,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F4D6} AI \u{8BB2}\u{9898}\u{4E2D} ('+fullText.length+' \u{5B57})...'; }
       if (resultDiv) resultDiv.innerHTML = formatAdvContent(fullText);
@@ -28921,7 +29819,7 @@ function callAdvAppend(levelId) {
   var resultDiv = document.getElementById('advResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加讲解中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 180000, search: true,
+    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000, search: true,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
     }
@@ -32483,6 +33381,100 @@ function mtRenderShapeSVG(shape, idx) {
 // Called on first renderMemoryTrain()
 
 // Init on load
+
+
+/* ===== 鬼谷子识人 · 移动端手势滑动切换 ===== */
+var _swipeData = {startX:0, startY:0, startTime:0, swiping:false, locked:false};
+function isTouchDevice() {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+}
+function getAdjacentPanel(dir) {
+  var order = state.panelOrder || PANEL_DEFS.map(function(p){ return p.mode; });
+  var idx = order.indexOf('ggz');
+  if (idx === -1) return null;
+  var t = idx + dir;
+  if (t < 0 || t >= order.length) return null;
+  var m = order[t];
+  if ((state.deletedPanels||[]).indexOf(m) !== -1) return null;
+  if ((state.hiddenPanels||[]).indexOf(m) !== -1) return null;
+  return m;
+}
+function doSwipeAnim(dir) {
+  if (_swipeData.locked) return;
+  _swipeData.locked = true;
+  var area = $id('contentArea');
+  var container = $id('app');
+  var targetMode = getAdjacentPanel(dir);
+  if (!targetMode) { _swipeData.locked = false; return; }
+  var outX = dir > 0 ? '-100%' : '100%';
+  var inX  = dir > 0 ? '100%'  : '-100%';
+  if (container) container.classList.add('swipe-lock');
+  // Phase 1: slide out
+  area.classList.add('swipe-animating');
+  area.style.transform = 'translateX(' + outX + ')';
+  setTimeout(function() {
+    // Phase 2: render new panel, position off-screen, slide in
+    try { switchMode(targetMode); } catch(ex) { showToast('✖ 切换失败'); _swipeData.locked = false; if (container) container.classList.remove('swipe-lock'); return; }
+    area.classList.add('swipe-animating');
+    area.style.transform = 'translateX(' + inX + ')';
+    // Force reflow
+    void area.offsetHeight;
+    area.style.transform = 'translateX(0)';
+    setTimeout(function() {
+      area.classList.remove('swipe-animating');
+      area.style.transform = '';
+      if (container) container.classList.remove('swipe-lock');
+      _swipeData.locked = false;
+    }, 280);
+  }, 240);
+}
+function initPanelSwipe() {
+  var area = $id('contentArea');
+  if (!area || area._swipeAttached) return;
+  area.addEventListener('touchstart', _swipeHandler, {passive:true});
+  area._swipeAttached = true;
+}
+function _swipeHandler(e) {
+  var EXCLUDED = ['sequential','random','wrongset','rhythm','memorytrain'];
+  if (EXCLUDED.indexOf(currentMode) !== -1) return;
+  if (!isTouchDevice()) return;
+  var t = e.target;
+  if (t.closest('textarea,input,button,select,[contenteditable]')) return;
+  var touch = e.touches[0];
+  _swipeData.startX = touch.clientX;
+  _swipeData.startY = touch.clientY;
+  _swipeData.startTime = Date.now();
+  _swipeData.swiping = false;
+  var area = e.currentTarget;
+  var _onMove = function(ev) {
+    if (_swipeData.locked) return;
+    var dx = ev.touches[0].clientX - _swipeData.startX;
+    var dy = ev.touches[0].clientY - _swipeData.startY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+      _swipeData.swiping = true;
+      area.style.transition = 'none';
+      area.style.transform = 'translateX(' + dx + 'px)';
+    }
+  };
+  var _onEnd = function(ev) {
+    document.removeEventListener('touchmove', _onMove);
+    document.removeEventListener('touchend', _onEnd);
+    if (_swipeData.locked) return;
+    if (!_swipeData.swiping) return;
+    var dx = ev.changedTouches[0].clientX - _swipeData.startX;
+    var dy = ev.changedTouches[0].clientY - _swipeData.startY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      var dir = dx > 0 ? -1 : 1; // right = prev, left = next
+      doSwipeAnim(dir);
+    } else {
+      // bounce back
+      area.style.transition = 'transform .2s ease';
+      area.style.transform = 'translateX(0)';
+    }
+  };
+  document.addEventListener('touchmove', _onMove, {passive:true});
+  document.addEventListener('touchend', _onEnd, {passive:true});
+}
 
 </script>
 </body>
