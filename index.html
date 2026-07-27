@@ -33384,13 +33384,35 @@ function mtRenderShapeSVG(shape, idx) {
 
 
 /* ===== 鬼谷子识人 · 移动端手势滑动切换 ===== */
+var STEP_MODES = {
+  ggz:{steps:['observe','probe','emotion','character','talent','engage'],active:function(){return window._ggzActiveStep||'observe';},sw:function(id){switchGgzStep(id);}},
+  ind:{steps:['market','lifecycle','chain','landscape','pest','profit'],active:function(){return window._indActiveStep||'market';},sw:function(id){switchIndStep(id);}},
+  acu:{steps:['meridian','points','location','needle','deqi','aftercare'],active:function(){return window._acuActiveStep||null;},sw:function(id){switchAcuStep(id);}},
+  decomp:{steps:['conclusion','tasks','path','division','acceptance','deliverables'],active:function(){return window._decompActiveStep||null;},sw:function(id){switchDecompStep(id);}},
+  cyber:{steps:['modeling','controllability','observability','identification','correctability','achievability'],active:function(){return _cyberActiveStep||'modeling';},sw:function(id){switchCyberStep(id);}}
+};
 var _swipeData = {startX:0, startY:0, startTime:0, swiping:false, locked:false};
 function isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 }
+
+function swipeStep(dir) {
+  var cfg = STEP_MODES[currentMode];
+  if (!cfg) return;
+  var steps = cfg.steps;
+  var cur = cfg.active();
+  var idx = steps.indexOf(cur);
+  if (idx === -1) return;
+  var t = idx + dir;
+  if (t < 0 || t >= steps.length) return;
+  cfg.sw(steps[t]);
+  // reset visual drag offset from _onMove
+  var a = ('contentArea');
+  if (a) { a.style.transition = 'transform .2s ease'; a.style.transform = ''; }
+}
 function getAdjacentPanel(dir) {
   var order = state.panelOrder || PANEL_DEFS.map(function(p){ return p.mode; });
-  var idx = order.indexOf('ggz');
+  var idx = order.indexOf(currentMode);
   if (idx === -1) return null;
   var t = idx + dir;
   if (t < 0 || t >= order.length) return null;
@@ -33401,6 +33423,7 @@ function getAdjacentPanel(dir) {
 }
 function doSwipeAnim(dir) {
   if (_swipeData.locked) return;
+  if (STEP_MODES[currentMode]) { swipeStep(dir); return; }
   _swipeData.locked = true;
   var area = $id('contentArea');
   var container = $id('app');
