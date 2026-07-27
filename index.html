@@ -33395,7 +33395,18 @@ var STEP_MODES = {
   zh:{steps:['read','frame','emotion','logic','object','action'],active:function(){return window._zhActiveStep||'read';},sw:function(id){switchZhStep(id);}},
   mou:{steps:['assess','design','superior','medium','inferior','venom'],active:function(){return window._mouActiveStep||'assess';},sw:function(id){switchMouStep(id);}},
   law:{steps:['facts','laws','risk','strategy','evidence','insight'],active:function(){return window._lawActiveDim||'facts';},sw:function(id){switchLawDim(id);}},
-  painpoint:{steps:['scan','rank','solve','money'],active:function(){return window._ppActiveDim||'scan';},sw:function(id){switchPPDim(id);}}
+  painpoint:{steps:['scan','rank','solve','money'],active:function(){return window._ppActiveDim||'scan';},sw:function(id){switchPPDim(id);}},
+  meta:{steps:['deconstruct','imitate','practice','create'],active:function(){return window._metaActiveStage||'deconstruct';},sw:function(id){switchMetaStage(id);}},
+  biz:{steps:['value','model','leverage','action'],active:function(){return window._bizActiveDim||'value';},sw:function(id){switchBizDim(id);}},
+  tcm:{steps:['pattern','formula','herbs','patent'],active:function(){return window._tcmActiveDim||'pattern';},sw:function(id){switchTcmDim(id);}},
+  idea:{steps:['diagnosis','solution','action','resource'],active:function(){return window._ideaActiveDim||'diagnosis';},sw:function(id){switchIdeaDim(id);}},
+  news:{steps:['briefing','linkage','policy','strategy'],active:function(){return window._newsActiveDim||'briefing';},sw:function(id){switchNewsDim(id);}},
+  fin:{steps:['diagnosis','design','risk','advanced'],active:function(){return window._finActiveDim||'diagnosis';},sw:function(id){switchFinDim(id);}},
+  ana:{steps:['info','logic','system','human','meaning'],active:function(){return window._anaActiveLayer||'info';},sw:function(id){switchAnaLayer(id);}},
+  adv:{steps:['basic','medium','expert','principle','extend'],active:function(){return window._advActiveLevel||'basic';},sw:function(id){switchAdvLevel(id);}},
+  yang:{steps:['constitution','seasonal','diet','meridian','emotion','daily'],active:function(){return window._yangActiveDim||'constitution';},sw:function(id){switchYangDim(id);}},
+  chuang:{steps:['scamper','reverse','listing','analogy','combo','system'],active:function(){return window._chuangActiveDim||'scamper';},sw:function(id){switchChuangDim(id);}},
+  ask:{steps:['essential','assumption','boundary','perspective','connection','reframe'],active:function(){return window._askActiveDim||'essential';},sw:function(id){switchAskDim(id);}}
 };
 var _swipeData = {startX:0, startY:0, startTime:0, swiping:false, locked:false};
 function isTouchDevice() {
