@@ -5079,6 +5079,114 @@ const STORAGE_KEY = 'ddj_progress';
 function safeGetItem(k,d){try{var v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}}
 function safeSetItem(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function safeRemoveItem(k){try{localStorage.removeItem(k)}catch(e){}}
+
+// ── IndexedDB 状态存储（持久化主存储，localStorage 为冗余备份） ──
+var IDB_STATE_NAME = 'ddj_userdata';
+var IDB_STATE_STORE = 'main_state';
+var DATA_CURRENT_VERSION = 1;
+var DATA_MIGRATIONS = {};
+function idbStateOpen() {
+    return new Promise(function(resolve, reject) {
+        try {
+            var req = indexedDB.open(IDB_STATE_NAME, 1);
+            req.onupgradeneeded = function(e) {
+                var db = e.target.result;
+                if (!db.objectStoreNames.contains(IDB_STATE_STORE)) {
+                    db.createObjectStore(IDB_STATE_STORE);
+                }
+            };
+            req.onsuccess = function(e) { resolve(e.target.result); };
+            req.onerror = function(e) { reject(e.target.error); };
+        } catch(e) { reject(e); }
+    });
+}
+function idbStateSave(jsonStr) {
+    idbStateOpen().then(function(db) {
+        try {
+            var tx = db.transaction(IDB_STATE_STORE, 'readwrite');
+            tx.objectStore(IDB_STATE_STORE).put(jsonStr, 'app_state');
+            tx.oncomplete = function() { db.close(); };
+            tx.onerror = function() { db.close(); };
+        } catch(e) { try { db.close(); } catch(ex) {} }
+    }).catch(function(){});
+}
+function idbStateLoad() {
+    return new Promise(function(resolve) {
+        idbStateOpen().then(function(db) {
+            try {
+                var tx = db.transaction(IDB_STATE_STORE, 'readonly');
+                var req = tx.objectStore(IDB_STATE_STORE).get('app_state');
+                req.onsuccess = function() { resolve(req.result || null); db.close(); };
+                req.onerror = function() { resolve(null); db.close(); };
+            } catch(e) { resolve(null); try { db.close(); } catch(ex) {} }
+        }).catch(function(){ resolve(null); });
+    });
+}
+function idbStateDelete() {
+    idbStateOpen().then(function(db) {
+        try {
+            var tx = db.transaction(IDB_STATE_STORE, 'readwrite');
+            tx.objectStore(IDB_STATE_STORE).delete('app_state');
+            tx.oncomplete = function() { db.close(); };
+            tx.onerror = function() { db.close(); };
+        } catch(e) { try { db.close(); } catch(ex) {} }
+    }).catch(function(){});
+}
+function migrateState(st) {
+    try {
+        if (typeof st.dataVersion !== 'number') st.dataVersion = 0;
+        var ver = st.dataVersion;
+        while (ver < DATA_CURRENT_VERSION) {
+            ver++;
+            try { if (DATA_MIGRATIONS[ver]) DATA_MIGRATIONS[ver](st); } catch(e) { console.warn('migration v'+ver+' failed', e); }
+        }
+        st.dataVersion = DATA_CURRENT_VERSION;
+    } catch(e) { console.warn('migrateState error', e); }
+}
+function requestPersist() {
+    if (navigator.storage && navigator.storage.persist) {
+        navigator.storage.persist().then(function(granted) {
+            if (granted) console.log('Persistent storage granted');
+        }).catch(function(){});
+    }
+}
+function initFromIDB() {
+    if (!state || !indexedDB) return;
+    idbStateLoad().then(function(jsonStr) {
+        if (!jsonStr) return;
+        try {
+            var idbData = JSON.parse(jsonStr);
+            var hasData = state.answered && Object.keys(state.answered).length > 0;
+            if (!hasData) {
+                var defaults = defaultState();
+                Object.keys(defaults).forEach(function(k) {
+                    try {
+                        var dv = defaults[k], sv = idbData[k];
+                        var valid = sv !== undefined && sv !== null;
+                        if (valid && Array.isArray(dv) && !Array.isArray(sv)) valid = false;
+                        if (valid && typeof dv === 'number' && typeof sv !== 'number') valid = false;
+                        if (valid && typeof dv === 'string' && typeof sv !== 'string') valid = false;
+                        if (valid && typeof dv === 'boolean' && typeof sv !== 'boolean') valid = false;
+                        if (valid) state[k] = sv;
+                    } catch(e) {}
+                });
+                migrateState(state);
+                saveState();
+                try { updateUI(); } catch(e) {}
+                showToast('\u{1f4be} \u{5df2}\u{4ece}\u{5907}\u{4efd}\u{6062}\u{590d}\u{5b66}\u{4e60}\u{6570}\u{636e}');
+            }
+        } catch(e) { console.warn('initFromIDB merge failed', e); }
+    }).catch(function(){});
+}
+function checkStorageUsage() {
+    if (navigator.storage && navigator.storage.estimate) {
+        navigator.storage.estimate().then(function(info) {
+            var pct = info.usage / info.quota;
+            if (pct > 0.8) showToast('\u26a0\ufe0f \u5b58\u5828\u7a7a\u95f4\u5373\u5c06\u5360\u6ee1(' + Math.round(pct*100) + '%)\uff0c\u5efa\u8bae\u5907\u4efd\u540e\u91cd\u7f6e');
+        }).catch(function(){});
+    }
+}
+
 // ── Auth System ──────────────────────────────────────────────
 var API_BASE = (location.hostname==='localhost'||location.hostname==='127.0.0.1')?'http://localhost:8000':'';
 function getAuthToken(){return safeGetItem('ddj_auth_token',null)}
@@ -5842,6 +5950,7 @@ var TOAST_DURATION = 2000;  // Toast 消失时间 ms
 var _lastChapters = [];  // 交错学习：最近章节记录（最多2个）
 function defaultState() {
 return {
+dataVersion: 1,
 learnIndex: 0, randomOrder: [], randomIndex: 0,
 wrongCount: {}, consecutiveCorrect: {},
 wrongSetIds: [], reviewLevel: {}, nextDue: {},
@@ -6032,6 +6141,7 @@ var saved = JSON.parse(raw);
 var defaults = defaultState();
 var state = {};
 Object.keys(defaults).forEach(function(k) {
+try {
 var dv = defaults[k], sv = saved[k];
 var valid = sv !== undefined && sv !== null;
 if (valid && Array.isArray(dv) && !Array.isArray(sv)) valid = false;
@@ -6039,6 +6149,7 @@ if (valid && typeof dv === 'number' && typeof sv !== 'number') valid = false;
 if (valid && typeof dv === 'string' && typeof sv !== 'string') valid = false;
 if (valid && typeof dv === 'boolean' && typeof sv !== 'boolean') valid = false;
 state[k] = valid ? sv : dv;
+} catch(e) { state[k] = defaults[k]; }
 });
 if (state.aiKeySetAt && state.aiKeyDuration && Date.now() - state.aiKeySetAt > state.aiKeyDuration * 60000)
 { state.aiApiKey = ''; state.aiKeySetAt = 0; state.aiKeyDuration = 0; }
@@ -6047,13 +6158,10 @@ state.rangeChapters = CHAPTERS.slice();
 if (state.nextDue) for (var k in state.nextDue)
 { if (state.nextDue[k] < 1000000) { var lv = state.reviewLevel[k]||0; state.nextDue[k] = Date.now() + ebbinghausInterval(lv-1); } }
 if (typeof state.contentFontSize === 'string') state.contentFontSize = 18;
-// v17 migration: 兼容旧的 activePegSetId 单值 → activePegSetIds 数组
 if ((!state.activePegSetIds || state.activePegSetIds.length === 0) && saved.activePegSetId) {
 state.activePegSetIds = [saved.activePegSetId];
 }
-// P2: fixStateIntegrity
 fixStateIntegrity(state);
-// textMarks 迁移：旧格式 { articleId: [marks] } → 新格式 { courseName: { articleId: [marks] } }
 if (state.textMarks) {
 	var _tmKeys = Object.keys(state.textMarks);
 	if (_tmKeys.length > 0) {
@@ -6064,13 +6172,14 @@ if (state.textMarks) {
 		}
 	}
 }
+migrateState(state);
 return state;
 }
-} catch(e) { console.warn('loadState failed, returning default', e); }
+} catch(e) { console.warn('loadState error', e); }
 return defaultState();
 }
 function fixStateIntegrity(st){try{if(st.pegImageSets&&Array.isArray(st.pegImageSets))for(var i=0;i<st.pegImageSets.length;i++){var ps=st.pegImageSets[i];if(!ps.id){st.pegImageSets.splice(i,1);i--;continue}if(typeof ps.totalImages!=="number"||ps.totalImages<0)ps.totalImages=0;if(typeof ps.rangeStart!=="number")ps.rangeStart=1;if(typeof ps.rangeEnd!=="number")ps.rangeEnd=1;if(!ps.name)ps.name="未命名";if(!ps.videos||!Array.isArray(ps.videos))ps.videos=[];else for(var vj=0;vj<ps.videos.length;vj++)if(!ps.videos[vj].id){ps.videos.splice(vj,1);vj--}}if(st.nextDue){var now=Date.now();for(var k in st.nextDue)if(typeof st.nextDue[k]!=="number"||st.nextDue[k]<1000000)st.nextDue[k]=now+86400000}if(st.wrongSetIds&&Array.isArray(st.wrongSetIds))st.wrongSetIds=st.wrongSetIds.filter(function(id){return typeof id==="number"&&id>=0})}catch(e){console.warn("fixStateIntegrity error:",e)}}
-function saveState() { try { var _json = JSON.stringify(state); StorageUtil.checkStorageQuota(_json); safeSetItem(STORAGE_KEY, _json); } catch(e) { console.warn('saveState failed', e); } }
+function saveState() { try { var _json = JSON.stringify(state); StorageUtil.checkStorageQuota(_json); safeSetItem(STORAGE_KEY, _json); idbStateSave(_json); } catch(e) { console.warn('saveState failed', e); } }
 function shuffleArray(arr) {
 for (var i = arr.length - 1; i > 0; i--) {
 var j = Math.floor(Math.random() * (i + 1));
@@ -9596,6 +9705,8 @@ AILEARN_STORAGE_KEY, KB_STORAGE_KEY, PEG_RECYCLE_KEY,
 ].forEach(safeRemoveItem);
 // 删除 IndexedDB 数据库（含所有图片、视频）
 try { indexedDB.deleteDatabase(IDB_NAME); } catch(e) {}
+	try { idbStateDelete(); } catch(e) {}
+	try { idbStateDelete(); } catch(e) {}
 // 重置状态为出厂默认
 state = defaultState();
 saveState();
@@ -10925,6 +11036,7 @@ try { updateLicenseUI(); } catch(e){}
 try { addProBadgeToTitle(); } catch(e){}
 try { initPWA(); } catch(e){}
 try { checkFirstLaunch(); } catch(e){}
+try { requestPersist(); checkStorageUsage(); initFromIDB(); } catch(e){}
 try { checkAuthStatus(); } catch(e){}
 try { switchMode('core'); } catch(e){}
 try { updateRangeLabel(); } catch(e){}
@@ -15430,7 +15542,7 @@ var id = _origSetInterval.apply(this, arguments);
 _allIntervals.push(id);
 return id;
 };
-window.addEventListener('beforeunload', window._cleanupTimers);
+window.addEventListener('beforeunload', function(){ window._cleanupTimers(); saveState(); });
 })();
 // ===== INIT：全DOM模块发现 v3 =====
 function mobileNavPrev(){switch(currentMode){case'core':prevCore();break;case'master':masterPrevArticle();break;case'memorypalace':if(typeof navMemoryPalaceItem==='function')navMemoryPalaceItem(-1);break;case'videopalace':if(typeof navVideoSegment==='function')navVideoSegment(-1);break;case'rhythm':if(typeof rhythmPrevArticle==='function')rhythmPrevArticle();break;case'exam':if(typeof examPrev==='function')examPrev();break;default:prevQuestion();break}}
