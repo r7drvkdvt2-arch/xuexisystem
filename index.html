@@ -30532,10 +30532,17 @@ function parseTrafficSteps(text) {
   }
   return steps;
 }
+function sanitizeHtml(html) {
+  html = html.replace(/<script[\s\S]*?<\/script>/gi, '');
+  html = html.replace(/\s+on\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, ' ');
+  html = html.replace(/href\s*=\s*(?:"javascript:[^"]*"|'javascript:[^']*')/gi, 'href="#"');
+  html = html.replace(/src\s*=\s*(?:"javascript:[^"]*"|'javascript:[^']*')/gi, 'src=""');
+  return html;
+}
 function formatTrafficContent(txt, stepId) {
   if (!txt) return '<div class="traffic-empty">暂无内容</div>';
   if (stepId === 'detail' && (txt.indexOf('<div') !== -1 || txt.indexOf('<section') !== -1 || txt.indexOf('<html') !== -1 || txt.indexOf('<style') !== -1)) {
-    return '<div class="traffic-output"><div class="traffic-detail-preview" style="border:1px solid var(--border);border-radius:8px;padding:16px;background:var(--bg);overflow-x:auto">'+txt+'</div></div>';
+    return '<div class="traffic-output"><div class="traffic-detail-preview" style="border:1px solid var(--border);border-radius:8px;padding:16px;background:var(--bg);overflow-x:auto">'+sanitizeHtml(txt)+'</div></div>';
   }
   var html = txt
     .replace(/</g, '&lt;').replace(/>/g, '&gt;')
