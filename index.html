@@ -2373,7 +2373,7 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .traffic-history-item:hover{background:var(--bg-hover)}
 .traffic-history-main{flex:1;overflow:hidden}
 .traffic-history-date{font-size:11px;color:var(--text-muted)}
-.traffic-history-name{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.traffic-history-problem{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .traffic-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
 .traffic-history-del:hover{background:var(--bg-active);color:var(--danger)}
 .traffic-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
@@ -2659,7 +2659,7 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .sz-history-item{padding:12px;background:var(--bg-card);border-radius:8px;margin-bottom:8px;border:1px solid var(--border);cursor:pointer}
 .sz-history-item:hover{background:var(--bg-active)}
 .sz-history-date{font-size:11px;color:var(--text-muted)}
-.sz-history-scene{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sz-history-problem{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sz-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
 .sz-history-del:hover{background:var(--bg-active);color:var(--danger)}
 .sz-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
@@ -2689,7 +2689,7 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .qm-history-item{padding:12px;background:var(--bg-card);border-radius:8px;margin-bottom:8px;border:1px solid var(--border);cursor:pointer}
 .qm-history-item:hover{background:var(--bg-active)}
 .qm-history-date{font-size:11px;color:var(--text-muted)}
-.qm-history-scene{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qm-history-problem{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .qm-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
 .qm-history-del:hover{background:var(--bg-active);color:var(--danger)}
 .qm-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
@@ -2719,7 +2719,7 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .zh-history-item{padding:12px;background:var(--bg-card);border-radius:8px;margin-bottom:8px;border:1px solid var(--border);cursor:pointer}
 .zh-history-item:hover{background:var(--bg-active)}
 .zh-history-date{font-size:11px;color:var(--text-muted)}
-.zh-history-scene{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zh-history-problem{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .zh-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
 .zh-history-del:hover{background:var(--bg-active);color:var(--danger)}
 .zh-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
@@ -5084,8 +5084,33 @@ function safeRemoveItem(k){try{localStorage.removeItem(k)}catch(e){}}
 // ── IndexedDB 状态存储（持久化主存储，localStorage 为冗余备份） ──
 var IDB_STATE_NAME = 'ddj_userdata';
 var IDB_STATE_STORE = 'main_state';
-var DATA_CURRENT_VERSION = 1;
+var DATA_CURRENT_VERSION = 2;
 var DATA_MIGRATIONS = {};
+// v2: unify field names — scene/course→problem, steps→dims (sz/qm/zh/traffic)
+DATA_MIGRATIONS[2] = function(st) {
+  var maps = {
+    szSessions: { oldProblem: 'scene', oldDims: 'steps' },
+    qmSessions: { oldProblem: 'scene', oldDims: 'steps' },
+    zhSessions: { oldProblem: 'scene', oldDims: 'steps' },
+    trafficSessions: { oldProblem: 'course', oldDims: 'steps' }
+  };
+  Object.keys(maps).forEach(function(key) {
+    var arr = st[key];
+    if (!Array.isArray(arr)) return;
+    var m = maps[key];
+    for (var i = 0; i < arr.length; i++) {
+      var s = arr[i];
+      if (s[m.oldProblem] !== undefined && s.problem === undefined) {
+        s.problem = s[m.oldProblem];
+        delete s[m.oldProblem];
+      }
+      if (s[m.oldDims] !== undefined && s.dims === undefined) {
+        s.dims = s[m.oldDims];
+        delete s[m.oldDims];
+      }
+    }
+  });
+};
 function idbStateOpen() {
     return new Promise(function(resolve, reject) {
         try {
@@ -30417,7 +30442,7 @@ function deployIndSession(id) {
   if (!found) { showToast('❌ 记录未找到'); return; }
   var labels = {market:'市场规模',lifecycle:'生命周期',chain:'产业链',landscape:'竞争格局',pest:'宏观环境',profit:'盈利模式'};
   var ch = { name: found.industry, articles: [] };
-  var obj = found.steps || {};
+  var obj = found.dims || {};
   for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
   if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
   deployAsCourse(found.industry, [ch], 'ind_deploy');
@@ -30430,7 +30455,7 @@ function deployAllIndToCourse() {
   for (var i = 0; i < sessions.length; i++) {
     var s = sessions[i];
     var arts = [];
-    var obj = s.steps || {};
+    var obj = s.dims || {};
     for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
     if (arts.length) chapterList.push({ name: s.industry, articles: arts });
   }
@@ -30679,9 +30704,9 @@ function formatTrafficContent(txt, stepId) {
     .replace(/\n/g, '<br>');
   return '<div class="traffic-output"><p>'+html+'</p></div>';
 }
-function saveTrafficSession(courseName, steps) {
+function saveTrafficSession(problem, dims) {
   if (!state.trafficSessions) state.trafficSessions = [];
-  state.trafficSessions.unshift({ id: Date.now(), course: courseName, steps: steps, date: new Date().toISOString() });
+  state.trafficSessions.unshift({ id: Date.now(), problem: problem, dims: dims, date: new Date().toISOString() });
   if (state.trafficSessions.length > 50) state.trafficSessions.length = 50;
   saveState(); renderTrafficHistory();
 }
@@ -30702,9 +30727,10 @@ function renderTrafficHistory() {
     var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
     h.push('<div class="traffic-history-item" onclick="viewTrafficSession('+s.id+')">');
     h.push('<div class="traffic-history-main"><div class="traffic-history-date">'+ds+'</div>');
-    h.push('<div class="traffic-history-name">'+escHtml(s.course?s.course.substring(0,45)+(s.course.length>45?'...':''):'')+'</div></div>');
-    h.push('<button class="traffic-history-del" onclick="event.stopPropagation();deleteTrafficSession('+s.id+')">✖</button></div>');
+    h.push('<div class="traffic-history-problem">'+escHtml(s.problem?s.problem.substring(0,45)+(s.problem.length>45?'...':''):'')+'</div></div>');
+    h.push('<button class="traffic-history-deploy" onclick="event.stopPropagation();deployTrafficSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="traffic-history-del" onclick="event.stopPropagation();deleteTrafficSession('+s.id+')">✖</button></div>');
   }
+  if (sessions.length > 0) h.push('<div style="margin-top:6px;text-align:center"><button class="next-btn" onclick="deployAllTrafficToCourse()" style="width:100%;font-size:12px;background:#5a2a7a">📤 全部部署为合集课程</button></div>');
   list.innerHTML = h.join('');
 }
 function toggleTrafficHistory() {
@@ -30721,7 +30747,7 @@ function viewTrafficSession(id) {
   var session = null;
   for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
   if (!session) { showToast('记录未找到'); return; }
-  window._trafficSteps = session.steps;
+  window._trafficSteps = session.dims;
   window._trafficActiveStep = 'keywords';
   switchTrafficStep('keywords');
   var hb = $id('trafficHistoryBody'); if (hb) hb.style.display = 'none';
@@ -30732,8 +30758,8 @@ function deployTrafficSession(id) {
   var session = null;
   for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
   if (!session) { showToast('记录未找到'); return; }
-  var detailContent = session.steps && session.steps.detail ? session.steps.detail : '暂无详情页内容';
-  var courseName = session.course ? session.course.substring(0,30) : '课程引流详情页';
+  var detailContent = session.dims && session.dims.detail ? session.dims.detail : '暂无详情页内容';
+  var courseName = session.problem ? session.problem.substring(0,30) : '课程引流详情页';
   deployAsCourse(courseName+'·详情页', [{ name: '商品详情页', articles: [{ title: courseName+'·商品详情页', content: detailContent, source: 'traffic' }] }], 'traffic');
   showToast('✅ 已部署为课程');
 }
@@ -30743,12 +30769,12 @@ function deployAllTrafficToCourse() {
   var chapters = [];
   for (var i = 0; i < sessions.length; i++) {
     var s = sessions[i];
-    var name = s.course ? s.course.substring(0,20) : '课程'+(i+1);
+    var name = s.problem ? s.problem.substring(0,20) : '课程'+(i+1);
     var articles = [];
     var stepLabels = { keywords:'热词挖掘', headline:'爆款标题', selling:'卖点提炼', copy:'营销文案', media:'视觉素材', detail:'详情页' };
     for (var key in stepLabels) {
-      if (s.steps && s.steps[key]) {
-        articles.push({ title: name+'·'+stepLabels[key], content: s.steps[key], source: 'traffic' });
+      if (s.dims && s.dims[key]) {
+        articles.push({ title: name+'·'+stepLabels[key], content: s.dims[key], source: 'traffic' });
       }
     }
     chapters.push({ name: name, articles: articles });
@@ -30935,7 +30961,7 @@ function deployGgzSession(id) {
   if (!found) { showToast('❌ 记录未找到'); return; }
   var labels = {observe:'察言观色',probe:'探其内心',emotion:'识其情绪',character:'辨其品性',talent:'审其才能',engage:'相处之道'};
   var ch = { name: found.person, articles: [] };
-  var obj = found.steps || {};
+  var obj = found.dims || {};
   for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
   if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
   deployAsCourse(found.person, [ch], 'ggz_deploy');
@@ -30948,7 +30974,7 @@ function deployAllGgzToCourse() {
   for (var i = 0; i < sessions.length; i++) {
     var s = sessions[i];
     var arts = [];
-    var obj = s.steps || {};
+    var obj = s.dims || {};
     for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
     if (arts.length) chapterList.push({ name: s.person, articles: arts });
   }
@@ -31135,9 +31161,9 @@ function formatSzContent(txt) {
   html = _enhanceContent(html);
   return '<div class="sz-output">'+html+'</div>';
 }
-function saveSzSession(sceneDesc, steps) {
+function saveSzSession(problem, dims) {
   if (!state.szSessions) state.szSessions = [];
-  state.szSessions.unshift({ id:Date.now(), scene:sceneDesc, steps:steps, date:new Date().toISOString() });
+  state.szSessions.unshift({ id:Date.now(), problem:problem, dims:dims, date:new Date().toISOString() });
   if (state.szSessions.length > 50) state.szSessions.length = 50;
   saveState(); renderSzHistory();
 }
@@ -31169,11 +31195,11 @@ function deploySzSession(id) {
   for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
   if (!found) { showToast('❌ 记录未找到'); return; }
   var labels = {know:'知己知彼',plan:'庙算制胜',resource:'资源运筹',strength:'先胜后战',creative:'奇正相生',adapt:'因敌制胜'};
-  var ch = { name: found.scene, articles: [] };
-  var obj = found.steps || {};
+  var ch = { name: found.problem, articles: [] };
+  var obj = found.dims || {};
   for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
   if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
-  deployAsCourse(found.scene, [ch], 'sz_deploy');
+  deployAsCourse(found.problem, [ch], 'sz_deploy');
 }
 function deployAllSzToCourse() {
   var sessions = state.szSessions || [];
@@ -31183,9 +31209,9 @@ function deployAllSzToCourse() {
   for (var i = 0; i < sessions.length; i++) {
     var s = sessions[i];
     var arts = [];
-    var obj = s.steps || {};
+    var obj = s.dims || {};
     for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
-    if (arts.length) chapterList.push({ name: s.scene, articles: arts });
+    if (arts.length) chapterList.push({ name: s.problem, articles: arts });
   }
   if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
   deployAsCourse('孙子兵法策略合集', chapterList, 'sz_deploy');
@@ -31202,7 +31228,7 @@ function renderSzHistory() {
     var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
     h.push('<div class="sz-history-item" onclick="viewSzSession('+s.id+')">');
     h.push('<div class="sz-history-main"><div class="sz-history-date">'+ds+'</div>');
-    h.push('<div class="sz-history-scene">'+escHtml(s.scene?s.scene.substring(0,40)+(s.scene.length>40?'...':''):'')+'</div></div>');
+    h.push('<div class="sz-history-problem">'+escHtml(s.problem?s.problem.substring(0,40)+(s.problem.length>40?'...':''):'')+'</div></div>');
     h.push('<button class="sz-history-deploy" onclick="event.stopPropagation();deploySzSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="sz-history-del" onclick="event.stopPropagation();deleteSzSession('+s.id+')">✖</button></div>');
   }
   list.innerHTML = h.join('');
@@ -31212,7 +31238,7 @@ function viewSzSession(id) {
   var session = null;
   for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
   if (!session) { showToast('记录未找到'); return; }
-  window._szSteps = session.steps || {};
+  window._szSteps = session.dims || {};
   window._szActiveStep = 'know';
   switchSzStep('know');
   var hb = $id('szHistoryBody'); if (hb) hb.style.display = 'none';
@@ -31370,9 +31396,9 @@ function formatQmContent(txt) {
   html = _enhanceContent(html);
   return '<div class="qm-output">'+html+'</div>';
 }
-function saveQmSession(sceneDesc, steps) {
+function saveQmSession(problem, dims) {
   if (!state.qmSessions) state.qmSessions = [];
-  state.qmSessions.unshift({ id:Date.now(), scene:sceneDesc, steps:steps, date:new Date().toISOString() });
+  state.qmSessions.unshift({ id:Date.now(), problem:problem, dims:dims, date:new Date().toISOString() });
   if (state.qmSessions.length > 50) state.qmSessions.length = 50;
   saveState(); renderQmHistory();
 }
@@ -31404,11 +31430,11 @@ function deployQmSession(id) {
   for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
   if (!found) { showToast('❌ 记录未找到'); return; }
   var labels = {id:'识局辨类',see:'看穿迷障',mind:'洞察人心',risk:'量己审势',break:'破局拆招',shield:'固本筑防'};
-  var ch = { name: found.scene, articles: [] };
+  var ch = { name: found.problem, articles: [] };
   var obj = found.steps || {};
   for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
   if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
-  deployAsCourse(found.scene, [ch], 'qm_deploy');
+  deployAsCourse(found.problem, [ch], 'qm_deploy');
 }
 function deployAllQmToCourse() {
   var sessions = state.qmSessions || [];
@@ -31420,7 +31446,7 @@ function deployAllQmToCourse() {
     var arts = [];
     var obj = s.steps || {};
     for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
-    if (arts.length) chapterList.push({ name: s.scene, articles: arts });
+    if (arts.length) chapterList.push({ name: s.problem, articles: arts });
   }
   if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
   deployAsCourse('千门八将破局合集', chapterList, 'qm_deploy');
@@ -31437,7 +31463,7 @@ function renderQmHistory() {
     var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
     h.push('<div class="qm-history-item" onclick="viewQmSession('+s.id+')">');
     h.push('<div class="qm-history-main"><div class="qm-history-date">'+ds+'</div>');
-    h.push('<div class="qm-history-scene">'+escHtml(s.scene?s.scene.substring(0,40)+(s.scene.length>40?'...':''):'')+'</div></div>');
+    h.push('<div class="qm-history-problem">'+escHtml(s.problem?s.problem.substring(0,40)+(s.problem.length>40?'...':''):'')+'</div></div>');
     h.push('<button class="qm-history-deploy" onclick="event.stopPropagation();deployQmSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="qm-history-del" onclick="event.stopPropagation();deleteQmSession('+s.id+')">✖</button></div>');
   }
   list.innerHTML = h.join('');
@@ -31447,7 +31473,7 @@ function viewQmSession(id) {
   var session = null;
   for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
   if (!session) { showToast('记录未找到'); return; }
-  window._qmSteps = session.steps || {};
+  window._qmSteps = session.dims || {};
   window._qmActiveStep = 'id';
   switchQmStep('id');
   var hb = $id('qmHistoryBody'); if (hb) hb.style.display = 'none';
@@ -31605,9 +31631,9 @@ function formatZhContent(txt) {
   html = _enhanceContent(html);
   return '<div class="zh-output">'+html+'</div>';
 }
-function saveZhSession(sceneDesc, steps) {
+function saveZhSession(problem, dims) {
   if (!state.zhSessions) state.zhSessions = [];
-  state.zhSessions.unshift({ id:Date.now(), scene:sceneDesc, steps:steps, date:new Date().toISOString() });
+  state.zhSessions.unshift({ id:Date.now(), problem:problem, dims:dims, date:new Date().toISOString() });
   if (state.zhSessions.length > 50) state.zhSessions.length = 50;
   saveState(); renderZhHistory();
 }
@@ -31639,11 +31665,11 @@ function deployZhSession(id) {
   for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { found = sessions[i]; break; } }
   if (!found) { showToast('❌ 记录未找到'); return; }
   var labels = {read:'审时度势',frame:'确立立场',emotion:'动之以情',logic:'晓之以理',object:'预判破执',action:'促成行动'};
-  var ch = { name: found.scene, articles: [] };
+  var ch = { name: found.problem, articles: [] };
   var obj = found.steps || {};
   for (var k in labels) { if (obj[k]) ch.articles.push({ title: labels[k], content: obj[k] }); }
   if (!ch.articles.length) { showToast('❌ 暂无内容可部署'); return; }
-  deployAsCourse(found.scene, [ch], 'zh_deploy');
+  deployAsCourse(found.problem, [ch], 'zh_deploy');
 }
 function deployAllZhToCourse() {
   var sessions = state.zhSessions || [];
@@ -31655,7 +31681,7 @@ function deployAllZhToCourse() {
     var arts = [];
     var obj = s.steps || {};
     for (var k in labels) { if (obj[k]) arts.push({ title: labels[k], content: obj[k] }); }
-    if (arts.length) chapterList.push({ name: s.scene, articles: arts });
+    if (arts.length) chapterList.push({ name: s.problem, articles: arts });
   }
   if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
   deployAsCourse('纵横话术合集', chapterList, 'zh_deploy');
@@ -31672,7 +31698,7 @@ function renderZhHistory() {
     var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
     h.push('<div class="zh-history-item" onclick="viewZhSession('+s.id+')">');
     h.push('<div class="zh-history-main"><div class="zh-history-date">'+ds+'</div>');
-    h.push('<div class="zh-history-scene">'+escHtml(s.scene?s.scene.substring(0,40)+(s.scene.length>40?'...':''):'')+'</div></div>');
+    h.push('<div class="zh-history-problem">'+escHtml(s.problem?s.problem.substring(0,40)+(s.problem.length>40?'...':''):'')+'</div></div>');
     h.push('<button class="zh-history-deploy" onclick="event.stopPropagation();deployZhSession('+s.id+')" style="background:none;border:none;cursor:pointer;padding:2px 4px;font-size:14px" title="部署为课程">📤</button><button class="zh-history-del" onclick="event.stopPropagation();deleteZhSession('+s.id+')">✖</button></div>');
   }
   list.innerHTML = h.join('');
@@ -31682,7 +31708,7 @@ function viewZhSession(id) {
   var session = null;
   for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
   if (!session) { showToast('记录未找到'); return; }
-  window._zhSteps = session.steps || {};
+  window._zhSteps = session.dims || {};
   window._zhActiveStep = 'read';
   switchZhStep('read');
   var hb = $id('zhHistoryBody'); if (hb) hb.style.display = 'none';
