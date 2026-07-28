@@ -2331,6 +2331,53 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .ind-history-del:hover{background:var(--bg-active);color:var(--danger)}
 .ind-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
 
+.traffic-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#1a1a0a,#3a2a1a);border-radius:12px;margin-bottom:16px;color:#f0e8d0}
+.traffic-hero-icon{font-size:36px;margin-bottom:6px}
+.traffic-hero-title{font-size:20px;font-weight:700;letter-spacing:2px}
+.traffic-hero-sub{font-size:13px;opacity:.8;margin-top:4px}
+.traffic-input-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.traffic-textarea{width:100%;min-height:110px;padding:14px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical;box-sizing:border-box;line-height:1.6}
+.traffic-textarea:focus{outline:none;border-color:#D4A030}
+.traffic-input-actions{display:flex;gap:10px;margin-top:12px}
+.traffic-btn{padding:10px 0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .2s;min-height:42px;white-space:nowrap;line-height:1.4;flex:1}
+.traffic-btn-primary{background:linear-gradient(135deg,#8a6a2a,#6a4a1a);color:#f0e8d0}
+.traffic-btn-primary:hover{background:linear-gradient(135deg,#9a7a3a,#8a6a2a)}
+.traffic-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
+.traffic-btn-outline:hover{background:var(--bg-hover)}
+.traffic-section{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.traffic-section-hdr{font-size:14px;font-weight:600;padding:4px 0;display:flex;justify-content:space-between;align-items:center}
+.traffic-step-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.traffic-step-card{flex:1;min-width:70px;text-align:center;padding:12px 6px;border-radius:10px;border:1px solid var(--border);background:var(--bg);cursor:pointer;transition:all .2s;user-select:none}
+.traffic-step-card:hover{background:var(--bg-hover)}
+.traffic-step-card.active{background:#1a1a0a;border-color:#D4A030;color:#f0e8d0}
+.dark-mode .traffic-step-card.active{background:#2a2a0a;border-color:#D4A030;color:#f0e8d0}
+.traffic-step-icon{font-size:22px;margin-bottom:2px;line-height:1.2}
+.traffic-step-label{font-size:14px;font-weight:700;line-height:1.3}
+.traffic-step-desc{font-size:10px;opacity:.7;margin-top:1px;line-height:1.2}
+.traffic-loading{display:none;align-items:center;justify-content:center;gap:12px;padding:30px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+.traffic-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:#D4A030;border-radius:50%;animation:traffic-spin .8s linear infinite}
+@keyframes traffic-spin{to{transform:rotate(360deg)}}
+#trafficResult{display:block;margin-bottom:16px;padding:12px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;min-height:60px}
+.traffic-output{font-size:14px;line-height:1.9;color:var(--text);padding:4px 0}
+.traffic-output h3{font-size:16px;font-weight:700;margin:16px 0 8px;color:#D4A030;padding:0 4px}
+.dark-mode .traffic-output h3{color:#E8C86A}
+.traffic-output h4{font-size:14px;font-weight:600;margin:12px 0 6px;color:#B8860B}
+.dark-mode .traffic-output h4{color:#D4A030}
+.traffic-output strong{color:#B8860B}
+.dark-mode .traffic-output strong{color:#E8C86A}
+.traffic-output pre{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;overflow-x:auto;font-size:13px;margin:8px 0}
+.traffic-output code{font-family:monospace;font-size:13px}
+.traffic-empty{color:var(--text-muted);font-size:13px;text-align:center;padding:12px}
+.traffic-history-body{margin-top:8px}
+.traffic-history-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border-light);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:background .2s}
+.traffic-history-item:hover{background:var(--bg-hover)}
+.traffic-history-main{flex:1;overflow:hidden}
+.traffic-history-date{font-size:11px;color:var(--text-muted)}
+.traffic-history-name{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.traffic-history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;border-radius:4px}
+.traffic-history-del:hover{background:var(--bg-active);color:var(--danger)}
+.traffic-guide{font-size:12px;color:var(--text-muted);text-align:center;padding:8px}
+
 .ggz-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#1a0a1a,#3a1a3a);border-radius:12px;margin-bottom:16px;color:#e8e0f0}
 .ggz-hero-icon{font-size:36px;margin-bottom:6px}
 .ggz-hero-title{font-size:20px;font-weight:700;letter-spacing:2px}
@@ -5935,6 +5982,7 @@ pegsetScenes: [],
 			advSettings: {},
 			indSessions: [],
 			indSettings: {},
+			trafficSessions: [], trafficSettings: {},
 			ggzSessions: [],
 			ggzSettings: {},
 			szSessions: [],
@@ -10301,6 +10349,7 @@ else if (mode==='fin') renderFinPanel();
 else if (mode==='ana') renderAnaPanel();
 else if (mode==='adv') renderAdvPanel();
 else if (mode==='ind') renderIndPanel();
+	else if (mode==='traffic') renderTrafficPanel();
 else if (mode==='yang') renderYangPanel();
 	else if (mode==='chuang') renderChuangPanel();
 	else if (mode==='ask') renderAskPanel();
@@ -17547,6 +17596,7 @@ var PANEL_DEFS = [
 {mode:'ana', label:'📊 深度分析'},
 {mode:'adv', label:'🚀 进阶讲题'},
 {mode:'ind', label:'📈 行业研究'},
+	{mode:'traffic', label:'🎯 课程引流'},
 	{mode:'yang', label:'🌿 六维养生'},
 	{mode:'chuang', label:'💡 创新核检'},
 		{mode:'ask', label:'🤔 提问之力'},
@@ -30301,6 +30351,280 @@ function toggleIndHistory() {
     if (h) renderIndHistory();
   }
 }
+/* ===== 课程引流 · 全自动详情页生成 ===== */
+function initTrafficState() {
+  if (!state.trafficSettings) state.trafficSettings = {};
+  if (!state.trafficSessions) state.trafficSessions = [];
+}
+function renderTrafficPanel() {
+  if (!window._trafficInit) { initTrafficState(); window._trafficInit = true; }
+  var area = $id('contentArea');
+  var steps = [
+    { id:'keywords', label:'热词挖掘', icon:'🔥', desc:'淘宝·抖音·小红书实时热词' },
+    { id:'headline', label:'爆款标题', icon:'🎯', desc:'标题带流量词·多版本' },
+    { id:'selling',  label:'卖点提炼', icon:'💎', desc:'痛点直击·核心卖点' },
+    { id:'copy',     label:'营销文案', icon:'✍️', desc:'完整文案·短视频脚本' },
+    { id:'media',    label:'视觉素材', icon:'🎨', desc:'主图·海报·视频提示词' },
+    { id:'detail',   label:'详情页',   icon:'📱', desc:'完整手机端详情页HTML' }
+  ];
+  var active = window._trafficActiveStep || 'keywords';
+  var h = [];
+  h.push('<div class="traffic-hero"><div class="traffic-hero-icon">🎯</div><div class="traffic-hero-title">课程全自动引流详情页生成</div><div class="traffic-hero-sub">输入课程名 → AI 自动挖掘全网热词 → 生成全套卖货详情页</div></div>');
+  h.push('<div class="traffic-input-card"><textarea id="trafficInput" class="traffic-textarea" placeholder="输入课程名称和简介，如：&#10;Python数据分析21天训练营，零基础入门到精通，适合在职转行人员，包含项目实战"></textarea><div class="traffic-input-actions"><button class="traffic-btn traffic-btn-primary" onclick="callTrafficAnalysis()">🔥 AI 热词挖掘+全自动生成</button><button class="traffic-btn traffic-btn-outline" onclick="deployAllTrafficToCourse()">📚 全部部署为课程</button></div></div>');
+  h.push('<div class="traffic-section"><div class="traffic-section-hdr">📊 六步生成流程</div><div class="traffic-step-row">');
+  for (var si = 0; si < steps.length; si++) {
+    var s = steps[si];
+    h.push('<div class="traffic-step-card'+(s.id===active?' active':'')+'" data-step="'+s.id+'" onclick="switchTrafficStep(\''+s.id+'\')"><div class="traffic-step-icon">'+s.icon+'</div><div class="traffic-step-label">'+s.label+'</div><div class="traffic-step-desc">'+s.desc+'</div></div>');
+  }
+  h.push('</div></div>');
+  h.push('<div class="traffic-loading" id="trafficLoading"><div class="traffic-spinner"></div><span id="trafficLoadingText">🔄 正在生成...</span></div>');
+  h.push('<div id="trafficResult"></div>');
+  h.push('<div class="traffic-section"><div class="traffic-section-hdr">📋 生成记录 (<span id="trafficHistoryCount">0</span>) <span id="trafficHistToggle" style="cursor:pointer" onclick="toggleTrafficHistory()">▼</span></div><div id="trafficHistoryBody" class="traffic-history-body" style="display:none"><div id="trafficHistoryList"></div></div></div>');
+  h.push('<div class="traffic-guide">💡 输入课程 → AI 联网挖掘热词 → 六步自动生成 → 点击步骤卡片切换查看 → 可对单步追加深度</div>');
+  area.innerHTML = h.join('');
+  renderTrafficHistory(); renderTrafficStepContent(); updateUI();
+}
+function switchTrafficStep(id) {
+  window._trafficActiveStep = id;
+  var cards = document.querySelectorAll('.traffic-step-card');
+  for (var i = 0; i < cards.length; i++)
+    cards[i].classList.toggle('active', cards[i].getAttribute('data-step') === id);
+  renderTrafficStepContent();
+}
+function renderTrafficStepContent() {
+  var rd = $id('trafficResult');
+  if (!rd) return;
+  var steps = window._trafficSteps;
+  if (!steps) { rd.innerHTML = '<div class="traffic-empty">👆 输入课程名称，点击「AI 热词挖掘+全自动生成」开始</div>'; return; }
+  var active = window._trafficActiveStep || 'keywords';
+  var c = steps[active];
+  var labels = { keywords:'热词挖掘', headline:'爆款标题', selling:'卖点提炼', copy:'营销文案', media:'视觉素材', detail:'详情页' };
+  var html = c ? formatTrafficContent(c, active) : '<div class="traffic-empty">暂无内容</div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="traffic-btn traffic-btn-outline" onclick="callTrafficAppend(\''+active+'\')">🔍 追加深度 - '+labels[active]+'</button></div>';
+  rd.innerHTML = html;
+}
+function buildTrafficPrompt(text, searchResults) {
+  var searchSection = '';
+  if (searchResults && searchResults.length) {
+    var joined = '';
+    for (var ri = 0; ri < searchResults.length; ri++) {
+      joined += (ri>0?'\n---\n':'') + (typeof searchResults[ri]==='string'?searchResults[ri]:JSON.stringify(searchResults[ri]));
+    }
+    searchSection = '\n\n=== 下方是实时搜索到的真实信息 ===\n' + joined + '\n=== 以上是搜索到的真实数据 ===\n\n以上数据来自淘宝、抖音、小红书等平台实时趋势。请基于以上数据+你的专业知识进行分析输出。';
+  }
+  return '你是一位顶级的电商/知识付费营销专家，精通淘宝、抖音、小红书平台的爆款详情页策划与文案创作。\n\n课程名称：'+text+'\n\n'+searchSection+'\n\n请严格按照以下6个部分输出，每部分用「【热词挖掘】【爆款标题】【卖点提炼】【营销文案】【视觉素材】【详情页】」作为标题开头：\n\n【热词挖掘】\n基于实时搜索数据（如有）和分析，列出10-15个与该课程相关的淘宝/抖音/小红书高热搜索词，标注搜索热度（高/中）和竞争程度（高/中/低）。推荐3-5个最适合植入标题和详情页的高转化流量词。\n\n【爆款标题】\n生成3-5个不同风格的爆款标题，必须包含核心流量词。风格包括：①痛点冲击型 ②结果承诺型 ③好奇引导型 ④人群标签型 ⑤对比刺激型。每个标题一行。\n\n【卖点提炼】\n核心卖点（3-5个）：每个卖点包含「用户痛点」→「课程如何解决」→「最终获益」。格式：痛点：... 解决方案：... 收获：...\n\n【营销文案】\n①推荐算法文案（50字内）②朋友圈种草文案（150字内）③短视频口播脚本（200字内，含开头钩子+主体+转化）④小红书笔记文案\n\n【视觉素材】\n①电商主图提示词（用于Midjourney/DALL-E等AI绘图工具）②课程封面图提示词 ③卖点海报提示词 ④短视频画面提示词（用于Sora/可灵/Kling等AI视频工具）每条提示词标注适用工具和风格。\n\n【详情页】\n生成完整的手机端商品详情页HTML代码。要求：①使用div+内联样式，自带样式无需外链 ②适配手机屏幕（max-width:480px）③结构：爆款标题（带流量词）→ 痛点直击 → 用户需求场景 → 课程能解决什么问题 → 课程大纲 → 适合人群 → 学习收获 → 权威信任背书 → 促单逼单结尾 ④排版整洁、块是块段是段、字体大小适宜 ⑤自带转化属性，不是普通的产品介绍';
+}
+function buildTrafficAppendPrompt(stepId) {
+  var steps = window._trafficSteps;
+  var labels = { keywords:'热词挖掘', headline:'爆款标题', selling:'卖点提炼', copy:'营销文案', media:'视觉素材', detail:'详情页' };
+  var current = steps && steps[stepId] ? steps[stepId].substring(0,1000) : '';
+  var prompts = {
+    keywords:'给出更详细的长尾关键词列表，按搜索意图分类（商业词、需求词、人群词、场景词），每个词标注搜索量级和推荐指数。',
+    headline:'基于当前爆款标题，再生成5个更具转化力的变体版本。针对不同平台（淘宝搜索标题、抖音推荐标题、小红书封面标题）分别优化。',
+    selling:'请对每个卖点进行更深入的阐述：①用户故事场景 ②数据/案例支撑 ③与竞品的差异化对比。产出可直接放入详情页的卖点卡片。',
+    copy:'请扩写每个文案版本，产出100%完整的可直接发布的版本。短视频脚本需要包含分镜描述，小红书文案需要完整emoji排版。',
+    media:'请为每个视觉素材生成更精细的提示词，包含具体风格参考、色彩方案、构图建议。每个提示词附带适用场景说明。',
+    detail:'请生成一个更精美、更完整的商品详情页HTML。包含促销倒计时、学员评价轮播、限时优惠等转化元素。样式更精致，使用渐变色、阴影、圆角等设计元素。'
+  };
+  return '当前课程引流内容的「'+labels[stepId]+'」部分已有以下内容：\n---\n'+current+'\n---\n\n请进行追加深度分析：\n'+prompts[stepId]+'\n\n请以「【'+labels[stepId]+'·续】」作为标题开头输出。';
+}
+function callTrafficAnalysis() {
+  var input = $id('trafficInput');
+  if (!input || !input.value.trim()) { showToast('请先输入课程名称和简介'); return; }
+  var text = input.value.trim();
+  var loading = $id('trafficLoading');
+  var loadingText = $id('trafficLoadingText');
+  var resultDiv = $id('trafficResult');
+  if (loading) loading.style.display = 'flex';
+  if (loadingText) loadingText.textContent = '🔥 正在挖掘全网热词...';
+  if (resultDiv) resultDiv.innerHTML = '';
+  var courseName = text.split(/[\n,，]/)[0].substring(0, 30);
+  var queries = [courseName+' 最新趋势', courseName+' 用户痛点', courseName+' 种草'];
+  var performSearch = typeof callTavilySearch === 'function' && (state.tavilyApiKey || '');
+  var doAI = function(searchResults) {
+    if (loadingText) loadingText.textContent = '🤖 AI 正在生成引流详情页...';
+    var prompt = buildTrafficPrompt(text, searchResults);
+    if (!prompt) { if (loading) loading.style.display = 'none'; showToast('构建提示词失败'); return; }
+    callAI({
+      prompt: prompt,
+      temperature: 0.7,
+      maxTokens: 16384,
+      timeout: 300000,
+      stream: function(chunk, fullText) {
+        if (resultDiv) resultDiv.innerHTML = formatTrafficContent(fullText, window._trafficActiveStep||'keywords');
+        if (loadingText) loadingText.textContent = '🤖 AI 正在生成引流详情页...('+fullText.length+'字)';
+      }
+    }).then(function(fullText) {
+      if (loading) loading.style.display = 'none';
+      var steps = parseTrafficSteps(fullText);
+      window._trafficSteps = steps;
+      window._trafficActiveStep = 'keywords';
+      switchTrafficStep('keywords');
+      saveTrafficSession(text, steps);
+      showToast('✅ 详情页生成完成！');
+    }).catch(function(err) {
+      if (loading) loading.style.display = 'none';
+      console.error('traffic AI error:', err);
+      showToast('⚠️ 生成失败：'+err.message);
+      if (resultDiv) resultDiv.innerHTML = '<div class="traffic-empty">⚠️ 生成失败：'+escHtml(err.message)+'</div>';
+    });
+  };
+  if (performSearch) {
+    callTavilySearch(queries).then(function(results) {
+      doAI(results);
+    }).catch(function(err) {
+      console.warn('Tavily search failed, proceeding without search data:', err);
+      doAI(null);
+    });
+  } else {
+    doAI(null);
+  }
+}
+function callTrafficAppend(stepId) {
+  var steps = window._trafficSteps;
+  if (!steps || !steps[stepId]) { showToast('请先生成内容'); return; }
+  var labels = { keywords:'热词挖掘', headline:'爆款标题', selling:'卖点提炼', copy:'营销文案', media:'视觉素材', detail:'详情页' };
+  var loading = $id('trafficLoading');
+  var loadingText = $id('trafficLoadingText');
+  if (loading) loading.style.display = 'flex';
+  if (loadingText) loadingText.textContent = '🔍 正在追加深度分析...';
+  var prompt = buildTrafficAppendPrompt(stepId);
+  callAI({
+    prompt: prompt,
+    temperature: 0.7,
+    maxTokens: 8192,
+    timeout: 180000,
+    stream: function(chunk, fullText) {
+      if (loadingText) loadingText.textContent = '🔍 正在追加深度分析...('+fullText.length+'字)';
+    }
+  }).then(function(fullText) {
+    if (loading) loading.style.display = 'none';
+    var label = labels[stepId];
+    var marker = '【'+label+'·续】';
+    var idx = fullText.indexOf(marker);
+    var appendContent = idx !== -1 ? fullText.substring(idx + marker.length).trim() : fullText;
+    steps[stepId] += '\n\n---\n\n### 📌 追加深度分析\n'+appendContent;
+    window._trafficActiveStep = stepId;
+    switchTrafficStep(stepId);
+    showToast('✅ 追加完成');
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    console.error('traffic append error:', err);
+    showToast('⚠️ 追加失败：'+err.message);
+  });
+}
+function parseTrafficSteps(text) {
+  var steps = { keywords:'', headline:'', selling:'', copy:'', media:'', detail:'' };
+  var markers = [
+    { id:'keywords', label:'【热词挖掘】' },
+    { id:'headline', label:'【爆款标题】' },
+    { id:'selling',  label:'【卖点提炼】' },
+    { id:'copy',     label:'【营销文案】' },
+    { id:'media',    label:'【视觉素材】' },
+    { id:'detail',   label:'【详情页】' }
+  ];
+  for (var i = 0; i < markers.length; i++) {
+    var start = text.indexOf(markers[i].label);
+    if (start === -1) continue;
+    var cs = start + markers[i].label.length;
+    var end = (i < markers.length-1) ? text.indexOf(markers[i+1].label, cs) : -1;
+    steps[markers[i].id] = text.substring(cs, end === -1 ? text.length : end).trim();
+  }
+  return steps;
+}
+function formatTrafficContent(txt, stepId) {
+  if (!txt) return '<div class="traffic-empty">暂无内容</div>';
+  if (stepId === 'detail' && (txt.indexOf('<div') !== -1 || txt.indexOf('<section') !== -1 || txt.indexOf('<html') !== -1 || txt.indexOf('<style') !== -1)) {
+    return '<div class="traffic-output"><div class="traffic-detail-preview" style="border:1px solid var(--border);border-radius:8px;padding:16px;background:var(--bg);overflow-x:auto">'+txt+'</div></div>';
+  }
+  var html = txt
+    .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/###\s*(.+)/g, '<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+  return '<div class="traffic-output"><p>'+html+'</p></div>';
+}
+function saveTrafficSession(courseName, steps) {
+  if (!state.trafficSessions) state.trafficSessions = [];
+  state.trafficSessions.unshift({ id: Date.now(), course: courseName, steps: steps, date: new Date().toISOString() });
+  if (state.trafficSessions.length > 50) state.trafficSessions.length = 50;
+  saveState(); renderTrafficHistory();
+}
+function deleteTrafficSession(id) {
+  if (!state.trafficSessions) return;
+  state.trafficSessions = state.trafficSessions.filter(function(s){ return s.id !== id; });
+  saveState(); renderTrafficHistory();
+}
+function renderTrafficHistory() {
+  var list = $id('trafficHistoryList'), count = $id('trafficHistoryCount');
+  if (!list) return;
+  var sessions = state.trafficSessions || [];
+  if (count) count.textContent = sessions.length;
+  if (!sessions.length) { list.innerHTML = '<div class="traffic-empty">还没有生成记录</div>'; return; }
+  var h = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
+    var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+    h.push('<div class="traffic-history-item" onclick="viewTrafficSession('+s.id+')">');
+    h.push('<div class="traffic-history-main"><div class="traffic-history-date">'+ds+'</div>');
+    h.push('<div class="traffic-history-name">'+escHtml(s.course?s.course.substring(0,45)+(s.course.length>45?'...':''):'')+'</div></div>');
+    h.push('<button class="traffic-history-del" onclick="event.stopPropagation();deleteTrafficSession('+s.id+')">✖</button></div>');
+  }
+  list.innerHTML = h.join('');
+}
+function toggleTrafficHistory() {
+  var body = $id('trafficHistoryBody'), toggle = $id('trafficHistToggle');
+  if (body && toggle) {
+    var vis = body.style.display === 'none';
+    body.style.display = vis ? '' : 'none';
+    toggle.textContent = vis ? '▼' : '▶';
+    if (vis) renderTrafficHistory();
+  }
+}
+function viewTrafficSession(id) {
+  var sessions = state.trafficSessions || [];
+  var session = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+  if (!session) { showToast('记录未找到'); return; }
+  window._trafficSteps = session.steps;
+  window._trafficActiveStep = 'keywords';
+  switchTrafficStep('keywords');
+  var hb = $id('trafficHistoryBody'); if (hb) hb.style.display = 'none';
+  var tg = $id('trafficHistToggle'); if (tg) tg.textContent = '▶';
+}
+function deployTrafficSession(id) {
+  var sessions = state.trafficSessions || [];
+  var session = null;
+  for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+  if (!session) { showToast('记录未找到'); return; }
+  var detailContent = session.steps && session.steps.detail ? session.steps.detail : '暂无详情页内容';
+  var courseName = session.course ? session.course.substring(0,30) : '课程引流详情页';
+  deployAsCourse(courseName+'·详情页', [{ name: '商品详情页', articles: [{ title: courseName+'·商品详情页', content: detailContent, source: 'traffic' }] }], 'traffic');
+  showToast('✅ 已部署为课程');
+}
+function deployAllTrafficToCourse() {
+  var sessions = state.trafficSessions || [];
+  if (!sessions.length) { showToast('暂无生成记录'); return; }
+  var chapters = [];
+  for (var i = 0; i < sessions.length; i++) {
+    var s = sessions[i];
+    var name = s.course ? s.course.substring(0,20) : '课程'+(i+1);
+    var articles = [];
+    var stepLabels = { keywords:'热词挖掘', headline:'爆款标题', selling:'卖点提炼', copy:'营销文案', media:'视觉素材', detail:'详情页' };
+    for (var key in stepLabels) {
+      if (s.steps && s.steps[key]) {
+        articles.push({ title: name+'·'+stepLabels[key], content: s.steps[key], source: 'traffic' });
+      }
+    }
+    chapters.push({ name: name, articles: articles });
+  }
+  deployAsCourse('课程引流合集', chapters, 'traffic');
+  showToast('✅ 已全部部署为课程「课程引流合集」');
+}
+
 
 /* ===== 鬼谷子 · 识人术 ===== */
 function initGgzState() {
@@ -33425,6 +33749,7 @@ function mtRenderShapeSVG(shape, idx) {
 var STEP_MODES = {
   ggz:{steps:['observe','probe','emotion','character','talent','engage'],active:function(){return window._ggzActiveStep||'observe';},sw:function(id){switchGgzStep(id);}},
   ind:{steps:['market','lifecycle','chain','landscape','pest','profit'],active:function(){return window._indActiveStep||'market';},sw:function(id){switchIndStep(id);}},
+	traffic:{steps:['keywords','headline','selling','copy','media','detail'],active:function(){return window._trafficActiveStep||'keywords';},sw:function(id){switchTrafficStep(id);}},
   acu:{steps:['meridian','points','location','needle','deqi','aftercare'],active:function(){return window._acuActiveStep||null;},sw:function(id){switchAcuStep(id);}},
   decomp:{steps:['conclusion','tasks','path','division','acceptance','deliverables'],active:function(){return window._decompActiveStep||null;},sw:function(id){switchDecompStep(id);}},
   cyber:{steps:['modeling','controllability','observability','identification','correctability','achievability'],active:function(){return _cyberActiveStep||'modeling';},sw:function(id){switchCyberStep(id);}},
