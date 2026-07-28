@@ -27558,6 +27558,44 @@ function deployAllYangToCourse() {
   if (!chapterList.length) { showToast('❌ 暂无内容可部署'); return; }
   deployAsCourse('养生合集', chapterList, 'yang_deploy');
 }
+function renderYangHistory() {
+	var list = $id('yangHistoryList'), count = $id('yangHistoryCount');
+	if (!list) return;
+	var sessions = state.yangSessions || [];
+	if (count) count.textContent = sessions.length;
+	if (!sessions.length) { list.innerHTML = '<div class="yang-empty">还没有养生记录</div>'; return; }
+	var h = [];
+	for (var i = 0; i < sessions.length; i++) {
+		var s = sessions[i], d = s.date ? new Date(s.date) : new Date();
+		var ds = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+		h.push('<div class="yang-history-item" onclick="viewYangSession('+s.id+')">');
+		h.push('<div class="yang-history-main"><div class="yang-history-date">'+ds+'</div>');
+		h.push('<div class="yang-history-problem">'+escHtml(s.problem?s.problem.substring(0,40)+(s.problem.length>40?'...':''):'')+'</div></div>');
+		h.push('<button class="yang-history-del" onclick="event.stopPropagation();deleteYangSession('+s.id+')">✖</button></div>');
+	}
+	list.innerHTML = h.join('');
+}
+function toggleYangHistory() {
+	var body = $id('yangHistoryBody'), toggle = $id('yangHistToggle');
+	if (body && toggle) {
+		var h = body.style.display === 'none';
+		body.style.display = h ? '' : 'none';
+		toggle.textContent = h ? '▼' : '▶';
+		if (h) renderYangHistory();
+	}
+}
+function viewYangSession(id) {
+	var sessions = state.yangSessions || [];
+	var session = null;
+	for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
+	if (!session) { showToast('记录未找到'); return; }
+	window._yangDims = session.dims || {};
+	window._yangActiveDim = 'constitution';
+	switchYangDim('constitution');
+	var hb = $id('yangHistoryBody'); if (hb) hb.style.display = 'none';
+	var tg = $id('yangHistToggle'); if (tg) tg.textContent = '▶';
+}
+
 
 /* ===== 创道 · 核检创新 ===== */
 function initChuangState() {
