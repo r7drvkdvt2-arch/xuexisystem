@@ -4148,7 +4148,7 @@ function callDecompAnalysis() {
     for (var k in window._decompSteps) { if (window._decompSteps[k]) { firstKey = k; break; } }
     if (firstKey) switchDecompStep(firstKey);
     var input = $id('decompInput');
-    saveDecompSession(input ? input.value.trim() : '', window._decompSteps, pieData, phases);
+    saveDecompSession(input ? input.value.trim() : '', window._decompSteps, pieData, phases, window._decompRaw);
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
     var msg = err && err.message ? err.message : '未知错误';
@@ -4309,9 +4309,9 @@ function renderDecompRoadmap(phases) {
   html += '</svg>';
   return html;
 }
-function saveDecompSession(task, steps, pie, phases) {
+function saveDecompSession(task, steps, pie, phases, raw) {
   if (!state.decompSessions) state.decompSessions = [];
-  state.decompSessions.unshift({ id: Date.now(), task: task, steps: steps, pie: pie, phases: phases, date: new Date().toISOString() });
+  state.decompSessions.unshift({ id: Date.now(), task: task, steps: steps, pie: pie, phases: phases, raw: raw, date: new Date().toISOString() });
   if (state.decompSessions.length > 30) state.decompSessions.length = 30;
   saveState(); renderDecompHistory();
 }
@@ -4336,6 +4336,7 @@ function viewDecompSession(id) {
   for (var i = 0; i < sessions.length; i++) { if (sessions[i].id === id) { session = sessions[i]; break; } }
   if (!session) { showToast('记录未找到'); return; }
   window._decompSteps = session.steps || {};
+  window._decompRaw = session.raw || null;
   window._decompActiveStep = null;
   var pieData = session.pie || null;
   var phases = session.phases || null;
@@ -16860,6 +16861,7 @@ _aiLearnState.phaseC.totalScore = parsed.overallScore || 0;
 _aiLearnState.phaseC.maxScore = parsed.maxScore || (s.phaseC.questions.length * 10);
 _aiLearnState.phaseC.summary = parsed.summary || '';
 _aiLearnState.phaseCSubmitted = true;
+aiLearnSaveState();
 renderAILearnPanel();
 showToast('📊 评估完成！得分: ' + (parsed.overallScore || 0) + '/' + (parsed.maxScore || (s.phaseC.questions.length * 10)));
 } else {
@@ -27122,6 +27124,7 @@ function callBizAppend(dimId) {
     window._bizDims[dimId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
     window._bizActiveDim = dimId;
     switchBizDim(dimId);
+    saveState();
     showToast('✅ 已追加 '+label+' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -27397,6 +27400,7 @@ function callTcmAppend(dimId) {
     window._tcmDims[dimId] = existing + '\n\n---\n\n### 📌 追加深度辨证\n' + appendContent;
     window._tcmActiveDim = dimId;
     switchTcmDim(dimId);
+    saveState();
     showToast('✅ 已追加 '+label+' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -27661,6 +27665,7 @@ function callYangAppend(dimId) {
     window._yangDims[dimId] = existing + '\n\n---\n\n### 📌 追加深度\n' + appendContent;
     window._yangActiveDim = dimId;
     switchYangDim(dimId);
+    saveState();
     showToast('✅ 已追加 '+label+' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -27899,6 +27904,7 @@ function callChuangAppend(dimId) {
     window._chuangDims[dimId] = existing + '\n\n---\n\n### 📌 追加深度\n' + appendContent;
     window._chuangActiveDim = dimId;
     switchChuangDim(dimId);
+    saveState();
     showToast('✅ 已追加 '+label+' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -28160,6 +28166,7 @@ function callAskAppend(dimId) {
     dims[dimId] = dims[dimId] + '\n\n---\n\n【追问】\n' + fullText;
     window._askDims = dims;
     switchAskDim(dimId);
+    saveState();
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
     showToast('❌ 追问失败：' + (err && err.message || '未知错误'));
@@ -28500,6 +28507,7 @@ function callHeAppend(panelId){
     window._heResults[panelId]=existing+'\n\n---\n\n### 📌 追加深度分析\n'+appendContent;
     window._heActivePanel=panelId;
     renderHeResultsView();
+    saveState();
     showToast('✅ 已追加 '+label+' 深度分析');
   }).catch(function(err){
     if(loading)loading.style.display='none';
@@ -29560,6 +29568,7 @@ function callFinAppend(dimId) {
     window._finDims[dimId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
     window._finActiveDim = dimId;
     switchFinDim(dimId);
+    saveState();
     showToast('✅ 已追加 '+label+' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -29797,6 +29806,7 @@ function callAnaAppend(layerId) {
     window._anaLayers[layerId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
     window._anaActiveLayer = layerId;
     switchAnaLayer(layerId);
+    saveState();
     showToast('✅ 已追加 '+label+' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -30035,6 +30045,7 @@ function callAdvAppend(levelId) {
     window._advLevels[levelId] = existing + '\n\n---\n\n### 📌 追加深度讲解\n' + appendContent;
     window._advActiveLevel = levelId;
     switchAdvLevel(levelId);
+    saveState();
     showToast('✅ 已追加 '+label+' 深度讲解');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -30366,6 +30377,7 @@ function callIndAppend(stepId) {
     window._indSteps[stepId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
     window._indActiveStep = stepId;
     switchIndStep(stepId);
+    saveState();
     showToast('✅ 已追加 '+stepLabel+' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -30618,6 +30630,7 @@ function callTrafficAppend(stepId) {
     steps[stepId] += '\n\n---\n\n### 📌 追加深度分析\n'+appendContent;
     window._trafficActiveStep = stepId;
     switchTrafficStep(stepId);
+    saveState();
     showToast('✅ 追加完成');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -30866,6 +30879,7 @@ function callGgzAppend(stepId) {
     window._ggzSteps[stepId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
     window._ggzActiveStep = stepId;
     switchGgzStep(stepId);
+    saveState();
     showToast('✅ 已追加 '+stepLabel+' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -31100,6 +31114,7 @@ function callSzAppend(stepId) {
     window._szSteps[stepId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
     window._szActiveStep = stepId;
     switchSzStep(stepId);
+    saveState();
     showToast('✅ 已追加 '+stepLabel+' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -31334,6 +31349,7 @@ function callQmAppend(stepId) {
     window._qmSteps[stepId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
     window._qmActiveStep = stepId;
     switchQmStep(stepId);
+    saveState();
     showToast('✅ 已追加 '+stepLabel+' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -31568,6 +31584,7 @@ function callZhAppend(stepId) {
     window._zhSteps[stepId] = existing + '\n\n---\n\n### 📌 追加话术\n' + appendContent;
     window._zhActiveStep = stepId;
     switchZhStep(stepId);
+    saveState();
     showToast('✅ 已追加 '+stepLabel+' 话术');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -31801,6 +31818,7 @@ function callMouAppend(stepId) {
     window._mouSteps[stepId] = existing + '\n\n---\n\n### 📌 追加方案\n' + appendContent;
     window._mouActiveStep = stepId;
     switchMouStep(stepId);
+    saveState();
     showToast('✅ 已追加 '+stepLabel+' 方案');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
@@ -32161,6 +32179,7 @@ function callLawAppend(dimId) {
     window._lawDims[dimId] = existing + '\n\n---\n\n### 📌 追加深度分析\n' + appendContent;
     window._lawActiveDim = dimId;
     switchLawDim(dimId);
+    saveState();
     showToast('✅ 已追加 ' + label + ' 深度分析');
   }).catch(function(err) {
     if (loading) loading.style.display = 'none';
