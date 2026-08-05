@@ -6087,6 +6087,14 @@ function initFromIDB() {
             var idbData = JSON.parse(jsonStr);
             var lsBroken = idbData._lsFallback === true;
             var hasData = state.answered && Object.keys(state.answered).length > 0;
+            var lsImportedAt = state._importedAt || 0;
+            var idbFlagSince = idbData._lsFallbackSince || 0;
+            if (lsImportedAt > 0 && lsImportedAt > idbFlagSince) {
+                delete state._lsFallback;
+                saveState();
+                try { updateUI(); } catch(e) {}
+                return;
+            }
             if (lsBroken || !hasData) {
                 var defaults = defaultState();
                 Object.keys(defaults).forEach(function(k) {
@@ -6852,6 +6860,7 @@ var _st = arr[_si]; arr[_si] = arr[_sj]; arr[_sj] = _st;
 }
 return arr;
 }
+var _SEC_FIELDS = ['aiApiKey','tavilyApiKey','mediaGenApiKey','webdavPass'];
 let state = loadState();
 // Load saved course data if active course is not 道德经
 if (typeof loadCourseData === 'function' && state.activeCourse && state.activeCourse !== '道德经') {
@@ -6894,6 +6903,7 @@ rangeMode: 'all', rangeChapters: [], rangeStart: 1, rangeEnd: 81,
 streakCorrect: 0, bestStreak: 0, streakDays: 0, lastStudyDate: '',
 achievements: {}, wrongSetCleared: 0, notes: {}, kwCache: {}, textMarks: {}, displayMode: 'learn',
 _pegImagesHidden: false,  // 全局隐藏所有地点桩图片
+_importedAt: 0, _lsFallbackSince: 0,
 dailyLog: {}
 ,
 // Feature 2: FSRS
@@ -7131,7 +7141,6 @@ return state;
 return defaultState();
 }
 function fixStateIntegrity(st){try{if(st.pegImageSets&&Array.isArray(st.pegImageSets))for(var i=0;i<st.pegImageSets.length;i++){var ps=st.pegImageSets[i];if(!ps.id){st.pegImageSets.splice(i,1);i--;continue}if(typeof ps.totalImages!=="number"||ps.totalImages<0)ps.totalImages=0;if(typeof ps.rangeStart!=="number")ps.rangeStart=1;if(typeof ps.rangeEnd!=="number")ps.rangeEnd=1;if(!ps.name)ps.name="未命名";if(!ps.videos||!Array.isArray(ps.videos))ps.videos=[];else for(var vj=0;vj<ps.videos.length;vj++)if(!ps.videos[vj].id){ps.videos.splice(vj,1);vj--}}if(st.nextDue){var now=Date.now();for(var k in st.nextDue)if(typeof st.nextDue[k]!=="number"||st.nextDue[k]<1000000)st.nextDue[k]=now+86400000}if(st.wrongSetIds&&Array.isArray(st.wrongSetIds))st.wrongSetIds=st.wrongSetIds.filter(function(id){return typeof id==="number"&&id>=0})}catch(e){console.warn("fixStateIntegrity error:",e)}}
-var _SEC_FIELDS = ['aiApiKey','tavilyApiKey','mediaGenApiKey','webdavPass'];
 function _obfuscate(s) {
 if (!s) return s;
 var k = 'xuexi$key$2026', out = '';
@@ -7190,7 +7199,7 @@ if (!_lsFallbackWarned) {
 try { showToast('⚠️ 本地存储已满，已自动切换 IndexedDB 保存（数据安全）。可在 ⚙️设置→💾存储管理 清理旧备份。'); } catch(ex) {}
 _lsFallbackWarned = true;
 }
-state._lsFallback = true;
+state._lsFallback = true; state._lsFallbackSince = Date.now();
 try { _json = JSON.stringify(state); } catch(e2) {}
 }
 try { idbStateSave(_json); } catch(e) { console.warn('idbStateSave failed', e); }
@@ -9529,7 +9538,8 @@ var _importLsWarned = false;
 function _importWriteKey(key, value) {
 if (key === 'ddj_progress') {
 var dp = value;
-try { delete dp._lsFallback; } catch(e) {}
+try { delete dp._lsFallback; delete dp._lsFallbackSince; } catch(e) {}
+dp._importedAt = Date.now();
 var json;
 try { json = JSON.stringify(dp); } catch(e) { return false; }
 var lsOK = false;
@@ -9538,7 +9548,7 @@ try {
 if (lsOK) {
 idbStateSave(json);
 } else {
-dp._lsFallback = true;
+dp._lsFallback = true; dp._lsFallbackSince = Date.now(); delete dp._importedAt;
 idbStateSave(JSON.stringify(dp));
 if (!_importLsWarned) {
 _importLsWarned = true;
@@ -21790,6 +21800,7 @@ var name = document.getElementById('pegsetEditorName');
 var start = document.getElementById('pegsetEditorStart');
 var end = document.getElementById('pegsetEditorEnd');
 var courseEl = document.getElementById('pegsetEditorCourse');
+var courseVal = courseEl ? courseEl.value : '';
 if (!name || !start || !end) return;
 var n = name.value.trim();
 var rs = parseInt(start.value) || 1;
@@ -21801,13 +21812,13 @@ if (setId) {
 var sets = state.pegImageSets || [];
 for (var i = 0; i < sets.length; i++) {
 if (sets[i].id === setId) {
-sets[i].name = n; sets[i].rangeStart = rs; sets[i].rangeEnd = re; sets[i].course = _course; sets[i].updatedAt = Date.now();
+sets[i].name = n; sets[i].rangeStart = rs; sets[i].rangeEnd = re; sets[i].course = courseVal; sets[i].updatedAt = Date.now();
 break;
 }
 }
 state.pegImageSets = sets; saveState(); renderPegSetDetail(setId);
 } else {
-createPegSet(n, rs, re, _course);
+createPegSet(n, rs, re, courseVal);
 }
 }
 function createPegSet(name, rangeStart, rangeEnd, course) {
