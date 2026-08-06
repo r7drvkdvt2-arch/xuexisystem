@@ -925,6 +925,21 @@ body{background:#fff!important;color:#000!important}
 @page{margin:1.5cm}
 a[href]:after{content:none!important}
 }
+/* ===== PDF 板块 ===== */
+.pdf-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.pdf-tab{padding:6px 16px;border-radius:16px;border:1.5px solid var(--border);font-size:13px;cursor:pointer;background:var(--bg-hover);color:var(--text-secondary);font-weight:600}
+.pdf-tab.active{background:rgba(192,57,43,.1);border-color:#c0392b;color:#a02020}
+.pdf-upload{border:2px dashed var(--border);border-radius:12px;padding:24px;text-align:center;cursor:pointer;color:var(--text-secondary);font-size:14px;transition:border-color .2s,background .2s;margin-bottom:8px}
+.pdf-upload:hover{border-color:#c0392b;background:var(--bg-hover)}
+.pdf-tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.pdf-tool-card{background:var(--card-header);border:1px solid var(--border-light);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.pdf-tool-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.pdf-tool-name{font-weight:700;margin:6px 0 2px;color:var(--text)}
+.pdf-tool-desc{font-size:11px;color:var(--text-muted);line-height:1.4}
+.pdf-img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:8px}
+.pdf-img-item{background:var(--card-header);border:1px solid var(--border-light);border-radius:8px;padding:8px;text-align:center}
+.pdf-img-item img{width:100%;height:auto;border-radius:4px;margin-bottom:6px}
+@media (max-width:700px){.pdf-tool-grid{grid-template-columns:1fr}}
 /* 手势翻页 - 触屏滑动切换板块 */
 .container.swipe-lock{overflow:hidden!important}
 #contentArea.swipe-animating{transition:transform .28s cubic-bezier(.4,0,.2,1);will-change:transform}
@@ -3888,6 +3903,18 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .mt-history-row span:nth-child(2){flex:1}
 .mt-history-row span:nth-child(3){min-width:80px;text-align:right}
 .mt-history-row span:nth-child(4){min-width:40px;text-align:right;color:var(--text-muted)}
+.mt-history-row{cursor:pointer;transition:background .15s}
+.mt-history-row:hover{background:var(--bg-hover)}
+.mt-detail-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:99999;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s}
+.mt-detail-modal{background:var(--card-bg,#fffdf7);border-radius:16px;padding:24px;max-width:560px;width:92%;box-shadow:0 8px 40px rgba(0,0,0,.2);max-height:85vh;display:flex;flex-direction:column;animation:fadeIn .2s}
+.mt-detail-head h2{margin:0 0 4px;font-size:18px;color:var(--text)}
+.mt-detail-meta{font-size:12px;color:var(--text-muted);margin-bottom:8px}
+.mt-detail-scroll{flex:1;overflow-y:auto;margin-top:8px;min-height:0}
+.mt-detail-archived{font-size:13px;color:var(--text-muted);padding:20px;text-align:center;background:var(--bg-hover);border-radius:8px}
+.mt-detail-user-ok{color:#2ecc71;text-decoration:none}
+.mt-detail-actions{display:flex;justify-content:flex-end;margin-top:12px}
+.mt-detail-actions button{padding:8px 24px;border:none;border-radius:8px;background:var(--bg-hover);color:var(--text-secondary);font-size:13px;font-weight:600;cursor:pointer}
+.mt-detail-actions button:hover{opacity:.8}
 @media(max-width:600px){
 .mt-grid{grid-template-columns:1fr}
 .mt-header{flex-direction:column;align-items:flex-start}
@@ -3896,6 +3923,51 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .mt-stats-grid{grid-template-columns:1fr}
 }
 
+/* ===== 多平台发布 · 手动发布台 ===== */
+.pub-hero{background:linear-gradient(135deg,#3a7abd,#2a5a8a);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:16px}
+.pub-hero h2{margin:0 0 6px;font-size:20px}
+.pub-hero p{margin:0;font-size:13px;opacity:.9}
+.pub-status-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:10px;margin-bottom:14px;font-size:14px}
+.pub-status-ok{background:#e8f5e9;border:1px solid #a5d6a7;color:#2e7d32}
+.pub-status-off{background:#fdecea;border:1px solid #ef9a9a;color:#c62828}
+.pub-status-card .pub-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pub-status-ok .pub-dot{background:#4caf50}
+.pub-status-off .pub-dot{background:#e53935}
+.pub-src-row{display:flex;gap:10px;margin-bottom:12px}
+.pub-src-row select{flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--text);font-size:13px}
+.pub-form label{display:block;font-size:12px;font-weight:600;color:var(--text-secondary);margin:12px 0 4px}
+.pub-form input,.pub-form textarea,.pub-form select{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--text);font-size:13px;box-sizing:border-box}
+.pub-form textarea{min-height:120px;resize:vertical}
+.pub-row{display:flex;gap:10px;flex-wrap:wrap}
+.pub-row>div{flex:1;min-width:140px}
+.pub-chk{display:inline-block;margin:0 10px 8px 0;font-size:13px}
+.pub-chk input{margin-right:4px}
+.pub-file-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px;border:1px dashed var(--border);border-radius:10px;margin-top:8px}
+.pub-file-name{font-size:13px;color:var(--text-secondary);flex:1;min-width:120px;word-break:break-all}
+.pub-result{margin-top:14px;padding:12px 14px;border-radius:10px;font-size:14px}
+.pub-success{background:#e8f5e9;border:1px solid #a5d6a7;color:#2e7d32}
+.pub-error{background:#fdecea;border:1px solid #ef9a9a;color:#c62828}
+.pub-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:600px){.pub-src-row{flex-direction:column}.pub-row>div{min-width:100%}}
+
+
+
+.pub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:8px}
+.pub-plat-item{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--card-bg)}
+.pub-plat-item .pub-chk{display:flex;align-items:center;gap:4px;margin:0 0 4px;font-size:14px}
+.pub-plat-acts{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+.pub-acc{flex:1;min-width:90px;padding:4px 7px;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);color:var(--text);font-size:12px;box-sizing:border-box}
+.pub-val-ok{display:inline-block;padding:2px 8px;border-radius:6px;background:#e8f5e9;color:#2e7d32;font-size:12px}
+.pub-val-warn{display:inline-block;padding:2px 8px;border-radius:6px;background:#fff3e0;color:#e65100;font-size:12px}
+.pub-work-row{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:var(--card-bg)}
+.pub-work-head{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px}
+.pub-status-done{display:inline-block;padding:2px 8px;border-radius:6px;background:#e8f5e9;color:#2e7d32;font-size:12px}
+.pub-status-wait{display:inline-block;padding:2px 8px;border-radius:6px;background:#f0f0f0;color:#888;font-size:12px}
+.pub-warn{color:#e65100;font-size:12px}
+.pub-link{flex:1;min-width:140px;padding:6px 9px;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);color:var(--text);font-size:12px}
+.pub-log-row{border-bottom:1px solid var(--border);padding:8px 4px;font-size:13px}
+.pub-draft-item{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:var(--card-bg)}
+.pub-meta{font-size:12px;color:var(--text-secondary);line-height:1.5}
 </style>
 </head>
 <body>
@@ -5500,12 +5572,18 @@ else{n.style.display='none';if(h)h.style.display='none';}
 <span style="font-size:12px;color:#6b4a2a;white-space:nowrap">📡 服务商</span>
 <select id="aiProviderSelect" onchange="onProviderSelect(this.value)" style="flex:1;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--card-bg);color:var(--text)">
 <option value="deepseek">DeepSeek (免费)</option>
+<option value="siliconflow">硅基流动 SiliconFlow (免费模型)</option>
+<option value="zhipu">智谱AI (GLM-4-Flash 免费)</option>
+<option value="dashscope">阿里云百炼 通义千问</option>
+<option value="moonshot">Kimi 月之暗面</option>
+<option value="hunyuan">腾讯混元</option>
 <option value="openai">OpenAI</option>
 <option value="groq">Groq (免费)</option>
 <option value="ollama">Ollama (本地)</option>
 </select>
 <span id="aiFreeBadge" style="font-size:10px;color:#2d7a3a;background:rgba(45,122,58,.1);padding:2px 6px;border-radius:4px;display:none">免费额度</span>
 </div>
+<div id="aiProviderHint" style="font-size:11px;color:#7a6a55;background:rgba(201,168,76,.08);border:1px dashed #e0d0b0;border-radius:6px;padding:6px 8px;margin:4px 0 8px;line-height:1.6"></div>
 <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
 <span style="font-size:12px;color:#6b4a2a;white-space:nowrap">🔑 API密钥</span>
 <input id="aiApiKeyInput" type="password" style="flex:1;padding:5px 8px;border:1px solid #d4c8b8;border-radius:4px;font-size:13px;background:#fff;color:#2c1810;min-width:0" placeholder="sk-...">
@@ -5566,11 +5644,14 @@ else{n.style.display='none';if(h)h.style.display='none';}
 <option value="off">关闭</option>
 <option value="zhipu">智谱AI (CogView-4)</option>
 <option value="volc">火山引擎 (Seedream)</option>
+<option value="siliconflow">硅基流动 (Kolors/FLUX)</option>
+<option value="dashscope">阿里云百炼 (通义万相)</option>
 </select>
 </div>
+<div id="mediaGenProviderHint" style="font-size:11px;color:#7a6a55;background:rgba(201,168,76,.08);border:1px dashed #e0d0b0;border-radius:6px;padding:6px 8px;margin:4px 0 8px;line-height:1.6"></div>
 <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
 <span style="font-size:12px;color:#6b4a2a;white-space:nowrap">🔑 API密钥</span>
-<input id="mediaGenApiKeyInput" type="password" style="flex:1;padding:5px 8px;border:1px solid #d4c8b8;border-radius:4px;font-size:13px;background:#fff;color:#2c1810;min-width:0" placeholder="智谱/火山引擎 API Key">
+<input id="mediaGenApiKeyInput" type="password" style="flex:1;padding:5px 8px;border:1px solid #d4c8b8;border-radius:4px;font-size:13px;background:#fff;color:#2c1810;min-width:0" placeholder="所选服务商 API Key">
 </div>
 <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
 <span style="font-size:12px;color:#6b4a2a;white-space:nowrap">🧠 模型</span>
@@ -6087,6 +6168,14 @@ function initFromIDB() {
             var idbData = JSON.parse(jsonStr);
             var lsBroken = idbData._lsFallback === true;
             var hasData = state.answered && Object.keys(state.answered).length > 0;
+            var lsImportedAt = state._importedAt || 0;
+            var idbFlagSince = idbData._lsFallbackSince || 0;
+            if (lsImportedAt > 0 && lsImportedAt > idbFlagSince) {
+                delete state._lsFallback;
+                saveState();
+                try { updateUI(); } catch(e) {}
+                return;
+            }
             if (lsBroken || !hasData) {
                 var defaults = defaultState();
                 Object.keys(defaults).forEach(function(k) {
@@ -6827,10 +6916,15 @@ var CONCEPT_NAMES = ['道法自然','无为而无不为','柔弱胜刚强','上�
 var CONCEPT_COLORS = ['#8b1a1a','#2d7a3a','#b88a2a','#3a7a5a','#6a4a8a','#c0392b','#2a6a8a','#8a6a2a'];
 // v15.0: AI 提供商预设
 var AI_PROVIDERS = {
-deepseek: { endpoint: 'https://api.deepseek.com/v1/chat/completions', model: 'deepseek-v4-flash', label: 'DeepSeek', free: true, keyPlaceholder: 'sk-...' },
-openai: { endpoint: 'https://api.openai.com/v1/chat/completions', model: 'gpt-4o-mini', label: 'OpenAI', free: false, keyPlaceholder: 'sk-...' },
-groq: { endpoint: 'https://api.groq.com/openai/v1/chat/completions', model: 'llama-4-scout-17b-16e-instruct', label: 'Groq (免费)', free: true, keyPlaceholder: 'gsk_...' },
-ollama: { endpoint: 'http://localhost:11434/v1/chat/completions', model: 'llama3', label: 'Ollama (本地)', free: true, keyPlaceholder: '（本地无需密钥）' },
+deepseek: { endpoint: 'https://api.deepseek.com/v1/chat/completions', model: 'deepseek-v4-flash', label: 'DeepSeek', free: true, keyPlaceholder: 'sk-...', getKeyUrl: 'https://platform.deepseek.com/api_keys', howTo: 'DeepSeek 官网注册，进入「API Keys」创建密钥；新用户有赠送额度' },
+siliconflow: { endpoint: 'https://api.siliconflow.cn/v1/chat/completions', model: 'Qwen/Qwen2.5-7B-Instruct', label: '硅基流动', free: true, keyPlaceholder: 'sk-...', getKeyUrl: 'https://cloud.siliconflow.cn/account/ak', howTo: '硅基流动注册后创建密钥；内置 DeepSeek/Qwen/GLM 等大量免费模型' },
+zhipu: { endpoint: 'https://open.bigmodel.cn/api/paas/v4/chat/completions', model: 'glm-4-flash', label: '智谱AI', free: true, keyPlaceholder: 'xxxx.api', getKeyUrl: 'https://open.bigmodel.cn/usercenter/apikeys', howTo: '智谱开放平台注册，控制台「API 密钥」创建；glm-4-flash 免费，GLM-4-Plus 需付费' },
+dashscope: { endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', model: 'qwen-turbo', label: '阿里云百炼', free: false, keyPlaceholder: 'sk-...', getKeyUrl: 'https://bailian.console.aliyun.com/?apiKey=1', howTo: '阿里云百炼控制台开通大模型服务并创建 API-KEY；新用户有免费额度，qwen-turbo/plus 较便宜' },
+moonshot: { endpoint: 'https://api.moonshot.cn/v1/chat/completions', model: 'kimi-k2-0711-preview', label: 'Kimi', free: false, keyPlaceholder: 'sk-...', getKeyUrl: 'https://platform.moonshot.cn/console/api-keys', howTo: 'Kimi 开放平台注册，控制台「API Keys」创建；新用户赠送额度，长文本能力强' },
+hunyuan: { endpoint: 'https://api.hunyuan.cloud.tencent.com/v1/chat/completions', model: 'hunyuan-turbo', label: '腾讯混元', free: false, keyPlaceholder: 'sk-...', getKeyUrl: 'https://console.cloud.tencent.com/hunyuan', howTo: '腾讯云控制台开通混元大模型并创建 API 密钥；有体验额度，hunyuan-lite 较便宜' },
+openai: { endpoint: 'https://api.openai.com/v1/chat/completions', model: 'gpt-4o-mini', label: 'OpenAI', free: false, keyPlaceholder: 'sk-...', getKeyUrl: 'https://platform.openai.com/api-keys', howTo: 'OpenAI 平台注册创建密钥；需海外网络，新账号有少量赠送额度，需充值使用' },
+groq: { endpoint: 'https://api.groq.com/openai/v1/chat/completions', model: 'llama-4-scout-17b-16e-instruct', label: 'Groq (免费)', free: true, keyPlaceholder: 'gsk_...', getKeyUrl: 'https://console.groq.com/keys', howTo: 'Groq 官网注册创建 API Key；完全免费高速（Llama 等模型）' },
+ollama: { endpoint: 'http://localhost:11434/v1/chat/completions', model: 'llama3', label: 'Ollama (本地)', free: true, keyPlaceholder: '（本地无需密钥）', getKeyUrl: '', howTo: '本地安装 Ollama 后免密钥；模型本地运行，完全免费、可离线' },
 };
 // 保存内置课程（道德经）引用，用于删除已保存课程后恢复
 var _origBuiltinChapters = CHAPTERS;
@@ -6852,6 +6946,7 @@ var _st = arr[_si]; arr[_si] = arr[_sj]; arr[_sj] = _st;
 }
 return arr;
 }
+var _SEC_FIELDS = ['aiApiKey','tavilyApiKey','mediaGenApiKey','webdavPass'];
 let state = loadState();
 // Load saved course data if active course is not 道德经
 if (typeof loadCourseData === 'function' && state.activeCourse && state.activeCourse !== '道德经') {
@@ -6894,6 +6989,7 @@ rangeMode: 'all', rangeChapters: [], rangeStart: 1, rangeEnd: 81,
 streakCorrect: 0, bestStreak: 0, streakDays: 0, lastStudyDate: '',
 achievements: {}, wrongSetCleared: 0, notes: {}, kwCache: {}, textMarks: {}, displayMode: 'learn',
 _pegImagesHidden: false,  // 全局隐藏所有地点桩图片
+_importedAt: 0, _lsFallbackSince: 0,
 dailyLog: {}
 ,
 // Feature 2: FSRS
@@ -7131,7 +7227,6 @@ return state;
 return defaultState();
 }
 function fixStateIntegrity(st){try{if(st.pegImageSets&&Array.isArray(st.pegImageSets))for(var i=0;i<st.pegImageSets.length;i++){var ps=st.pegImageSets[i];if(!ps.id){st.pegImageSets.splice(i,1);i--;continue}if(typeof ps.totalImages!=="number"||ps.totalImages<0)ps.totalImages=0;if(typeof ps.rangeStart!=="number")ps.rangeStart=1;if(typeof ps.rangeEnd!=="number")ps.rangeEnd=1;if(!ps.name)ps.name="未命名";if(!ps.videos||!Array.isArray(ps.videos))ps.videos=[];else for(var vj=0;vj<ps.videos.length;vj++)if(!ps.videos[vj].id){ps.videos.splice(vj,1);vj--}}if(st.nextDue){var now=Date.now();for(var k in st.nextDue)if(typeof st.nextDue[k]!=="number"||st.nextDue[k]<1000000)st.nextDue[k]=now+86400000}if(st.wrongSetIds&&Array.isArray(st.wrongSetIds))st.wrongSetIds=st.wrongSetIds.filter(function(id){return typeof id==="number"&&id>=0})}catch(e){console.warn("fixStateIntegrity error:",e)}}
-var _SEC_FIELDS = ['aiApiKey','tavilyApiKey','mediaGenApiKey','webdavPass'];
 function _obfuscate(s) {
 if (!s) return s;
 var k = 'xuexi$key$2026', out = '';
@@ -7190,7 +7285,7 @@ if (!_lsFallbackWarned) {
 try { showToast('⚠️ 本地存储已满，已自动切换 IndexedDB 保存（数据安全）。可在 ⚙️设置→💾存储管理 清理旧备份。'); } catch(ex) {}
 _lsFallbackWarned = true;
 }
-state._lsFallback = true;
+state._lsFallback = true; state._lsFallbackSince = Date.now();
 try { _json = JSON.stringify(state); } catch(e2) {}
 }
 try { idbStateSave(_json); } catch(e) { console.warn('idbStateSave failed', e); }
@@ -9529,7 +9624,8 @@ var _importLsWarned = false;
 function _importWriteKey(key, value) {
 if (key === 'ddj_progress') {
 var dp = value;
-try { delete dp._lsFallback; } catch(e) {}
+try { delete dp._lsFallback; delete dp._lsFallbackSince; } catch(e) {}
+dp._importedAt = Date.now();
 var json;
 try { json = JSON.stringify(dp); } catch(e) { return false; }
 var lsOK = false;
@@ -9538,7 +9634,7 @@ try {
 if (lsOK) {
 idbStateSave(json);
 } else {
-dp._lsFallback = true;
+dp._lsFallback = true; dp._lsFallbackSince = Date.now(); delete dp._importedAt;
 idbStateSave(JSON.stringify(dp));
 if (!_importLsWarned) {
 _importLsWarned = true;
@@ -11563,6 +11659,7 @@ else if (mode==='law') renderLawPanel();
 	else if (mode==='memorytrain') renderMemoryTrain();
 
 else if (mode==='viral') renderViralPanel();
+else if (mode==='publisher') renderPublisherPanel();
 	else if (mode==='iching') renderIchingPanel();
 		else if (mode==='cyber') renderCyberPanel();
 			else if (mode==='acu') renderAcuPanel();
@@ -11574,6 +11671,7 @@ else if (mode==='viral') renderViralPanel();
 				else if (mode==='munger') renderMungerPanel();
 				else if (mode==='dce') renderDcePanel();
 else if (mode==='speed') renderSpeedPanel();
+	else if (mode==='pdf') renderPdfPanel();
 else renderStats();
 updateUI();
 if (!window._panelSwipeInit) { initPanelSwipe(); window._panelSwipeInit = true; }
@@ -12439,6 +12537,7 @@ if (!key) return Promise.reject(new Error('请配置图片生成 API Key'));
 var ep = state.mediaGenEndpoint || 'https://open.bigmodel.cn/api/paas/v4/images/generations';
 var model = state.mediaGenModel || 'cogview-4';
 var size = state.mediaGenSize || '1024x1024';
+if (provider === 'dashscope') return callDashScopeImage(prompt, key, model, size);
 return fetchWithTimeout(ep, {
 method: 'POST',
 headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
@@ -12454,6 +12553,42 @@ if (data && data.data && data.data[0] && data.data[0].b64_json) {
 return 'data:image/png;base64,' + data.data[0].b64_json;
 }
 throw new Error('API 返回格式异常');
+});
+}
+function callDashScopeImage(prompt, key, model, size) {
+var synthUrl = 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis';
+var taskBase = 'https://dashscope.aliyuncs.com/api/v1/tasks/';
+var dsize = String(size || '1024x1024').replace(/x/g, '*');
+return fetchWithTimeout(synthUrl, {
+method: 'POST',
+headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
+body: JSON.stringify({model: model, input: {prompt: prompt}, parameters: {size: dsize, n: 1}})
+}, 60000).then(function(r){
+if (!r.ok) return r.text().then(function(t){ var e=new Error(t); e.status=r.status; throw e; });
+return r.json();
+}).then(function(data){
+var taskId = data && data.output && data.output.task_id;
+if (!taskId) throw new Error('提交任务失败：' + ((data && data.message) || '无 task_id'));
+var wait = function(ms) { return new Promise(function(rs){ setTimeout(rs, ms); }); };
+var pollLoop = function(attempts) {
+return fetchWithTimeout(taskBase + taskId, {
+method: 'GET', headers: {'Authorization':'Bearer '+key}
+}, 20000).then(function(r){
+if (!r.ok) { var e = new Error('查询任务失败 HTTP ' + r.status); e.status = r.status; throw e; }
+return r.json();
+}).then(function(res){
+var st = res.output && res.output.task_status;
+if (st === 'SUCCEEDED') {
+var url = res.output && res.output.results && res.output.results[0] && res.output.results[0].url;
+if (url) return url;
+throw new Error('生成结果为空');
+}
+if (st === 'FAILED' || st === 'CANCELED') throw new Error('任务失败：' + ((res.output && res.output.message) || st));
+if (attempts <= 0) throw new Error('任务超时');
+return wait(2000).then(function(){ return pollLoop(attempts - 1); });
+});
+};
+return pollLoop(30);
 });
 }
 // ===== SSE 流式读取（aiApiCallStream 和 aiApiCallViaProxyStream 共享） =====
@@ -12751,6 +12886,13 @@ function checkProFeature(source) {
 return true;
 }
 
+var MEDIA_GEN_PROVIDERS = {
+off: { label: '关闭', free: false, getKeyUrl: '', howTo: '' },
+zhipu: { label: '智谱AI (CogView)', free: true, getKeyUrl: 'https://open.bigmodel.cn/usercenter/apikeys', howTo: '智谱开放平台注册，控制台「API 密钥」创建；cogview-3-flash 免费，CogView-4 需付费' },
+volc: { label: '火山引擎 (Seedream)', free: false, getKeyUrl: 'https://console.volcengine.com/ark', howTo: '火山方舟控制台开通「视觉智能·图像生成」并创建 API Key；Seedream 按量付费，新用户有赠送额度' },
+siliconflow: { label: '硅基流动', free: true, getKeyUrl: 'https://cloud.siliconflow.cn/account/ak', howTo: '硅基流动注册后创建密钥；内置 Kolors/SDXL/FLUX 等文生图模型，部分有免费额度' },
+dashscope: { label: '阿里云百炼 (通义万相)', free: false, getKeyUrl: 'https://bailian.console.aliyun.com/?apiKey=1', howTo: '阿里云百炼控制台开通「通义万相」服务并创建 API-KEY；wanx2.1-t2i-turbo 低价，新用户有免费额度' }
+};
 function onMediaGenProviderSelect(provider) {
 state.mediaGenProvider = provider;
 saveState();
@@ -12767,8 +12909,31 @@ if (ep) ep.value = 'https://ark.cn-beijing.volces.com/api/v3/images/generations'
 if (ms) { ms.innerHTML = '<option value="seedream-5-0-pro-260628">seedream-5-0-pro-260628</option>'; ms.value = 'seedream-5-0-pro-260628'; }
 state.mediaGenEndpoint = ep ? ep.value : state.mediaGenEndpoint;
 state.mediaGenModel = ms ? ms.value : state.mediaGenModel;
+} else if (provider === 'siliconflow') {
+if (ep) ep.value = 'https://api.siliconflow.cn/v1/images/generations';
+if (ms) { ms.innerHTML = '<option value="Kwai-Kolors/Kolors">Kolors（免费）</option><option value="black-forest-labs/FLUX.1-schnell">FLUX.1-schnell</option><option value="stabilityai/stable-diffusion-xl-base-1.0">SDXL 1.0</option>'; ms.value = 'Kwai-Kolors/Kolors'; }
+state.mediaGenEndpoint = ep ? ep.value : state.mediaGenEndpoint;
+state.mediaGenModel = ms ? ms.value : state.mediaGenModel;
+} else if (provider === 'dashscope') {
+if (ep) ep.value = 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis';
+if (ms) { ms.innerHTML = '<option value="wanx2.1-t2i-turbo">wanx2.1-t2i-turbo（低价）</option><option value="wanx-v1">wanx-v1</option><option value="wanx2.1-t2i-plus">wanx2.1-t2i-plus</option>'; ms.value = 'wanx2.1-t2i-turbo'; }
+state.mediaGenEndpoint = ep ? ep.value : state.mediaGenEndpoint;
+state.mediaGenModel = ms ? ms.value : state.mediaGenModel;
 }
+renderMediaGenProviderHint(provider);
 saveState();
+}
+function renderMediaGenProviderHint(provider) {
+var el = document.getElementById('mediaGenProviderHint');
+if (!el) return;
+var p = MEDIA_GEN_PROVIDERS[provider];
+if (!p || provider === 'off') { el.style.display = 'none'; return; }
+el.style.display = 'block';
+var links = [];
+if (p.getKeyUrl) links.push('<a href="' + p.getKeyUrl + '" target="_blank" rel="noopener" style="color:#8a4a2a;font-weight:600">👉 官网申请 Key</a>');
+if (p.free) links.push('<b style="color:#2d7a3a">✅ 有免费额度/免费模型</b>');
+else links.push('<b style="color:#8a5a2a">💰 需付费（新用户多有免费额度）</b>');
+el.innerHTML = '🔑 获取方式：' + escHtml(p.howTo || '') + '<br>' + links.join(' · ');
 }
 
 function initMediaGenConfig() {
@@ -13369,7 +13534,8 @@ req.onerror = function(e) { reject(e.target.error); db.close(); };
 var CHUNK_SIZE=1048576;
 function idbPutLargeBlob(key,blob,onProgress){
 return idbOpen().then(function(db){
-var tc=Math.ceil(blob.size/CHUNK_SIZE);
+var _fin=function(v){try{db.close()}catch(e){}return v};
+var p=(function(){var tc=Math.ceil(blob.size/CHUNK_SIZE);
 if(tc<=1)return idbPutBlobSimple(db,key,blob);
 if(!navigator.storage||!navigator.storage.estimate)return idbPutBlobSimple(db,key,blob);
 return navigator.storage.estimate().then(function(info){
@@ -13384,14 +13550,16 @@ var sl=blob.slice(st,end,blob.type);
 idbPutBlobSimple(db,key+"_chunk_"+idx,sl).then(function(){idx++;if(onProgress)onProgress("存储 "+idx+"/"+tc);next()})["catch"](function(e){reject(e)})}
 next()})})})["catch"](function(e){
 // 分块失败，尝试直存
-return idbPutBlobSimple(db,key,blob)})})}
+return idbPutBlobSimple(db,key,blob)})})();
+return p.then(_fin,function(e){try{db.close()}catch(e2){}throw e});
+})}
 function idbPutBlobSimple(db,key,data){
 return new Promise(function(resolve,reject){
 var tx=db.transaction(IDB_STORE,"readwrite");
 tx.objectStore(IDB_STORE).put({id:key,data:data,ts:Date.now()});
 tx.oncomplete=function(){resolve()};tx.onerror=function(e){reject(e.target.error)}})}
 function idbGetLargeBlob(key){
-return idbOpen().then(function(db){return new Promise(function(resolve,reject){
+return idbOpen().then(function(db){var p=new Promise(function(resolve,reject){
 var tx=db.transaction(IDB_STORE,"readonly");
 var req=tx.objectStore(IDB_STORE).get(key+"_chunkmeta");
 req.onsuccess=function(e){
@@ -13405,9 +13573,10 @@ var tx3=db.transaction(IDB_STORE,"readonly");
 var r3=tx3.objectStore(IDB_STORE).get(key+"_chunk_"+i);
 r3.onsuccess=function(evt){if(evt.target.result)blobs.push(evt.target.result.data);ld(i+1)};
 r3.onerror=function(){ld(i+1)}}
-ld(0)};req.onerror=function(){resolve(null)}})})}
+ld(0)};req.onerror=function(){resolve(null)}});
+return p.then(function(v){try{db.close()}catch(e){}return v})})}
 function idbDeleteLargeBlob(key){
-return idbOpen().then(function(db){return new Promise(function(resolve){
+return idbOpen().then(function(db){var p=new Promise(function(resolve){
 var tx=db.transaction(IDB_STORE,"readwrite");
 var s=tx.objectStore(IDB_STORE);
 var r=s.get(key+"_chunkmeta");
@@ -13417,7 +13586,8 @@ if(meta){toDel.push(key+"_chunkmeta");for(var i=0;i<meta.data.chunks;i++)toDel.p
 var tx2=db.transaction(IDB_STORE,"readwrite");var s2=tx2.objectStore(IDB_STORE);
 for(var j=0;j<toDel.length;j++)s2.delete(toDel[j]);
 tx2.oncomplete=function(){resolve()};tx2.onerror=function(){resolve()}};
-r.onerror=function(){resolve()}})})}
+r.onerror=function(){resolve()}});
+return p.then(function(v){try{db.close()}catch(e){}return v})})}
 // ==== Peg Set Video Functions ====
 function getVideoMimeFromExt(file) {
 var ext = (file.name || '').split('.').pop().toLowerCase();
@@ -16234,7 +16404,7 @@ if (ep) ep.value = p.endpoint;
 var ms = document.getElementById('aiModelSelect');
 if (ms) {
 // Build model options
-var models = {deepseek:['deepseek-v4-flash','deepseek-v4-pro','deepseek-chat','deepseek-reasoner'], openai:['gpt-4o-mini','gpt-4o','gpt-4.1','o4-mini'], groq:['llama-4-scout-17b-16e-instruct','llama-3.3-70b-versatile','mixtral-8x7b-32768','gemma2-9b-it'], ollama:['llama3','qwen2.5','mistral','deepseek-r1']};
+var models = {deepseek:['deepseek-v4-flash','deepseek-v4-pro','deepseek-chat','deepseek-reasoner'], openai:['gpt-4o-mini','gpt-4o','gpt-4.1','o4-mini'], groq:['llama-4-scout-17b-16e-instruct','llama-3.3-70b-versatile','mixtral-8x7b-32768','gemma2-9b-it'], ollama:['llama3','qwen2.5','mistral','deepseek-r1'], siliconflow:['Qwen/Qwen2.5-7B-Instruct','deepseek-ai/DeepSeek-V3','deepseek-ai/DeepSeek-V3.1','THUDM/GLM-4-9B-Chat'], zhipu:['glm-4-flash','glm-4-air','glm-4-plus','glm-4-long'], dashscope:['qwen-turbo','qwen-flash','qwen-plus','qwen-max'], moonshot:['kimi-k2-0711-preview','moonshot-v1-8k','moonshot-v1-32k','moonshot-v1-128k'], hunyuan:['hunyuan-lite','hunyuan-turbo','hunyuan-pro']};
 var opts = models[provider] || [p.model];
 ms.innerHTML = opts.map(function(m){ return '<option value="'+m+'">'+m+'</option>'; }).join('');
 ms.value = p.model;
@@ -16246,6 +16416,7 @@ if (inp) inp.placeholder = p.keyPlaceholder || 'sk-...';
 var badge = document.getElementById('aiFreeBadge');
 if (badge) badge.style.display = p.free ? 'inline' : 'none';
 updateAIProviderBadge();
+renderAIProviderHint(provider);
 // 同步 endpoint/model 到 state
 state.aiApiKey = inp ? inp.value : '';
 state.aiEndpoint = ep ? ep.value : '';
@@ -16257,6 +16428,18 @@ var badge = document.getElementById('aiProviderBadge');
 if (!badge) return;
 var p = AI_PROVIDERS[state.aiProvider];
 badge.textContent = p ? p.label : '';
+}
+function renderAIProviderHint(provider) {
+var el = document.getElementById('aiProviderHint');
+if (!el) return;
+var p = AI_PROVIDERS[provider];
+if (!p) { el.style.display = 'none'; return; }
+el.style.display = 'block';
+var links = [];
+if (p.getKeyUrl) links.push('<a href="' + p.getKeyUrl + '" target="_blank" rel="noopener" style="color:#8a4a2a;font-weight:600">👉 官网申请 Key</a>');
+if (p.free) links.push('<b style="color:#2d7a3a">✅ 有免费额度/免费模型</b>');
+else links.push('<b style="color:#8a5a2a">💰 需付费（新用户多有免费额度）</b>');
+el.innerHTML = '🔑 获取方式：' + escHtml(p.howTo || '') + '<br>' + links.join(' · ');
 }
 function syncAIConfigToState() {
 var inp = document.getElementById('aiApiKeyInput');
@@ -16301,7 +16484,7 @@ if (state.aiFirstUseWizardSeen || state.aiApiKey) return;
 var html = '<div class="ai-quick-wizard" id="aiQuickWizard"><div class="ai-wiz-card">';
 html += '<h2>🤖 欢迎使用AI学习助手</h2>';
 html += '<div style="font-size:13px;color:var(--text-muted);margin-bottom:12px">三步开启智能讲解</div>';
-html += '<div class="step"><div class="step-num">1</div><div class="step-text"><b>选择服务商</b><br>推荐使用 DeepSeek（免费额度）或 Groq（免费）</div></div>';
+html += '<div class="step"><div class="step-num">1</div><div class="step-text"><b>选择服务商</b><br>推荐 DeepSeek、硅基流动、智谱AI（均有免费模型）</div></div>';
 html += '<div class="step"><div class="step-num">2</div><div class="step-text"><b>输入 API 密钥</b><br>在服务商官网注册获取密钥，粘贴到 AI 设置中</div></div>';
 html += '<div class="step"><div class="step-num">3</div><div class="step-text"><b>测试连接</b><br>点击「测试连接」按钮确认配置正确</div></div>';
 html += '<div style="margin-top:8px;padding:10px;background:rgba(201,168,76,.1);border-radius:8px;font-size:12px;color:#6b4a2a">💡 没有 API Key？可先使用「顺序学习」模式，无需 AI 也可学习全部内容</div>';
@@ -18738,19 +18921,21 @@ reader.readAsArrayBuffer(file);
 function extractPdf(file) {
 window.aiUploadedFileName = file.name;
 var status = document.getElementById('aiFileStatus');
-if (typeof pdfjsLib === 'undefined') {
-status.innerHTML = '⏳ 正在加载 PDF 解析库...'; status.style.color = '#2a5a7a';
-// PDF.js 需要同时设置 worker 路径
-loadScriptLib('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js').then(function() {
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-doExtractPdf(file);
-}).catch(function() {
-status.innerHTML = '❌ 加载 PDF 解析库失败，请检查网络连接'; status.style.color = '#c0392b';
+extractPdfText(file).then(function(res) {
+window.aiUploadedContent = res.text;
+if (res.truncated) showToast('⚠️ 文件较长，仅截取前5万字');
+status.innerHTML = '✅ 已解析 <b>' + escHtml(file.name) + '</b>（共' + res.pages + '页，' + (res.text.length/10000).toFixed(1) + '万字）';
+status.style.color = '#1a6a3a';
+var preview = document.getElementById('aiFilePreview');
+preview.style.display = 'block'; preview.textContent = res.text.slice(0, 300) + (res.text.length > 300 ? '\n...[截断]' : '');
+showToast('✅ 已加载 ' + file.name);
+}).catch(function(err) {
+status.innerHTML = '❌ 解析 PDF 失败: ' + escHtml(err.message); status.style.color = '#c0392b';
 });
-} else { doExtractPdf(file); }
 }
-function doExtractPdf(file) {
-var status = document.getElementById('aiFileStatus');
+function extractPdfText(file) {
+return _loadPdfjs().then(function() {
+return new Promise(function(resolve, reject) {
 var reader = new FileReader();
 reader.onload = function(e) {
 pdfjsLib.getDocument({data: e.target.result}).promise.then(function(pdf) {
@@ -18759,13 +18944,9 @@ var pages = [];
 var nextPage = function(i) {
 if (i > totalPages) {
 var text = pages.join('\n\n--- 第 ' + totalPages + ' 页结束 ---\n\n');
-if (text.length > FILE_MAX_CHARS) { showToast('⚠️ 文件较长，仅截取前5万字'); text = text.slice(0, FILE_MAX_CHARS) + '\n\n...[因文件过长已截断]'; }
-window.aiUploadedContent = text;
-status.innerHTML = '✅ 已解析 <b>' + escHtml(file.name) + '</b>（共' + totalPages + '页，' + (text.length/10000).toFixed(1) + '万字）';
-status.style.color = '#1a6a3a';
-var preview = document.getElementById('aiFilePreview');
-preview.style.display = 'block'; preview.textContent = text.slice(0, 300) + (text.length > 300 ? '\n...[截断]' : '');
-showToast('✅ 已加载 ' + file.name);
+var truncated = false;
+if (text.length > FILE_MAX_CHARS) { truncated = true; text = text.slice(0, FILE_MAX_CHARS) + '\n\n...[因文件过长已截断]'; }
+resolve({ text: text, pages: totalPages, truncated: truncated });
 return;
 }
 pdf.getPage(i).then(function(page) {
@@ -18779,11 +18960,391 @@ nextPage(i + 1);
 });
 };
 nextPage(1);
-}).catch(function(err) {
-status.innerHTML = '❌ 解析 PDF 失败: ' + escHtml(err.message); status.style.color = '#c0392b';
-});
+}).catch(function(err) { reject(err); });
 };
+reader.onerror = function() { reject(new Error('文件读取失败')); };
 reader.readAsArrayBuffer(file);
+});
+});
+}
+function _loadPdfjs() {
+if (typeof pdfjsLib !== 'undefined') return Promise.resolve();
+return loadScriptLib('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js').then(function() {
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+});
+}
+/* ============ PDF 板块 ============ */
+var _pdfTab = 'ai';
+var _pdfSession = null;
+var _pdfImages = [];
+var _pdfLibPromise = null;
+function renderPdfPanel() {
+var area = $id('contentArea');
+var h = '<div class="card anim-fade" style="padding:16px">'
++ '<h3 style="color:#a02020;margin-bottom:12px">📄 PDF 学习与工具</h3>'
++ '<div class="pdf-tabs">'
++ '<button class="pdf-tab' + (_pdfTab==='ai'?' active':'') + '" onclick="_pdfTab=\'ai\';renderPdfPanel()">🤖 AI学习</button>'
++ '<button class="pdf-tab' + (_pdfTab==='tools'?' active':'') + '" onclick="_pdfTab=\'tools\';renderPdfPanel()">🧰 工具</button>'
++ '</div>'
++ '<div class="pdf-upload" onclick="document.getElementById(\'pdfFileInput\').click()" ondragover="event.preventDefault()" ondrop="pdfHandleDrop(event)">'
++ '<div>📤 点击选择或拖入 PDF 文件</div>'
++ '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">PDF 仅本次会话使用，刷新后清空 · 工具页可一次选多个做合并</div>'
++ '<input type="file" id="pdfFileInput" accept=".pdf,application/pdf" multiple class="d-none" onchange="pdfHandleFiles(this.files)">'
++ '</div>'
++ '<div id="pdfSessionInfo" style="font-size:12px;color:var(--text-muted);margin:8px 0;text-align:center"></div>'
++ '<div id="pdfPanelBody"></div>'
++ '</div>';
+area.innerHTML = h;
+renderPdfSessionInfo();
+renderPdfBody();
+}
+function pdfHandleDrop(e) {
+e.preventDefault();
+var f = e.dataTransfer && e.dataTransfer.files;
+if (f && f.length) pdfHandleFiles(f);
+}
+function pdfHandleFiles(fileList) {
+var files = Array.prototype.slice.call(fileList || []).filter(function(f){ return /\.pdf$/i.test(f.name); });
+if (!files.length) { showToast('请选择 PDF 文件'); return; }
+if (_pdfTab === 'tools' && files.length > 1) {
+_pdfSession = { files: files };
+renderPdfSessionInfo(); renderPdfBody();
+showToast('已选 ' + files.length + ' 个 PDF（合并用）');
+return;
+}
+pdfLoadFile(files[0]);
+}
+function pdfLoadFile(file) {
+showAILoading('解析 PDF...', file.name);
+extractPdfText(file).then(function(res) {
+hideAILoading();
+_pdfSession = { file: file, text: res.text, pages: res.pages, name: file.name };
+renderPdfSessionInfo(); renderPdfBody();
+showToast('✅ 已解析 ' + file.name + '（' + res.pages + '页）');
+}).catch(function(err) {
+hideAILoading();
+showToast('❌ ' + err.message);
+});
+}
+function renderPdfSessionInfo() {
+var el = document.getElementById('pdfSessionInfo');
+if (!el) return;
+if (_pdfSession && _pdfSession.files && _pdfSession.files.length) {
+el.innerHTML = '已选 <b>' + _pdfSession.files.length + '</b> 个 PDF（合并用）';
+return;
+}
+if (_pdfSession && _pdfSession.file) {
+el.innerHTML = '📄 <b>' + escHtml(_pdfSession.name) + '</b> · ' + _pdfSession.pages + ' 页 · ' + Math.round(_pdfSession.text.length/100)/10 + ' 千字';
+} else {
+el.innerHTML = '尚未选择 PDF';
+}
+}
+function renderPdfBody() {
+var el = document.getElementById('pdfPanelBody');
+if (!el) return;
+if (_pdfTab === 'ai') renderPdfAiBody(el);
+else renderPdfToolsBody(el);
+}
+function renderPdfAiBody(el) {
+if (_pdfSession && _pdfSession.files && _pdfSession.files.length) {
+el.innerHTML = '<div class="empty-state"><p>当前为合并模式（' + _pdfSession.files.length + ' 个 PDF）</p><p class="text-muted">AI 学习需单个 PDF，请重新上传</p></div>';
+return;
+}
+if (!_pdfSession || !_pdfSession.text) {
+el.innerHTML = '<div class="empty-state"><p>请先上传 PDF</p><p class="text-muted">上传后可生成摘要、自测题、记忆卡、学习笔记</p></div>';
+return;
+}
+var h = '<div class="pdf-tool-grid">'
++ '<div class="pdf-tool-card" onclick="pdfAiSummary()"><div style="font-size:22px">📝</div><div class="pdf-tool-name">摘要+知识点</div><div class="pdf-tool-desc">AI 提炼核心内容与知识点清单</div></div>'
++ '<div class="pdf-tool-card" onclick="pdfAiQuiz()"><div style="font-size:22px">✏️</div><div class="pdf-tool-name">生成自测题</div><div class="pdf-tool-desc">生成课程入做题引擎，全模式可学</div></div>'
++ '<div class="pdf-tool-card" onclick="pdfAiCards()"><div style="font-size:22px">🃏</div><div class="pdf-tool-name">生成记忆卡</div><div class="pdf-tool-desc">问答卡课程，背诵/默写可隐藏答案</div></div>'
++ '<div class="pdf-tool-card" onclick="pdfAiNotes()"><div style="font-size:22px">📚</div><div class="pdf-tool-name">生成学习笔记</div><div class="pdf-tool-desc">结构化笔记存入知识库</div></div>'
++ '</div>'
++ '<div id="pdfAiResult" style="margin-top:12px"></div>';
+el.innerHTML = h;
+}
+function renderPdfToolsBody(el) {
+if (_pdfSession && _pdfSession.files && _pdfSession.files.length > 1) {
+el.innerHTML = '<div class="pdf-tool-grid">'
++ '<div class="pdf-tool-card" onclick="pdfDoMerge(_pdfSession.files)"><div style="font-size:22px">🔗</div><div class="pdf-tool-name">合并这 ' + _pdfSession.files.length + ' 个 PDF</div><div class="pdf-tool-desc">合并为单个 PDF 下载</div></div>'
++ '</div>'
++ '<div id="pdfToolResult" style="margin-top:12px"></div>';
+return;
+}
+if (!_pdfSession || !_pdfSession.file) {
+el.innerHTML = '<div class="empty-state"><p>请先上传 PDF</p><p class="text-muted">单文件可拆分/转图片；一次传多个可合并</p></div>';
+return;
+}
+var h = '<div class="pdf-tool-grid">'
++ '<div class="pdf-tool-card" onclick="pdfToolMerge()"><div style="font-size:22px">🔗</div><div class="pdf-tool-name">合并</div><div class="pdf-tool-desc">再添加 PDF 合并</div></div>'
++ '<div class="pdf-tool-card" onclick="pdfToolSplit()"><div style="font-size:22px">✂️</div><div class="pdf-tool-name">拆分</div><div class="pdf-tool-desc">按页范围/每N页导出</div></div>'
++ '<div class="pdf-tool-card" onclick="pdfToolToImages()"><div style="font-size:22px">🖼️</div><div class="pdf-tool-name">PDF→图片</div><div class="pdf-tool-desc">每页导出为 PNG</div></div>'
++ '<div class="pdf-tool-card" onclick="pdfToolFromImages()"><div style="font-size:22px">📄</div><div class="pdf-tool-name">图片→PDF</div><div class="pdf-tool-desc">多张图片合成 PDF</div></div>'
++ '</div>'
++ '<div id="pdfToolResult" style="margin-top:12px"></div>';
+el.innerHTML = h;
+}
+function _pdfAiBusy(msg) {
+var r = document.getElementById('pdfAiResult');
+if (r) r.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:13px">⏳ ' + escHtml(msg) + '...</div>';
+}
+function _pdfAiResultHtml(html) {
+var r = document.getElementById('pdfAiResult');
+if (r) r.innerHTML = html;
+}
+function pdfAiSummary() {
+if (!_pdfSession) return;
+_pdfAiBusy('AI 正在阅读 PDF 并提炼摘要与知识点');
+callAI({systemPrompt:'你是专业的学习内容提炼专家。阅读用户提供的 PDF 全文，生成结构化摘要与知识点清单。输出 Markdown：先写"## 摘要"并给出 300 字左右全文摘要；再写"## 知识点"并列出最重要的知识点，每条用"- 名称：一句话说明"。', prompt:_pdfSession.text, temperature:0.4, maxTokens:4096, timeout:120000})
+.then(function(resp){ _pdfAiResultHtml(pdfRenderMarkdown(resp)); })
+.catch(function(err){ _pdfAiResultHtml('<div style="color:#c0392b">❌ ' + escHtml(err.message) + '</div>'); });
+}
+function pdfAiQuiz() { if (_pdfSession) pdfGenerateCourse('quiz'); }
+function pdfAiCards() { if (_pdfSession) pdfGenerateCourse('cards'); }
+function pdfAiNotes() { if (_pdfSession) pdfGenerateCourse('notes'); }
+function pdfGenerateCourse(type) {
+var L = type==='quiz' ? {tag:'✏️ 自测题课程', act:'自测题'} : type==='cards' ? {tag:'🃏 记忆卡课程', act:'记忆卡'} : {tag:'📚 学习笔记课程', act:'学习笔记'};
+_pdfAiBusy('AI 正在生成' + L.act + '...');
+callAI({systemPrompt: pdfCourseSystemPrompt(type), prompt: _pdfSession.text, temperature:0.4, maxTokens:12288, timeout:180000})
+.then(function(resp) {
+var obj = aiLearnParseJSON(resp);
+if (!obj || !obj.articles || !obj.articles.length) { _pdfAiResultHtml('<div style="color:#c0392b">❌ AI 返回格式异常，请重试</div>'); return; }
+var cname = obj.name || _pdfSession.name.replace(/\.pdf$/i, '') + '·' + L.act;
+StorageManager.saveCourse(cname, { chapters: obj.chapters || [], articles: obj.articles, conceptNames: [], coreFramework: [] });
+if (type === 'notes' && obj.concepts && obj.concepts.length) {
+try { var kb = kbLoadData(); if (!kb.courses[cname]) kb.courses[cname] = {}; kb.courses[cname].concepts = { extractedAt: new Date().toISOString(), data: obj.concepts }; kbSaveData(kb); } catch(e) {}
+}
+_pdfAiResultHtml(pdfCourseResultHtml(cname, obj.articles.length, L.tag, type));
+showToast('✅ ' + L.tag + '已生成');
+}).catch(function(err) { _pdfAiResultHtml('<div style="color:#c0392b">❌ ' + escHtml(err.message) + '</div>'); });
+}
+function pdfCourseSystemPrompt(type) {
+if (type === 'quiz') {
+return '你是专业出题专家。阅读用户提供的 PDF 全文，生成一份选择题自测课程。只输出一个 JSON 对象，不要任何其他文字。JSON 结构：{"name":"课程名","chapters":["章节名数组"],"articles":[{"id":从1递增的数字,"c":"章节名","t":"该题考察的知识点正文(一句话知识要点，可被背诵/默写隐藏)","q":"选择题题干","o":["选项A","选项B","选项C","选项D"],"a":正确选项索引(0到3),"e":"答案解析与知识说明"}]}。生成 8-15 道覆盖 PDF 核心内容的选择题，每题 4 个选项，选项长度相近。';
+}
+if (type === 'cards') {
+return '你是专业记忆专家。阅读用户提供的 PDF 全文，生成问答式记忆卡课程。只输出一个 JSON 对象，不要任何其他文字。JSON 结构：{"name":"课程名","chapters":["章节名数组"],"articles":[{"id":从1递增的数字,"c":"章节名","t":"完整答案/知识点正文(可被背诵/默写隐藏)","q":"正面问题(简洁)","e":"记忆技巧或例子","o":[],"a":0}]}。生成 10-20 张记忆卡，覆盖 PDF 核心知识点，问题简洁、答案完整。';
+}
+return '你是专业学习笔记专家。阅读用户提供的 PDF 全文，生成结构化学习笔记课程并存入知识库。只输出一个 JSON 对象，不要任何其他文字。JSON 结构：{"name":"课程名","chapters":["章节名数组"],"articles":[{"id":从1递增的数字,"c":"章节名","t":"要点正文(2-4句完整说明，可被背诵/默写隐藏)","q":"要点标题(正面)","e":"补充例子或延伸","o":[],"a":0}],"concepts":[{"name":"核心概念","description":"一句话说明","relatedConcepts":["关联概念"]}]}。生成 6-12 个要点，覆盖 PDF 核心内容。';
+}
+function pdfCourseResultHtml(cname, n, tag, type) {
+return '<div style="color:#1a6a3a;margin-bottom:8px">✅ ' + tag + ' <b>' + escHtml(cname) + '</b> 已生成（' + n + ' 条）' + (type==='notes' ? '，并已写入知识库' : '') + '</div>'
++ '<button class="next-btn" onclick="pdfStudyCourse(decodeURIComponent(\'' + pdfSafeQuotes(cname) + '\'))" style="margin-right:8px">📖 开始学习</button>'
++ '<button class="btn-cancel" onclick="switchMode(\'' + (type==='notes' ? 'knowledgebase' : 'market') + '\')">' + (type==='notes' ? '📚 去知识库' : '📦 课程市场') + '</button>';
+}
+function pdfSafeQuotes(s) { return encodeURIComponent(s).replace(/'/g, '%27'); }
+function pdfStudyCourse(name) {
+if (typeof switchCourse === 'function') switchCourse(name);
+switchMode('sequential');
+}
+function pdfToolMerge() {
+var files = (_pdfSession && _pdfSession.files && _pdfSession.files.length >= 2) ? _pdfSession.files : (_pdfSession && _pdfSession.file ? [_pdfSession.file] : []);
+if (files.length >= 2) { pdfDoMerge(files); return; }
+var input = document.createElement('input');
+input.type = 'file'; input.accept = '.pdf,application/pdf'; input.multiple = true;
+input.onchange = function() {
+var extra = Array.prototype.slice.call(input.files || []).filter(function(f){ return /\.pdf$/i.test(f.name); });
+if (!extra.length) { showToast('请选择 PDF'); return; }
+var all = [_pdfSession.file].concat(extra);
+_pdfSession.files = all;
+renderPdfSessionInfo(); renderPdfBody();
+pdfDoMerge(all);
+};
+input.click();
+}
+function pdfDoMerge(files) {
+_pdfToolStatus('⏳ 正在合并 ' + files.length + ' 个 PDF...');
+_loadPdfLib().then(function() {
+return PDFLib.PDFDocument.create().then(function(dst) {
+var chain = Promise.resolve();
+files.forEach(function(f) {
+chain = chain.then(function() {
+return f.arrayBuffer().then(function(buf) {
+return PDFLib.PDFDocument.load(buf).then(function(src) {
+return dst.copyPages(src, src.getPageIndices()).then(function(pages){ pages.forEach(function(p){ dst.addPage(p); }); });
+});
+});
+});
+});
+return chain.then(function(){ return dst.save(); });
+});
+}).then(function(bytes) {
+_pdfToolStatus('✅ 合并完成（' + files.length + ' 个文件），已开始下载');
+_pdfDownload(new Blob([bytes], {type:'application/pdf'}), '合并_' + getTodayStr() + '.pdf');
+}).catch(function(err) { _pdfToolStatus('<div style="color:#c0392b">❌ ' + escHtml(err.message) + '</div>'); });
+}
+function pdfToolSplit() {
+if (!_pdfSession || !_pdfSession.file) return;
+var spec = prompt('输入要导出的页码范围。支持："1-5"、"1-3,7-9"、"2,4,6"，或 "every3" 表示每3页拆一份', '1-5');
+if (!spec) return;
+_pdfToolStatus('⏳ 正在拆分...');
+var file = _pdfSession.file;
+file.arrayBuffer().then(function(buf) {
+return _loadPdfLib().then(function() { return PDFLib.PDFDocument.load(buf); });
+}).then(function(src) {
+var total = src.getPageCount();
+var parts = pdfParseSplitSpec(spec, total);
+if (!parts.length) { _pdfToolStatus('<div style="color:#c0392b">⚠️ 页码无效（共 ' + total + ' 页）</div>'); return; }
+var chain = Promise.resolve();
+parts.forEach(function(part, pi) {
+chain = chain.then(function() {
+return PDFLib.PDFDocument.create().then(function(dst) {
+return dst.copyPages(src, part.indices).then(function(pages) {
+pages.forEach(function(p){ dst.addPage(p); });
+return dst.save().then(function(bytes) {
+_pdfDownload(new Blob([bytes], {type:'application/pdf'}), (_pdfSession.name.replace(/\.pdf$/i, '') + '_' + (part.label || ('part' + (pi + 1))) + '.pdf'));
+});
+});
+});
+});
+});
+return chain.then(function(){ return parts.length; });
+}).then(function(n) { _pdfToolStatus('✅ 已导出 ' + n + ' 个拆分文件'); })
+.catch(function(err) { _pdfToolStatus('<div style="color:#c0392b">❌ ' + escHtml(err.message) + '</div>'); });
+}
+function pdfParseSplitSpec(spec, total) {
+var parts = [];
+var s = String(spec || '').trim();
+var m = s.match(/^every(\d+)$/i);
+if (m) {
+var n = parseInt(m[1], 10) || 1;
+for (var st = 0; st < total; st += n) {
+var idx = [];
+for (var i = st; i < Math.min(st + n, total); i++) idx.push(i);
+parts.push({ indices: idx, label: '第' + Math.floor(st / n + 1) + '份' });
+}
+return parts;
+}
+s.split(',').forEach(function(seg) {
+seg = seg.trim();
+if (!seg) return;
+var r = seg.match(/^(\d+)\s*-\s*(\d+)$/);
+var idx = [];
+if (r) { var a = Math.max(1, parseInt(r[1], 10)); var b = Math.min(total, parseInt(r[2], 10)); for (var i = a; i <= b; i++) idx.push(i - 1); }
+else if (/^\d+$/.test(seg)) { var p = parseInt(seg, 10); if (p >= 1 && p <= total) idx.push(p - 1); }
+if (idx.length) parts.push({ indices: idx, label: seg });
+});
+return parts;
+}
+function pdfToolToImages() {
+if (!_pdfSession || !_pdfSession.file) return;
+_pdfToolStatus('⏳ 正在渲染页面为图片...');
+var file = _pdfSession.file;
+var base = _pdfSession.name.replace(/\.pdf$/i, '');
+_pdfImages = [];
+_loadPdfjs().then(function() {
+return new Promise(function(resolve, reject) {
+var reader = new FileReader();
+reader.onload = function(e) {
+pdfjsLib.getDocument({ data: e.target.result }).promise.then(function(pdf) {
+var chain = Promise.resolve();
+for (var i = 1; i <= pdf.numPages; i++) {
+(function(pg) {
+chain = chain.then(function() {
+return pdf.getPage(pg).then(function(page) {
+var vp = page.getViewport({ scale: 1.5 });
+var canvas = document.createElement('canvas');
+canvas.width = vp.width; canvas.height = vp.height;
+return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise.then(function() {
+_pdfImages.push({ url: canvas.toDataURL('image/png'), name: base + '_' + pg + '.png' });
+});
+});
+});
+})(i);
+}
+chain.then(function() { resolve(pdf.numPages); });
+}).catch(reject);
+};
+reader.onerror = function() { reject(new Error('文件读取失败')); };
+reader.readAsArrayBuffer(file);
+});
+}).then(function(n) {
+var html = '<div style="margin-bottom:8px;color:#1a6a3a">✅ 已渲染 ' + n + ' 页，点击"下载"保存，或右键图片另存</div>'
++ '<div class="pdf-img-grid">';
+for (var i = 0; i < _pdfImages.length; i++) {
+html += '<div class="pdf-img-item"><img src="' + _pdfImages[i].url + '" alt="第' + (i + 1) + '页"><button class="btn-cancel" onclick="pdfDlImage(' + i + ')">下载</button></div>';
+}
+html += '</div>';
+_pdfToolStatus(html);
+}).catch(function(err) { _pdfToolStatus('<div style="color:#c0392b">❌ ' + escHtml(err.message) + '</div>'); });
+}
+function pdfDlImage(idx) {
+var item = _pdfImages[idx];
+if (!item) return;
+var a = document.createElement('a'); a.href = item.url; a.download = item.name; a.click();
+}
+function pdfToolFromImages() {
+var input = document.createElement('input');
+input.type = 'file'; input.accept = 'image/*'; input.multiple = true;
+input.onchange = function() {
+var files = Array.prototype.slice.call(input.files || []);
+if (!files.length) { showToast('请选择图片'); return; }
+_pdfToolStatus('⏳ 正在合成 PDF（' + files.length + ' 张图片）...');
+_loadPdfLib().then(function() {
+return PDFLib.PDFDocument.create().then(function(doc) {
+var chain = Promise.resolve();
+files.forEach(function(f) {
+chain = chain.then(function() {
+return f.arrayBuffer().then(function(buf) {
+var name = (f.name || '').toLowerCase();
+var embed = name.indexOf('png') !== -1 ? doc.embedPng(buf) : doc.embedJpg(buf);
+return embed.then(function(img) {
+var page = doc.addPage([img.width, img.height]);
+page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
+});
+});
+});
+});
+return chain.then(function() { return doc.save(); });
+});
+}).then(function(bytes) {
+_pdfToolStatus('✅ 已合成 PDF 并开始下载');
+_pdfDownload(new Blob([bytes], { type: 'application/pdf' }), '图片合成_' + getTodayStr() + '.pdf');
+}).catch(function(err) { _pdfToolStatus('<div style="color:#c0392b">❌ ' + escHtml(err.message) + '</div>'); });
+};
+input.click();
+}
+function _loadPdfLib() {
+if (typeof PDFLib !== 'undefined') return Promise.resolve();
+if (_pdfLibPromise) return _pdfLibPromise;
+_pdfLibPromise = loadScriptLib('https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js').then(function() {
+if (typeof PDFLib === 'undefined') throw new Error('pdf-lib 加载失败，请检查网络');
+});
+_pdfLibPromise.catch(function() { _pdfLibPromise = null; });
+return _pdfLibPromise;
+}
+function _pdfDownload(blob, filename) {
+var url = URL.createObjectURL(blob);
+var a = document.createElement('a');
+a.href = url; a.download = filename;
+document.body.appendChild(a); a.click();
+setTimeout(function() { URL.revokeObjectURL(url); a.remove(); }, 1000);
+}
+function _pdfToolStatus(html) {
+var el = document.getElementById('pdfToolResult');
+if (el) el.innerHTML = html;
+}
+function pdfRenderMarkdown(s) {
+var html = '';
+var lines = escHtml(s || '').split('\n');
+var inList = false;
+lines.forEach(function(line) {
+var t = line.trim();
+if (/^#{1,6}\s/.test(t)) {
+if (inList) { html += '</ul>'; inList = false; }
+html += '<div style="font-weight:700;font-size:15px;margin:10px 0 4px;color:var(--text)">' + t.replace(/^#{1,6}\s+/, '') + '</div>';
+} else if (/^[-*]\s/.test(t)) {
+if (!inList) { html += '<ul style="margin:4px 0;padding-left:18px;line-height:1.7">'; inList = true; }
+html += '<li>' + t.replace(/^[-*]\s+/, '') + '</li>';
+} else if (t === '') {
+if (inList) { html += '</ul>'; inList = false; }
+} else {
+if (inList) { html += '</ul>'; inList = false; }
+html += '<div style="line-height:1.7;color:var(--text);margin:2px 0">' + line + '</div>';
+}
+});
+if (inList) html += '</ul>';
+return html;
 }
 function extractXlsx(file) {
 window.aiUploadedFileName = file.name;
@@ -18908,6 +19469,7 @@ var PANEL_DEFS = [
 {mode:'cert', label:'🎓 考证'},
 {mode:'law', label:'⚖️ 法律咨询'},
 {mode:'viral', label:'🔥 爆款视频'},
+{mode:'publisher', label:'📢 多平台发布'},
 {mode:'memorytrain', label:'🧠 记忆训练'},
 	{mode:'iching', label:'☯ 周易占卦'},
 		{mode:'cyber', label:'🤖 工程控制论'},
@@ -18919,7 +19481,8 @@ var PANEL_DEFS = [
 			{mode:'fly', label:'🔥 成瘾飞轮'},
 			{mode:"munger", label:"🧠 芒格十事"},
 			{mode:"dce", label:"🧠 决策工程"},
-{mode:"speed", label:"🚀 极速学习"}
+{mode:"speed", label:"🚀 极速学习"},
+			{mode:"pdf", label:"📄 PDF"}
 ];
 
 var PANEL_GROUPS = [
@@ -18928,11 +19491,12 @@ var PANEL_GROUPS = [
 {name:'📊 数据分析', modes:['dashboard','stats','dailyreview']},
 {name:'🤖 AI 深度工具', modes:['adv','ind','fin','law','ana','pattern','biz','tcm','news','munger','dce']},
 {name:'💡 创意智库', modes:['thinktank','idea','meta','community','aisearch']},
-{name:'🔥 实战应用', modes:['traffic','viral','creator','painpoint','money','skill','tutor','wealth']},
+{name:'🔥 实战应用', modes:['traffic','viral','publisher','creator','painpoint','money','skill','tutor','wealth']},
 {name:'📜 国学谋略', modes:['ggz','sz','qm','mou','zh']},
 {name:'🧠 脑力与记忆', modes:['games','memorytrain','videopalace','iching']},
 {name:'🌿 身心与思维', modes:['yang','chuang','ask','he','ability','cso','fly']},
-{name:'🤖 工程与拆解', modes:['cyber','acu','decomp']}
+{name:'🤖 工程与拆解', modes:['cyber','acu','decomp']},
+{name:'📄 PDF', modes:['pdf']}
 ];
 // panelOrder migration: move from loadState to after PANEL_DEFS to avoid undefined crash
 if (!state.panelOrder && state.hiddenPanels) {
@@ -18982,7 +19546,9 @@ memorytrain:'border-color:#e74c3c;color:#e74c3c',
 			dce:"border-color:#4a7aff;color:#3a5aaf",
 speed:"border-color:#00b894;color:#00a080",
 wealth:"border-color:#b8860b;color:#8a6a10",
-  games:"border-color:#7c4dff;color:#6a3dd6"
+  games:"border-color:#7c4dff;color:#6a3dd6",
+  pdf:"border-color:#c0392b;color:#a02020",
+  publisher:"border-color:#3a7abd;color:#2a5a8a"
 };
 function getBadgeHTML(mode) {
 if (mode==='wrongset') return ' <span class="badge" id="wrongSetBadge">0</span>';
@@ -21634,7 +22200,7 @@ if (a2) a2.innerHTML = '<img src="' + dataUrl + '" class="peg-image-display" alt
 var a3 = document.getElementById('pegImageArea_' + articleId);
 if (a3) { a3.innerHTML = '<span class="text-sm text-muted">\u{1F4ED} 未上传桩图 #' + img.imageIndex + '</span>'; a3.style.background = 'transparent'; }
 }
-});
+})["catch"](function() {});
 }
 function renderPegSetList() {
 currentMode = 'pegimg';
@@ -21790,6 +22356,7 @@ var name = document.getElementById('pegsetEditorName');
 var start = document.getElementById('pegsetEditorStart');
 var end = document.getElementById('pegsetEditorEnd');
 var courseEl = document.getElementById('pegsetEditorCourse');
+var courseVal = courseEl ? courseEl.value : '';
 if (!name || !start || !end) return;
 var n = name.value.trim();
 var rs = parseInt(start.value) || 1;
@@ -21801,13 +22368,13 @@ if (setId) {
 var sets = state.pegImageSets || [];
 for (var i = 0; i < sets.length; i++) {
 if (sets[i].id === setId) {
-sets[i].name = n; sets[i].rangeStart = rs; sets[i].rangeEnd = re; sets[i].course = _course; sets[i].updatedAt = Date.now();
+sets[i].name = n; sets[i].rangeStart = rs; sets[i].rangeEnd = re; sets[i].course = courseVal; sets[i].updatedAt = Date.now();
 break;
 }
 }
 state.pegImageSets = sets; saveState(); renderPegSetDetail(setId);
 } else {
-createPegSet(n, rs, re, _course);
+createPegSet(n, rs, re, courseVal);
 }
 }
 function createPegSet(name, rangeStart, rangeEnd, course) {
@@ -22012,6 +22579,9 @@ if (url) {
 var el = document.getElementById('pegVideoLoading_' + sid + '_' + vid);
 if (el) renderPegSetDetail(sid);
 }
+})["catch"](function() {
+var el = document.getElementById('pegVideoLoading_' + sid + '_' + vid);
+if (el) el.innerHTML = '<span class="text-sm text-muted">\u26A0\uFE0F 加载失败</span>';
 });
 })(_vv2.id);
 }
@@ -22046,22 +22616,24 @@ html += '</div>';
 $id('contentArea').innerHTML = html;
 updateUI();
 if (total > 0) {
-for (var p = 1; p <= Math.min(20, total); p++) {
-preloadSinglePegSetImage(setId, p);
+preloadPegSetImagesSeq(setId, 1, Math.min(20, total));
 }
 }
-}
-function preloadSinglePegSetImage(setId, idx) {
-var key = 'pegimg_' + setId + '_' + idx;
-if (PEGSET_RUNTIME_CACHE[key]) return;
+function preloadPegSetImagesSeq(setId, startIdx, endIdx) {
+if (startIdx > endIdx) return;
+var key = 'pegimg_' + setId + '_' + startIdx;
+if (PEGSET_RUNTIME_CACHE[key]) { preloadPegSetImagesSeq(setId, startIdx + 1, endIdx); return; }
 loadPalaceImage(key).then(function(dataUrl) {
 if (dataUrl) {
 PEGSET_RUNTIME_CACHE[key] = dataUrl;
 var items = document.querySelectorAll('.pegs-img-grid-item');
-if (items && items[idx - 1]) {
-items[idx - 1].innerHTML = '<span class="idx">#' + idx + '</span><img src="' + dataUrl + '">';
+if (items && items[startIdx - 1]) {
+items[startIdx - 1].innerHTML = '<span class="idx">#' + startIdx + '</span><img src="' + dataUrl + '">';
 }
 }
+preloadPegSetImagesSeq(setId, startIdx + 1, endIdx);
+})["catch"](function() {
+preloadPegSetImagesSeq(setId, startIdx + 1, endIdx);
 });
 }
 function showPegSetImagePreview(setId, idx) {
@@ -34511,6 +35083,445 @@ function toggleViralHistory() {
 }
 
 
+/* ===== 多平台发布 · 手动发布台（纯静态，双击即用） ===== */
+var PUB_PLATFORMS = [
+  {id:'bilibili',name:'哔哩哔哩',icon:'📺',url:'https://member.bilibili.com/platform/upload/video',limit:80,hint:'标题≤80字 · ≤10标签 · 选分区 · 声明原创'},
+  {id:'douyin',name:'抖音',icon:'🎵',url:'https://creator.douyin.com/creator-micro/content/upload',limit:30,hint:'标题≤30字 · #话题'},
+  {id:'xiaohongshu',name:'小红书',icon:'📕',url:'https://creator.xiaohongshu.com/publish/publish',limit:20,hint:'标题≤20字 · 描述作为正文'},
+  {id:'toutiao',name:'今日头条',icon:'📰',url:'https://mp.toutiao.com/profile_v4/graphic/publish',limit:80,hint:'可勾选"同步西瓜视频"'},
+  {id:'kuaishou',name:'快手',icon:'🖐️',url:'https://creator.kuaishou.com/upload/video',limit:100,hint:'标题≤100字 · #话题'},
+  {id:'xigua',name:'西瓜视频',icon:'🍉',url:'https://studio.ixigua.com/upload/video',limit:80,hint:'可勾选"同步头条"'},
+  {id:'youtube',name:'YouTube',icon:'▶️',url:'https://studio.youtube.com',limit:100,hint:'标签总长约500字符 · 封面建议1280×720'},
+  {id:'weixin',name:'微信视频号',icon:'💬',url:'https://channels.weixin.qq.com/platform/post/create',limit:80,hint:'需视频号助手'},
+  {id:'baijiahao',name:'百家号',icon:'📄',url:'https://baijiahao.baidu.com/publish/video',limit:80,hint:'百度收录好'},
+  {id:'weibo',name:'微博',icon:'🌐',url:'https://weibo.com/tv/create',limit:140,hint:'标题≤140字 · #话题'},
+  {id:'zhihu',name:'知乎',icon:'🧠',url:'https://www.zhihu.com/creator/video/upload',limit:80,hint:'标题提问式效果佳'},
+  {id:'qiehao',name:'企鹅号',icon:'🐧',url:'https://om.qq.com/article/videoupload',limit:80,hint:'腾讯系生态'},
+  {id:'dayuhao',name:'大鱼号',icon:'🐟',url:'https://mp.dayu.com/content/publish?type=video',limit:80,hint:'阿里系 · UC生态'}
+];
+var PUB_NAMES = {};
+for (var pubpi = 0; pubpi < PUB_PLATFORMS.length; pubpi++) PUB_NAMES[PUB_PLATFORMS[pubpi].id] = PUB_PLATFORMS[pubpi].name;
+
+function pubPlatById(pid) {
+  for (var i = 0; i < PUB_PLATFORMS.length; i++) if (PUB_PLATFORMS[i].id === pid) return PUB_PLATFORMS[i];
+  return null;
+}
+function pubPlatformName(pid) { return PUB_NAMES[pid] || pid; }
+
+var pubUI = { sel: {}, form: { title: '', desc: '', tags: '', cat: '', original: true }, videoName: '', coverName: '', videoRaw: '', coverRaw: '' };
+var pubActiveDraft = null;
+
+function pubLS(key, def) {
+  try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch (e) { return def; }
+}
+function pubS(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+function pubGetDrafts() { return pubLS('pub_drafts', []); }
+function pubSaveDrafts(list) { pubS('pub_drafts', list); }
+function pubGetLogs() { return pubLS('pub_logs', []); }
+function pubSaveLogs(list) { pubS('pub_logs', list); }
+function pubGetAccounts() { return pubLS('pub_accounts', {}); }
+function pubSaveAccounts(a) { pubS('pub_accounts', a); }
+function pubGetDraft(id) {
+  var list = pubGetDrafts();
+  for (var i = 0; i < list.length; i++) if (String(list[i].id) === String(id)) return list[i];
+  return null;
+}
+function pubFmtDate(iso) {
+  if (!iso) return '';
+  var d = new Date(iso);
+  if (isNaN(d.getTime())) return String(iso);
+  return (d.getMonth() + 1) + '-' + d.getDate() + ' ' + String(d.getHours() + 100).slice(1) + ':' + String(d.getMinutes() + 100).slice(1);
+}
+function pubFmtSize(n) {
+  if (!n) return '';
+  return n > 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB';
+}
+function setPubVal(id, v) { var el = $id(id); if (el) el.value = v || ''; }
+
+// ── AI 输出解析（格式不固定，尽力而为）──
+function pubParseFirst(txt) {
+  var lines = String(txt || '').split('\n').map(function(l) {
+    return l.replace(/^[-\d.\s、①②③④⑤⑥⑦⑧⑨⑩*▶·]+/, '').replace(/【.*?】/g, '').trim();
+  }).filter(function(l) { return l.length > 3 && l.length < 80; });
+  return lines[0] || '';
+}
+function pubParseKeywords(txt) {
+  var kw = String(txt || '').split('\n').map(function(l) {
+    return l.replace(/^[-\d.\s、*▶·]+/, '').replace(/（.*?）/g, '').split(/[（:：]/)[0].trim();
+  }).filter(function(l) { return l.length >= 2 && l.length <= 12; });
+  return kw.slice(0, 8);
+}
+function pubFirstLine(txt, fb) {
+  var a = String(txt || '').split(/[\n,，]/);
+  return (a[0] && a[0].trim()) ? a[0].trim().slice(0, 30) : fb;
+}
+
+// ── 字数/标签校验 ──
+function pubUpdateVal() {
+  var msg = $id('pubValMsg'); if (!msg) return;
+  var title = (($id('pubTitle') || {}).value || '').trim();
+  var n = title.length, warns = [];
+  for (var i = 0; i < PUB_PLATFORMS.length; i++) {
+    var p = PUB_PLATFORMS[i];
+    if (pubUI.sel[p.id] && n > p.limit) warns.push(p.name + ' 标题需≤' + p.limit + '字，当前 ' + n);
+  }
+  var tagCount = (($id('pubTags') || {}).value || '').split(/[,，]/).map(function(x) { return x.trim(); }).filter(Boolean).length;
+  if (pubUI.sel.bilibili && tagCount > 10) warns.push('哔哩哔哩 标签≤10个，当前 ' + tagCount);
+  msg.innerHTML = warns.length ? '<span class="pub-val-warn">⚠️ ' + escHtml(warns.join('；')) + '</span>' : (n ? '<span class="pub-val-ok">✓ 标题 ' + n + '字</span>' : '');
+}
+
+// ── 内容导入（学习系统本地会话）──
+function pubApplyTraffic(id) {
+  var s = null;
+  if (id === '__current') { s = { problem: '', dims: window._trafficSteps || {} }; }
+  else { var arr = state.trafficSessions || []; for (var i = 0; i < arr.length; i++) if (String(arr[i].id) === String(id)) { s = arr[i]; break; } }
+  if (!s) { showToast('⚠️ 未找到该会话'); return; }
+  var d = s.dims || {};
+  pubUI.form.title = pubParseFirst(d.headline) || pubFirstLine(s.problem, '');
+  pubUI.form.desc = d.copy || d.selling || '';
+  pubUI.form.tags = pubParseKeywords(d.keywords).join(', ');
+  pubUI.form.cat = pubFirstLine(s.problem, '课程引流');
+  setPubVal('pubTitle', pubUI.form.title); setPubVal('pubDesc', pubUI.form.desc); setPubVal('pubTags', pubUI.form.tags); setPubVal('pubCat', pubUI.form.cat);
+  var pv = $id('pubPreview'); if (pv) pv.innerHTML = '<b>将投递：</b>课程引流 · ' + escHtml(pubFirstLine(s.problem, '当前会话'));
+  pubUpdateVal();
+}
+function pubApplyViral(id) {
+  var s = null;
+  if (id === '__current') { s = { topic: '', platform: window._viralPlatform || '', dims: window._viralDims || {} }; }
+  else { var arr = state.viralSessions || []; for (var i = 0; i < arr.length; i++) if (String(arr[i].id) === String(id)) { s = arr[i]; break; } }
+  if (!s) { showToast('⚠️ 未找到该会话'); return; }
+  var d = s.dims || {};
+  pubUI.form.title = pubParseFirst(d.hook) || (s.topic || '爆款视频').slice(0, 30);
+  pubUI.form.desc = d.storyboard || d.hook || '';
+  var platName = pubPlatformName(s.platform);
+  var mats = String(s.material || '').split(/[\s,，、]+/).filter(Boolean).slice(0, 4);
+  pubUI.form.tags = [platName, '爆款视频'].filter(Boolean).concat(mats).join(', ');
+  pubUI.form.cat = platName || '短视频';
+  setPubVal('pubTitle', pubUI.form.title); setPubVal('pubDesc', pubUI.form.desc); setPubVal('pubTags', pubUI.form.tags); setPubVal('pubCat', pubUI.form.cat);
+  var pv = $id('pubPreview'); if (pv) pv.innerHTML = '<b>将投递：</b>爆款视频 · ' + escHtml(pubFirstLine(s.topic, '当前会话'));
+  pubUpdateVal();
+}
+
+// ── 草稿 CRUD ──
+function pubSaveDraft() {
+  var title = (($id('pubTitle') || {}).value || '').trim();
+  if (!title) { showToast('⚠️ 请填写标题'); var te = $id('pubTitle'); if (te) te.focus(); return; }
+  var tags = (($id('pubTags') || {}).value || '').split(/[,，]/).map(function(x) { return x.trim(); }).filter(Boolean);
+  var platforms = Object.keys(pubUI.sel).filter(function(k) { return pubUI.sel[k]; });
+  var d = {
+    id: Date.now(), title: title,
+    desc: (($id('pubDesc') || {}).value || '').trim(),
+    tags: tags, cat: (($id('pubCat') || {}).value || '').trim(),
+    original: !!($id('pubOriginal') && $id('pubOriginal').checked),
+    videoName: pubUI.videoRaw, coverName: pubUI.coverRaw,
+    platforms: platforms, template: false,
+    createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
+    done: {}
+  };
+  var list = pubGetDrafts(); list.unshift(d); pubSaveDrafts(list);
+  pubUI.sel = {}; pubUI.form = { title: '', desc: '', tags: '', cat: '', original: true };
+  pubUI.videoName = ''; pubUI.coverName = ''; pubUI.videoRaw = ''; pubUI.coverRaw = '';
+  showToast('✅ 草稿已保存');
+  renderPublisherPanel();
+}
+function pubEditDraft(id) {
+  var d = pubGetDraft(id);
+  if (!d) { showToast('⚠️ 未找到草稿'); return; }
+  pubUI.form = { title: d.title || '', desc: d.desc || '', tags: (d.tags || []).join(', '), cat: d.cat || '', original: !!d.original };
+  pubUI.sel = {};
+  for (var i = 0; i < (d.platforms || []).length; i++) pubUI.sel[d.platforms[i]] = true;
+  pubUI.videoRaw = d.videoName || ''; pubUI.videoName = d.videoName || '';
+  pubUI.coverRaw = d.coverName || ''; pubUI.coverName = d.coverName || '';
+  showToast('📝 已载入草稿，可修改后保存');
+  renderPublisherPanel();
+}
+function pubCloneDraft(id) {
+  var d = pubGetDraft(id);
+  if (!d) { showToast('⚠️ 未找到草稿'); return; }
+  var c = JSON.parse(JSON.stringify(d));
+  c.id = Date.now(); c.template = false; c.done = {};
+  c.title = (d.title || '') + '（副本）';
+  c.createdAt = new Date().toISOString(); c.updatedAt = c.createdAt;
+  var list = pubGetDrafts(); list.unshift(c); pubSaveDrafts(list);
+  showToast('🔁 已克隆草稿');
+  renderPublisherPanel();
+}
+function pubDelDraft(id) {
+  if (!confirm('确认删除该草稿？')) return;
+  var list = pubGetDrafts().filter(function(x) { return String(x.id) !== String(id); });
+  pubSaveDrafts(list);
+  if (String(pubActiveDraft) === String(id)) pubActiveDraft = null;
+  showToast('🗑️ 草稿已删除');
+  renderPublisherPanel();
+}
+function pubToggleTemplate(id) {
+  var d = pubGetDraft(id);
+  if (!d) return;
+  d.template = !d.template;
+  pubSaveDrafts(pubGetDrafts().map(function(x) { return String(x.id) === String(id) ? d : x; }));
+  renderPublisherPanel();
+}
+function pubStartPublish(id) {
+  if (!pubGetDraft(id)) { showToast('⚠️ 未找到草稿'); return; }
+  pubActiveDraft = id;
+  renderPublisherPanel();
+  var wb = $id('pubWorkbench'); if (wb) wb.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── 复制 / 标记发布 ──
+function pubCopyFallback(t, done) {
+  try {
+    var ta = document.createElement('textarea');
+    ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    var ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    done(ok);
+  } catch (e) { done(false); }
+}
+function pubCopyText(txt) {
+  var t = txt || '';
+  var done = function(ok) { showToast(ok ? '✅ 已复制' : '❌ 复制失败'); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(t).then(function() { done(true); }, function() { pubCopyFallback(t, done); });
+  } else { pubCopyFallback(t, done); }
+}
+function pubActiveText(attr) {
+  var d = pubGetDraft(pubActiveDraft);
+  if (!d) return '';
+  if (attr === 'title') return d.title || '';
+  if (attr === 'desc') return d.desc || '';
+  if (attr === 'tags') return (d.tags || []).join(' ');
+  return '';
+}
+function pubMarkPublished(draftId, platformId, rowEl) {
+  var d = pubGetDraft(draftId);
+  if (!d) { showToast('⚠️ 未找到草稿'); return; }
+  var linkEl = rowEl && rowEl.querySelector('.pub-link');
+  var url = (linkEl && linkEl.value || '').trim();
+  var now = new Date();
+  var timeStr = pubFmtDate(now.toISOString());
+  if (!d.done) d.done = {};
+  d.done[platformId] = { time: timeStr, url: url, note: '' };
+  d.updatedAt = now.toISOString();
+  pubSaveDrafts(pubGetDrafts().map(function(x) { return String(x.id) === String(draftId) ? d : x; }));
+  var logs = pubGetLogs();
+  logs.unshift({ id: Date.now() + Math.floor(Math.random() * 1000), time: now.toISOString(), draftId: d.id, draftTitle: d.title, platform: platformId, platformName: pubPlatformName(platformId), url: url, note: '' });
+  pubSaveLogs(logs.slice(0, 200));
+  showToast('✅ 已标记：' + pubPlatformName(platformId) + ' 发布完成');
+  renderPublisherPanel();
+}
+function pubDelLog(id) {
+  if (!confirm('删除该条记录？')) return;
+  pubSaveLogs(pubGetLogs().filter(function(x) { return String(x.id) !== String(id); }));
+  renderPublisherPanel();
+}
+
+// ── 事件委托 ──
+function pubOnClick(e) {
+  if (!e.target || !e.target.closest) return;
+  var t = e.target.closest('[data-pub]');
+  if (!t) return;
+  var act = t.getAttribute('data-pub');
+  if (act === 'copy') { pubCopyText(pubActiveText(t.getAttribute('data-attr'))); }
+  else if (act === 'mark') { pubMarkPublished(t.getAttribute('data-draft'), t.getAttribute('data-platform'), t.parentElement); }
+  else if (act === 'savedraft') { pubSaveDraft(); }
+  else if (act === 'startpub') { pubStartPublish(t.getAttribute('data-id')); }
+  else if (act === 'edit') { pubEditDraft(t.getAttribute('data-id')); }
+  else if (act === 'clone') { pubCloneDraft(t.getAttribute('data-id')); }
+  else if (act === 'del') { pubDelDraft(t.getAttribute('data-id')); }
+  else if (act === 'template') { pubToggleTemplate(t.getAttribute('data-id')); }
+  else if (act === 'dellog') { pubDelLog(t.getAttribute('data-id')); }
+  else if (act === 'pickvideo') { var f = $id('pubVideoInput'); if (f) f.click(); }
+  else if (act === 'pickcover') { var c = $id('pubCoverInput'); if (c) c.click(); }
+}
+function pubOnChange(e) {
+  var t = e.target;
+  if (!t || !t.matches) return;
+  if (t.matches('#pubPlatGrid input[type=checkbox]')) {
+    if (t.checked) pubUI.sel[t.value] = true; else delete pubUI.sel[t.value];
+    pubUpdateVal();
+  } else if (t.matches('#pubPlatGrid .pub-acc')) {
+    var acc = pubGetAccounts();
+    acc[t.getAttribute('data-platform')] = [t.value.trim()];
+    pubSaveAccounts(acc);
+  } else if (t.id === 'pubVideoInput') {
+    pubUI.videoRaw = t.files && t.files[0] ? t.files[0].name : '';
+    pubUI.videoName = t.files && t.files[0] ? t.files[0].name + '（' + pubFmtSize(t.files[0].size) + '）' : '';
+    var vn = $id('pubVideoName'); if (vn) vn.textContent = pubUI.videoName || '未选择视频文件';
+  } else if (t.id === 'pubCoverInput') {
+    pubUI.coverRaw = t.files && t.files[0] ? t.files[0].name : '';
+    pubUI.coverName = t.files && t.files[0] ? t.files[0].name + '（' + pubFmtSize(t.files[0].size) + '）' : '';
+    var cn = $id('pubCoverName'); if (cn) cn.textContent = pubUI.coverName || '未选择封面（可选）';
+  } else if (t.id === 'pubTitle' || t.id === 'pubDesc' || t.id === 'pubTags' || t.id === 'pubCat') {
+    pubUI.form[t.id === 'pubTitle' ? 'title' : t.id === 'pubDesc' ? 'desc' : t.id === 'pubTags' ? 'tags' : 'cat'] = t.value;
+    if (t.id === 'pubTitle') pubUpdateVal();
+  } else if (t.id === 'pubOriginal') {
+    pubUI.form.original = t.checked;
+  }
+}
+
+// ── 工作台行 ──
+function pubWorkRow(d, p, done) {
+  var st = done ? '<span class="pub-status-done">✓ 已发布 ' + escHtml(done.time || '') + '</span>' : '<span class="pub-status-wait">待发布</span>';
+  var accs = pubGetAccounts();
+  var acc = (accs[p.id] || [''])[0];
+  var h = [];
+  h.push('<div class="pub-work-row">');
+  h.push('<div class="pub-work-head">' + p.icon + ' <b>' + escHtml(p.name) + '</b>' + (acc ? ' · ' + escHtml(acc) : '') + ' ' + st + '</div>');
+  h.push('<div class="pub-meta">' + escHtml(p.hint) + '</div>');
+  h.push('<div class="pub-meta">' + (d.videoName ? '🎬 视频：' + escHtml(d.videoName) : '<span class="pub-warn">⚠️ 未选视频，手动发布时记得上传</span>') + '</div>');
+  h.push('<div class="pub-actions" style="margin-top:8px">');
+  h.push('<button class="btn-imp" data-pub="copy" data-attr="title">复制标题</button>');
+  h.push('<button class="btn-imp" data-pub="copy" data-attr="desc">复制描述</button>');
+  h.push('<button class="btn-imp" data-pub="copy" data-attr="tags">复制标签</button>');
+  h.push('<a class="btn-exp" href="' + p.url + '" target="_blank" rel="noopener">🚀 打开发布页</a>');
+  h.push('</div>');
+  h.push('<div class="pub-actions" style="margin-top:6px">');
+  h.push('<input class="pub-link" value="' + escHtml(done && done.url ? done.url : '') + '" placeholder="发布链接(可选)">');
+  h.push('<button class="btn-imp" data-pub="mark" data-draft="' + d.id + '" data-platform="' + p.id + '">✓ 标记已发布</button>');
+  h.push('</div>');
+  h.push('</div>');
+  return h.join('');
+}
+
+// ── 面板渲染 ──
+function renderPublisherPanel() {
+  var area = $id('contentArea');
+  if (!area) return;
+  if (!window._pubDelegated) {
+    window._pubDelegated = true;
+    area.addEventListener('click', pubOnClick);
+    area.addEventListener('input', pubOnChange);
+  }
+  var f = pubUI.form;
+  var drafts = pubGetDrafts();
+  var logs = pubGetLogs();
+  var active = pubActiveDraft ? pubGetDraft(pubActiveDraft) : null;
+  var h = [];
+  h.push('<div class="pub-hero"><h2>📢 多平台发布 · 手动发布台</h2><p>纯静态，双击即用。内容准备 → 勾选平台 → 逐个「打开发布页」手动上传 → 「标记已发布」。无需任何服务。</p></div>');
+
+  // ① 内容准备
+  h.push('<div class="card pub-form">');
+  h.push('<h3>① 内容准备</h3>');
+  h.push('<div class="pub-src-row">');
+  h.push('<select id="pubTrafficSel"><option value="">— 课程引流会话 —</option>');
+  var ts = state.trafficSessions || [];
+  for (var i = 0; i < ts.length; i++) h.push('<option value="' + ts[i].id + '">' + escHtml((ts[i].problem || '会话').slice(0, 20)) + '</option>');
+  if (window._trafficSteps) h.push('<option value="__current">（当前未保存会话）</option>');
+  h.push('</select>');
+  h.push('<select id="pubViralSel"><option value="">— 爆款视频会话 —</option>');
+  var vs = state.viralSessions || [];
+  for (var j = 0; j < vs.length; j++) h.push('<option value="' + vs[j].id + '">' + escHtml((vs[j].topic || '会话').slice(0, 20)) + (vs[j].platform ? ' · ' + escHtml(pubPlatformName(vs[j].platform)) : '') + '</option>');
+  if (window._viralDims) h.push('<option value="__current">（当前未保存会话）</option>');
+  h.push('</select>');
+  h.push('</div>');
+  h.push('<div id="pubPreview" class="pub-meta" style="min-height:18px;margin-bottom:2px"></div>');
+  h.push('<div id="pubValMsg" style="min-height:22px;margin:6px 0 2px"></div>');
+  h.push('<label>标题 *</label><input type="text" id="pubTitle" placeholder="发布标题">');
+  h.push('<label>描述 / 文案</label><textarea id="pubDesc" placeholder="描述或文案"></textarea>');
+  h.push('<div class="pub-row"><div><label>标签</label><input type="text" id="pubTags" placeholder="逗号分隔"></div><div><label>分类</label><input type="text" id="pubCat" placeholder="如：课程引流"></div></div>');
+  h.push('<label style="display:flex;align-items:center;gap:6px;margin-top:10px"><input type="checkbox" id="pubOriginal" style="width:auto"> 原创声明</label>');
+  h.push('</div>');
+
+  // ② 发布平台
+  h.push('<div class="card">');
+  h.push('<h3>② 发布平台（勾选本单要发的）</h3>');
+  h.push('<div class="pub-grid" id="pubPlatGrid">');
+  for (var pi = 0; pi < PUB_PLATFORMS.length; pi++) {
+    var p = PUB_PLATFORMS[pi];
+    var checked = pubUI.sel[p.id] ? 'checked' : '';
+    var accs = pubGetAccounts();
+    var accVal = (accs[p.id] || [''])[0] || '';
+    h.push('<div class="pub-plat-item">');
+    h.push('<label class="pub-chk"><input type="checkbox" value="' + p.id + '" ' + checked + '> ' + p.icon + ' ' + escHtml(p.name) + '</label>');
+    h.push('<div class="pub-meta">' + escHtml(p.hint) + '</div>');
+    h.push('<div class="pub-plat-acts"><a class="btn-imp" style="font-size:12px;padding:3px 8px" href="' + p.url + '" target="_blank" rel="noopener">🚀 打开发布页</a>');
+    h.push('<input class="pub-acc" data-platform="' + p.id + '" placeholder="账号备注" value="' + escHtml(accVal) + '"></div>');
+    h.push('</div>');
+  }
+  h.push('</div>');
+  h.push('</div>');
+
+  // ③ 素材
+  h.push('<div class="card">');
+  h.push('<h3>③ 素材（本机文件，手动发布时选择）</h3>');
+  h.push('<input type="file" id="pubVideoInput" accept="video/*" style="display:none">');
+  h.push('<input type="file" id="pubCoverInput" accept="image/*" style="display:none">');
+  h.push('<div class="pub-file-row"><span class="pub-file-name" id="pubVideoName">' + escHtml(pubUI.videoName || '未选择视频文件') + '</span><button class="btn-exp" data-pub="pickvideo">📁 选视频</button></div>');
+  h.push('<div class="pub-file-row" style="margin-top:8px"><span class="pub-file-name" id="pubCoverName">' + escHtml(pubUI.coverName || '未选择封面（可选）') + '</span><button class="btn-exp" data-pub="pickcover">🖼️ 选封面</button></div>');
+  h.push('</div>');
+
+  // ④ 草稿
+  h.push('<div class="card">');
+  h.push('<h3>④ 草稿</h3>');
+  h.push('<div class="pub-actions" style="margin-top:0"><button class="btn-exp" data-pub="savedraft">💾 保存草稿</button></div>');
+  if (drafts.length) {
+    for (var di = 0; di < drafts.length; di++) {
+      var d = drafts[di];
+      var doneCount = Object.keys(d.done || {}).length;
+      var platCount = (d.platforms || []).length;
+      var platStr = (d.platforms || []).map(function(pid) { return pubPlatformName(pid); }).join('、') || '未选平台';
+      var doneBadge = doneCount ? '<span class="pub-status-done">✓ ' + doneCount + '/' + platCount + ' 已发</span>' : '<span class="pub-status-wait">待发布</span>';
+      h.push('<div class="pub-draft-item">');
+      h.push('<div><b>' + escHtml(d.title || '（无标题）') + '</b> ' + (d.template ? '<span class="tag">模板</span>' : '') + ' ' + doneBadge + '</div>');
+      h.push('<div class="pub-meta">' + escHtml(platStr) + ' · ' + pubFmtDate(d.createdAt) + '</div>');
+      h.push('<div class="pub-actions" style="margin-top:6px">');
+      h.push('<button class="btn-imp" data-pub="startpub" data-id="' + d.id + '">🚀 开始发布</button>');
+      h.push('<button class="btn-imp" data-pub="edit" data-id="' + d.id + '">编辑</button>');
+      h.push('<button class="btn-imp" data-pub="clone" data-id="' + d.id + '">克隆</button>');
+      h.push('<button class="btn-imp" data-pub="template" data-id="' + d.id + '">' + (d.template ? '取消模板' : '设为模板') + '</button>');
+      h.push('<button class="btn-imp" data-pub="del" data-id="' + d.id + '">删除</button>');
+      h.push('</div></div>');
+    }
+  } else {
+    h.push('<div class="empty-state">还没有草稿。填好上方内容 → 勾选平台 → 保存草稿。</div>');
+  }
+  h.push('</div>');
+
+  // ⑤ 发布工作台
+  if (active) {
+    h.push('<div class="card" id="pubWorkbench">');
+    h.push('<h3>⑤ 发布工作台 · ' + escHtml(active.title) + '</h3>');
+    var plats = (active.platforms || []).map(function(pid) { return pubPlatById(pid); }).filter(Boolean);
+    if (plats.length) {
+      for (var wi = 0; wi < plats.length; wi++) {
+        h.push(pubWorkRow(active, plats[wi], (active.done || {})[plats[wi].id]));
+      }
+    } else {
+      h.push('<div class="empty-state">该草稿未勾选平台。回上方勾选平台后重新保存草稿。</div>');
+    }
+    h.push('</div>');
+  }
+
+  // ⑥ 发布历史
+  h.push('<div class="card">');
+  h.push('<h3>⑥ 发布历史（' + logs.length + '）</h3>');
+  if (logs.length) {
+    for (var li = 0; li < logs.length; li++) {
+      var lg = logs[li];
+      h.push('<div class="pub-log-row">');
+      h.push(pubFmtDate(lg.time) + ' · <b>' + escHtml(lg.platformName || lg.platform) + '</b> · ' + escHtml(lg.draftTitle || ''));
+      if (lg.url) h.push(' · <a href="' + escHtml(lg.url) + '" target="_blank" rel="noopener">链接</a>');
+      h.push('<button class="btn-imp" style="float:right" data-pub="dellog" data-id="' + lg.id + '">删除</button>');
+      h.push('</div>');
+    }
+  } else {
+    h.push('<div class="empty-state">暂无发布记录。发布完成后点「标记已发布」。</div>');
+  }
+  h.push('</div>');
+
+  area.innerHTML = h.join('');
+
+  // 填充表单值
+  setPubVal('pubTitle', f.title); setPubVal('pubDesc', f.desc); setPubVal('pubTags', f.tags); setPubVal('pubCat', f.cat);
+  var org = $id('pubOriginal'); if (org) org.checked = !!f.original;
+  var tSel = $id('pubTrafficSel'); if (tSel) tSel.addEventListener('change', function() { pubApplyTraffic(this.value); });
+  var vSel = $id('pubViralSel'); if (vSel) vSel.addEventListener('change', function() { pubApplyViral(this.value); });
+  pubUpdateVal();
+}
+
+
 // ===== 记忆训练模块 =====
 // 默认数字编码 00-99 (谐音/象形)
 var MT_DEFAULT_NUMBER_CODES = [
@@ -34685,15 +35696,22 @@ function mtUpdatePB(discipline, score, total) {
 }
 
 // 记录训练历史
-function mtAddHistory(discipline, score, total, studyTime) {
+function mtAddHistory(discipline, score, total, studyTime, details) {
   if (!state.memoryTrain.history) state.memoryTrain.history = [];
   state.memoryTrain.history.push({
     discipline: discipline,
     timestamp: Date.now(),
     score: score,
     total: total,
-    studyTime: studyTime || 0
+    studyTime: studyTime || 0,
+    details: (details && details.length) ? details : null
   });
+  // keep last 500
+  // 逐题明细仅保留最近 100 条，更早记录归档（仍保留聚合成绩）
+  var _mtKeep = state.memoryTrain.history.length - 100;
+  for (var _mi = 0; _mi < _mtKeep; _mi++) {
+    if (state.memoryTrain.history[_mi]) delete state.memoryTrain.history[_mi].details;
+  }
   // keep last 500
   if (state.memoryTrain.history.length > 500) {
     state.memoryTrain.history = state.memoryTrain.history.slice(-500);
@@ -35501,7 +36519,7 @@ function mtShowResult(correct, total, details) {
 
   var pct = total > 0 ? Math.round(correct / total * 100) : 0;
   // Save
-  mtAddHistory(s.discipline, correct, total, s.studyElapsed || 0);
+  mtAddHistory(s.discipline, correct, total, s.studyElapsed || 0, details);
 
   var area = $id('contentArea');
   var html = '<div class="mt-session"><button class="mt-back" onclick="renderMemoryTrain()">← 返回主面板</button>';
@@ -35643,6 +36661,7 @@ function renderMTStats() {
   mtInitState();
   var area = $id('contentArea');
   var history = state.memoryTrain.history || [];
+  mtBindDetailEvents();
   var html = '<div class="mt-session"><button class="mt-back" onclick="renderMemoryTrain()">← 返回</button>';
   html += '<h2>📊 记忆训练统计</h2>';
 
@@ -35693,7 +36712,7 @@ function renderMTStats() {
     }
     var pct = r.total > 0 ? Math.round(r.score/r.total*100) : 0;
     var date = new Date(r.timestamp).toLocaleString('zh-CN', {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
-    html += '<div class="mt-history-row"><span>'+date+'</span><span>'+dName+'</span><span>'+r.score+'/'+r.total+' ('+pct+'%)</span><span>'+(r.studyTime||'')+'s</span></div>';
+    html += '<div class="mt-history-row" data-mt-hist="'+(history.length - 1 - i)+'"><span>'+date+'</span><span>'+dName+'</span><span>'+r.score+'/'+r.total+' ('+pct+'%)</span><span>'+(r.studyTime||'')+'s</span></div>';
 }
   html += '</div>';
 
@@ -35701,6 +36720,70 @@ function renderMTStats() {
   html += '</div>';
   area.innerHTML = html;
   updateUI();
+}
+
+var _mtDetailBound = false;
+function mtBindDetailEvents() {
+  if (_mtDetailBound) return;
+  _mtDetailBound = true;
+  document.addEventListener('click', function(e) {
+    var t = e.target;
+    if (!t || !t.closest) return;
+    var closeBtn = t.closest('[data-mt-close]');
+    if (closeBtn) { closeMTDetail(); return; }
+    var histRow = t.closest('[data-mt-hist]');
+    if (histRow) {
+      var idx = parseInt(histRow.getAttribute('data-mt-hist'), 10);
+      if (!isNaN(idx)) showMTDetail(idx);
+      return;
+    }
+    var ov = t.closest('.mt-detail-overlay');
+    if (ov && ov === t) closeMTDetail();
+  });
+}
+
+function showMTDetail(index) {
+  mtInitState();
+  var history = state.memoryTrain.history || [];
+  var rec = history[index];
+  if (!rec) return;
+  var dName = '';
+  for (var j = 0; j < MT_DISCIPLINES.length; j++) {
+    if (MT_DISCIPLINES[j].id === rec.discipline) { dName = MT_DISCIPLINES[j].icon+' '+MT_DISCIPLINES[j].name; break; }
+  }
+  var pct = rec.total > 0 ? Math.round(rec.score/rec.total*100) : 0;
+  var date = new Date(rec.timestamp).toLocaleString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+  var overlay = document.createElement('div');
+  overlay.className = 'mt-detail-overlay';
+  overlay.id = 'mtDetailOverlay';
+  var html = '<div class="mt-detail-modal">';
+  html += '<div class="mt-detail-head"><h2>'+dName+'</h2>';
+  html += '<div class="mt-detail-meta">'+date+' · '+rec.score+'/'+rec.total+' ('+pct+'%) · '+(rec.studyTime||0)+'s</div></div>';
+  html += '<div class="mt-detail-scroll">';
+  if (!rec.details || rec.details.length === 0) {
+    html += '<div class="mt-detail-archived">📦 明细已归档（仅保留最近 100 条训练的逐题明细，成绩仍有效）</div>';
+  } else {
+    for (var i = 0; i < rec.details.length; i++) {
+      var d = rec.details[i];
+      var icon = d.ok ? '✅' : '❌';
+      var extra = d.event ? ' ('+escHtml(String(d.event))+')' : '';
+      html += '<div class="mt-detail-row '+(d.ok?'mt-detail-ok':'mt-detail-wrong')+'">';
+      html += '<span>'+icon+' #'+(d.idx+1)+'</span>';
+      html += '<span class="mt-detail-correct">正确: '+escHtml(String(d.correct))+extra+'</span>';
+      html += '<span class="mt-detail-user'+(d.ok?' mt-detail-user-ok':'')+'">你的答案: '+escHtml(String(d.user))+'</span>';
+      html += '</div>';
+    }
+  }
+  html += '</div>';
+  html += '<div class="mt-detail-actions"><button class="mt-btn" data-mt-close>关闭</button></div>';
+  html += '</div>';
+  overlay.innerHTML = html;
+  document.body.appendChild(overlay);
+}
+
+function closeMTDetail() {
+  var el = document.getElementById('mtDetailOverlay');
+  if (el) el.remove();
 }
 
 function mtClearHistory() {
