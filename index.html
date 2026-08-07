@@ -925,6 +925,112 @@ body{background:#fff!important;color:#000!important}
 @page{margin:1.5cm}
 a[href]:after{content:none!important}
 }
+/* ===== 网络安全板块 ===== */
+.netsec-wrap{max-width:960px;margin:0 auto;padding:16px}
+.netsec-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.netsec-tab{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;border-radius:20px;padding:8px 18px;cursor:pointer;font-size:14px;transition:all .2s}
+.netsec-tab:hover{background:#e6f7f2;border-color:#0a6e5c;color:#0a6e5c}
+.netsec-tab.active{background:#0a6e5c;color:#fff;font-weight:700;border-color:#0a6e5c}
+.ns-card{background:#fff;border:1px solid #d1d9e6;border-radius:10px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.ns-card-hdr{font-weight:700;font-size:15px;margin-bottom:10px;color:#0f172a;border-bottom:1px solid #eee;padding-bottom:8px}
+.ns-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
+.ns-input{border:1px solid #cbd5e1;border-radius:6px;padding:8px 10px;font-size:14px;background:#f8fafc}
+.ns-input:focus{outline:none;border-color:#0a6e5c;background:#fff}
+textarea.ns-input{resize:vertical;width:100%;font-family:inherit}
+.ns-btn{background:#f1f5f9;border:1px solid #cbd5e1;color:#0f172a;border-radius:6px;padding:8px 16px;cursor:pointer;font-size:14px;transition:all .2s}
+.ns-btn:hover{background:#e2e8f0}
+.ns-btn-primary{background:#0a6e5c;border-color:#0a6e5c;color:#fff}
+.ns-btn-primary:hover{background:#0b7c66}
+.ns-btn:disabled{opacity:.5;cursor:not-allowed}
+.ns-result{margin-top:8px}
+.ns-kv{display:flex;justify-content:space-between;padding:6px 2px;border-bottom:1px dashed #e2e8f0;font-size:14px}
+.ns-bar{height:10px;background:#e2e8f0;border-radius:5px;overflow:hidden;margin:8px 0}
+.ns-bar-fill{height:100%;border-radius:5px;transition:width .4s}
+.ns-score{font-size:22px;font-weight:800;color:#0f172a;margin-bottom:4px}
+.ns-tips{margin-top:10px}
+.ns-tip{font-size:13px;color:#334155;padding:4px 0}
+.ns-tips>strong{display:block;margin-bottom:6px;color:#0f172a}
+.ns-hint{color:#64748b;font-size:12px}
+.ns-check{display:inline-flex;align-items:center;gap:4px;font-size:14px;cursor:pointer}
+.ns-chip-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.ns-chip{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;border-radius:4px;padding:2px 8px;font-size:12px;font-family:monospace}
+.ns-chip-more{background:#f1f5f9;color:#64748b;border-color:#e2e8f0}
+.ns-guide{font-size:12px;color:#64748b;margin-top:8px;line-height:1.6}
+.ns-owasp-grid,.ns-attack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.ns-owasp-item,.ns-attack-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;cursor:pointer}
+.ns-owasp-name,.ns-attack-name{font-weight:700;color:#0a6e5c;margin-bottom:6px}
+.ns-owasp-body{font-size:12.5px;color:#334155;line-height:1.6}
+.ns-owasp-body div{margin-bottom:4px}
+.ns-scan-box{background:#0b1220;border-radius:8px;padding:10px;font-family:monospace;font-size:12.5px;max-height:380px;overflow-y:auto;color:#7ee2b8}
+.ns-scan-line{color:#7ee2b8;padding:2px 0}
+.ns-scan-progress{color:#fbbf24}
+.ns-scan-done{color:#34d399;font-weight:700}
+.ns-badge{display:inline-block;border-radius:4px;padding:0 6px;font-size:11px;font-weight:700}
+.ns-badge-high{background:#7f1d1d;color:#fecaca}
+.ns-badge-mid{background:#78350f;color:#fde68a}
+.ns-badge-low{background:#064e3b;color:#a7f3d0}
+.ns-traffic-head,.ns-traffic-row{display:grid;grid-template-columns:44px 60px 1.1fr 1.2fr 70px 1.6fr;gap:6px;font-size:12.5px;align-items:center}
+.ns-traffic-head{font-weight:700;background:#f1f5f9;border-radius:6px 6px 0 0;padding:8px}
+.ns-traffic-row{padding:6px 8px;border-bottom:1px solid #f1f5f9;cursor:default}
+.ns-traffic-row:hover{background:#f8fafc}
+.ns-proto{font-weight:700;color:#0a6e5c}
+.ns-check-item{display:flex;align-items:center;gap:8px;padding:8px 6px;border-bottom:1px solid #f1f5f9;cursor:pointer;font-size:14px}
+.ns-check-item:hover{background:#f8fafc}
+.ns-check-score{font-size:18px;font-weight:700;margin-bottom:8px}
+.ns-quiz-stats{margin-bottom:10px;font-size:14px;color:#334155}
+.ns-quiz-stats b{color:#0a6e5c}
+.ns-quiz-hint,.ns-ai-hint{color:#64748b;font-size:13px;line-height:1.6}
+.ns-quiz-progress{font-size:13px;color:#334155;margin-bottom:8px}
+.ns-quiz-q{font-size:16px;font-weight:700;margin-bottom:10px;color:#0f172a}
+.ns-opt{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:9px 12px;margin-bottom:6px;cursor:pointer;font-size:14px;transition:all .15s}
+.ns-opt:hover{background:#e6f7f2;border-color:#0a6e5c}
+.ns-opt-correct{background:#d1fae5;border-color:#10b981;color:#065f46}
+.ns-opt-wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b}
+.ns-opt-dim{opacity:.5}
+.ns-quiz-explain{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:10px;margin-top:8px;font-size:13.5px;color:#166534}
+.ns-quiz-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.ns-quiz-result{text-align:center;padding:20px}
+.ns-quiz-grade{font-size:24px;font-weight:800;color:#0a6e5c}
+.ns-quiz-score{font-size:18px;margin-top:6px;color:#334155}
+.ns-ai-loading{color:#0a6e5c;font-size:14px}
+.ns-ai-answer{line-height:1.8;font-size:14.5px;color:#0f172a}
+.ns-ai-error{color:#b91c1c;font-size:14px}
+.ns-lab-banner{background:#fef3c7;border:1px solid #fde68a;color:#92400e;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:13px}
+.ns-lab-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.ns-lab-tab{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:14px;transition:all .2s}
+.ns-lab-tab:hover{background:#e6f7f2;border-color:#0a6e5c;color:#0a6e5c}
+.ns-lab-tab.active{background:#0a6e5c;color:#fff;font-weight:700;border-color:#0a6e5c}
+.ns-sqli-sql{background:#0b1220;color:#7ee2b8;font-family:monospace;font-size:12.5px;border-radius:6px;padding:8px 10px;margin:6px 0;word-break:break-all}
+.ns-sqli-bypass{background:#fee2e2;border:1px solid #fecaca;color:#991b1b;border-radius:6px;padding:8px 10px;margin:6px 0;font-size:13.5px;font-weight:700}
+.ns-sqli-block{background:#f1f5f9;border:1px solid #e2e8f0;color:#334155;border-radius:6px;padding:8px 10px;margin:6px 0;font-size:13.5px}
+.ns-xss-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ns-xss-pane{border:1px solid #e2e8f0;border-radius:8px;padding:10px;background:#f8fafc}
+.ns-xss-title{font-weight:700;font-size:13px;margin-bottom:6px}
+.ns-xss-frame{width:100%;height:130px;border:1px dashed #94a3b8;border-radius:6px;background:#fff}
+.ns-xss-esc{background:#0b1220;color:#f8fafc;font-family:monospace;font-size:12.5px;border-radius:6px;padding:8px 10px;min-height:60px;word-break:break-all;white-space:pre-wrap}
+.ns-xss-code{margin-top:8px}
+.ns-xss-code code{display:block;background:#f1f5f9;color:#0f172a;font-family:monospace;font-size:12.5px;border-radius:6px;padding:8px 10px;word-break:break-all;white-space:pre-wrap}
+.ns-dict-line{color:#fbbf24;padding:2px 0;font-family:monospace;font-size:12.5px}
+.ns-phish-progress{font-size:13px;color:#334155;margin-bottom:8px}
+.ns-phish-mail{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:8px}
+.ns-phish-field{font-size:13.5px;color:#0f172a;padding:3px 0;word-break:break-all}
+.ns-phish-body{border-top:1px dashed #e2e8f0;margin-top:8px;padding-top:8px;font-size:14px;color:#334155;line-height:1.7;white-space:pre-wrap}
+.ns-phish-right{background:#d1fae5;border:1px solid #a7f3d0;color:#065f46;border-radius:6px;padding:8px 10px;margin:6px 0;font-weight:700}
+.ns-phish-wrong{background:#fee2e2;border:1px solid #fecaca;color:#991b1b;border-radius:6px;padding:8px 10px;margin:6px 0;font-weight:700}
+.ns-btn-danger{background:#dc2626;border-color:#dc2626;color:#fff}
+.ns-btn-danger:hover{background:#b91c1c}
+.ns-chip-bad{background:#fee2e2;color:#b91c1c;border-color:#fecaca}
+.ns-log-summary{font-size:14px;color:#0f172a;margin-bottom:8px}
+.ns-log-line{display:flex;gap:6px;align-items:flex-start;font-family:monospace;font-size:12px;padding:3px 6px;border-radius:4px;margin:2px 0;word-break:break-all}
+.ns-log-ok{color:#065f46;background:#f0fdf4}
+.ns-log-bad{color:#7f1d1d;background:#fef2f2;border:1px solid #fecaca}
+.ns-log-no{min-width:22px;text-align:right;color:#94a3b8;flex-shrink:0}
+.ns-log-tag{min-width:64px;font-size:11px;font-weight:700;flex-shrink:0}
+@media(max-width:640px){.ns-xss-grid{grid-template-columns:1fr}}
+
+/* ===== 网络安全板块 End ===== */
+
+
 /* ===== PDF 板块 ===== */
 .pdf-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
 .pdf-tab{padding:6px 16px;border-radius:16px;border:1.5px solid var(--border);font-size:13px;cursor:pointer;background:var(--bg-hover);color:var(--text-secondary);font-weight:600}
@@ -11672,6 +11778,7 @@ else if (mode==='publisher') renderPublisherPanel();
 				else if (mode==='dce') renderDcePanel();
 else if (mode==='speed') renderSpeedPanel();
 	else if (mode==='pdf') renderPdfPanel();
+	else if (mode==='netsec') renderNetsecPanel();
 else renderStats();
 updateUI();
 if (!window._panelSwipeInit) { initPanelSwipe(); window._panelSwipeInit = true; }
@@ -19482,7 +19589,8 @@ var PANEL_DEFS = [
 			{mode:"munger", label:"🧠 芒格十事"},
 			{mode:"dce", label:"🧠 决策工程"},
 {mode:"speed", label:"🚀 极速学习"},
-			{mode:"pdf", label:"📄 PDF"}
+			{mode:"pdf", label:"📄 PDF"},
+			{mode:'netsec', label:'🛡️ 网络安全'}
 ];
 
 var PANEL_GROUPS = [
@@ -19496,7 +19604,8 @@ var PANEL_GROUPS = [
 {name:'🧠 脑力与记忆', modes:['games','memorytrain','videopalace','iching']},
 {name:'🌿 身心与思维', modes:['yang','chuang','ask','he','ability','cso','fly']},
 {name:'🤖 工程与拆解', modes:['cyber','acu','decomp']},
-{name:'📄 PDF', modes:['pdf']}
+{name:'📄 PDF', modes:['pdf']},
+{name:'🛡️ 网络安全', modes:['netsec']}
 ];
 // panelOrder migration: move from loadState to after PANEL_DEFS to avoid undefined crash
 if (!state.panelOrder && state.hiddenPanels) {
@@ -19548,7 +19657,8 @@ speed:"border-color:#00b894;color:#00a080",
 wealth:"border-color:#b8860b;color:#8a6a10",
   games:"border-color:#7c4dff;color:#6a3dd6",
   pdf:"border-color:#c0392b;color:#a02020",
-  publisher:"border-color:#3a7abd;color:#2a5a8a"
+  publisher:"border-color:#3a7abd;color:#2a5a8a",
+  netsec:"border-color:#0a6e5c;color:#064e3b"
 };
 function getBadgeHTML(mode) {
 if (mode==='wrongset') return ' <span class="badge" id="wrongSetBadge">0</span>';
@@ -36979,6 +37089,7 @@ function getAdjacentPanel(dir) {
 function doSwipeAnim(dir) {
   if (_swipeData.locked) return;
   if (STEP_MODES[currentMode]) { swipeStep(dir); return; }
+  if (currentMode === 'sequential') { swipeQuestion(dir); return; }
   _swipeData.locked = true;
   var area = $id('contentArea');
   var container = $id('app');
@@ -37006,6 +37117,31 @@ function doSwipeAnim(dir) {
     }, 280);
   }, 240);
 }
+function swipeQuestion(dir) {
+  _swipeData.locked = true;
+  var area = $id('contentArea');
+  var container = $id('app');
+  var outX = dir > 0 ? '-100%' : '100%';
+  var inX  = dir > 0 ? '100%'  : '-100%';
+  if (container) container.classList.add('swipe-lock');
+  area.classList.add('swipe-animating');
+  area.style.transform = 'translateX(' + outX + ')';
+  setTimeout(function() {
+    try {
+      if (dir > 0) { prevQuestion(); } else { nextQuestion(); }
+    } catch(ex) { showToast('✖ 切换失败'); }
+    area.classList.add('swipe-animating');
+    area.style.transform = 'translateX(' + inX + ')';
+    void area.offsetHeight;
+    area.style.transform = 'translateX(0)';
+    setTimeout(function() {
+      area.classList.remove('swipe-animating');
+      area.style.transform = '';
+      if (container) container.classList.remove('swipe-lock');
+      _swipeData.locked = false;
+    }, 280);
+  }, 240);
+}
 function initPanelSwipe() {
   var area = $id('contentArea');
   if (!area || area._swipeAttached) return;
@@ -37013,7 +37149,7 @@ function initPanelSwipe() {
   area._swipeAttached = true;
 }
 function _swipeHandler(e) {
-  var EXCLUDED = ['sequential','random','wrongset','rhythm','memorytrain'];
+  var EXCLUDED = ['random','wrongset','rhythm','memorytrain'];
   if (EXCLUDED.indexOf(currentMode) !== -1) return;
   if (!isTouchDevice()) return;
   if (e.touches.length > 1) return;   // 多指手势交给手势系统处理
@@ -38234,6 +38370,1132 @@ function renderMoneyHistory() {
   }
   list.innerHTML = h.join('');
 }
+
+/* ===== 网络安全板块（netsec）===== */
+/* ---------------- 数据区 ---------------- */
+var NETSEC_TABS = [
+  {id:'pwd', label:'🔐 密码实验室'},
+  {id:'cipher', label:'🔑 加密编码'},
+  {id:'knowledge', label:'🛡️ 攻防知识'},
+  {id:'quiz', label:'📝 安全题库'},
+  {id:'ai', label:'🤖 AI 助手'},
+  {id:'lab', label:'🛠️ 攻防实验室'}
+];
+
+var NETSEC_PORTS = [
+  {port:21, service:'FTP', risk:'高', desc:'文件传输协议，默认明文传输，易被窃听'},
+  {port:22, service:'SSH', risk:'低', desc:'安全远程登录，加密通道，日常运维主力'},
+  {port:23, service:'Telnet', risk:'高', desc:'明文远程登录，口令与命令全暴露，应禁用'},
+  {port:25, service:'SMTP', risk:'中', desc:'邮件发送，常被垃圾邮件滥用'},
+  {port:53, service:'DNS', risk:'低', desc:'域名解析，需防缓存投毒'},
+  {port:80, service:'HTTP', risk:'中', desc:'明文网页，应升级为 HTTPS'},
+  {port:110, service:'POP3', risk:'中', desc:'明文收信协议，建议用加密替代'},
+  {port:135, service:'RPC', risk:'高', desc:'Windows 远程过程调用，高危攻击面'},
+  {port:139, service:'NetBIOS', risk:'高', desc:'SMB 文件共享相关，永恒之蓝攻击面'},
+  {port:443, service:'HTTPS', risk:'低', desc:'加密网页传输，应默认启用'},
+  {port:445, service:'SMB', risk:'高', desc:'Windows 文件共享，WannaCry 主要入侵通道'},
+  {port:1433, service:'MSSQL', risk:'高', desc:'SQL Server，常被弱口令爆破'},
+  {port:3306, service:'MySQL', risk:'高', desc:'MySQL 数据库，应限制来源并强口令'},
+  {port:3389, service:'RDP', risk:'高', desc:'Windows 远程桌面，暴力破解重灾区'},
+  {port:5432, service:'PostgreSQL', risk:'高', desc:'开源数据库，注意口令策略'},
+  {port:6379, service:'Redis', risk:'高', desc:'内存缓存，未授权访问风险高'},
+  {port:8080, service:'HTTP-alt', risk:'中', desc:'常见代理/管理后台端口'},
+  {port:27017, service:'MongoDB', risk:'高', desc:'文档数据库，曾大量未授权暴露'}
+];
+
+var NETSEC_WEAK_PWDS = ['123456','password','12345678','qwerty','abc123','123456789','111111','1234567','iloveyou','admin','welcome','monkey','1234567890','123123','654321','000000','1q2w3e4r','qwertyuiop','asdfghjkl','zxcvbnm','password1','admin123','letmein','football','baseball','666666','888888','qwerty123','a123456','abc123456','123qwe','admin888','p@ssw0rd','test123','root'];
+
+var NETSEC_OWASP = [
+  {id:'A01', name:'失效的访问控制', icon:'🚪', attack:'未校验用户权限，可越权访问他人数据或功能', defense:'服务端强制校验、最小权限、默认拒绝、对象级授权', example:'改 URL 里的订单 id 直接查看他人订单'},
+  {id:'A02', name:'加密机制失效', icon:'🔐', attack:'敏感数据明文传输/存储，或弱加密易被破解', defense:'传输走 TLS、存储用强加密、密钥分开管理', example:'数据库明文存密码，一旦泄露全部暴露'},
+  {id:'A03', name:'注入', icon:'💉', attack:'把恶意数据拼进 SQL/命令/表达式被执行', defense:'参数化查询、白名单校验、最小权限数据库账户', example:"输入框填 ' OR 1=1-- 绕过登录"},
+  {id:'A04', name:'不安全的设计', icon:'📐', attack:'设计层面缺少威胁建模，存在架构级缺陷', defense:'威胁建模、安全需求前置、安全设计评审', example:'找回密码流程存在账户枚举'},
+  {id:'A05', name:'安全配置错误', icon:'⚙️', attack:'默认口令、多余功能、错误堆栈暴露等', defense:'最小化配置、移除调试信息、定期基线核查', example:'后台仍是 admin/admin 默认口令'},
+  {id:'A06', name:'易受攻击和过时的组件', icon:'📦', attack:'使用含已知 CVE 的老旧组件/依赖', defense:'依赖清单管理、及时更新、CVE 监控', example:'Struts2 老漏洞批量打挂大量站点'},
+  {id:'A07', name:'身份识别和身份验证失败', icon:'🪪', attack:'弱口令、无 MFA、会话固定/失效漏洞', defense:'强密码策略、多因素认证、会话过期', example:'账号密码被撞库成功登录'},
+  {id:'A08', name:'软件和数据完整性故障', icon:'🧩', attack:'信任不可验证的更新/反序列化数据，被植入恶意', defense:'签名校验、安全反序列化、CI 安全扫描', example:'下载被篡改的软件更新被植入后门'},
+  {id:'A09', name:'日志记录和监控失效', icon:'📜', attack:'关键操作无日志，入侵发生后无法发现与溯源', defense:'关键事件全记录、集中监控、告警响应', example:'被入侵数周无人察觉'},
+  {id:'A10', name:'服务端请求伪造(SSRF)', icon:'🌐', attack:'服务端被诱导请求内网资源，探测内网', defense:'URL 白名单、禁止回环/内网地址、出站过滤', example:'提交图片 URL 后服务端替你访问内网管理接口'}
+];
+
+var NETSEC_ATTACKS = [
+  {id:'sqli', name:'SQL 注入', icon:'💉', principle:'把用户输入直接拼进 SQL 语句，使数据库执行攻击者构造的恶意查询。', demo:"搜索框输入 ' OR '1'='1，可能绕过认证或拖库。", defense:'参数化查询 / 预编译语句，输入校验，数据库账户最小权限。'},
+  {id:'xss', name:'跨站脚本 XSS', icon:'🧨', principle:'向页面注入恶意脚本，在受害者浏览器里执行，可窃取 Cookie、劫持会话。', demo:"留言板输入 <script>alert(document.cookie)<\/script>，其他访客打开即触发。", defense:'输出编码转义、CSP 白名单、Cookie 加 HttpOnly。'},
+  {id:'csrf', name:'跨站请求伪造 CSRF', icon:'🎭', principle:'诱导已登录用户对目标站点发起非本意的请求（改密码、转账）。', demo:'钓鱼页嵌入隐藏表单，自动向银行站点 POST 转账请求。', defense:'CSRF Token 校验、SameSite Cookie、二次确认。'},
+  {id:'phish', name:'钓鱼攻击', icon:'🎣', principle:'伪造官方邮件/网站诱导用户输入账号密码或下载恶意附件。', demo:'冒充银行邮件，链接指向高仿登录页，骗取网银口令。', defense:'核对域名与链接、启用 MFA、不点陌生附件、安全意识培训。'},
+  {id:'social', name:'社会工程学', icon:'🤝', principle:'利用人的信任与恐惧而非技术漏洞，诱骗泄露信息或执行操作。', demo:'冒充客服以“系统升级”为由索要短信验证码。', defense:'不轻信来电身份、敏感操作二次核验、权限最小化。'},
+  {id:'brute', name:'暴力破解', icon:'🔓', principle:'对口令/密钥逐个尝试，撞库或字典攻击后成功登录。', demo:'用常见密码字典对 SSH 或 RDP 反复尝试登录。', defense:'强密码、账户锁定、验证码、登录限速、禁用公网直连。'},
+  {id:'ddos', name:'分布式拒绝服务 DDoS', icon:'🌊', principle:'用海量流量或请求耗尽目标资源，使其无法正常服务。', demo:'僵尸网络对电商站点发起每秒数百 Gbps 的洪泛攻击。', defense:'CDN/高防清洗、限流、弹性扩容、源站隐藏。'},
+  {id:'mitm', name:'中间人攻击', icon:'🕵️', principle:'攻击者插入通信双方之间，窃听或篡改传输的数据。', demo:'公共 WiFi 上伪造网关，窃取未加密的 HTTP 登录信息。', defense:'强制 HTTPS 与证书校验、避免公共 WiFi 登录、加密通信。'}
+];
+
+var NETSEC_QUIZ = [
+  {"q":"HTTP 与 HTTPS 的核心安全差异是？","options":["HTTPS 对传输内容加密","HTTPS 速度更快","HTTPS 更省流量","HTTPS 不需要服务器"],"a":0,"explain":"HTTPS = HTTP + TLS，对传输内容加密，防止窃听与篡改。"},
+  {"q":"下列哪种做法能有效缓解 SQL 注入？","options":["在前端隐藏数据库字段","使用参数化查询","对输入做长度限制","给数据库加索引"],"a":1,"explain":"参数化查询把数据与 SQL 结构分离，是防注入的根本手段。"},
+  {"q":"XSS 攻击的主要危害是？","options":["拖垮服务器","篡改 DNS 记录","在浏览器中执行恶意脚本","阻塞网络"],"a":2,"explain":"XSS 在受害者浏览器执行脚本，可窃取 Cookie、劫持会话、钓鱼。"},
+  {"q":"多因素认证（MFA）增加的最重要一道防线是？","options":["密码复杂度","服务器数量","网络带宽","第二类独立凭证"],"a":3,"explain":"MFA 要求“知道+拥有+生物”中至少两类凭证，密码泄露也不易失守。"},
+  {"q":"钓鱼攻击最典型的识别特征往往是？","options":["域名/链接与官方不一致","邮件排版精美","发件人名字很正式","内容很短"],"a":0,"explain":"钓鱼链接常仿冒域名，与真实官方地址细微不同，是重点识别线索。"},
+  {"q":"下列哪项属于弱密码特征？","options":["12 位混合字符","连续数字如 123456","含大小写和符号","随机生成且唯一"],"a":1,"explain":"连续数字、常见单词、生日等都是易被字典爆破的弱密码。"},
+  {"q":"传输敏感数据时应优先使用？","options":["HTTP","FTP","HTTPS","Telnet"],"a":2,"explain":"HTTPS 提供加密与完整性保护，明文协议不得传输敏感信息。"},
+  {"q":"CSRF 攻击利用的是用户端的什么状态？","options":["IP 地址","本地缓存","浏览器历史","已登录的会话 Cookie"],"a":3,"explain":"浏览器会自动携带 Cookie，CSRF 借已登录会话伪造请求。"},
+  {"q":"WannaCry 勒索病毒主要利用的漏洞通道是？","options":["SMB 445 端口","HTTP 80 端口","DNS 53 端口","HTTPS 443 端口"],"a":0,"explain":"永恒之蓝漏洞利用 SMB 协议传播，445 端口应默认关闭外网。"},
+  {"q":"社会工程学攻击主要利用的是？","options":["操作系统漏洞","人的信任与疏忽","硬件缺陷","加密算法的弱点"],"a":1,"explain":"社工攻击技术含量低但成功率极高，针对的是人而非系统。"},
+  {"q":"密码强度评估的核心指标是？","options":["长度","是否含符号","熵（Entropy）","是否大写开头"],"a":2,"explain":"熵衡量猜测难度，熵 = 长度 × log₂(字符集大小)，比单纯“看起来复杂”更科学。"},
+  {"q":"使用公共 WiFi 登录网银时最安全的方式是？","options":["直接用 HTTP","多次刷新页面","关闭杀毒软件","确保使用 HTTPS 并校验证书"],"a":3,"explain":"公共 WiFi 易有中间人攻击，必须走 HTTPS 并警惕证书异常。"},
+  {"q":"“最危险的不是黑客，而是把密码写在便利贴上的人”说明？","options":["人的安全意识同样关键","物理安全不重要","黑客技术很弱","网络完全安全"],"a":0,"explain":"安全是人的行为与技术手段的结合，安全意识与规范同样重要。"},
+  {"q":"DDoS 攻击的典型后果是？","options":["数据被窃取","服务不可用","账户被删除","电脑蓝屏"],"a":1,"explain":"DDoS 用海量流量耗尽资源，直接后果是正常用户无法访问服务。"},
+  {"q":"日志审计的意义主要在于？","options":["节省磁盘","美化界面","发现入侵并溯源","加快速度"],"a":2,"explain":"完整日志能在被入侵后定位攻击来源、还原攻击链、指导修复。"},
+  {"q":"当收到“中奖需先交税”的短信时，最合理的做法是？","options":["按要求转账","点开链接领奖","转发给朋友","直接删除并警惕诈骗"],"a":3,"explain":"这是典型诈骗套路，切勿转账或点击不明链接。"},
+  {"q":"下列哪个字符集让“同样长度的密码”熵更高？","options":["大小写+数字+符号","小写字母","大写字母","仅数字"],"a":0,"explain":"字符集越大 N 越大，log₂(N) 越大，同一长度下熵越高越难猜。"},
+  {"q":"软件更新（补丁）的核心安全作用是？","options":["提升运行速度","修复已公开漏洞","更换界面主题","增加广告"],"a":1,"explain":"补丁修复已知 CVE，是抵御“批量自动化攻击”的关键防线。"},
+  {"q":"浏览网页时浏览器地址栏出现“不安全”警告，最稳妥的处理是？","options":["继续访问并输入密码","刷新重试","停止输入敏感信息并关闭页面","放大页面"],"a":2,"explain":"警告说明连接存在风险，切勿在此输入密码等敏感信息。"},
+  {"q":"备份数据在安全中的主要价值是？","options":["节约硬盘","减少用电","提升网速","抵御勒索病毒与数据丢失"],"a":3,"explain":"离线备份能让勒索病毒加密后仍可恢复，是最后一道保险。"},
+  {"q":"密码管理器（如 Bitwarden）的主要作用是？","options":["为每个网站生成并保存独立强密码","自动登录所有网站","屏蔽广告","加速浏览器"],"a":0,"explain":"密码管理器让你无需记忆，就能为每个账户使用独立强密码。"},
+  {"q":"“最小权限原则”的意思是？","options":["密码越短越好","账户只授予完成工作所需的最小权限","权限越大越好","禁止使用管理员"],"a":1,"explain":"最小权限把攻击面压缩到最小，即使账户被攻破影响也有限。"},
+  {"q":"遭遇暴力破解时，服务器可采用的防御措施不包括？","options":["账户锁定","登录限速","开放 445 端口","验证码"],"a":2,"explain":"开放多余端口反而扩大攻击面，属于错误做法。"},
+  {"q":"防病毒软件的核心作用对象是？","options":["网络硬件","键盘","显示器","恶意软件"],"a":3,"explain":"防病毒扫描、查杀恶意软件，是终端防护第一道关。"},
+  {"q":"下列哪种密码复用方式最危险？","options":["同一密码用于多个关键账户","不同网站用不同密码","密码定期更换","用密码管理器"],"a":0,"explain":"一处泄露全站沦陷，撞库攻击正是利用密码复用。"},
+  {"q":"关于“零日漏洞”（0day），下列说法正确的是？","options":["是假的","没有对应补丁且尚未公开","只会影响旧系统","无法利用"],"a":1,"explain":"零日指未公开、无补丁的漏洞，防护依赖纵深防御与监测。"},
+  {"q":"HTTPS 证书的作用包括？","options":["加密传输","验证服务器身份","两者都是","都没有"],"a":2,"explain":"证书既加密通信，也证明服务器身份，防中间人。"},
+  {"q":"网络钓鱼的“鱼叉式钓鱼”是指？","options":["广撒网群发","攻击鱼类","使用鱼叉武器","针对特定目标精心定制"],"a":3,"explain":"鱼叉式针对高管等特定目标定制内容，更具迷惑性。"},
+  {"q":"下面哪项能有效防止账号被撞库？","options":["每个平台使用唯一密码","所有平台用同一密码","密码尽量短","关闭两步验证"],"a":0,"explain":"平台间密码唯一，一处泄露不会殃及其余。"},
+  {"q":"“社工库”数据泄露事件的主要风险在于？","options":["数据无价值","撞库与精准诈骗","无法被利用","黑客看不懂"],"a":1,"explain":"泄露数据被用来撞库登录和精准社工诈骗，危害持久。"},
+  {"q":"网站启用 CSP（内容安全策略）主要防御哪类攻击？","options":["SQL 注入","DDoS","XSS","钓鱼"],"a":2,"explain":"CSP 限制脚本来源，直接压制 XSS 的执行。"},
+  {"q":"Windows 系统为何强烈建议开启防火墙？","options":["加速网络","美化系统","增加存储","控制进出的网络流量"],"a":3,"explain":"防火墙按规则放行/阻断流量，是网络边界基础防线。"},
+  {"q":"关于个人隐私保护，下列做法最安全的是？","options":["社交账号开启隐私设置并注意公开信息","手机号到处填","把验证码告诉客服","连接陌生 WiFi"],"a":0,"explain":"控制信息暴露面，能显著降低社工与诈骗风险。"},
+  {"q":"哈希（如 SHA-256）在密码存储中的作用是？","options":["让密码更短","单向加密，库泄露也难以还原明文","让密码可见","加快登录"],"a":1,"explain":"哈希不可逆，配合加盐存储，即使库泄露也难还原。"},
+  {"q":"对比 MD5 与 SHA-256，更推荐用于密码存储的是？","options":["MD5","两者一样","SHA-256（更抗碰撞）","都禁用"],"a":2,"explain":"MD5 已可碰撞且 GPU 破解极快，SHA-256 强度更高，实际还应加盐并慢哈希。"},
+  {"q":"收到“老板”用新号码要求紧急转账，最稳妥的做法是？","options":["立即转账","转发给同事","相信号码","电话或当面核实身份"],"a":3,"explain":"这是典型冒充领导诈骗，必须经可靠渠道二次核实。"},
+  {"q":"公钥加密（如 HTTPS 握手）中，公钥的用途是？","options":["加密给该公钥主人的数据","解密","破解密码","存储密码"],"a":0,"explain":"公钥用于加密，对应私钥才能解密，实现安全传输。"},
+  {"q":"业务系统出现异常登录（异地、凌晨），最合适的响应是？","options":["忽略","立即改密并检查异常登录","重装系统","关机"],"a":1,"explain":"发现异常先切断风险（改密/下线会话），再排查泄露来源。"},
+  {"q":"“纵深防御”的思想核心是？","options":["一道防线足够","只靠防火墙","多层独立防线叠加，单层失效不影响整体","只靠杀毒"],"a":2,"explain":"纵深防御 = 网络+主机+应用+数据多层防线，单点失效不沦陷。"},
+  {"q":"下列哪项属于安全配置错误？","options":["启用 MFA","定期备份","关闭多余端口","后台使用默认口令 admin/admin"],"a":3,"explain":"默认口令是典型配置错误，攻击者脚本会第一时间尝试。"}
+];
+
+var NETSEC_CHECKLIST = [
+  {id:'c1', name:'操作系统与软件保持自动更新', weight:10, tip:'补丁修复已知漏洞，是最基础的防线。'},
+  {id:'c2', name:'所有关键账户使用独立强密码', weight:10, tip:'平台间不重复，长度 12 位以上混合字符。'},
+  {id:'c3', name:'启用双重认证（MFA）', weight:10, tip:'邮件/网银/社交等关键账户务必开启。'},
+  {id:'c4', name:'电脑开启系统防火墙', weight:8, tip:'控制进出流量，关闭不需要的端口。'},
+  {id:'c5', name:'安装并定期更新杀毒软件', weight:8, tip:'至少每周全盘扫描一次。'},
+  {id:'c6', name:'重要数据定期离线备份', weight:9, tip:'备份独立存放，防勒索病毒加密。'},
+  {id:'c7', name:'浏览器地址栏留意 HTTPS 与小锁图标', weight:8, tip:'不明链接不输密码，警惕证书异常。'},
+  {id:'c8', name:'不下载来源不明的软件与附件', weight:8, tip:'破解版、外挂是恶意软件重灾区。'},
+  {id:'c9', name:'社交媒体注意隐私设置', weight:7, tip:'减少公开个人信息，防社工利用。'},
+  {id:'c10', name:'不在公共 WiFi 处理敏感操作', weight:7, tip:'必要时用流量或 VPN，并确保 HTTPS。'},
+  {id:'c11', name:'闲置设备与路由器修改默认口令', weight:6, tip:'摄像头、路由器默认口令最易被攻破。'},
+  {id:'c12', name:'遇到“转账/验证码”类要求先核实', weight:9, tip:'任何来电/短信索要验证码都可能是诈骗。'}
+];
+
+var NETSEC_TRAFFIC = [
+  {no:1, time:'0.000', src:'192.168.1.10', dst:'93.184.216.34', proto:'TCP', info:'[SYN] Seq=0 → 发起连接', detail:'TCP 三次握手第 1 步：客户端发送 SYN 报文段请求建立连接。'},
+  {no:2, time:'0.043', src:'93.184.216.34', dst:'192.168.1.10', proto:'TCP', info:'[SYN, ACK] Seq=0 Ack=1 → 同意连接', detail:'第 2 步：服务器回复 SYN+ACK，确认收到并同步自己的序列号。'},
+  {no:3, time:'0.044', src:'192.168.1.10', dst:'93.184.216.34', proto:'TCP', info:'[ACK] Ack=1 → 连接建立', detail:'第 3 步：客户端回 ACK，三次握手完成，进入数据传输。'},
+  {no:4, time:'0.046', src:'192.168.1.10', dst:'93.184.216.34', proto:'DNS', info:'查询 example.com 的 A 记录', detail:'DNS 解析：把域名翻译成 IP 地址，请求先发给配置的 DNS 服务器。'},
+  {no:5, time:'0.059', src:'93.184.216.34', dst:'192.168.1.10', proto:'DNS', info:'应答 A 93.184.216.34', detail:'DNS 应答返回目标 IP，随后浏览器用该 IP 发起 HTTP 请求。'},
+  {no:6, time:'0.061', src:'192.168.1.10', dst:'93.184.216.34', proto:'HTTP', info:'GET / HTTP/1.1  Host: example.com', detail:'HTTP 请求行 + 头部。明文协议，因此敏感数据应走 HTTPS。'},
+  {no:7, time:'0.120', src:'93.184.216.34', dst:'192.168.1.10', proto:'HTTP', info:'HTTP/1.1 200 OK  Content-Type: text/html', detail:'服务器返回 200 与网页内容，浏览器开始渲染。'},
+  {no:8, time:'0.121', src:'192.168.1.10', dst:'93.184.216.34', proto:'TCP', info:'[FIN, ACK] → 关闭连接', detail:'FIN 报文开始四次挥手，优雅关闭 TCP 连接。'}
+];
+
+var NETSEC_HASH_TYPES = [
+  {name:'MD5', len:32, desc:'16 字节摘要，已可碰撞且 GPU 破解极快，不适合存密码，仅用于校验'},
+  {name:'SHA-1', len:40, desc:'20 字节摘要，已证实碰撞攻击，逐步淘汰'},
+  {name:'SHA-256', len:64, desc:'32 字节摘要，抗碰撞强，常用于校验与数字签名'},
+  {name:'SHA-512', len:128, desc:'64 字节摘要，更长更慢，强度更高'},
+  {name:'bcrypt', prefix:'$2', desc:'自适应慢哈希，内置随机盐，专为密码存储设计'}
+];
+var NETSEC_CRACK_RATES = [
+  {id:'cpu', label:'普通 CPU（约 10 亿次/秒）', rate:1e9},
+  {id:'gpu', label:'单块 GPU（约 1000 亿次/秒）', rate:1e11},
+  {id:'cluster', label:'GPU 集群（约 10 万亿次/秒）', rate:1e13}
+];
+var NETSEC_XSS_HINT = [
+  '<script>alert(\'XSS!\')<\/script>',
+  '<img src=x onerror=alert(1)>',
+  '"><svg onload=alert(document.cookie)>'
+];
+var NETSEC_PHISH = [
+  {sender:'security@alipay-verify.com', subject:'您的支付宝账户存在异常，请立即验证', body:'尊敬的用户：检测到您的账户在异地设备登录，存在安全风险。请于 24 小时内点击下方链接验证身份，逾期将冻结账户及资金。', url:'http://alipay-verify.com/login', legit:false, clues:['发件域 alipay-verify.com 与官方 alipay.com 不一致（多出 -verify）','链接是 http 明文，非 https','以“冻结账户”制造紧迫感','索要登录与资金验证信息']},
+  {sender:'noreply@qq.com', subject:'您已成功开通 QQ 邮箱「邮件自动分类」', body:'您好，您申请的邮件自动分类功能已开通，可在 设置-收件规则 中管理。若非本人操作，请忽略本邮件或修改密码。', url:'https://mail.qq.com', legit:true, clues:['发件域 qq.com 为官方域名','链接指向官方 mail.qq.com 且为 https','无索要凭据、无转账、无附件','措辞平实、无紧急施压']},
+  {sender:'finance@mycompany-payroll.net', subject:'本月工资条已生成，请尽快核对（紧急）', body:'各位同事：因财务系统升级，本月工资数据需重新核对。请立即下载附件中的工资条并填写收款银行卡号及密码以便确认。', url:'https://mycompany-payroll.net/dl', legit:false, clues:['发件域 mycompany-payroll.net 仿冒公司域名','正规财务从不会索要银行卡密码','附件是木马常见载体','以“紧急”施压降低警惕']},
+  {sender:'noreply@github.com', subject:'[GitHub] 检测到新设备登录', body:'您好，检测到您使用新设备或新位置登录了 GitHub 账户。若不是您本人操作，请立即重置密码并检查账户安全设置。', url:'https://github.com/settings/security', legit:true, clues:['noreply@github.com 为 GitHub 官方发件域','引导去官网设置页而非直接登录','无附件、无索取信息、无催促','提示性语言温和']},
+  {sender:'support@amaz0n.com', subject:'订单异常，退款需确认收款信息', body:'您的订单因“账户信息不符”被系统拦截，退款资金滞留。请点击链接重新填写收款银行卡信息，超时将自动作废。', url:'http://amaz0n.com/refund', legit:false, clues:['域名 amaz0n.com 用数字 0 冒充字母 o（amazon）','链接为 http 明文','索要收款银行卡信息','“超时作废”制造紧迫感']},
+  {sender:'notification@youdao.com', subject:'您的云笔记同步记录（今日）', body:'今日 09:12 已完成 12 条笔记同步。如非本人操作，请及时登录修改密码，谨防账号被盗。', url:'https://note.youdao.com', legit:true, clues:['youdao.com 为有道官方域名','仅告知同步记录，不索要任何信息','https 官方链接','无附件无催促']},
+  {sender:'court@serve-notice.xyz', subject:'您有一份法院传票待领取', body:'尊敬的用户：您因涉嫌违法已被立案，法院传票请于 48 小时内登录领取，逾期将申请强制执行并冻结名下财产。', url:'https://serve-notice.xyz/portal', legit:false, clues:['冒充公检法，是典型诈骗话术','serve-notice.xyz 非官方机构域名','以“冻结财产”制造恐惧','要求点击外部链接填写个人信息']},
+  {sender:'service@sf-express.com', subject:'您的快递已签收', body:'您的顺丰快递（单号 SF1234567890）已于今日 10:30 由本人签收，感谢使用顺丰速运，祝您生活愉快。', url:'https://www.sf-express.com', legit:true, clues:['sf-express.com 为顺丰官方域名','仅告知物流信息，不索要任何信息','https 官方链接','无附件、无链接到登录页']},
+  {sender:'apple.security@icl0ud.com', subject:'您的 iCloud 密码即将过期', body:'尊敬的用户：您的 Apple ID 密码将在 24 小时后过期，请立即点击下方按钮验证更新，逾期账号将被删除且无法恢复。', url:'https://icl0ud.com/verify', legit:false, clues:['域名 icl0ud.com 用数字 0 冒充字母 o（icloud）','苹果不会发送“密码过期”链接','索要 Apple ID 密码','链接并非 apple.com 官方域名']},
+  {sender:'no-reply@bilibili.com', subject:'您关注的 UP 主更新了', body:'您关注的「安全知识课堂」发布了新视频《三分钟看懂钓鱼攻击》。点击观看：https://www.bilibili.com/video/BV123456', url:'https://www.bilibili.com/video/BV123456', legit:true, clues:['bilibili.com 为官方域名','纯内容通知，不索要信息','链接为 https 官方地址','无附件、无紧急话术']}
+];
+var NETSEC_LOG_SAMPLE = [
+  '192.168.1.5 - - [07/Aug/2026:09:01:22 +0800] "GET / HTTP/1.1" 200 5120 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"',
+  '192.168.1.5 - - [07/Aug/2026:09:02:41 +0800] "GET /css/style.css HTTP/1.1" 200 8432 "-" "Mozilla/5.0"',
+  '45.227.255.7 - - [07/Aug/2026:09:04:10 +0800] "POST /login HTTP/1.1" 401 312 "-" "python-requests/2.31"',
+  '45.227.255.7 - - [07/Aug/2026:09:04:11 +0800] "POST /login HTTP/1.1" 401 312 "-" "python-requests/2.31"',
+  '45.227.255.7 - - [07/Aug/2026:09:04:12 +0800] "POST /login HTTP/1.1" 401 312 "-" "python-requests/2.31"',
+  '45.227.255.7 - - [07/Aug/2026:09:04:14 +0800] "POST /login HTTP/1.1" 200 4180 "-" "python-requests/2.31"',
+  '203.0.113.9 - - [07/Aug/2026:09:05:33 +0800] "GET /products?id=1\' OR \'1\'=\'1-- HTTP/1.1" 200 912 "-" "sqlmap/1.7"',
+  '203.0.113.9 - - [07/Aug/2026:09:05:35 +0800] "GET /products?id=1 AND SLEEP(5) HTTP/1.1" 200 910 "-" "sqlmap/1.7"',
+  '198.51.100.3 - - [07/Aug/2026:09:06:02 +0800] "GET /../../../../etc/passwd HTTP/1.1" 404 204 "-" "Mozilla/5.0"',
+  '198.51.100.3 - - [07/Aug/2026:09:06:03 +0800] "GET /admin HTTP/1.1" 302 221 "-" "Nmap Scripting Engine"',
+  '192.168.1.5 - - [07/Aug/2026:09:07:18 +0800] "GET /img/logo.png HTTP/1.1" 200 4210 "-" "Mozilla/5.0"'
+].join('\n');
+var _nsDict = null;  // 字典攻击进行中状态
+var _nsPhish = null; // 钓鱼训练轮状态
+
+/* ---------------- 工具 ---------------- */
+var _nsScanning = false; // 模拟端口扫描进行中标记
+var _nsQuiz = null;      // 当前测验轮状态
+function netsecEsc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/* ---------------- 密码强度工具 ---------------- */
+function netsecCharsetSize(pwd) {
+  var hasLower = /[a-z]/.test(pwd), hasUpper = /[A-Z]/.test(pwd);
+  var hasDigit = /[0-9]/.test(pwd), hasSym = /[^a-zA-Z0-9]/.test(pwd);
+  var n = 0;
+  if (hasLower) n += 26;
+  if (hasUpper) n += 26;
+  if (hasDigit) n += 10;
+  if (hasSym) n += 32;
+  return n || 0;
+}
+function netsecCrackTime(entropy) {
+  // 按 GPU 离线破解约 1e11 次/秒估算（SHA-256 场景更慢，此处为下限）
+  var g = Math.pow(2, entropy);
+  var sec = g / 1e11;
+  if (sec < 1) return '瞬间（秒级）';
+  if (sec < 60) return '约 ' + Math.round(sec) + ' 秒';
+  if (sec < 3600) return '约 ' + Math.round(sec/60) + ' 分钟';
+  if (sec < 86400) return '约 ' + Math.round(sec/3600) + ' 小时';
+  if (sec < 31536000) return '约 ' + Math.round(sec/86400) + ' 天';
+  if (sec < 3153600000000000) return '约 ' + Math.round(sec/31536000) + ' 年';
+  return '远超宇宙寿命（熵极大）';
+}
+function netsecCheckPwd() {
+  var input = $id('nsPwdInput');
+  if (!input) return;
+  var pwd = input.value;
+  var box = $id('nsPwdResult');
+  if (!pwd) { showToast('请输入要检测的密码'); return; }
+  var n = netsecCharsetSize(pwd);
+  var entropy = pwd.length * (n ? Math.log2(n) : 0);
+  var level, color, pct;
+  if (entropy < 28) { level = '极弱'; color = '#c0392b'; pct = 15; }
+  else if (entropy < 36) { level = '弱'; color = '#e67e22'; pct = 35; }
+  else if (entropy < 60) { level = '中等'; color = '#f1c40f'; pct = 60; }
+  else if (entropy < 128) { level = '强'; color = '#27ae60'; pct = 85; }
+  else { level = '极强'; color = '#0a6e5c'; pct = 100; }
+  var weak = NETSEC_WEAK_PWDS.indexOf(pwd.toLowerCase()) !== -1;
+  var hasLow = /[a-z]/.test(pwd), hasUp = /[A-Z]/.test(pwd), hasDig = /[0-9]/.test(pwd), hasSym = /[^a-zA-Z0-9]/.test(pwd);
+  var tips = [];
+  if (weak) tips.push('⚠️ 命中常见弱密码库，攻击者字典一秒尝试。');
+  if (pwd.length < 12) tips.push('长度不足 12 位，每加 1 位熵显著提升。');
+  if (!hasUp) tips.push('建议加入大写字母。');
+  if (!hasDig) tips.push('建议加入数字。');
+  if (!hasSym) tips.push('建议加入符号（如 @#$%）。');
+  if (/^(\d+)$/.test(pwd)) tips.push('纯数字极易被爆破，应混合字符类型。');
+  if (/(.)\1{3,}/.test(pwd)) tips.push('检测到连续重复字符，模式易被识别。');
+  if (/^(abc|qwe|123)/i.test(pwd)) tips.push('以常见序列开头，字典命中率高。');
+  if (tips.length === 0) tips.push('✅ 未发现明显薄弱点，继续保持并确保不同平台不重复。');
+  var h = [];
+  h.push('<div class="ns-score">' + Math.round(entropy) + ' bit <span style="color:' + color + '">' + level + '</span></div>');
+  h.push('<div class="ns-bar"><div class="ns-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>');
+  h.push('<div class="ns-kv"><span>字符集大小</span><span>' + n + ' 种</span></div>');
+  h.push('<div class="ns-kv"><span>按 1e11 次/秒估算破解耗时</span><span>' + netsecCrackTime(entropy) + '</span></div>');
+  h.push('<div class="ns-kv"><span>密码长度</span><span>' + pwd.length + ' 位</span></div>');
+  h.push('<div class="ns-tips"><strong>改进建议</strong>');
+  tips.forEach(function(t){ h.push('<div class="ns-tip">' + t + '</div>'); });
+  h.push('</div>');
+  box.innerHTML = h.join('');
+}
+function netsecGenPwd() {
+  var len = parseInt($id('nsGenLen') ? $id('nsGenLen').value : 16, 10) || 16;
+  if (len < 6) len = 6; if (len > 64) len = 64;
+  var useUp = $id('nsGenUp') ? $id('nsGenUp').checked : true;
+  var useDig = $id('nsGenDig') ? $id('nsGenDig').checked : true;
+  var useSym = $id('nsGenSym') ? $id('nsGenSym').checked : true;
+  var lower = 'abcdefghijklmnopqrstuvwxyz';
+  var up = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var dig = '0123456789';
+  var sym = '!@#$%^&*()-_=+[]{};:,.<>?';
+  var pool = lower;
+  if (useUp) pool += up;
+  if (useDig) pool += dig;
+  if (useSym) pool += sym;
+  var arr = new Uint32Array(len);
+  if (typeof window !== 'undefined' && window.crypto && crypto.getRandomValues) crypto.getRandomValues(arr);
+  else for (var r = 0; r < len; r++) arr[r] = Math.floor(Math.random() * 4294967296);
+  var out = '';
+  for (var i = 0; i < len; i++) out += pool.charAt(arr[i] % pool.length);
+  var outBox = $id('nsGenOut');
+  if (outBox) { outBox.value = out; outBox.dataset.val = out; }
+}
+function netsecCopyPwd() {
+  var box = $id('nsGenOut');
+  if (!box || !box.value) { showToast('请先生成密码'); return; }
+  box.select();
+  try { document.execCommand('copy'); showToast('已复制到剪贴板'); }
+  catch (e) { showToast('复制失败，请手动复制'); }
+}
+
+/* ---------------- 加密编码工作台 ---------------- */
+function netsecUtf8ToBytes(s) {
+  var out = [];
+  for (var i = 0; i < s.length; i++) {
+    var c = s.charCodeAt(i);
+    if (c < 128) out.push(c);
+    else if (c < 2048) out.push(192 | (c >> 6), 128 | (c & 63));
+    else if (c < 55296 || c >= 57344) out.push(224 | (c >> 12), 128 | ((c >> 6) & 63), 128 | (c & 63));
+    else { i++; var c2 = s.charCodeAt(i); var v = 65536 + ((c - 55296) << 10) + (c2 - 56320); out.push(240 | (v >> 18), 128 | ((v >> 12) & 63), 128 | ((v >> 6) & 63), 128 | (v & 63)); }
+  }
+  return out;
+}
+function netsecBytesToUtf8(bytes) {
+  var out = [], i = 0;
+  while (i < bytes.length) {
+    var b = bytes[i];
+    if (b < 128) { out.push(b); i++; }
+    else if (b < 224) { out.push(((b & 31) << 6) | (bytes[i+1] & 63)); i += 2; }
+    else if (b < 240) { out.push(((b & 15) << 12) | ((bytes[i+1] & 63) << 6) | (bytes[i+2] & 63)); i += 3; }
+    else { var u = ((b & 7) << 18) | ((bytes[i+1] & 63) << 12) | ((bytes[i+2] & 63) << 6) | (bytes[i+3] & 63); out.push(u); i += 4; }
+  }
+  var res = '';
+  for (var k = 0; k < out.length; k++) res += String.fromCodePoint(out[k]);
+  return res;
+}
+function netsecB64Encode(s) {
+  var bytes = netsecUtf8ToBytes(s), bin = '';
+  for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+function netsecB64Decode(s) {
+  var bin = atob(s), bytes = [];
+  for (var i = 0; i < bin.length; i++) bytes.push(bin.charCodeAt(i));
+  return netsecBytesToUtf8(bytes);
+}
+function netsecHexEncode(s) {
+  var bytes = netsecUtf8ToBytes(s), out = [];
+  for (var i = 0; i < bytes.length; i++) out.push(('0' + bytes[i].toString(16)).slice(-2));
+  return out.join('');
+}
+function netsecHexDecode(hex) {
+  hex = hex.replace(/\s+/g, '');
+  if (hex.length % 2) throw new Error('十六进制长度必须为偶数');
+  var bytes = [];
+  for (var i = 0; i < hex.length; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16));
+  return netsecBytesToUtf8(bytes);
+}
+function netsecEncode() {
+  var txt = $id('nsEncIn') ? $id('nsEncIn').value : '';
+  var mode = $id('nsEncMode') ? $id('nsEncMode').value : 'b64';
+  var out = $id('nsEncOut');
+  if (!out) return;
+  if (!txt) { showToast('请输入文本'); return; }
+  try {
+    if (mode === 'b64') out.value = netsecB64Encode(txt);
+    else if (mode === 'hex') out.value = netsecHexEncode(txt);
+    else if (mode === 'url') out.value = encodeURIComponent(txt);
+  } catch (e) { out.value = '错误：' + e.message; }
+}
+function netsecDecode() {
+  var txt = $id('nsEncOut') ? $id('nsEncOut').value : '';
+  var mode = $id('nsEncMode') ? $id('nsEncMode').value : 'b64';
+  var out = $id('nsEncIn');
+  if (!out) return;
+  if (!txt) { showToast('请先输入编码内容'); return; }
+  try {
+    if (mode === 'b64') out.value = netsecB64Decode(txt);
+    else if (mode === 'hex') out.value = netsecHexDecode(txt);
+    else if (mode === 'url') out.value = decodeURIComponent(txt);
+  } catch (e) { out.value = '错误：解码失败（内容可能不是有效 ' + mode.toUpperCase() + '）'; }
+}
+function netsecHash() {
+  var txt = $id('nsHashIn') ? $id('nsHashIn').value : '';
+  var out = $id('nsHashOut');
+  if (!out) return;
+  if (!txt) { showToast('请输入要哈希的文本'); return; }
+  out.value = sha256Hex(txt);
+}
+function netsecCaesarShift(s, shift) {
+  var out = '';
+  for (var i = 0; i < s.length; i++) {
+    var c = s.charCodeAt(i);
+    if (c >= 65 && c <= 90) out += String.fromCharCode(((c - 65 + shift) % 26 + 26) % 26 + 65);
+    else if (c >= 97 && c <= 122) out += String.fromCharCode(((c - 97 + shift) % 26 + 26) % 26 + 97);
+    else out += s.charAt(i);
+  }
+  return out;
+}
+function netsecCaesar() {
+  var txt = $id('nsCaesarIn') ? $id('nsCaesarIn').value : '';
+  var shift = parseInt($id('nsCaesarShift') ? $id('nsCaesarShift').value : '3', 10) || 0;
+  var out = $id('nsCaesarOut');
+  if (!out) return;
+  if (!txt) { showToast('请输入明文/密文'); return; }
+  var h = [];
+  h.push('<div class="ns-kv"><span>位移 +' + shift + '（加密方向）</span><span style="color:#0a6e5c">' + netsecEsc(netsecCaesarShift(txt, shift)) + '</span></div>');
+  h.push('<div class="ns-kv"><span>位移 -' + shift + '（解密方向）</span><span style="color:#0a6e5c">' + netsecEsc(netsecCaesarShift(txt, -shift)) + '</span></div>');
+  h.push('<div class="ns-tips"><strong>暴力破解 · 全部 25 种位移</strong>');
+  for (var k = 1; k < 26; k++) {
+    h.push('<div class="ns-tip">位移 ' + k + '：' + netsecEsc(netsecCaesarShift(txt, k)) + '</div>');
+  }
+  h.push('</div>');
+  out.innerHTML = h.join('');
+}
+function netsecVigenere() {
+  var txt = $id('nsVigIn') ? $id('nsVigIn').value : '';
+  var key = $id('nsVigKey') ? $id('nsVigKey').value : '';
+  var mode = $id('nsVigMode') ? $id('nsVigMode').value : 'enc';
+  var out = $id('nsVigOut');
+  if (!out) return;
+  if (!txt || !key) { showToast('请输入文本和密钥'); return; }
+  key = key.toLowerCase().replace(/[^a-z]/g, '');
+  if (!key) { showToast('密钥需包含英文字母'); return; }
+  var ki = 0, res = '';
+  for (var i = 0; i < txt.length; i++) {
+    var c = txt.charCodeAt(i), shift = key.charCodeAt(ki % key.length) - 97;
+    if (c >= 65 && c <= 90) { var d = mode === 'enc' ? (c - 65 + shift) % 26 : (c - 65 - shift + 26) % 26; res += String.fromCharCode(d + 65); ki++; }
+    else if (c >= 97 && c <= 122) { var e = mode === 'enc' ? (c - 97 + shift) % 26 : (c - 97 - shift + 26) % 26; res += String.fromCharCode(e + 97); ki++; }
+    else res += txt.charAt(i);
+  }
+  out.value = res;
+}
+
+/* ---------------- 攻防知识与演示 ---------------- */
+function netsecPortScan() {
+  var target = $id('nsScanTarget') ? $id('nsScanTarget').value.trim() : '';
+  if (!target) { showToast('请输入扫描目标（如 192.168.1.1）'); return; }
+  if (_nsScanning) { showToast('扫描进行中，请稍候'); return; }
+  _nsScanning = true;
+  var box = $id('nsScanBox');
+  if (!box) return;
+  box.innerHTML = '<div class="ns-scan-line ns-scan-progress">▶ 正在对 ' + netsecEsc(target) + ' 进行端口扫描...</div>';
+  var revealed = 0;
+  NETSEC_PORTS.forEach(function(p, idx) {
+    setTimeout(function() {
+      var ok = box.innerHTML.indexOf('ns-scan-done') === -1;
+      if (!ok) return;
+      var badge = p.risk === '高' ? '<span class="ns-badge ns-badge-high">开放·高危</span>' : p.risk === '中' ? '<span class="ns-badge ns-badge-mid">开放</span>' : '<span class="ns-badge ns-badge-low">开放·低危</span>';
+      box.innerHTML += '<div class="ns-scan-line">[端口 ' + p.port + '] ' + p.service + ' — ' + p.desc + ' ' + badge + '</div>';
+      revealed++;
+      if (revealed >= NETSEC_PORTS.length) {
+        box.innerHTML += '<div class="ns-scan-line ns-scan-done">✅ 扫描完成（演示模拟，未产生真实网络流量）。共发现 ' + NETSEC_PORTS.length + ' 个常见端口。</div>';
+        _nsScanning = false;
+      }
+    }, idx * 120 + 300);
+  });
+}
+function netsecChecklistToggle(id) {
+  var cb = $id(id);
+  if (!cb) return;
+  cb.checked = !cb.checked;
+  netsecChecklistScore();
+}
+function netsecChecklistScore() {
+  var totalW = 0, doneW = 0;
+  NETSEC_CHECKLIST.forEach(function(c) {
+    var cb = $id(c.id);
+    totalW += c.weight;
+    if (cb && cb.checked) doneW += c.weight;
+  });
+  var pct = totalW ? Math.round(doneW / totalW * 100) : 0;
+  var grade = pct >= 90 ? '优秀 🛡️' : pct >= 70 ? '良好 👍' : pct >= 50 ? '一般，需加强' : '风险较高 ⚠️';
+  var el = $id('nsCheckScore');
+  if (el) el.innerHTML = '<span style="color:#0a6e5c;font-weight:700">' + pct + ' 分</span> · ' + grade;
+}
+
+/* ---------------- 安全题库 ---------------- */
+function netsecQuizStart() {
+  var n = 10;
+  var indices = [];
+  for (var i = 0; i < NETSEC_QUIZ.length; i++) indices.push(i);
+  for (var j = indices.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var tmp = indices[j]; indices[j] = indices[k]; indices[k] = tmp; }
+  _nsQuiz = { round: indices.slice(0, n), pos: 0, correct: 0, answered: [] };
+  netsecQuizRender();
+}
+function netsecQuizRender() {
+  var box = $id('nsQuizBox');
+  if (!box) return;
+  var q = _nsQuiz;
+  var idx = q.round[q.pos];
+  var item = NETSEC_QUIZ[idx];
+  var h = [];
+  h.push('<div class="ns-quiz-progress">第 ' + (q.pos + 1) + ' / ' + q.round.length + ' 题 · 已答对 ' + q.correct + ' 题</div>');
+  h.push('<div class="ns-quiz-q">' + item.q + '</div>');
+  item.options.forEach(function(op, oi) {
+    var stateCls = q.answered[q.pos] !== undefined ? (oi === item.a ? ' ns-opt-correct' : (oi === q.answered[q.pos] ? ' ns-opt-wrong' : ' ns-opt-dim')) : '';
+    h.push('<div class="ns-opt' + stateCls + '" data-ns="answer" data-id="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + op + '</div>');
+  });
+  if (q.answered[q.pos] !== undefined) {
+    h.push('<div class="ns-quiz-explain">' + (q.answered[q.pos] === item.a ? '✅ 回答正确。' : '❌ 正确答案是 ' + String.fromCharCode(65 + item.a) + '。') + item.explain + '</div>');
+    h.push('<div class="ns-quiz-actions"><button class="ns-btn ns-btn-primary" data-ns="next">' + (q.pos < q.round.length - 1 ? '下一题 →' : '查看成绩 🏁') + '</button></div>');
+  }
+  box.innerHTML = h.join('');
+}
+function netsecQuizAnswer(oi) {
+  var q = _nsQuiz;
+  if (!q || q.answered[q.pos] !== undefined) return;
+  q.answered[q.pos] = oi;
+  var item = NETSEC_QUIZ[q.round[q.pos]];
+  if (oi === item.a) q.correct++;
+  netsecQuizRender();
+}
+function netsecQuizNext() {
+  var q = _nsQuiz;
+  if (!q) return;
+  if (q.pos < q.round.length - 1) { q.pos++; netsecQuizRender(); }
+  else netsecQuizFinish();
+}
+function netsecQuizFinish() {
+  var q = _nsQuiz;
+  var box = $id('nsQuizBox');
+  if (!box) return;
+  if (!state.netsecQuiz) state.netsecQuiz = { total: 0, correct: 0, wrongBank: [] };
+  state.netsecQuiz.total += q.round.length;
+  state.netsecQuiz.correct += q.correct;
+  q.round.forEach(function(idx, pos) {
+    if (q.answered[pos] !== NETSEC_QUIZ[idx].a) {
+      var exists = false;
+      state.netsecQuiz.wrongBank.forEach(function(w){ if (w === idx) exists = true; });
+      if (!exists) state.netsecQuiz.wrongBank.push(idx);
+    }
+  });
+  saveState();
+  var pct = Math.round(q.correct / q.round.length * 100);
+  var grade = pct >= 90 ? '🏆 安全大师' : pct >= 70 ? '👍 表现良好' : pct >= 50 ? '📖 继续加油' : '⚠️ 建议复习知识点';
+  var h = [];
+  h.push('<div class="ns-quiz-result">');
+  h.push('<div class="ns-quiz-grade">' + grade + '</div>');
+  h.push('<div class="ns-quiz-score">' + q.correct + ' / ' + q.round.length + '（' + pct + '%）</div>');
+  h.push('<div class="ns-quiz-actions"><button class="ns-btn ns-btn-primary" data-ns="quiz-start">🔁 再来一轮</button>');
+  if (state.netsecQuiz.wrongBank.length) h.push('<button class="ns-btn" data-ns="quiz-review">📖 回顾错题（' + state.netsecQuiz.wrongBank.length + '）</button>');
+  h.push('</div></div>');
+  box.innerHTML = h.join('');
+}
+function netsecQuizReview() {
+  var box = $id('nsQuizBox');
+  if (!box) return;
+  var h = ['<div class="ns-tips"><strong>📖 历史错题回顾</strong>'];
+  (state.netsecQuiz && state.netsecQuiz.wrongBank || []).forEach(function(idx) {
+    var it = NETSEC_QUIZ[idx];
+    h.push('<div class="ns-tip"><b>' + it.q + '</b><br>✅ ' + it.options[it.a] + '<br>💡 ' + it.explain + '</div>');
+  });
+  h.push('</div>');
+  h.push('<div class="ns-quiz-actions"><button class="ns-btn ns-btn-primary" data-ns="quiz-start">🔁 开始新测验</button></div>');
+  box.innerHTML = h.join('');
+}
+
+/* ---------------- AI 助手 ---------------- */
+function netsecAiAsk() {
+  var input = $id('nsAiIn');
+  var out = $id('nsAiOut');
+  if (!input || !out) return;
+  var q = input.value.trim();
+  if (!q) { showToast('请输入要咨询的网络安全问题'); return; }
+  var btn = $id('nsAiBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '🤖 思考中...'; }
+  out.innerHTML = '<div class="ns-ai-loading">⏳ 正在分析，请稍候...</div>';
+  callAI({
+    systemPrompt: '你是一位专业的网络安全讲师，擅长把复杂的攻防原理讲得通俗易懂。回答要结构清晰、语言精炼，涉及攻击类内容时务必同时给出对应的防御措施。',
+    prompt: q,
+    temperature: 0.5,
+    maxTokens: 2048,
+    timeout: 120000
+  }).then(function(text) {
+    out.innerHTML = '<div class="ns-ai-answer">' + netsecEsc(text).replace(/\n/g, '<br>') + '</div>';
+    if (btn) { btn.disabled = false; btn.textContent = '💬 提问'; }
+  }).catch(function(err) {
+    out.innerHTML = '<div class="ns-ai-error">⚠️ ' + (err && err.message ? err.message : '请求失败') + '</div>';
+    if (btn) { btn.disabled = false; btn.textContent = '💬 提问'; }
+  });
+}
+
+/* ---------------- 渲染函数 ---------------- */
+function renderNetsecPanel() {
+  var area = $id('contentArea');
+  if (!state.netsecTab) state.netsecTab = 'pwd';
+  var tab = state.netsecTab;
+  var h = [];
+  h.push('<div class="netsec-wrap">');
+  h.push('<div class="netsec-tabs">');
+  NETSEC_TABS.forEach(function(t) {
+    h.push('<div class="netsec-tab' + (tab === t.id ? ' active' : '') + '" data-ns="tab" data-id="' + t.id + '">' + t.label + '</div>');
+  });
+  h.push('</div>');
+  h.push('<div class="netsec-body">');
+  h.push(renderNetsecTabContent(tab));
+  h.push('</div>');
+  h.push('</div>');
+  area.innerHTML = h.join('');
+  updateUI();
+}
+function netsecSetTab(id) {
+  state.netsecTab = id;
+  saveState();
+  renderNetsecPanel();
+}
+function renderNetsecTabContent(tab) {
+  if (tab === 'pwd') return renderNetsecPwd();
+  if (tab === 'cipher') return renderNetsecCipher();
+  if (tab === 'knowledge') return renderNetsecKnowledge();
+  if (tab === 'quiz') return renderNetsecQuiz();
+  if (tab === 'ai') return renderNetsecAi();
+  if (tab === 'lab') return renderNetsecLab();
+  return '';
+}
+function renderNetsecPwd() {
+  var h = [];
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🔍 密码强度检测</div>');
+  h.push('<div class="ns-row"><input id="nsPwdInput" class="ns-input" type="password" placeholder="输入要检测的密码..." style="flex:1"><button class="ns-btn ns-btn-primary" data-ns="pwdcheck">检测强度</button></div>');
+  h.push('<div id="nsPwdResult" class="ns-result"></div></div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🎲 密码生成器</div>');
+  h.push('<div class="ns-row"><label class="ns-check"><input id="nsGenUp" type="checkbox" checked> 大写</label>');
+  h.push('<label class="ns-check"><input id="nsGenDig" type="checkbox" checked> 数字</label>');
+  h.push('<label class="ns-check"><input id="nsGenSym" type="checkbox" checked> 符号</label>');
+  h.push('<span class="ns-hint">长度</span><input id="nsGenLen" type="number" value="16" min="6" max="64" class="ns-input" style="width:70px">');
+  h.push('<button class="ns-btn ns-btn-primary" data-ns="gen">生成</button>');
+  h.push('<button class="ns-btn" data-ns="copy">复制</button></div>');
+  h.push('<div class="ns-row"><input id="nsGenOut" class="ns-input" readonly placeholder="生成的强密码会显示在这里" style="flex:1;font-family:monospace"></div>');
+  h.push('</div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">📋 弱密码黑名单（演示）</div>');
+  h.push('<div class="ns-chip-wrap">');
+  NETSEC_WEAK_PWDS.slice(0, 20).forEach(function(p) {
+    h.push('<span class="ns-chip">' + p + '</span>');
+  });
+  h.push('<span class="ns-chip ns-chip-more">...共 ' + NETSEC_WEAK_PWDS.length + ' 条</span>');
+  h.push('</div>');
+  h.push('<div class="ns-guide">💡 命中列表即代表攻击者字典可秒破。检测工具用「熵」评估强度，见下方结果。</div></div>');
+  return h.join('');
+}
+function renderNetsecCipher() {
+  var h = [];
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🔣 编码转换（Base64 / 十六进制 / URL）</div>');
+  h.push('<div class="ns-row"><select id="nsEncMode" class="ns-input" style="width:150px"><option value="b64">Base64</option><option value="hex">十六进制</option><option value="url">URL 编码</option></select>');
+  h.push('<button class="ns-btn ns-btn-primary" data-ns="enc">明文 → 编码 ↑</button>');
+  h.push('<button class="ns-btn" data-ns="dec">编码 → 明文 ↓</button></div>');
+  h.push('<div class="ns-row"><textarea id="nsEncIn" class="ns-input" rows="3" placeholder="输入明文或编码内容..."></textarea></div>');
+  h.push('<div class="ns-row"><textarea id="nsEncOut" class="ns-input" rows="3" placeholder="编码/解码结果"></textarea></div>');
+  h.push('</div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🧬 SHA-256 哈希</div>');
+  h.push('<div class="ns-row"><input id="nsHashIn" class="ns-input" placeholder="输入任意文本，计算 SHA-256 哈希" style="flex:1"><button class="ns-btn ns-btn-primary" data-ns="hash">哈希</button></div>');
+  h.push('<div class="ns-row"><input id="nsHashOut" class="ns-input" readonly placeholder="64 位十六进制哈希值" style="flex:1;font-family:monospace"></div>');
+  h.push('<div class="ns-guide">💡 哈希单向不可逆，同一输入永远同一输出——这就是密码“只存哈希不存明文”的原理。</div></div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">📜 凯撒密码（含暴力破解）</div>');
+  h.push('<div class="ns-row"><input id="nsCaesarIn" class="ns-input" placeholder="输入文本" style="flex:1"><span class="ns-hint">位移</span><input id="nsCaesarShift" class="ns-input" type="number" value="3" style="width:70px"><button class="ns-btn ns-btn-primary" data-ns="caesar">计算</button></div>');
+  h.push('<div id="nsCaesarOut" class="ns-result"></div></div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🔑 维吉尼亚密码</div>');
+  h.push('<div class="ns-row"><input id="nsVigIn" class="ns-input" placeholder="输入文本" style="flex:1"><input id="nsVigKey" class="ns-input" placeholder="密钥（英文）" style="flex:1"></div>');
+  h.push('<div class="ns-row"><select id="nsVigMode" class="ns-input" style="width:130px"><option value="enc">加密</option><option value="dec">解密</option></select><button class="ns-btn ns-btn-primary" data-ns="vig">执行</button></div>');
+  h.push('<div class="ns-row"><input id="nsVigOut" class="ns-input" readonly placeholder="结果" style="flex:1"></div>');
+  h.push('</div>');
+  return h.join('');
+}
+function renderNetsecKnowledge() {
+  var h = [];
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🌐 OWASP Top 10（2021）· 点击展开</div>');
+  h.push('<div class="ns-owasp-grid">');
+  NETSEC_OWASP.forEach(function(o) {
+    h.push('<div class="ns-owasp-item"><div class="ns-owasp-name">' + o.icon + ' ' + o.id + ' ' + o.name + '</div>');
+    h.push('<div class="ns-owasp-body"><div><b>攻击</b>：' + o.attack + '</div><div><b>防御</b>：' + o.defense + '</div><div><b>示例</b>：' + o.example + '</div></div></div>');
+  });
+  h.push('</div></div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">⚔️ 八大常见攻击 · 点击查看</div>');
+  h.push('<div class="ns-attack-grid">');
+  NETSEC_ATTACKS.forEach(function(at) {
+    h.push('<div class="ns-attack-card"><div class="ns-attack-name">' + at.icon + ' ' + at.name + '</div>');
+    h.push('<div class="ns-owasp-body"><div><b>原理</b>：' + at.principle + '</div><div><b>示例</b>：' + at.demo + '</div><div><b>防御</b>：' + at.defense + '</div></div></div>');
+  });
+  h.push('</div></div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🛰️ 模拟端口扫描</div>');
+  h.push('<div class="ns-row"><input id="nsScanTarget" class="ns-input" placeholder="输入目标 IP/域名（如 192.168.1.1）" style="flex:1"><button class="ns-btn ns-btn-primary" data-ns="scan">开始扫描</button></div>');
+  h.push('<div id="nsScanBox" class="ns-scan-box"><div class="ns-scan-line">🧪 演示模式：纯前端静态知识表，不会发起任何真实网络请求。输入目标后点击「开始扫描」。</div></div></div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">📡 模拟流量分析（Wireshark 风格）</div>');
+  h.push('<div class="ns-traffic-head"><span>No.</span><span>Time</span><span>Source</span><span>Destination</span><span>Protocol</span><span>Info</span></div>');
+  NETSEC_TRAFFIC.forEach(function(p) {
+    h.push('<div class="ns-traffic-row" title="' + p.detail + '"><span>' + p.no + '</span><span>' + p.time + '</span><span>' + p.src + '</span><span>' + p.dst + '</span><span class="ns-proto">' + p.proto + '</span><span>' + p.info + '</span></div>');
+  });
+  h.push('<div class="ns-guide">💡 悬停每一行查看协议字段解析。真实抓包请使用 Wireshark，此处为教学演示。</div></div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">✅ 安全配置自查清单（点击勾选打分）</div>');
+  h.push('<div id="nsCheckScore" class="ns-check-score">0 分 · 未开始</div>');
+  NETSEC_CHECKLIST.forEach(function(c) {
+    h.push('<label class="ns-check-item" data-ns="checkitem" data-id="' + c.id + '"><input type="checkbox" id="' + c.id + '">' + c.name + ' <span class="ns-hint">（' + c.weight + ' 分）</span></label>');
+  });
+  h.push('</div>');
+  return h.join('');
+}
+function renderNetsecQuiz() {
+  var h = [];
+  if (!state.netsecQuiz) state.netsecQuiz = { total: 0, correct: 0, wrongBank: [] };
+  h.push('<div class="ns-card"><div class="ns-card-hdr">📝 网络安全测验</div>');
+  h.push('<div class="ns-quiz-stats">累计答题 <b>' + state.netsecQuiz.total + '</b> · 正确 <b>' + state.netsecQuiz.correct + '</b> · 正确率 <b>' + (state.netsecQuiz.total ? Math.round(state.netsecQuiz.correct / state.netsecQuiz.total * 100) + '%' : '--') + '</b></div>');
+  h.push('<div class="ns-quiz-actions" id="nsQuizStartBtn"><button class="ns-btn ns-btn-primary" data-ns="quiz-start">🚀 开始一轮测验（10 题随机）</button>');
+  if (state.netsecQuiz.wrongBank.length) h.push('<button class="ns-btn" data-ns="quiz-review">📖 回顾错题（' + state.netsecQuiz.wrongBank.length + '）</button>');
+  h.push('</div>');
+  h.push('<div id="nsQuizBox" class="ns-quiz-box"><div class="ns-quiz-hint">点击上方按钮开始答题。每轮随机 10 题，答完即时看解析，错题自动进入错题本。</div></div></div>');
+  return h.join('');
+}
+function renderNetsecAi() {
+  var h = [];
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🤖 AI 安全助手</div>');
+  h.push('<div class="ns-row"><textarea id="nsAiIn" class="ns-input" rows="3" placeholder="例如：什么是 SQL 注入？如何防御？&#10;我收到一条可疑的“中奖”短信该怎么办？&#10;家用路由器如何设置更安全？"></textarea></div>');
+  h.push('<div class="ns-row"><button id="nsAiBtn" class="ns-btn ns-btn-primary" data-ns="aiask">💬 提问</button></div>');
+  h.push('<div id="nsAiOut" class="ns-result"><div class="ns-ai-hint">🛡️ 这里是你的网络安全私人讲师，可咨询攻击原理、防御策略、安全意识等任何安全话题。</div></div></div>');
+  h.push('<div class="ns-guide">💡 需要先在「🧠 学霸/AI深度学」等板块配置 API Key 才能使用 AI 功能。</div>');
+  return h.join('');
+}
+
+/* ---------------- 攻防实验室 ---------------- */
+function renderNetsecLab() {
+  if (!state.netsecLabTool) state.netsecLabTool = 'web';
+  var tool = state.netsecLabTool;
+  var tools = [['web','🌐 Web 攻击实验'],['crack','💥 密码破解实验室'],['phish','🎣 钓鱼识别训练'],['net','🧮 网络与日志工具']];
+  var h = [];
+  h.push('<div class="ns-lab-banner">⚠️ 仅学习用：以下工具全部为<strong>本地纯前端模拟</strong>，不发起真实网络流量、不做真实攻击、不联网。</div>');
+  h.push('<div class="ns-lab-tabs">');
+  tools.forEach(function(t) {
+    h.push('<div class="ns-lab-tab' + (tool === t[0] ? ' active' : '') + '" data-ns="labtool" data-id="' + t[0] + '">' + t[1] + '</div>');
+  });
+  h.push('</div><div class="ns-lab-body">');
+  if (tool === 'web') h.push(renderNetsecSqli() + renderNetsecXss());
+  else if (tool === 'crack') h.push(renderNetsecCrack());
+  else if (tool === 'phish') h.push(renderNetsecPhish());
+  else if (tool === 'net') h.push(renderNetsecNet());
+  h.push('</div>');
+  return h.join('');
+}
+function netsecLabSetTool(id) {
+  state.netsecLabTool = id;
+  saveState();
+  renderNetsecPanel();
+}
+
+/* ---- Web 攻击实验：SQL 注入靶场 ---- */
+function renderNetsecSqli() {
+  var h = [];
+  h.push('<div class="ns-card"><div class="ns-card-hdr">💉 SQL 注入靶场（模拟登录）</div>');
+  h.push('<div class="ns-row"><input id="nsSqliUser" class="ns-input" placeholder="用户名（试试 admin\' -- ）" style="flex:1"></div>');
+  h.push('<div class="ns-row"><input id="nsSqliPwd" class="ns-input" type="password" placeholder="密码" style="flex:1"></div>');
+  h.push('<div class="ns-row"><button class="ns-btn ns-btn-primary" data-ns="sqlilogin" data-id="raw">🔓 模拟脆弱登录（字符串拼接）</button>');
+  h.push('<button class="ns-btn" data-ns="sqlilogin" data-id="param">🛡️ 模拟安全登录（参数化）</button></div>');
+  h.push('<div id="nsSqliOut" class="ns-result"></div>');
+  h.push('<div class="ns-guide">💡 左侧模拟旧代码“把输入拼进 SQL”，右侧模拟“参数化查询”。输入 <code>admin\' -- </code> 对比两种结果。</div></div>');
+  return h.join('');
+}
+function netsecSqliLogin(mode) {
+  var u = $id('nsSqliUser') ? $id('nsSqliUser').value : '';
+  var p = $id('nsSqliPwd') ? $id('nsSqliPwd').value : '';
+  var out = $id('nsSqliOut');
+  if (!out) return;
+  if (!u) { showToast('请输入用户名'); return; }
+  var combo = u + ' ' + p;
+  var h = [];
+  if (mode === 'raw') {
+    var sql = "SELECT * FROM users WHERE username='" + u + "' AND password='" + p + "'";
+    h.push('<div class="ns-kv"><span>后端拼接出的 SQL 语句</span></div>');
+    h.push('<div class="ns-sqli-sql">' + netsecEsc(sql) + '</div>');
+    var bypass = /--|#|\/\*/.test(combo) || /'1'='1/.test(combo) || /'(\s)?or(\s)+[^']+'[^']+'/.test(combo.toLowerCase());
+    var quote = /'/.test(combo);
+    if (bypass) {
+      h.push('<div class="ns-sqli-bypass">⚠️ 登录被绕过！输入改变了 SQL 结构，WHERE 条件被注释或恒真，无需密码即可进入。</div>');
+      h.push('<div class="ns-tips"><strong>原理</strong><div class="ns-tip">' + (/--|#|\/\*/.test(combo) ? '单引号闭合了字符串字面量，<code>--</code> 把后面的「AND password=…」整段注释掉，条件退化为只检查用户名。' : '构造了恒真的 OR 条件 <code>\'1\'=\'1</code>，使整个 WHERE 恒为真，绕过密码校验。') + '</div></div>');
+    } else if (quote) {
+      h.push('<div class="ns-sqli-block">输入含单引号但未构成绕过——真实环境会报 SQL 语法错误，可能泄露数据库结构（报错注入）。</div>');
+    } else {
+      h.push('<div class="ns-sqli-block">登录失败：用户名或密码错误（未发现注入向量）。</div>');
+    }
+  } else {
+    h.push('<div class="ns-kv"><span>参数化查询的 SQL（结构固定）</span></div>');
+    h.push('<div class="ns-sqli-sql">SELECT * FROM users WHERE username = ? AND password = ?</div>');
+    h.push('<div class="ns-sqli-block">参数化（预编译）把输入当<strong>纯数据</strong>绑定到 <code>?</code> 占位符：注入字符只是普通字符串字面量，无法改变 SQL 结构，登录失败（注入无效）。</div>');
+  }
+  h.push('<div class="ns-guide">💡 核心区别：拼接把「数据」混进「代码结构」；参数化让数据库永远把输入当数据。这就是 OWASP A03 注入的根治手段。</div>');
+  out.innerHTML = h.join('');
+}
+
+/* ---- Web 攻击实验：XSS 沙盒 ---- */
+function renderNetsecXss() {
+  var h = [];
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🧨 XSS 沙盒（存储型/反射型演示）</div>');
+  h.push('<div class="ns-row"><textarea id="nsXssIn" class="ns-input" rows="2" placeholder="输入 XSS payload，例如 &lt;script&gt;alert(1)&lt;/script&gt;"></textarea></div>');
+  h.push('<div class="ns-row">快捷填充：');
+  NETSEC_XSS_HINT.forEach(function(xp, i) {
+    h.push('<span class="ns-chip" data-ns="xsshint" data-id="' + i + '" style="cursor:pointer">payload ' + (i + 1) + '</span>');
+  });
+  h.push('<button class="ns-btn ns-btn-primary" data-ns="xssrun" style="margin-left:auto">▶ 运行</button></div>');
+  h.push('<div id="nsXssOut" class="ns-result"></div>');
+  h.push('<div class="ns-guide">💡 未过滤栏在 <strong>sandbox 隔离的 iframe</strong> 内真实执行 payload（拿不到主应用与 localStorage），已过滤栏展示转义后的安全效果。</div></div>');
+  return h.join('');
+}
+function netsecXssHint(i) {
+  var ta = $id('nsXssIn');
+  if (ta && NETSEC_XSS_HINT[i]) ta.value = NETSEC_XSS_HINT[i];
+}
+function netsecXssRun() {
+  var input = $id('nsXssIn');
+  var out = $id('nsXssOut');
+  if (!input || !out) return;
+  var payload = input.value;
+  if (!payload) { showToast('请输入 XSS payload'); return; }
+  var esc = netsecEsc(payload);
+  var h = [];
+  h.push('<div class="ns-xss-grid">');
+  h.push('<div class="ns-xss-pane"><div class="ns-xss-title">🟥 未过滤 · 直接 innerHTML（危险）</div>');
+  h.push('<div class="ns-guide">payload 被当作 HTML 注入：<code>&lt;script&gt;</code> 会真实执行。下方 iframe 带 sandbox 隔离，只影响演示框。</div>');
+  h.push('<iframe class="ns-xss-frame" sandbox="allow-scripts" srcdoc="' + esc + '"></iframe>');
+  h.push('</div>');
+  h.push('<div class="ns-xss-pane"><div class="ns-xss-title">🟩 已过滤 · HTML 转义（防御）</div>');
+  h.push('<div class="ns-guide">先转义再输出：<code>&lt;</code> 变 <code>&amp;lt;</code>，浏览器按纯文本渲染，脚本不会执行。</div>');
+  h.push('<div class="ns-xss-esc">' + esc + '</div>');
+  h.push('</div>');
+  h.push('</div>');
+  h.push('<div class="ns-xss-code"><div class="ns-xss-title">🔍 转义后写入页面的源码（肉眼可见的实体）</div>');
+  h.push('<code>' + netsecEsc(esc) + '</code></div>');
+  out.innerHTML = h.join('');
+}
+
+/* ---- 密码破解实验室 ---- */
+function renderNetsecCrack() {
+  var h = [];
+  h.push('<div class="ns-card"><div class="ns-card-hdr">⏱️ 密码破解耗时计算器</div>');
+  h.push('<div class="ns-row"><span class="ns-hint">字符集</span><select id="nsCrackChars" class="ns-input" style="width:195px">');
+  [['10','纯数字'],['26','小写字母'],['36','小写+数字'],['52','大小写字母'],['62','大小写+数字'],['94','全字符（含符号）']].forEach(function(c) {
+    h.push('<option value="' + c[0] + '"' + (c[0] === '62' ? ' selected' : '') + '>' + c[1] + '（' + c[0] + ' 种）</option>');
+  });
+  h.push('</select><span class="ns-hint">长度</span><input id="nsCrackLen" class="ns-input" type="number" value="8" min="1" max="20" style="width:70px">');
+  h.push('<span class="ns-hint">速率</span><select id="nsCrackRate" class="ns-input" style="width:230px">');
+  NETSEC_CRACK_RATES.forEach(function(r, i) {
+    h.push('<option value="' + r.rate + '"' + (i === 1 ? ' selected' : '') + '>' + r.label + '</option>');
+  });
+  h.push('</select><button class="ns-btn ns-btn-primary" data-ns="crackcalc">计算</button></div>');
+  h.push('<div id="nsCrackOut" class="ns-result"></div>');
+  h.push('<div class="ns-guide">💡 速率按离线高速破解估算（Hashcat）：MD5/SHA-1 最快，SHA-256 较慢，bcrypt/argon2 等慢哈希每秒仅数千次——所以服务端用「加盐 + 慢哈希」是存密码的关键。</div></div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">📖 字典攻击模拟（SHA-256）</div>');
+  h.push('<div class="ns-row"><input id="nsDictIn" class="ns-input" placeholder="输入一个密码作为目标（试试 password）" style="flex:1"><button class="ns-btn ns-btn-primary" data-ns="dictstart">▶ 开始字典攻击</button></div>');
+  h.push('<div id="nsDictBox" class="ns-scan-box"><div class="ns-scan-line">🧪 演示：用 ' + NETSEC_WEAK_PWDS.length + ' 条常见弱密码字典，逐个哈希比对目标。</div></div></div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🔍 哈希识别器（CTF 常用）</div>');
+  h.push('<div class="ns-row"><input id="nsHashIdIn" class="ns-input" placeholder="粘贴哈希，如 5f4dcc3b5aa765d61d8327deb882cf99" style="flex:1"><button class="ns-btn ns-btn-primary" data-ns="hashid">识别</button></div>');
+  h.push('<div id="nsHashIdOut" class="ns-result"></div></div>');
+  return h.join('');
+}
+function netsecFmtBig(x) {
+  if (x < 10000) return String(Math.round(x));
+  var e = Math.floor(Math.log10(x));
+  var mant = x / Math.pow(10, e);
+  return mant.toFixed(2) + '×10<sup>' + e + '</sup>';
+}
+function netsecFmtTime(sec) {
+  if (sec < 1e-6) return '瞬间（亚微秒级）';
+  if (sec < 1) return '约 ' + (sec * 1000).toFixed(1) + ' 毫秒';
+  if (sec < 60) return '约 ' + Math.round(sec) + ' 秒';
+  if (sec < 3600) return '约 ' + Math.round(sec / 60) + ' 分钟';
+  if (sec < 86400) return '约 ' + Math.round(sec / 3600) + ' 小时';
+  if (sec < 31536000) return '约 ' + Math.round(sec / 86400) + ' 天';
+  if (sec < 3.15e12) return '约 ' + Math.round(sec / 31536000) + ' 年';
+  if (sec < 3.15e15) return '约 ' + (sec / 31536000).toExponential(2) + ' 年';
+  return '远超宇宙寿命（约 10^' + Math.floor(Math.log10(sec / 31536000)) + ' 年）';
+}
+function netsecCrackVerdict(sec) {
+  if (sec < 1) return '🔴 秒级可破，毫无安全可言';
+  if (sec < 3600) return '🔴 1 小时内可破，非常危险';
+  if (sec < 86400) return '🟠 天内可破，危险';
+  if (sec < 31536000) return '🟠 数月内可破，强度不足';
+  if (sec < 3.15e12) return '🟡 数年~数百年，强度尚可';
+  return '🟢 以世纪计或更久，非常强';
+}
+function netsecCrackCalc() {
+  var out = $id('nsCrackOut');
+  if (!out) return;
+  var cs = parseInt($id('nsCrackChars') ? $id('nsCrackChars').value : 62, 10) || 62;
+  var len = parseInt($id('nsCrackLen') ? $id('nsCrackLen').value : 8, 10) || 8;
+  if (len < 1) len = 1; if (len > 20) len = 20;
+  var rate = parseFloat($id('nsCrackRate') ? $id('nsCrackRate').value : 1e11) || 1e11;
+  var rateLabel = rate >= 1e13 ? 'GPU 集群' : rate >= 1e11 ? '单块 GPU' : 'CPU';
+  var space = Math.pow(cs, len);
+  var sec = space / rate;
+  var logSec = Math.log10(sec + 1e-12);
+  var pct = Math.max(0, Math.min(100, (logSec + 6) / 18 * 100));
+  var h = [];
+  h.push('<div class="ns-kv"><span>密码空间</span><span>' + cs + '^' + len + ' ≈ ' + netsecFmtBig(space) + ' 种组合</span></div>');
+  h.push('<div class="ns-kv"><span>破解耗时（' + rateLabel + '）</span><span style="color:#0a6e5c;font-weight:700">' + netsecFmtTime(sec) + '</span></div>');
+  h.push('<div class="ns-bar"><div class="ns-bar-fill" style="width:' + pct.toFixed(0) + '%;background:' + (pct > 66 ? '#0a6e5c' : pct > 33 ? '#f59e0b' : '#dc2626') + '"></div></div>');
+  h.push('<div class="ns-kv"><span>安全评级</span><span>' + netsecCrackVerdict(sec) + '</span></div>');
+  out.innerHTML = h.join('');
+}
+function netsecDictHit(hash) {
+  for (var i = 0; i < NETSEC_WEAK_PWDS.length; i++) {
+    if (sha256Hex(NETSEC_WEAK_PWDS[i]) === hash) return NETSEC_WEAK_PWDS[i];
+  }
+  return null;
+}
+function netsecDictStart() {
+  var input = $id('nsDictIn');
+  var box = $id('nsDictBox');
+  if (!input || !box) return;
+  var target = input.value.trim();
+  if (!target) { showToast('请输入一个密码作为目标'); return; }
+  if (_nsDict && _nsDict.running) { showToast('字典攻击进行中'); return; }
+  var hash = sha256Hex(target);
+  _nsDict = { running: true, idx: 0, target: target, hash: hash };
+  box.innerHTML = '<div class="ns-scan-line">🎯 目标哈希：<span style="font-family:monospace">' + netsecEsc(hash) + '</span></div>';
+  box.innerHTML += '<div class="ns-scan-line">⚙️ 正在用 ' + NETSEC_WEAK_PWDS.length + ' 条常见弱密码字典逐一尝试...</div>';
+  netsecDictTick();
+}
+function netsecDictTick() {
+  var d = _nsDict;
+  var box = $id('nsDictBox');
+  if (!d || !box || !d.running) return;
+  if (d.idx >= NETSEC_WEAK_PWDS.length) {
+    d.running = false;
+    box.innerHTML += '<div class="ns-scan-line ns-scan-done">❌ 字典未命中：目标不在常见弱密码库中。攻击者只能转向暴力破解（耗时见上方计算器）。</div>';
+    return;
+  }
+  var pwd = NETSEC_WEAK_PWDS[d.idx];
+  var ok = sha256Hex(pwd) === d.hash;
+  if (d.idx < 6 || ok || d.idx >= NETSEC_WEAK_PWDS.length - 1) {
+    box.innerHTML += '<div class="ns-dict-line">' + (d.idx + 1) + '/' + NETSEC_WEAK_PWDS.length + ' <span style="font-family:monospace">' + netsecEsc(pwd) + '</span> → ' + (ok ? '<b style="color:#f87171">🎯 命中！密码是「' + netsecEsc(pwd) + '」</b>' : '✗') + '</div>';
+  } else if (d.idx === 6) {
+    box.innerHTML += '<div class="ns-dict-line">⋯ 继续遍历剩余 ' + (NETSEC_WEAK_PWDS.length - 7) + ' 条…</div>';
+  }
+  if (ok) {
+    d.running = false;
+    box.innerHTML += '<div class="ns-scan-line ns-scan-done">✅ 字典攻击成功（演示模拟）。这就是为什么弱密码（常见单词/序列）在真实攻防中秒破，服务端还应加盐 + 限速。</div>';
+    return;
+  }
+  d.idx++;
+  setTimeout(netsecDictTick, 50);
+}
+function netsecHashIdentify() {
+  var input = $id('nsHashIdIn');
+  var out = $id('nsHashIdOut');
+  if (!input || !out) return;
+  var v = input.value.trim();
+  if (!v) { showToast('请输入要识别的哈希'); return; }
+  var h = [];
+  h.push('<div class="ns-kv"><span>输入</span><span style="font-family:monospace;word-break:break-all">' + netsecEsc(v) + '</span></div>');
+  var hit = null;
+  if (/^\$2[aby]\$/.test(v)) {
+    hit = { name: 'bcrypt', desc: '自适应慢哈希，内置随机盐，密码存储首选' };
+  } else if (/^[0-9a-f]+$/i.test(v)) {
+    var len = v.length;
+    for (var i = 0; i < NETSEC_HASH_TYPES.length; i++) {
+      if (NETSEC_HASH_TYPES[i].len === len) hit = NETSEC_HASH_TYPES[i];
+    }
+    if (!hit) hit = { name: '未知十六进制哈希（' + len + ' 位）', desc: '不是常见的 32/40/64/128 位摘要，可能是加盐哈希或自定义算法。' };
+  } else {
+    hit = { name: '未识别', desc: '不是十六进制哈希，也不是 bcrypt（$2…）。可能是 Base64 编码或自定义格式。' };
+  }
+  h.push('<div class="ns-kv"><span>识别结果</span><span style="color:#0a6e5c;font-weight:700">' + netsecEsc(hit.name) + '</span></div>');
+  h.push('<div class="ns-tips"><strong>说明</strong><div class="ns-tip">' + netsecEsc(hit.desc) + '</div></div>');
+  h.push('<div class="ns-guide">💡 仅凭长度只能缩小范围：同一明文用不同算法得到不同哈希，同一算法加盐后每次也不同。CTF 中常结合样例明文与格式确认。</div>');
+  out.innerHTML = h.join('');
+}
+
+/* ---- 钓鱼识别训练 ---- */
+function renderNetsecPhish() {
+  if (!_nsPhish) netsecPhishRestart();
+  var h = [];
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🎣 钓鱼邮件识别训练（10 封）</div>');
+  h.push('<div id="nsPhishBox" class="ns-phish-box"></div>');
+  h.push('<div class="ns-guide">💡 判断邮件是否钓鱼：核对发件域与官方是否一致、链接是否 https 且指向官方域名、是否索要密码/验证码/转账、是否用“紧急/过期/冻结”施压、有无异常附件。</div></div>');
+  return h.join('');
+}
+function netsecPhishRender() {
+  var box = $id('nsPhishBox');
+  if (!box) return;
+  var p = _nsPhish;
+  if (!p) return;
+  var item = NETSEC_PHISH[p.order[p.pos]];
+  if (!item) { box.innerHTML = '<div class="ns-quiz-result"><button class="ns-btn ns-btn-primary" data-ns="phishrestart">🔁 重新开始</button></div>'; return; }
+  var h = [];
+  h.push('<div class="ns-phish-progress">第 ' + (p.pos + 1) + ' / ' + p.order.length + ' 封 · 已识别对 ' + p.right + ' 封</div>');
+  h.push('<div class="ns-phish-mail">');
+  h.push('<div class="ns-phish-field"><span class="ns-hint">发件人</span>' + netsecEsc(item.sender) + '</div>');
+  h.push('<div class="ns-phish-field"><span class="ns-hint">主题</span>' + netsecEsc(item.subject) + '</div>');
+  h.push('<div class="ns-phish-field"><span class="ns-hint">链接</span><span style="color:#2563eb">' + netsecEsc(item.url) + '</span></div>');
+  h.push('<div class="ns-phish-body">' + netsecEsc(item.body) + '</div>');
+  h.push('</div>');
+  if (p.answered) {
+    var isRight = p.guess === item.legit;
+    h.push('<div class="' + (isRight ? 'ns-phish-right' : 'ns-phish-wrong') + '">' + (isRight ? '✅ 识别正确' : '❌ 识别错误（这封是' + (item.legit ? '正常' : '钓鱼') + '邮件）') + '</div>');
+    h.push('<div class="ns-tips"><strong>' + (item.legit ? '✅ 判断依据（正常）' : '🚨 可疑特征') + '</strong>');
+    item.clues.forEach(function(c) { h.push('<div class="ns-tip">' + c + '</div>'); });
+    h.push('</div>');
+    h.push('<div class="ns-quiz-actions"><button class="ns-btn ns-btn-primary" data-ns="phishnext">' + (p.pos < p.order.length - 1 ? '下一封 →' : '查看成绩 🏁') + '</button></div>');
+  } else {
+    h.push('<div class="ns-quiz-actions"><button class="ns-btn ns-btn-danger" data-ns="phishjudge" data-id="0">🎣 判定为钓鱼</button>');
+    h.push('<button class="ns-btn ns-btn-primary" data-ns="phishjudge" data-id="1">✅ 判定为正常</button></div>');
+  }
+  box.innerHTML = h.join('');
+}
+function netsecPhishJudge(g) {
+  var p = _nsPhish;
+  if (!p || p.answered) return;
+  p.answered = true;
+  p.guess = (g === 1);
+  var item = NETSEC_PHISH[p.order[p.pos]];
+  if (p.guess === item.legit) p.right++;
+  netsecPhishRender();
+}
+function netsecPhishNext() {
+  var p = _nsPhish;
+  if (!p) return;
+  if (p.pos < p.order.length - 1) { p.pos++; p.answered = false; netsecPhishRender(); }
+  else netsecPhishFinish();
+}
+function netsecPhishFinish() {
+  var box = $id('nsPhishBox');
+  if (!box) return;
+  var p = _nsPhish;
+  var pct = Math.round(p.right / p.order.length * 100);
+  var grade = pct >= 90 ? '🏆 反钓鱼高手' : pct >= 70 ? '👍 不错，继续提升' : pct >= 50 ? '📖 需要更多练习' : '⚠️ 请牢记：官方机构不会索要密码/验证码';
+  var h = [];
+  h.push('<div class="ns-quiz-result"><div class="ns-quiz-grade">' + grade + '</div>');
+  h.push('<div class="ns-quiz-score">' + p.right + ' / ' + p.order.length + '（' + pct + '%）</div>');
+  h.push('<div class="ns-quiz-actions"><button class="ns-btn ns-btn-primary" data-ns="phishrestart">🔁 再来一轮</button></div></div>');
+  box.innerHTML = h.join('');
+}
+function netsecPhishRestart() {
+  var order = [];
+  for (var i = 0; i < NETSEC_PHISH.length; i++) order.push(i);
+  for (var j = order.length - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var t = order[j]; order[j] = order[k]; order[k] = t; }
+  _nsPhish = { order: order, pos: 0, right: 0, answered: false };
+  if (typeof $id === 'function') { var box = $id('nsPhishBox'); if (box) netsecPhishRender(); }
+}
+
+/* ---- 网络与日志工具 ---- */
+function renderNetsecNet() {
+  var h = [];
+  h.push('<div class="ns-card"><div class="ns-card-hdr">🧮 子网计算器（IPv4）</div>');
+  h.push('<div class="ns-row"><input id="nsSubIn" class="ns-input" placeholder="如 192.168.1.0/24 或 10.0.0.0/8" style="flex:1"><button class="ns-btn ns-btn-primary" data-ns="subnetcalc">计算</button></div>');
+  h.push('<div id="nsSubOut" class="ns-result"></div></div>');
+  h.push('<div class="ns-card"><div class="ns-card-hdr">📜 日志攻击分析器（教学演示）</div>');
+  h.push('<div class="ns-row"><button class="ns-btn ns-btn-primary" data-ns="loganalyze">🔎 分析日志</button><button class="ns-btn" data-ns="logreset">↺ 恢复示例</button></div>');
+  h.push('<textarea id="nsLogIn" class="ns-input" rows="8" style="font-family:monospace;white-space:pre">' + netsecEsc(NETSEC_LOG_SAMPLE) + '</textarea>');
+  h.push('<div id="nsLogOut" class="ns-log-out"></div>');
+  h.push('<div class="ns-guide">💡 样例包含：正常访问、SQL 注入探测（sqlmap）、同 IP 连续 401 的暴力破解、路径穿越、扫描器。真实场景可用 SIEM/IDS 自动关联这些线索。</div></div>');
+  return h.join('');
+}
+function netsecSubnetCalc() {
+  var input = $id('nsSubIn');
+  var out = $id('nsSubOut');
+  if (!input || !out) return;
+  var v = input.value.trim().replace(/\s+/g, '');
+  var m = v.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\/(\d{1,2})$/);
+  if (!m) { showToast('格式示例：192.168.1.0/24 或 10.0.0.0/8'); return; }
+  var oct = [+m[1], +m[2], +m[3], +m[4]];
+  var cidr = +m[5];
+  if (oct.some(function(o){ return o > 255; }) || cidr > 32) { showToast('IP 或前缀无效'); return; }
+  var ipInt = ((oct[0] << 24) >>> 0) + (oct[1] << 16) + (oct[2] << 8) + oct[3];
+  var maskInt = cidr === 0 ? 0 : (~((1 << (32 - cidr)) - 1)) >>> 0;
+  var netInt = (ipInt & maskInt) >>> 0;
+  var hostBits = 32 - cidr;
+  var total = hostBits >= 31 ? Math.pow(2, hostBits) : (1 << hostBits);
+  var usable = cidr === 32 ? 1 : cidr === 31 ? 2 : (total - 2);
+  var bcast = (netInt + total - 1) >>> 0;
+  var first = cidr === 32 ? netInt : cidr === 31 ? netInt : (netInt + 1);
+  var last = cidr === 32 ? netInt : cidr === 31 ? (netInt + 1) : (bcast - 1);
+  function toIp(x) { return [(x >>> 24) & 255, (x >>> 16) & 255, (x >>> 8) & 255, x & 255].join('.'); }
+  var h = [];
+  h.push('<div class="ns-kv"><span>网络地址</span><span>' + toIp(netInt) + '</span></div>');
+  h.push('<div class="ns-kv"><span>广播地址</span><span>' + toIp(bcast) + '</span></div>');
+  h.push('<div class="ns-kv"><span>子网掩码</span><span>' + toIp(maskInt) + '（/' + cidr + '）</span></div>');
+  h.push('<div class="ns-kv"><span>地址总数</span><span>' + total + '</span></div>');
+  h.push('<div class="ns-kv"><span>可用主机数</span><span style="color:#0a6e5c;font-weight:700">' + usable + '</span></div>');
+  h.push('<div class="ns-kv"><span>可用地址范围</span><span>' + toIp(first) + ' ~ ' + toIp(last) + '</span></div>');
+  h.push('<div class="ns-guide">💡 CIDR /' + cidr + ' 表示前 ' + cidr + ' 位是网络位，后 ' + hostBits + ' 位是主机位。可用主机 = 2^' + hostBits + ' - 2（减去网络地址与广播地址）。</div>');
+  out.innerHTML = h.join('');
+}
+function netsecLogAnalyze() {
+  var ta = $id('nsLogIn');
+  var out = $id('nsLogOut');
+  if (!ta || !out) return;
+  var text = ta.value;
+  if (!text.trim()) { showToast('请输入日志内容'); return; }
+  var lines = text.split(/\r?\n/).filter(function(l){ return l.trim() !== ''; });
+  var parsed = lines.map(function(raw, idx) {
+    var m = raw.match(/^(\S+)[^"]*"([A-Z]+) ([^" ]+)[^"]*" (\d{3})/);
+    var ip = m ? m[1] : '?', method = m ? m[2] : '?', path = m ? m[3] : '?', status = m ? m[4] : '?';
+    var low = raw.toLowerCase();
+    var flags = [];
+    if (/(' or\b)|('1'='1)|union\s+select|\bsleep\s*\(/.test(low)) flags.push('SQL注入');
+    if (/\.\.\/|\.\.\\/.test(raw)) flags.push('路径穿越');
+    if (/\bsqlmap\b|\bnmap\b|nikto|hydra|burp/i.test(raw)) flags.push('扫描器');
+    if (/\/admin\b|\/wp-admin|etc\/passwd|\.env/.test(low)) flags.push('敏感路径');
+    if (status === '401' || status === '403') flags.push('认证失败');
+    return { ip: ip, method: method, path: path, status: status, flags: flags, raw: raw, idx: idx };
+  });
+  var failCount = {};
+  parsed.forEach(function(p){ if (p.status === '401' || p.status === '403') failCount[p.ip] = (failCount[p.ip] || 0) + 1; });
+  var brute = {};
+  Object.keys(failCount).forEach(function(ip){ if (failCount[ip] >= 3) brute[ip] = true; });
+  parsed.forEach(function(p) {
+    if (brute[p.ip]) {
+      if (p.status === '401' || p.status === '403') p.flags.push('暴力破解');
+      else if (p.status === '200' && /login/i.test(p.path)) p.flags.push('爆破成功');
+    }
+  });
+  var susp = parsed.filter(function(p){ return p.flags.length > 0; });
+  var h = [];
+  h.push('<div class="ns-log-summary">共 <b>' + lines.length + '</b> 行 · 可疑 <b style="color:#b91c1c">' + susp.length + '</b> 行</div>');
+  var groups = {};
+  susp.forEach(function(p){ groups[p.ip] = (groups[p.ip] || 0) + 1; });
+  var ips = Object.keys(groups);
+  if (ips.length) {
+    h.push('<div class="ns-row">可疑来源 IP：' + ips.map(function(ip){ return '<span class="ns-chip ns-chip-bad">' + ip + ' ×' + groups[ip] + '</span>'; }).join(' ') + '</div>');
+  }
+  parsed.forEach(function(p) {
+    var cls = p.flags.length ? 'ns-log-bad' : 'ns-log-ok';
+    h.push('<div class="ns-log-line ' + cls + '"><span class="ns-log-no">' + (p.idx + 1) + '</span><span class="ns-log-tag">' + (p.flags.length ? p.flags.join('·') : '正常') + '</span>' + netsecEsc(p.raw) + '</div>');
+  });
+  out.innerHTML = h.join('');
+}
+function netsecLogReset() {
+  var ta = $id('nsLogIn');
+  if (ta) ta.value = NETSEC_LOG_SAMPLE;
+  var out = $id('nsLogOut');
+  if (out) out.innerHTML = '';
+}
+
+/* ---------------- 事件委托（避免内联 onclick 拼接） ---------------- */
+document.addEventListener('click', function(e) {
+  var el = e.target && e.target.closest ? e.target.closest('[data-ns]') : null;
+  if (!el) return;
+  var act = el.getAttribute('data-ns');
+  var id = el.getAttribute('data-id');
+  if (act === 'tab') { netsecSetTab(id); }
+  else if (act === 'pwdcheck') { netsecCheckPwd(); }
+  else if (act === 'gen') { netsecGenPwd(); }
+  else if (act === 'copy') { netsecCopyPwd(); }
+  else if (act === 'enc') { netsecEncode(); }
+  else if (act === 'dec') { netsecDecode(); }
+  else if (act === 'hash') { netsecHash(); }
+  else if (act === 'caesar') { netsecCaesar(); }
+  else if (act === 'vig') { netsecVigenere(); }
+  else if (act === 'scan') { netsecPortScan(); }
+  else if (act === 'checkitem') { e.preventDefault(); netsecChecklistToggle(id); }
+  else if (act === 'answer') { netsecQuizAnswer(parseInt(id, 10)); }
+  else if (act === 'next') { netsecQuizNext(); }
+  else if (act === 'quiz-start') { netsecQuizStart(); }
+  else if (act === 'quiz-review') { netsecQuizReview(); }
+  else if (act === 'aiask') { netsecAiAsk(); }
+  else if (act === 'labtool') { netsecLabSetTool(id); }
+  else if (act === 'sqlilogin') { netsecSqliLogin(id); }
+  else if (act === 'xsshint') { netsecXssHint(parseInt(id, 10)); }
+  else if (act === 'xssrun') { netsecXssRun(); }
+  else if (act === 'crackcalc') { netsecCrackCalc(); }
+  else if (act === 'dictstart') { netsecDictStart(); }
+  else if (act === 'hashid') { netsecHashIdentify(); }
+  else if (act === 'phishjudge') { netsecPhishJudge(parseInt(id, 10)); }
+  else if (act === 'phishnext') { netsecPhishNext(); }
+  else if (act === 'phishrestart') { netsecPhishRestart(); }
+  else if (act === 'subnetcalc') { netsecSubnetCalc(); }
+  else if (act === 'loganalyze') { netsecLogAnalyze(); }
+  else if (act === 'logreset') { netsecLogReset(); }
+});
+/* ===== 网络安全板块 End ===== */
+
 
 /* ===== 财富自由 · 必读10书 板块 ===== */
 var WEALTH_STEPS = [
