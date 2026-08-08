@@ -1031,6 +1031,113 @@ textarea.ns-input{resize:vertical;width:100%;font-family:inherit}
 /* ===== 网络安全板块 End ===== */
 
 
+/* ===== 阅读器板块（reader）===== */
+.reader-shelf { padding: 4px 2px; }
+.reader-shelf-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+.reader-shelf-actions { display: flex; gap: 8px; align-items: center; }
+.reader-import-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, #3a8a6a, #2a6a5a); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+.reader-import-btn:hover { filter: brightness(1.08); }
+.reader-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 14px; }
+.reader-card { position: relative; border-radius: 10px; overflow: hidden; background: var(--bg-card, #fff); border: 1px solid rgba(120, 120, 120, .15); cursor: pointer; box-shadow: 0 1px 4px rgba(0, 0, 0, .06); transition: transform .12s, box-shadow .12s; }
+.reader-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 0, 0, .12); }
+.reader-card-cover { height: 160px; background: linear-gradient(160deg, #5a7a9a, #3a5a7a); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 700; text-align: center; padding: 10px; word-break: break-word; position: relative; overflow: hidden; }
+.reader-card-cover img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.reader-card-info { padding: 8px 10px; }
+.reader-card-title { font-size: 13px; font-weight: 600; color: var(--text, #222); line-height: 1.3; height: 34px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.reader-card-meta { font-size: 11px; color: var(--text-muted, #888); margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.reader-card-progress { height: 3px; background: #eee; border-radius: 2px; margin-top: 6px; overflow: hidden; }
+.reader-card-progress > i { display: block; height: 100%; background: linear-gradient(90deg, #3a8a6a, #5ab892); border-radius: 2px; }
+.rd-del-btn { position: absolute; top: 6px; left: 6px; width: 26px; height: 26px; border: none; border-radius: 6px; background: rgba(0, 0, 0, .35); color: #fff; font-size: 13px; line-height: 1; cursor: pointer; z-index: 2; opacity: 0; transition: opacity .15s, background .15s; }
+.reader-card:hover .rd-del-btn, .rd-del-btn:focus { opacity: 1; }
+.rd-del-btn:hover { background: rgba(200, 40, 40, .78); }
+.rd-btn.rd-auto-on { background: rgba(90, 180, 120, .22); color: #2c6a4a; }
+.reader-fmt-tag { position: absolute; top: 6px; right: 6px; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(0, 0, 0, .45); color: #fff; letter-spacing: .5px; }
+.reader-empty { text-align: center; padding: 48px 16px; color: var(--text-muted, #888); }
+.reader-empty .reader-empty-icon { font-size: 52px; margin-bottom: 10px; }
+.reader-empty p { margin: 4px 0; font-size: 14px; }
+
+/* —— 阅读器全屏 overlay —— */
+.reader-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; background: var(--rd-bg, #faf7f0); color: var(--rd-fg, #333); }
+.reader-overlay[data-theme="dark"] { --rd-bg: #1e232a; --rd-fg: #d5d8dd; --rd-panel: #262d36; --rd-border: rgba(255, 255, 255, .08); --rd-muted: #8a93a3; }
+.reader-overlay[data-theme="sepia"] { --rd-bg: #f3e9d4; --rd-fg: #5a4a32; --rd-panel: #efe3c8; --rd-border: rgba(120, 90, 40, .2); --rd-muted: #9a8a6a; }
+.reader-overlay[data-theme="light"] { --rd-bg: #faf7f0; --rd-fg: #333; --rd-panel: #f3efe6; --rd-border: rgba(120, 120, 120, .15); --rd-muted: #999; }
+.reader-topbar { display: flex; align-items: center; gap: 4px; padding: 8px 10px; background: var(--rd-panel, transparent); border-bottom: 1px solid var(--rd-border, rgba(120, 120, 120, .12)); flex-shrink: 0; }
+.rd-btn { background: transparent; border: none; color: var(--rd-fg, #333); font-size: 15px; cursor: pointer; padding: 6px 9px; border-radius: 6px; line-height: 1; }
+.rd-btn:hover { background: rgba(128, 128, 128, .15); }
+.reader-topbar-title { flex: 1; font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; color: var(--rd-fg, #333); margin: 0 6px; }
+.reader-body { flex: 1; display: flex; min-height: 0; position: relative; }
+.reader-content-wrap { flex: 1; overflow: hidden; position: relative; display: flex; align-items: stretch; padding: 22px 26px; }
+.reader-content { height: 100%; width: 100%; min-width: 0; }
+.reader-content.rd-paged { column-width: 100%; column-gap: 0; column-fill: auto; transform: translateX(0); transition: transform .28s ease; overflow: hidden; }
+.reader-content.rd-scroll { overflow-y: auto; column-width: auto; column-gap: 0; transform: none; transition: none; }
+.reader-content ::selection { background: var(--rd-sel, #ffe08a); }
+.reader-content mark.rd-hl { background: #ffe08a; color: inherit; border-radius: 2px; padding: 0 1px; }
+.reader-content .rd-tts-on { background: #a8e6a8; }
+.reader-content .rd-search-hit { background: #ffb0b0; border-radius: 2px; }
+.reader-chapter-block h1, .reader-chapter-block h2, .reader-chapter-block h3 { line-height: 1.35; margin: 0.8em 0 0.4em; }
+.reader-chapter-block h1 { font-size: 1.4em; }
+.reader-chapter-block h2 { font-size: 1.22em; }
+.reader-chapter-block h3 { font-size: 1.1em; }
+.reader-chapter-block p { margin: 0.55em 0; }
+.reader-chapter-block img { max-width: 100%; height: auto; border-radius: 6px; }
+.reader-chapter-block blockquote { border-left: 3px solid #c9a227; margin: 0.6em 0; padding: 4px 12px; background: rgba(201, 162, 39, .08); border-radius: 0 6px 6px 0; }
+.reader-chapter-block pre, .reader-chapter-block code { font-family: Consolas, Menlo, monospace; font-size: 0.9em; background: rgba(128, 128, 128, .12); border-radius: 4px; }
+.reader-chapter-block pre { padding: 10px; overflow-x: auto; }
+.reader-chapter-block code { padding: 1px 5px; }
+.reader-chapter-block table { border-collapse: collapse; margin: 0.6em 0; width: 100%; }
+.reader-chapter-block th, .reader-chapter-block td { border: 1px solid rgba(128, 128, 128, .3); padding: 6px 10px; }
+
+.reader-bottombar { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--rd-panel, transparent); border-top: 1px solid var(--rd-border, rgba(120, 120, 120, .12)); flex-shrink: 0; }
+.reader-bottombar .rd-progress-text { flex: 1; text-align: center; font-size: 12px; color: var(--rd-muted, #999); }
+.reader-progress-track { height: 3px; background: rgba(128, 128, 128, .2); border-radius: 2px; overflow: hidden; flex: 1; }
+.reader-progress-track > i { display: block; height: 100%; background: linear-gradient(90deg, #3a8a6a, #5ab892); border-radius: 2px; }
+
+/* 选中工具栏 */
+.rd-sel-tool { position: fixed; z-index: 10010; background: #333; color: #fff; border-radius: 8px; padding: 6px 8px; display: flex; gap: 6px; align-items: center; box-shadow: 0 4px 14px rgba(0, 0, 0, .3); }
+.rd-sel-tool .rd-sel-note { background: #444; border: 1px solid #555; color: #fff; font-size: 12px; padding: 3px 8px; border-radius: 6px; cursor: pointer; }
+.rd-sel-tool .rd-sel-color { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #fff; cursor: pointer; }
+.rd-sel-tool .rd-sel-color:hover { transform: scale(1.15); }
+
+/* 目录抽屉 */
+.rd-drawer { position: absolute; top: 0; bottom: 0; left: 0; width: min(300px, 78%); background: var(--rd-panel, #f6f3ec); border-right: 1px solid var(--rd-border, rgba(120, 120, 120, .15)); transform: translateX(-102%); transition: transform .25s ease; z-index: 10; display: flex; flex-direction: column; }
+.rd-drawer.open { transform: translateX(0); }
+.rd-drawer-head { padding: 12px; font-weight: 700; font-size: 14px; border-bottom: 1px solid var(--rd-border, rgba(120, 120, 120, .12)); color: var(--rd-fg, #333); display: flex; justify-content: space-between; align-items: center; }
+.rd-drawer-list { flex: 1; overflow-y: auto; padding: 6px; }
+.rd-toc-item { display: block; width: 100%; text-align: left; background: transparent; border: none; color: var(--rd-fg, #333); font-size: 13px; padding: 8px 10px; border-radius: 6px; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rd-toc-item:hover { background: rgba(128, 128, 128, .15); }
+.rd-toc-item.rd-toc-active { background: rgba(58, 138, 106, .18); color: #2a6a5a; font-weight: 600; }
+
+/* 设置/搜索面板 */
+.rd-pop { position: absolute; top: 48px; right: 10px; background: var(--rd-panel, #fff); border: 1px solid var(--rd-border, rgba(120, 120, 120, .18)); border-radius: 10px; box-shadow: 0 6px 20px rgba(0, 0, 0, .14); padding: 12px; z-index: 11; min-width: 240px; color: var(--rd-fg, #333); }
+.rd-pop-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; font-size: 13px; }
+.rd-pop-row:last-child { margin-bottom: 0; }
+.rd-pop-row input[type="search"] { flex: 1; padding: 6px 8px; border: 1px solid rgba(128, 128, 128, .3); border-radius: 6px; background: transparent; color: var(--rd-fg, #333); font-size: 13px; }
+.rd-theme-btn { font-size: 12px; padding: 4px 9px; border-radius: 6px; border: 1px solid rgba(128, 128, 128, .35); background: transparent; color: var(--rd-fg, #333); cursor: pointer; }
+.rd-theme-btn.active { background: rgba(58, 138, 106, .2); border-color: #3a8a6a; }
+.rd-search-res { max-height: 220px; overflow-y: auto; margin-top: 8px; border-top: 1px solid rgba(128, 128, 128, .15); padding-top: 6px; }
+.rd-search-res .rd-sr { display: block; width: 100%; text-align: left; background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; font-size: 12px; color: var(--rd-fg, #333); }
+.rd-search-res .rd-sr:hover { background: rgba(128, 128, 128, .15); }
+.rd-search-res .rd-sr b { color: #c0392b; }
+
+/* PDF 页 */
+.rd-pdf-page { display: flex; justify-content: center; padding: 10px 0; }
+.rd-pdf-page canvas { max-width: 100%; box-shadow: 0 2px 10px rgba(0, 0, 0, .18); background: #fff; border-radius: 2px; }
+
+/* 阅读统计 */
+.rd-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 12px; }
+.rd-stat-card { padding: 14px; background: var(--bg-card, #fff); border-radius: 10px; text-align: center; border: 1px solid rgba(120, 120, 120, .12); }
+.rd-stat-card .num { font-size: 22px; font-weight: 700; color: #3a8a6a; }
+.rd-stat-card .lbl { font-size: 12px; color: var(--text-muted, #888); margin-top: 4px; }
+
+/* 笔记弹层 */
+.rd-note-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, .45); z-index: 10020; display: flex; align-items: center; justify-content: center; }
+.rd-note-modal .rd-note-box { background: #fff; color: #333; border-radius: 12px; padding: 16px; width: min(400px, 90%); box-shadow: 0 10px 30px rgba(0, 0, 0, .25); }
+.rd-note-modal textarea { width: 100%; height: 90px; border: 1px solid #ccc; border-radius: 8px; padding: 8px; font-size: 13px; resize: vertical; box-sizing: border-box; }
+.rd-note-modal .rd-note-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+.rd-note-modal .rd-note-btn { padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.rd-note-modal .rd-note-btn.primary { background: #3a8a6a; color: #fff; }
+.rd-note-modal .rd-note-btn.plain { background: #eee; color: #333; }
+
 /* ===== PDF 板块 ===== */
 .pdf-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
 .pdf-tab{padding:6px 16px;border-radius:16px;border:1.5px solid var(--border);font-size:13px;cursor:pointer;background:var(--bg-hover);color:var(--text-secondary);font-weight:600}
@@ -1592,6 +1699,29 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 /* 流式输出文本区 */
 .ai-stream-content{margin-top:12px;max-height:300px;overflow-y:auto;text-align:left;font-size:13px;color:#2c1810;background:#f8f4ee;border-radius:6px;padding:10px 12px;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-width:500px}
 .dark-mode .ai-stream-content{background:#1a1a3e;color:#d4c8b8}
+.ai-task-dock{position:fixed;right:16px;bottom:16px;z-index:99990;width:320px;max-width:calc(100vw - 32px);background:var(--bg-card,#fff);border:1px solid rgba(0,0,0,0.12);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.25);font-size:13px;overflow:hidden}
+.ai-task-dock-hdr{display:flex;align-items:center;gap:8px;padding:10px 12px;background:linear-gradient(135deg,#2a5a7a,#4a9aaa);color:#fff;cursor:pointer;font-weight:600}
+.ai-task-dock-title{flex:1}
+.ai-task-clear{margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,0.5);color:#fff;border-radius:6px;padding:2px 8px;cursor:pointer;font-size:12px}
+.ai-task-dock-list{max-height:280px;overflow-y:auto;padding:8px}
+.ai-task-card{border:1px solid rgba(0,0,0,0.08);border-radius:8px;padding:8px 10px;margin-bottom:6px;background:var(--bg-card,#fdfdfd);cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.ai-task-card:hover{border-color:#4a9aaa;box-shadow:0 2px 8px rgba(74,154,170,0.25)}
+.ai-task-card.error{border-left:3px solid #c0392b}
+.ai-task-card.done{border-left:3px solid #27ae60}
+.ai-task-card.stopped{border-left:3px solid #95a5a6}
+.ai-task-card.running,.ai-task-card.queued{border-left:3px solid #4a9aaa}
+.ai-task-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ai-task-ic{width:18px}
+.ai-task-label{font-weight:600;flex:1;min-width:60px;word-break:break-all}
+.ai-task-st{font-size:11px;color:#888}
+.ai-task-btn{margin-left:2px;padding:2px 8px;border:none;border-radius:6px;background:#eef2f6;color:#2c3e50;cursor:pointer;font-size:12px}
+.ai-task-btn[data-ai-stop]{background:#fdecea;color:#c0392b}
+.ai-task-body{margin-top:6px;max-height:180px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;background:#f8f4ee;border-radius:6px;padding:8px 10px;font-size:12px;color:#2c1810;line-height:1.6}
+.dark-mode .ai-task-body{background:#1a1a3e;color:#d4c8b8}
+.dark-mode .ai-task-card{background:#1e1e3f;border-color:rgba(255,255,255,0.1)}
+.dark-mode .ai-task-btn{background:#2a2a55;color:#d4c8b8}
+#aiTaskDockMini{position:fixed;right:16px;bottom:16px;z-index:99991;min-width:46px;height:46px;padding:0 14px;border-radius:23px;background:linear-gradient(135deg,#2a5a7a,#4a9aaa);color:#fff;border:none;box-shadow:0 6px 20px rgba(0,0,0,0.3);font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#aiTaskDockMini:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.35)}
 /* v16: 验证结果弹窗 */
 .verify-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:99999;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s}
 .verify-card{background:var(--card-bg,#fffdf7);border-radius:16px;padding:24px;max-width:480px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,.2);max-height:80vh;overflow-y:auto}
@@ -11778,6 +11908,7 @@ else if (mode==='publisher') renderPublisherPanel();
 				else if (mode==='dce') renderDcePanel();
 else if (mode==='speed') renderSpeedPanel();
 	else if (mode==='pdf') renderPdfPanel();
+	else if (mode==='reader') renderReaderPanel();
 	else if (mode==='netsec') renderNetsecPanel();
 else renderStats();
 updateUI();
@@ -12471,10 +12602,10 @@ return tpl.replace(/\{(\w+)\}/g, function(m, k) { return vals[k] !== undefined ?
 // 带超时的 fetch 封装
 function fetchWithTimeout(url, options, timeoutMs) {
 timeoutMs = timeoutMs || 60000;
-var controller = new AbortController();
-var timer = setTimeout(function() { controller.abort(); }, timeoutMs);
+var ctrl = (options && options.controller) || new AbortController();
+var timer = setTimeout(function() { ctrl.abort(); }, timeoutMs);
 options = options || {};
-options.signal = controller.signal;
+options.signal = ctrl.signal;
 return fetch(url, options).then(function(r) {
 clearTimeout(timer);
 return r;
@@ -12583,7 +12714,8 @@ if (licenseKey) headers['X-License-Key'] = licenseKey;
 return fetchWithTimeout(proxyUrl, {
 method: 'POST',
 headers: headers,
-body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature})
+body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature}),
+controller: options.controller
 }, timeout).then(function(r){
 if (!r.ok) return r.text().then(function(t){ var err=new Error(t); err.status=r.status; throw err; });
 if (rawResponse) return r;
@@ -12623,7 +12755,8 @@ if (options.prompt) msgs.push({role:'user', content: options.prompt});
 return fetchWithTimeout(endpoint, {
 method: 'POST',
 headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
-body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature, search: options.search ? true : undefined, response_format: options.responseFormat})
+body: JSON.stringify({model:model, messages:msgs, max_tokens:maxTokens, temperature:temperature, search: options.search ? true : undefined, response_format: options.responseFormat}),
+controller: options.controller
 }, timeout).then(function(r) {
 if (!r.ok) return r.text().then(function(t) { var err = new Error(t); err.status = r.status; throw err; });
 return r.json();
@@ -12762,8 +12895,9 @@ if (msgs.length === 0) {
 if (options.systemPrompt) msgs.push({role:'system', content: options.systemPrompt});
 if (options.prompt) msgs.push({role:'user', content: options.prompt});
 }
-var controller = new AbortController();
-var timer = setTimeout(function() { controller.abort(); }, timeout);
+var controller = options.controller || new AbortController();
+var _timeoutHit = false;
+var timer = setTimeout(function() { _timeoutHit = true; controller.abort(); }, timeout);
 return fetch(endpoint, {
 method: 'POST',
 headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
@@ -12775,7 +12909,10 @@ if (!response.ok) return response.text().then(function(t) { var err = new Error(
 return readSSEStream(response, onChunk);
 }).catch(function(err) {
 clearTimeout(timer);
-if (err.name === 'AbortError') throw new Error('请求超时，请检查网络或更换模型');
+if (err.name === 'AbortError') {
+if (!_timeoutHit && controller.signal.aborted) throw new Error('请求已停止');
+throw new Error('请求超时，请检查网络或更换模型');
+}
 throw err;
 });
 }
@@ -12796,8 +12933,9 @@ if (options.prompt) msgs.push({role:'user', content: options.prompt});
 }
 var headers = {'Content-Type':'application/json'};
 if (licenseKey) headers['X-License-Key'] = licenseKey;
-var controller = new AbortController();
-var timer = setTimeout(function() { controller.abort(); }, timeout);
+var controller = options.controller || new AbortController();
+var _timeoutHit = false;
+var timer = setTimeout(function() { _timeoutHit = true; controller.abort(); }, timeout);
 return fetch(proxyUrl, {
 method: 'POST',
 headers: headers,
@@ -12809,22 +12947,237 @@ if (!response.ok) return response.text().then(function(t){ var err=new Error(t);
 return readSSEStream(response, onChunk);
 }).catch(function(err) {
 clearTimeout(timer);
-if (err.name === 'AbortError') throw new Error('请求超时，请检查网络或更换模型');
+if (err.name === 'AbortError') {
+if (!_timeoutHit && controller.signal.aborted) throw new Error('请求已停止');
+throw new Error('请求超时，请检查网络或更换模型');
+}
 throw err;
 });
 }
+// ===== AI 任务管理器：多板块请求独立并发 / 手动停止 / 状态隔离 =====
+var AI_TASK_MAX_CONCURRENT = 5;   // 最大并发请求数（用户确认）
+var _aiSafeProxy = null, _aiSafeStyle = null, _aiSafeClassList = null;
+// 元素安全桩：切走后 getElementById 返回 null 会抛错中断，这里返回 Proxy 静默容错
+function aiSafe(id) {
+	var el = document.getElementById(id);
+	if (el) return el;
+	if (!_aiSafeProxy) {
+		_aiSafeStyle = new Proxy({}, { set: function(){ return true; }, get: function(){ return function(){ return ''; }; } });
+		_aiSafeClassList = new Proxy({}, { get: function(){ return function(){ return true; }; }, has: function(){ return true; } });
+		_aiSafeProxy = new Proxy({}, {
+			set: function(){ return true; },
+			get: function(t, k) {
+				if (k === 'style') return _aiSafeStyle;
+				if (k === 'classList') return _aiSafeClassList;
+				if (k === 'dataset') return {};
+				if (k === 'length') return 0;
+				if (k === 'innerText' || k === 'textContent' || k === 'value' || k === 'scrollTop') return '';
+				return function(){ return undefined; };
+			},
+			has: function(){ return true; }
+		});
+	}
+	return _aiSafeProxy;
+}
+var aiTaskManager = {
+	tasks: {}, order: [], seq: 1, running: 0, queue: [],
+	expandedId: null, collapsed: false, minimized: false, lastStreamId: null,
+	panelLabel: function() {
+		try {
+			var m = currentMode || '';
+			for (var i = 0; i < PANEL_DEFS.length; i++) if (PANEL_DEFS[i].mode === m) return PANEL_DEFS[i].label;
+		} catch(e) {}
+		return currentMode || 'AI';
+	},
+	begin: function(opts) {
+		var self = this;
+		var task = { id: 'ait' + (this.seq++), panel: opts.panel || '', label: opts.label || 'AI 请求', status: 'queued', content: '', error: '', controller: new AbortController(), startTime: Date.now(), stream: !!opts.stream, _resolve: null, _released: false, _ended: false };
+		this.tasks[task.id] = task; this.order.push(task.id);
+		return new Promise(function(resolve) {
+			task._resolve = resolve;
+			self._pump(task);
+		});
+	},
+	_pump: function(task) {
+		if (task.status === 'stopped') { task._resolve(task); return; }
+		if (this.running >= AI_TASK_MAX_CONCURRENT) { this.queue.push(task); this.render(); return; }
+		this.running++;
+		task.status = 'running';
+		this.render();
+		task._resolve(task);
+	},
+	release: function(task) {
+		if (!task || task._released) return;
+		task._released = true;
+		this.running = Math.max(0, this.running - 1);
+		while (this.queue.length && this.running < AI_TASK_MAX_CONCURRENT) {
+			var next = this.queue.shift();
+			this._pump(next);
+		}
+		this.render();
+	},
+	stop: function(id) {
+		var task = this.tasks[id]; if (!task) return;
+		if (task.status === 'queued') {
+			task.status = 'stopped';
+			var qi = this.queue.indexOf(task); if (qi !== -1) this.queue.splice(qi, 1);
+			if (task._resolve) task._resolve(task);
+		} else if (task.status === 'running') {
+			task.status = 'stopped';
+			try { task.controller.abort(); } catch(e) {}
+			this.release(task);
+		}
+		this.render();
+	},
+	setContent: function(id, full) {
+		var task = this.tasks[id]; if (!task) return;
+		task.content = full || '';
+		this.lastStreamId = id;
+		var self = this;
+		if (!task._rt) { task._rt = true; setTimeout(function(){ task._rt = false; self.render(); }, 150); }
+	},
+	end: function(id, err) {
+		var task = this.tasks[id]; if (!task || task._ended) return;
+		task._ended = true;
+		if (err) { task.error = err.message || String(err); if (task.status !== 'stopped') task.status = 'error'; }
+		else if (task.status !== 'stopped') task.status = 'done';
+		task.content = task.content || '';
+		this.release(task);
+	},
+	stoppedErr: function() { var e = new Error('已手动停止'); e.name = 'AbortError'; e.stopped = true; return e; },
+	anyActive: function() {
+		for (var k in this.tasks) { var t = this.tasks[k]; if (t && (t.status === 'running' || t.status === 'queued')) return true; }
+		return false;
+	},
+	clearDone: function() {
+		for (var k in this.tasks) { var t = this.tasks[k]; if (t && (t.status === 'done' || t.status === 'error' || t.status === 'stopped')) delete this.tasks[k]; }
+		this.order = this.order.filter(function(id){ return !!this.tasks[id]; }, this);
+		this.render();
+	},
+	_statusName: function(s) { return { queued: '排队中', running: '生成中', done: '已完成', error: '失败', stopped: '已停止' }[s] || s; },
+	_cardHtml: function(t) {
+		var icons = { queued: '⏳', running: '⏳', done: '✅', error: '❌', stopped: '⏹' };
+		var label = t.label || t.panel || 'AI';
+		var lenStr = t.content && t.content.length ? ' · ' + t.content.length + '字' : '';
+		var exp = this.expandedId === t.id;
+		var btnStop = (t.status === 'running' || t.status === 'queued') ? '<button class="ai-task-btn" data-ai-stop="' + t.id + '">⏹ 停止</button>' : '';
+		var btnExp = (t.status === 'done' || t.status === 'error' || t.status === 'stopped') ? '<button class="ai-task-btn" data-ai-expand="' + t.id + '">' + (exp ? '▴ 收起' : '▾ 结果') + '</button>' : '';
+		var body = exp ? '<div class="ai-task-body">' + escHtml(t.content || t.error || '') + '</div>' : '';
+		return '<div class="ai-task-card ' + t.status + '" data-ai-open="' + t.id + '" title="点击打开对应板块"><div class="ai-task-line"><span class="ai-task-ic">' + (icons[t.status] || '⏳') + '</span><span class="ai-task-label">' + escHtml(label) + '</span><span class="ai-task-st">' + this._statusName(t.status) + '</span>' + lenStr + btnStop + btnExp + '</div>' + body + '</div>';
+	},
+	render: function() {
+		var dock = document.getElementById('aiTaskDock'); if (!dock) return;
+		var list = document.getElementById('aiTaskDockList'); if (!list) return;
+		if (this.collapsed) { if (list.style.display !== 'none') list.style.display = 'none'; return; }
+		list.style.display = '';
+		var html = '';
+		var active = 0;
+		for (var i = this.order.length - 1; i >= 0; i--) {
+			var t = this.tasks[this.order[i]];
+			if (!t) continue;
+			if (t.status === 'running' || t.status === 'queued') active++;
+			html += this._cardHtml(t);
+		}
+		list.innerHTML = html;
+		var cnt = document.getElementById('aiTaskDockCount');
+		if (cnt) cnt.textContent = active ? ' (' + active + ' 运行中)' : '';
+		dock.style.display = this.minimized ? 'none' : ((html || active) ? '' : 'none');
+		if (this.minimized) this._syncMini(active);
+	},
+	toggle: function() { this.collapsed = !this.collapsed; this.render(); },
+	_syncMini: function(active) {
+		var mini = document.getElementById('aiTaskDockMini');
+		if (!mini) return;
+		var n = active;
+		if (n == null) { n = 0; for (var k in this.tasks) { var t = this.tasks[k]; if (t && (t.status === 'running' || t.status === 'queued')) n++; } }
+		mini.textContent = '⚡ ' + n;
+	},
+	minimize: function() {
+		this.minimized = true;
+		var dock = document.getElementById('aiTaskDock'); if (dock) dock.style.display = 'none';
+		if (!document.getElementById('aiTaskDockMini')) {
+			var mini = document.createElement('div');
+			mini.id = 'aiTaskDockMini';
+			mini.className = 'ai-task-dock-mini';
+			mini.title = '显示 AI 任务';
+			document.body.appendChild(mini);
+		}
+		this._syncMini();
+	},
+	restore: function() {
+		this.minimized = false;
+		var mini = document.getElementById('aiTaskDockMini'); if (mini) mini.remove();
+		this.render();
+	},
+	openPanel: function(id) {
+		var t = this.tasks[id]; if (!t || !t.panel) return;
+		var m = t.panel;
+		if ((state.deletedPanels || []).indexOf(m) !== -1) { showToast('该面板已永久删除，无法访问'); return; }
+		if ((state.hiddenPanels || []).indexOf(m) !== -1) {
+			var hp = state.hiddenPanels || []; var hi = hp.indexOf(m);
+			if (hi !== -1) hp.splice(hi, 1);
+			state.hiddenPanels = hp; saveState();
+		}
+		try { switchMode(m); } catch (e) { showToast('打开板块失败'); }
+	},
+	init: function() {
+		var self = this;
+		var dock = document.createElement('div');
+		dock.id = 'aiTaskDock'; dock.className = 'ai-task-dock';
+		dock.innerHTML = '<div class="ai-task-dock-hdr" id="aiTaskDockHdr"><span class="ai-task-dock-title">⚡ AI 任务</span><span id="aiTaskDockCount"></span><button class="ai-task-clear" data-ai-min="1" title="隐藏任务托盘">✕</button><button class="ai-task-clear" data-ai-clear="1" title="清除已完成">🧹</button></div><div id="aiTaskDockList" class="ai-task-dock-list"></div>';
+		document.body.appendChild(dock);
+		document.addEventListener('click', function(e) {
+			var el = e.target;
+			while (el && el !== document && el.getAttribute) {
+				if (el.getAttribute('data-ai-stop')) { self.stop(el.getAttribute('data-ai-stop')); return; }
+				if (el.getAttribute('data-ai-expand')) {
+					var id = el.getAttribute('data-ai-expand');
+					self.expandedId = self.expandedId === id ? null : id;
+					self.render(); return;
+				}
+				if (el.getAttribute('data-ai-clear')) { self.clearDone(); return; }
+				if (el.id === 'aiTaskDockHdr') { self.toggle(); return; }
+				if (el.getAttribute('data-ai-min')) { self.minimize(); return; }
+				if (el.id === 'aiTaskDockMini') { self.restore(); return; }
+				if (el.getAttribute('data-ai-open')) { self.openPanel(el.getAttribute('data-ai-open')); return; }
+				el = el.parentNode;
+			}
+		});
+		this.render();
+	}
+};
+aiTaskManager.init();
+
 // ===== 统一 AI 调用（带重试 + 错误提示） =====
 function callAI(options) {
-// 流式模式
-if (options.stream && typeof options.stream === 'function') {
-return aiApiCallStream(options, options.stream);
+// 统一 AI 调用（带重试 + 错误提示）——每次请求注册到 aiTaskManager：独立并发/手动停止/状态隔离
+var streamFn = (typeof options.stream === 'function') ? options.stream : null;
+var task = null;
+return aiTaskManager.begin({
+panel: currentMode,
+label: window._aiPendingLabel || aiTaskManager.panelLabel(),
+stream: !!streamFn
+}).then(function(t) {
+task = t;
+if (task.status === 'stopped') throw aiTaskManager.stoppedErr();
+var merged = {};
+for (var _k in options) merged[_k] = options[_k];
+merged.controller = task.controller;
+if (streamFn) {
+merged.stream = function(chunk, fullText) {
+aiTaskManager.setContent(task.id, fullText);
+streamFn(chunk, fullText);
+};
+return aiApiCallStream(merged, merged.stream);
 }
 var maxRetries = options.retries !== undefined ? options.retries : AI_RETRY_MAX;
 var retryDelay = options.retryDelay || AI_RETRY_INTERVAL_NETWORK;
 var attempt = 0;
 var lastError = null;
 function doCall() {
-return aiApiCall(options).catch(function(err) {
+if (task.status === 'stopped') return Promise.reject(aiTaskManager.stoppedErr());
+return aiApiCall(merged).catch(function(err) {
+if (task.status === 'stopped') return Promise.reject(aiTaskManager.stoppedErr());
 lastError = err;
 var msg = (err.message || '').toLowerCase();
 if (attempt < maxRetries && (msg.indexOf('abort') !== -1 || msg.indexOf('timeout') !== -1 || msg.indexOf('429') !== -1 || msg.indexOf('fetch') !== -1 || msg.indexOf('network') !== -1 || msg.indexOf('econnrefused') !== -1 || msg.indexOf('econnreset') !== -1)) {
@@ -12841,6 +13194,14 @@ throw new Error(userMsg);
 });
 }
 return doCall();
+}).then(function(text) {
+aiTaskManager.end(task ? task.id : null);
+return text;
+}, function(err) {
+aiTaskManager.end(task ? task.id : null, err);
+if (task && task.status === 'stopped') throw aiTaskManager.stoppedErr();
+throw err;
+});
 }
 // ===== v14: License System =====
 function verifyLicenseKey(key) {
@@ -18184,7 +18545,7 @@ phaseCGenerated: false,
 phaseCSubmitted: false
 };
 aiLearnSaveState();
-renderAILearnPanel();
+if (currentMode === 'ailearn') renderAILearnPanel();
 }
 function aiLearnPhaseA(refresh) {
 var s = _aiLearnState;
@@ -18208,7 +18569,7 @@ if (parsed && parsed.models && parsed.models.length > 0) {
 _aiLearnState.phaseA = parsed;
 _aiLearnState.phaseAGenerated = true;
 aiLearnSaveState();
-renderAILearnPanel();
+if (currentMode === 'ailearn') renderAILearnPanel();
 showToast('✅ 已提取 ' + parsed.models.length + ' 个核心思维模型');
 } else {
 showToast('AI返回格式异常，请重试');
@@ -18240,7 +18601,7 @@ if (parsed && parsed.debates && parsed.debates.length > 0) {
 _aiLearnState.phaseB = parsed;
 _aiLearnState.phaseBGenerated = true;
 aiLearnSaveState();
-renderAILearnPanel();
+if (currentMode === 'ailearn') renderAILearnPanel();
 showToast('✅ 已发现 ' + parsed.debates.length + ' 个争论焦点');
 } else {
 showToast('AI返回格式异常，请重试');
@@ -18261,8 +18622,9 @@ var p = '基于“' + s.topic + '”领域，请设计 **10 道深度理解问�
 if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "questions": [\n    {"id": 0, "type": "open", "question": "问题描述...", "modelAnswer": "标准的深度理解答案要点"},\n    {"id": 1, "type": "open", "question": "问题描述...", "modelAnswer": "标准的深度理解答案要点（包含评分要点）"}\n  ]\n}';
 var _gen = ++_aiLearnPhaseCGen;
-showAILoading('正在生成深度测试题...', 'AI正在为 "' + s.topic + '" 设计10道深度问答题');
-callAI({systemPrompt: '你是一位教育测评与测量学专家，专长于基于认知层次理论（如Bloom认知分类、SOLO分类法）设计高质量测评工具。\n\n你的核心能力：\n1. 精准区分"事实记忆"与"深层理解"，能设计出直击思维方式而非知识储备的题目\n2. 擅长多维度命题：能从概念理解、应用分析、综合评价等不同认知层次设计题目\n【出题标准】\n1. 每道题必须考查特定认知层次（在题目标注：理解/应用/分析/评价/创造）\n2. 题干表述精确无歧义，不能通过措辞暗示正确选项\n3. 开放题的modelAnswer需包含评分要点和不同层次答案的区分标准\n4. 整套题目应覆盖不同认知层次，从理解到高阶思维递进', prompt: p, temperature: 0.4, maxTokens: 12288, timeout: 120000, taskType: 'exam'})
+showAILoading('正在生成深度测试题...', 'AI正在为 "' + s.topic + '" 设计10道深度问答题', true);
+callAI({systemPrompt: '你是一位教育测评与测量学专家，专长于基于认知层次理论（如Bloom认知分类、SOLO分类法）设计高质量测评工具。\n\n你的核心能力：\n1. 精准区分"事实记忆"与"深层理解"，能设计出直击思维方式而非知识储备的题目\n2. 擅长多维度命题：能从概念理解、应用分析、综合评价等不同认知层次设计题目\n【出题标准】\n1. 每道题必须考查特定认知层次（在题目标注：理解/应用/分析/评价/创造）\n2. 题干表述精确无歧义，不能通过措辞暗示正确选项\n3. 开放题的modelAnswer需包含评分要点和不同层次答案的区分标准\n4. 整套题目应覆盖不同认知层次，从理解到高阶思维递进', prompt: p, temperature: 0.4, maxTokens: 12288, timeout: 120000, taskType: 'exam',
+  stream: updateAILoadingStream})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return; // 防止旧请求覆盖新数据
@@ -18272,7 +18634,7 @@ _aiLearnState.phaseC = { questions: parsed.questions, evaluations: null, totalSc
 _aiLearnState.phaseCGenerated = true;
 _aiLearnState.phaseCSubmitted = false;
 aiLearnSaveState();
-renderAILearnPanel();
+if (currentMode === 'ailearn') renderAILearnPanel();
 showToast('✅ 已生成 ' + parsed.questions.length + ' 道测试题');
 } else {
 showToast('AI返回格式异常，请重试');
@@ -18328,7 +18690,7 @@ _aiLearnState.phaseC.maxScore = parsed.maxScore || (s.phaseC.questions.length * 
 _aiLearnState.phaseC.summary = parsed.summary || '';
 _aiLearnState.phaseCSubmitted = true;
 aiLearnSaveState();
-renderAILearnPanel();
+if (currentMode === 'ailearn') renderAILearnPanel();
 showToast('📊 评估完成！得分: ' + (parsed.overallScore || 0) + '/' + (parsed.maxScore || (s.phaseC.questions.length * 10)));
 } else {
 showToast('AI返回格式异常，请重试');
@@ -18602,6 +18964,7 @@ h += '<div style="margin-top:8px;padding:12px;background:var(--bg-card);border-r
 + '<div style="font-size:12px;color:var(--text-muted)">点击课程"查看详情"，使用 AI 分析获取概念提取、盲点诊断、扩展推荐和深化路径。</div>'
 + '</div>';
 h += '</div>';
+h += readerRenderKBNotesSection();
 area.innerHTML = h;
 updateUI();
 }
@@ -18767,8 +19130,9 @@ _kbProcessing = true;
 var cd = kbGetCourseData(courseName);
 if (!cd) { _kbProcessing = false; showToast('课程数据不存在'); return; }
 var prompt = buildPrompt(courseName, cd);
-showAILoading(loadingMsg, '正在分析 "' + courseName + '"');
-callAI({systemPrompt: systemPrompt, prompt: prompt, temperature: 0.3, maxTokens: 12288, timeout: 120000})
+showAILoading(loadingMsg, '正在分析 "' + courseName + '"', true);
+callAI({systemPrompt: systemPrompt, prompt: prompt, temperature: 0.3, maxTokens: 12288, timeout: 120000,
+  stream: updateAILoadingStream})
 .then(function(resp) {
 hideAILoading();
 _kbProcessing = false;
@@ -18779,7 +19143,7 @@ if (!kb.courses[courseName]) kb.courses[courseName] = {};
 kb.courses[courseName][key] = { extractedAt: new Date().toISOString(), data: parsed[dataKey] };
 kbSaveData(kb);
 showToast('✅ ' + label + ' 完成');
-kbRenderCourseDetail(courseName);
+if (currentMode === 'knowledgebase') kbRenderCourseDetail(courseName);
 } else {
 showToast('AI返回格式异常，请重试');
 }
@@ -18935,7 +19299,7 @@ var kb = kbLoadData();
 kb.crossGraph = { generatedAt: new Date().toISOString(), data: { nodes: parsed.nodes, edges: parsed.edges || [] } };
 kbSaveData(kb);
 showToast('✅ 知识图谱构建完成');
-kbRenderGraphView();
+if (currentMode === 'knowledgebase') kbRenderGraphView();
 } else {
 showToast('AI返回格式异常，请重试');
 }
@@ -19080,6 +19444,1565 @@ return loadScriptLib('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 });
 }
+/* ===== 阅读器板块（reader）===== */
+var READER_DB = 'ddj_reader';
+var _readerDbPromise = null;
+var _readerBooks = [];
+var _readerChapters = [];
+var _readerBook = null;
+var _readerCurrent = null;
+var _readerNotesByChapter = {};
+var _readerPdfDoc = null;
+var _readerHeartbeat = null;
+var _readerBound = false;
+var _readerCoverUrls = {};
+var _readerSelText = '';
+var _readerNoteCb = null;
+var _readerNoteMode = 'highlight';
+var _readerResizeBound = false;
+var _readerAuto = { active: false, speed: 1, timer: null };
+
+function readerSettingsLoad() {
+  var d = { mode: 'paged', theme: 'light', fontSize: 17, lineHeight: 1.9, ttsRate: 1 };
+  try { var s = JSON.parse(safeGetItem('reader_settings', 'null')); if (s) { for (var k in s) { if (s.hasOwnProperty(k)) d[k] = s[k]; } } } catch (e) {}
+  return d;
+}
+function readerSettingsSave(s) { safeSetItem('reader_settings', JSON.stringify(s)); }
+
+function readerOpenDb() {
+  if (_readerDbPromise) return _readerDbPromise;
+  _readerDbPromise = new Promise(function(resolve, reject) {
+    var req = indexedDB.open(READER_DB, 1);
+    req.onupgradeneeded = function(e) {
+      var db = e.target.result;
+      if (!db.objectStoreNames.contains('books')) db.createObjectStore('books', { keyPath: 'id' });
+      if (!db.objectStoreNames.contains('content')) db.createObjectStore('content', { keyPath: 'bookId' });
+      if (!db.objectStoreNames.contains('progress')) db.createObjectStore('progress', { keyPath: 'bookId' });
+      if (!db.objectStoreNames.contains('notes')) db.createObjectStore('notes', { keyPath: 'id' });
+      if (!db.objectStoreNames.contains('stats')) db.createObjectStore('stats', { keyPath: 'key' });
+    };
+    req.onsuccess = function(e) { resolve(e.target.result); };
+    req.onerror = function(e) { reject(e.target.error); };
+  });
+  return _readerDbPromise;
+}
+function readerIdbPut(store, val) {
+  return readerOpenDb().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).put(val);
+      tx.oncomplete = function() { resolve(val); };
+      tx.onerror = function() { reject(tx.error); };
+    });
+  });
+}
+function readerIdbGet(store, key) {
+  return readerOpenDb().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction(store, 'readonly');
+      var req = tx.objectStore(store).get(key);
+      req.onsuccess = function() { resolve(req.result); };
+      req.onerror = function() { reject(req.error); };
+    });
+  });
+}
+function readerIdbGetAll(store) {
+  return readerOpenDb().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction(store, 'readonly');
+      var req = tx.objectStore(store).getAll();
+      req.onsuccess = function() { resolve(req.result || []); };
+      req.onerror = function() { reject(req.error); };
+    });
+  });
+}
+function readerIdbDelete(store, key) {
+  return readerOpenDb().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).delete(key);
+      tx.oncomplete = function() { resolve(); };
+      tx.onerror = function() { reject(tx.error); };
+    });
+  });
+}
+
+/* —— 书架 —— */
+function renderReaderPanel() {
+  var area = $id('contentArea');
+  area.innerHTML = '<div class="reader-shelf"><div class="reader-empty"><div class="reader-empty-icon">📚</div><p>正在加载书架…</p></div></div>';
+  readerLoadBooks().then(function(books) {
+    return Promise.all([Promise.resolve(books), readerIdbGetAll('progress')]).then(function(r) { return { books: r[0], progress: r[1] }; });
+  }).then(function(d) {
+    readerRenderShelf(d.books, d.progress);
+  }).catch(function(err) {
+    area.innerHTML = '<div class="reader-empty"><div class="reader-empty-icon">⚠️</div><p>书架加载失败：' + escHtml(err && err.message ? err.message : String(err)) + '</p></div>';
+  });
+}
+function readerLoadBooks() {
+  return readerIdbGetAll('books').then(function(list) {
+    list.sort(function(a, b) { return (b.lastReadAt || b.addedAt || 0) - (a.lastReadAt || a.addedAt || 0); });
+    _readerBooks = list;
+    return list;
+  });
+}
+function readerFmtName(f) {
+  return ({ epub: 'EPUB', mobi: 'MOBI', azw3: 'AZW3', pdf: 'PDF', txt: 'TXT', md: 'MD', docx: 'DOCX' })[f] || (f || '').toUpperCase();
+}
+function readerRenderShelf(books, progress) {
+  var area = $id('contentArea');
+  var byBook = {};
+  if (progress) { progress.forEach(function(p) { if (p && p.bookId) byBook[p.bookId] = p; }); }
+  for (var ci = 0; ci < books.length; ci++) {
+    if (books[ci].cover && !_readerCoverUrls[books[ci].id]) {
+      try { _readerCoverUrls[books[ci].id] = URL.createObjectURL(books[ci].cover); } catch (e) {}
+    }
+  }
+  var h = '<div class="reader-shelf">';
+  h += '<div class="reader-shelf-header">';
+  h += '<div style="font-size:16px;font-weight:700">📖 我的书架 <span style="font-size:12px;color:var(--text-muted)">' + books.length + ' 本</span></div>';
+  h += '<div class="reader-shelf-actions">';
+  h += '<button class="reader-import-btn" data-rd-stats="1">📊 阅读统计</button>';
+  h += '<label class="reader-import-btn" style="cursor:pointer">📚 导入电子书<input type="file" id="readerFileInput" multiple accept=".epub,.txt,.md,.pdf,.docx,.mobi,.azw3" style="display:none"></label>';
+  h += '</div></div>';
+  if (!books.length) {
+    h += '<div class="reader-empty"><div class="reader-empty-icon">📚</div><p>书架还是空的</p><p style="font-size:12px">点击右上角「导入电子书」添加 .epub / .txt / .md / .pdf / .docx / .mobi 文件</p></div>';
+  } else {
+    h += '<div class="reader-grid">';
+    for (var i = 0; i < books.length; i++) {
+      var b = books[i];
+      var p = byBook[b.id];
+      var pct = p ? Math.round((p.pct || 0) * 100) : 0;
+      var cov = _readerCoverUrls[b.id];
+      h += '<div class="reader-card" data-rd-open="' + b.id + '">';
+      h += '<span class="reader-fmt-tag">' + readerFmtName(b.format) + '</span>';
+      h += '<button class="rd-del-btn" data-rd-del="' + b.id + '" title="删除这本书">🗑</button>';
+      h += '<div class="reader-card-cover">';
+      if (cov) { h += '<img src="' + cov + '" alt="">'; }
+      h += '<span style="position:relative;z-index:1;padding:8px;line-height:1.4">' + escHtml(b.title || '未命名') + '</span>';
+      h += '</div>';
+      h += '<div class="reader-card-info">';
+      h += '<div class="reader-card-title">' + escHtml(b.title || '未命名') + '</div>';
+      h += '<div class="reader-card-meta">' + escHtml(b.author || '未知作者') + ' · ' + readerFmtName(b.format) + '</div>';
+      h += '<div class="reader-card-progress"><i style="width:' + pct + '%"></i></div>';
+      h += '</div></div>';
+    }
+    h += '</div>';
+  }
+  h += '</div>';
+  area.innerHTML = h;
+}
+
+function readerImportFiles(files) {
+  var arr = [];
+  for (var i = 0; i < files.length; i++) arr.push(files[i]);
+  if (!arr.length) return;
+  var done = 0, ok = 0, fail = 0;
+  arr.forEach(function(f) {
+    readerImportOne(f).then(function() { ok++; done++; if (done === arr.length) readerAfterImport(ok, fail); })
+      .catch(function(err) { fail++; done++; if (done === arr.length) readerAfterImport(ok, fail); });
+  });
+}
+function readerAfterImport(ok, fail) {
+  var msg = '✅ 已导入 ' + ok + ' 本';
+  if (fail) msg += '，失败 ' + fail + ' 本';
+  showToast(msg);
+  renderReaderPanel();
+}
+function readerImportOne(file) {
+  var ext = readerExt(file.name);
+  var supported = { epub: 1, txt: 1, md: 1, pdf: 1, docx: 1, mobi: 1, azw3: 1 };
+  if (!supported[ext]) return Promise.reject(new Error('不支持格式 .' + ext));
+  return readerParseFile(file, ext).then(function(parsed) {
+    var id = 'b_' + Date.now().toString(36) + '_' + Math.floor(Math.random() * 1e6).toString(36);
+    var book = {
+      id: id, title: parsed.title || readerTitleFromName(file.name), author: parsed.author || '',
+      format: ext, size: file.size || 0, addedAt: Date.now(), lastReadAt: Date.now(),
+      raw: file, cover: parsed.cover || null
+    };
+    var content = { bookId: id, format: ext, chapters: parsed.chapters || [] };
+    return readerIdbPut('books', book).then(function() { return readerIdbPut('content', content); });
+  });
+}
+function readerExt(name) { return (name.split('.').pop() || '').toLowerCase(); }
+function readerTitleFromName(name) {
+  var base = name.replace(/\.[^.]+$/, '');
+  base = base.replace(/[_\-]+/g, ' ').replace(/\s+/g, ' ').trim();
+  return base || name;
+}
+function readerReadAsArrayBuffer(file) {
+  return new Promise(function(resolve, reject) {
+    var r = new FileReader();
+    r.onload = function() { resolve(r.result); };
+    r.onerror = function() { reject(new Error('文件读取失败')); };
+    r.readAsArrayBuffer(file);
+  });
+}
+function readerReadAsText(file) {
+  return new Promise(function(resolve, reject) {
+    var r = new FileReader();
+    r.onload = function() { resolve(r.result); };
+    r.onerror = function() { reject(new Error('文件读取失败')); };
+    r.readAsText(file);
+  });
+}
+function readerParseFile(file, ext) {
+  if (ext === 'txt') return readerReadAsText(file).then(function(t) { return readerParseTxt(t); });
+  if (ext === 'md') return readerReadAsText(file).then(function(t) { return readerParseMd(t); });
+  if (ext === 'docx') return readerReadAsArrayBuffer(file).then(function(ab) { return readerParseDocx(ab); });
+  if (ext === 'pdf') return readerReadAsArrayBuffer(file).then(function(ab) { return readerParsePdf(ab); });
+  if (ext === 'epub') return readerReadAsArrayBuffer(file).then(function(ab) { return readerParseEpub(ab); });
+  if (ext === 'mobi' || ext === 'azw3') return readerReadAsArrayBuffer(file).then(function(ab) { return readerParseMobi(ab); });
+  return Promise.reject(new Error('不支持格式'));
+}
+
+/* —— 解析：EPUB —— */
+function readerParseEpub(ab) {
+  return ensureJSZipLoaded().then(function() {
+    return JSZip.loadAsync(ab);
+  }).then(function(zip) {
+    var cf = zip.file('META-INF/container.xml');
+    if (!cf) throw new Error('非有效的 EPUB（缺少 container.xml）');
+    return cf.async('string').then(function(xml) {
+      var doc = new DOMParser().parseFromString(xml, 'application/xml');
+      var root = doc.getElementsByTagName('rootfile')[0];
+      if (!root) throw new Error('EPUB container 损坏');
+      return { zip: zip, opfPath: root.getAttribute('full-path') };
+    });
+  }).then(function(env) {
+    var opf = env.zip.file(env.opfPath);
+    if (!opf) throw new Error('EPUB 缺少 OPF 文件');
+    return opf.async('string').then(function(xml) {
+      var doc = new DOMParser().parseFromString(xml, 'application/xml');
+      var baseDir = env.opfPath.replace(/[^/]*$/, '');
+      var title = '';
+      var t = doc.getElementsByTagName('dc:title');
+      if (t.length) title = t[0].textContent;
+      var author = '';
+      var a = doc.getElementsByTagName('dc:creator');
+      if (a.length) author = a[0].textContent;
+      var manifest = {};
+      var items = doc.getElementsByTagName('item');
+      for (var i = 0; i < items.length; i++) {
+        manifest[items[i].getAttribute('id')] = readerJoinPath(baseDir, items[i].getAttribute('href'));
+      }
+      var spineItems = [];
+      var refs = doc.getElementsByTagName('itemref');
+      for (var j = 0; j < refs.length; j++) {
+        var idref = refs[j].getAttribute('idref');
+        if (manifest[idref]) spineItems.push(manifest[idref]);
+      }
+      if (!spineItems.length) {
+        for (var key in manifest) { if (manifest.hasOwnProperty(key) && /\.(xhtml|html|htm)$/i.test(manifest[key])) spineItems.push(manifest[key]); }
+      }
+      var coverPath = null;
+      var metas = doc.getElementsByTagName('meta');
+      for (var k = 0; k < metas.length; k++) {
+        if (metas[k].getAttribute('name') === 'cover' && manifest[metas[k].getAttribute('content')]) coverPath = manifest[metas[k].getAttribute('content')];
+      }
+      if (!coverPath) {
+        for (var m = 0; m < items.length; m++) {
+          var props = items[m].getAttribute('properties') || '';
+          if (props.indexOf('cover-image') !== -1) { coverPath = readerJoinPath(baseDir, items[m].getAttribute('href')); break; }
+        }
+      }
+      return { zip: env.zip, spineItems: spineItems, title: title, author: author, coverPath: coverPath };
+    });
+  }).then(function(env) {
+    if (!env.spineItems.length) throw new Error('EPUB 无正文内容');
+    var tasks = [];
+    for (var i = 0; i < env.spineItems.length; i++) {
+      tasks.push(readerLoadEpubChapter(env.zip, env.spineItems[i], env.spineItems[i].replace(/[^/]*$/, ''), i));
+    }
+    return Promise.all(tasks).then(function(chapters) {
+      var filtered = [];
+      for (var c = 0; c < chapters.length; c++) {
+        if (chapters[c].text && chapters[c].text.trim()) filtered.push(chapters[c]);
+      }
+      var coverPromise = null;
+      if (env.coverPath) {
+        var cf2 = env.zip.file(env.coverPath);
+        if (cf2) coverPromise = cf2.async('blob').catch(function() { return null; });
+      }
+      return Promise.resolve(coverPromise).then(function(cov) {
+        return { title: env.title, author: env.author, cover: cov || null, chapters: filtered };
+      });
+    });
+  });
+}
+function readerJoinPath(base, href) {
+  if (!href) return '';
+  if (/^(https?:|data:)/i.test(href)) return href;
+  var joined = base + href;
+  var parts = [];
+  joined.split('/').forEach(function(seg) {
+    if (seg === '.' || seg === '') return;
+    if (seg === '..') parts.pop();
+    else parts.push(seg);
+  });
+  return parts.join('/');
+}
+function readerLoadEpubChapter(zip, path, baseDir, idx) {
+  var f = zip.file(path);
+  if (!f) return Promise.resolve({ title: '', html: '', text: '' });
+  return f.async('string').then(function(str) {
+    var html = readerCleanChapterHtml(str);
+    return readerInlineChapterImages(html, zip, baseDir).then(function(h2) {
+      var text = readerPlainText(h2);
+      return { title: readerGuessChapterTitle(h2, text, idx), html: h2, text: text };
+    });
+  });
+}
+function readerSanitizeHtml(str) {
+  var tmp = document.createElement('div');
+  tmp.innerHTML = str;
+  var bad = tmp.querySelectorAll('script,style,link,head,iframe,object,embed,form,base,meta');
+  for (var i = 0; i < bad.length; i++) { if (bad[i].parentNode) bad[i].parentNode.removeChild(bad[i]); }
+  var all = tmp.querySelectorAll('*');
+  for (var j = 0; j < all.length; j++) {
+    var attrs = all[j].attributes;
+    for (var k = attrs.length - 1; k >= 0; k--) {
+      var name = attrs[k].name.toLowerCase();
+      var val = attrs[k].value;
+      if (name.indexOf('on') === 0) all[j].removeAttribute(attrs[k].name);
+      else if ((name === 'href' || name === 'src' || name === 'xlink:href') && /^\s*javascript:/i.test(val)) all[j].removeAttribute(attrs[k].name);
+    }
+  }
+  return tmp.innerHTML;
+}
+function readerCleanChapterHtml(str) {
+  return readerSanitizeHtml(str);
+}
+function readerInlineChapterImages(html, zip, baseDir) {
+  var tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  var imgs = tmp.querySelectorAll('img');
+  var tasks = [];
+  for (var i = 0; i < imgs.length; i++) {
+    (function(img) {
+      var src = img.getAttribute('src') || '';
+      if (/^(https?:|data:)/i.test(src)) return;
+      var f = zip.file(readerJoinPath(baseDir, src));
+      if (f) {
+        tasks.push(f.async('blob').then(function(b) {
+          try { img.setAttribute('src', URL.createObjectURL(b)); } catch (e) {}
+        }).catch(function() {}));
+      }
+    })(imgs[i]);
+  }
+  return Promise.all(tasks).then(function() { return tmp.innerHTML; });
+}
+function readerPlainText(html) {
+  var d = document.createElement('div');
+  d.innerHTML = html || '';
+  return (d.textContent || '').replace(/\s+/g, ' ').trim();
+}
+function readerGuessChapterTitle(html, text, idx) {
+  var tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  var h = tmp.querySelector('h1,h2,h3');
+  if (h && h.textContent && h.textContent.trim()) return h.textContent.replace(/\s+/g, ' ').trim().slice(0, 60);
+  var m = text.match(/^\s*(第[0-9一二三四五六七八九十百千]+[章节卷部篇])/);
+  if (m) return m[1];
+  return '第 ' + (idx + 1) + ' 节';
+}
+
+/* —— 解析：MOBI / AZW3 —— */
+function readerParseMobi(ab) {
+  try {
+    var bytes = new Uint8Array(ab);
+    var view = new DataView(ab);
+    var dec = readerMobiDecompress(bytes, view);
+    var clean = readerSanitizeHtml(dec.text.replace(/\u0000/g, '').replace(/\r/g, ''));
+    var chapters = readerSplitMobiChapters(clean);
+    var title = dec.rawTitle || readerGuessMobiTitle(clean);
+    return Promise.resolve({ title: title, author: '', cover: null, chapters: chapters });
+  } catch (e) {
+    return Promise.reject(new Error('MOBI 解析失败：' + (e && e.message ? e.message : '未知错误') + '（DRM 加密或损坏文件暂不支持）'));
+  }
+}
+function readerCleanUtf8(chunk) {
+  var out = [];
+  var n = chunk.length;
+  var i = 0;
+  while (i < n) {
+    var c = chunk[i];
+    if (c === 0) { i++; continue; }
+    if (c < 0x80) { out.push(c); i++; continue; }
+    if (c < 0xc0) { i++; continue; }
+    var need = c < 0xe0 ? 2 : (c < 0xf0 ? 3 : 4);
+    if (i + need > n) { i++; continue; }
+    var ok = true;
+    for (var k = 1; k < need; k++) {
+      var cb = chunk[i + k];
+      if (cb < 0x80 || cb >= 0xc0) { ok = false; break; }
+    }
+    if (!ok) { i++; continue; }
+    for (k = 0; k < need; k++) out.push(chunk[i + k]);
+    i += need;
+  }
+  return new Uint8Array(out);
+}
+function readerMobiRawTitle(bytes, start, end, hint) {
+  var out = [];
+  for (var i = start; i < end; i++) {
+    if (bytes[i] !== 0) out.push(bytes[i]);
+    else if (out.length > 0) break;
+  }
+  if (out.length === 0 || out.length > 500) return '';
+  try { return readerDecodeBest(new Uint8Array(out), hint); } catch (e) { return ''; }
+}
+function readerMobiDecompress(bytes, view) {
+  var TEXT_LIMIT = 8 * 1024 * 1024;
+  var out = [];
+  var numRecords = view.getUint16(76);
+  if (numRecords === 0) throw new Error('记录数为 0');
+  var infoStart = 78;
+  var recOffsets = [];
+  var r;
+  for (r = 0; r < numRecords; r++) recOffsets.push(view.getUint32(infoStart + r * 8));
+  var rec0 = recOffsets[0];
+  if (!rec0 || rec0 >= bytes.length) throw new Error('记录偏移无效');
+  var compression = view.getUint16(rec0);
+  var encryption = view.getUint16(rec0 + 12);
+  if (encryption !== 0) throw new Error('DRM 加密暂不支持');
+  var textLen = view.getUint32(rec0 + 4);
+  var limit = (textLen > 0 && textLen <= TEXT_LIMIT) ? textLen : TEXT_LIMIT;
+  var textStart = rec0 + 16;
+  if (rec0 + 24 <= bytes.length && bytes[textStart] === 77 && bytes[textStart + 1] === 79 && bytes[textStart + 2] === 66 && bytes[textStart + 3] === 73) {
+    var headerLen = view.getUint32(textStart + 4);
+    textStart += headerLen;
+    if (textStart + 4 <= bytes.length && bytes[textStart] === 69 && bytes[textStart + 1] === 88 && bytes[textStart + 2] === 84 && bytes[textStart + 3] === 72) {
+      var exthLen = view.getUint32(textStart + 4);
+      textStart += exthLen;
+    }
+  }
+  var codePage = 0;
+  try {
+    if (bytes[rec0 + 16] === 77 && bytes[rec0 + 17] === 79 && bytes[rec0 + 18] === 66 && bytes[rec0 + 19] === 73) {
+      codePage = view.getUint32(rec0 + 28);
+    }
+  } catch (e3) {}
+  var rawTitle = '';
+  if (compression === 1) {
+    for (r = 0; r < numRecords && out.length < limit; r++) {
+      var s0 = r === 0 ? textStart : recOffsets[r];
+      var e0 = r + 1 < numRecords ? recOffsets[r + 1] : bytes.length;
+      if (s0 >= e0 || s0 >= bytes.length) continue;
+      for (var u = s0; u < e0 && out.length < limit; u++) out.push(bytes[u]);
+    }
+  } else {
+    for (r = 1; r < numRecords && out.length < limit; r++) {
+      var s1 = recOffsets[r];
+      var e1 = r + 1 < numRecords ? recOffsets[r + 1] : bytes.length;
+      if (s1 >= e1 || s1 >= bytes.length) continue;
+      readerPalmDocDecompress(bytes, s1, e1, out, limit);
+    }
+    if (out.length === 0 && numRecords > 1 && textStart < recOffsets[1]) {
+      readerPalmDocDecompress(bytes, textStart, recOffsets[1], out, limit);
+    }
+    if (numRecords > 1 && textStart < recOffsets[1]) rawTitle = readerMobiRawTitle(bytes, textStart, recOffsets[1], readerMobiEncoding(codePage));
+  }
+  var chunk = new Uint8Array(out);
+  var hint = readerMobiEncoding(codePage);
+  if (hint === 'utf-8') chunk = readerCleanUtf8(chunk);
+  return { text: readerDecodeBest(chunk, hint), rawTitle: rawTitle };
+}
+function readerMobiEncoding(cp) {
+  if (cp === 65001) return 'utf-8';
+  if (cp === 936) return 'gbk';
+  if (cp === 950) return 'big5';
+  if (cp === 1252) return 'windows-1252';
+  return '';
+}
+function readerScoreText(str) {
+  var repl = 0, ctrl = 0, cjk = 0;
+  for (var i = 0; i < str.length; i++) {
+    var c = str.charCodeAt(i);
+    if (c === 0xfffd) repl++;
+    else if (c < 0x20 && c !== 0x09 && c !== 0x0a && c !== 0x0d) ctrl++;
+    else if (c >= 0x4e00 && c <= 0x9fff) cjk++;
+  }
+  return { repl: repl, ctrl: ctrl, cjk: cjk };
+}
+function readerDecodeBest(chunk, hint) {
+  if (hint && hint !== 'windows-1252') {
+    try { return new TextDecoder(hint).decode(chunk); } catch (e) {}
+  }
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(chunk);
+  } catch (e2) {}
+  var high = 0;
+  for (var i = 0; i < chunk.length; i++) if (chunk[i] >= 0x80) high++;
+  var ratio = chunk.length ? high / chunk.length : 0;
+  var order = ratio >= 0.35 ? ['gbk', 'windows-1252'] : ['windows-1252', 'gbk'];
+  if (hint === 'windows-1252' && order[0] === 'gbk') order = ['windows-1252', 'gbk'];
+  var best = null, bestScore = Infinity;
+  for (var j = 0; j < order.length; j++) {
+    try {
+      var s = new TextDecoder(order[j]).decode(chunk);
+      var sc = readerScoreText(s);
+      var score = sc.repl * 1000 + sc.ctrl * 100 - sc.cjk * 2;
+      if (score < bestScore) { bestScore = score; best = s; }
+    } catch (e3) {}
+  }
+  return best !== null ? best : new TextDecoder('utf-8').decode(chunk);
+}
+
+function readerPalmDocDecompress(bytes, start, end, out, limit) {
+  var i = start;
+  while (i < end && out.length < limit) {
+    var b = bytes[i++];
+    if (b === 0 || (b >= 9 && b < 0x80)) {
+      out.push(b);
+    } else if (b < 9) {
+      for (var k = 0; k < b && i < end && out.length < limit; k++) out.push(bytes[i++]);
+    } else if (b < 0xc0) {
+      if (i >= end) break;
+      var word = ((b & 0x3f) << 8) | bytes[i++];
+      var len = (word & 7) + 3;
+      var dist = word >> 3;
+      readerCopyBack(out, dist, len, limit);
+    } else {
+      out.push(32);
+      out.push(b ^ 0x80);
+    }
+  }
+}
+function readerCopyBack(out, dist, len, limit) {
+  var o = out.length;
+  for (var k = 0; k < len && out.length < limit; k++) {
+    var src = o - dist + k;
+    out.push(src >= 0 ? out[src] : 32);
+  }
+}
+function readerSplitMobiChapters(html) {
+  var marker = /<mbp:pagebreak|<h[1-4][^>]*>/gi;
+  var idxs = [];
+  var m;
+  while ((m = marker.exec(html)) !== null) idxs.push(m.index);
+  if (idxs.length > 1) {
+    var chapters = [];
+    for (var i = 0; i < idxs.length; i++) {
+      var start = i === 0 ? 0 : idxs[i];
+      var end = i + 1 < idxs.length ? idxs[i + 1] : html.length;
+      var seg = html.slice(start, end);
+      var text = readerPlainText(seg);
+      if (!text.trim()) continue;
+      chapters.push({ title: readerGuessMobiSegTitle(seg, text, chapters.length), html: seg, text: text });
+    }
+    if (chapters.length > 1) return chapters;
+  }
+  var text = readerPlainText(html);
+  return [{ title: '全书', html: html, text: text }];
+}
+function readerGuessMobiSegTitle(seg, text, idx) {
+  var tmp = document.createElement('div');
+  tmp.innerHTML = seg;
+  var h = tmp.querySelector('h1,h2,h3,h4');
+  if (h && h.textContent.trim()) return h.textContent.replace(/\s+/g, ' ').trim().slice(0, 60);
+  var m = text.match(/^\s*(第[0-9一二三四五六七八九十百千]+[章节卷部篇])/);
+  if (m) return m[1];
+  return '第 ' + (idx + 1) + ' 节';
+}
+function readerGuessMobiTitle(html) {
+  var tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  var h = tmp.querySelector('h1');
+  if (h && h.textContent.trim()) return h.textContent.replace(/\s+/g, ' ').trim().slice(0, 80);
+  return '';
+}
+
+/* —— 解析：TXT / MD —— */
+function readerParseTxt(text) {
+  var segs = readerSplitTxt(text);
+  var chapters = [];
+  for (var i = 0; i < segs.length; i++) {
+    var html = '<h2>' + escHtml(segs[i].title) + '</h2>' + segs[i].body.map(function(line) {
+      var t = line.trim();
+      if (!t) return '';
+      return '<p>' + escHtml(t) + '</p>';
+    }).join('');
+    var textPlain = readerPlainText(html);
+    chapters.push({ title: segs[i].title, html: html, text: textPlain });
+  }
+  return { title: readerTitleFromName(''), author: '', cover: null, chapters: chapters };
+}
+function readerSplitTxt(text) {
+  var lines = text.replace(/\r/g, '').split('\n');
+  var headRe = /^\s*(第[0-9一二三四五六七八九十百千]+[章节卷部篇]|Chapter\s+\d+|[（(][一二三四五六七八九十][）)])\s*[:：、]?\s*/;
+  var sections = [];
+  var cur = { title: '开始', body: [] };
+  var title = '';
+  lines.forEach(function(line) {
+    var m = line.match(headRe);
+    if (m && line.trim().length < 40) {
+      if (cur.body.length) sections.push(cur);
+      var t = line.trim().replace(/^[（(]|[）)]$/g, '');
+      cur = { title: t || '第 ' + (sections.length + 1) + ' 节', body: [] };
+    } else {
+      cur.body.push(line);
+    }
+  });
+  if (cur.body.length || !sections.length) sections.push(cur);
+  if (!title) title = (sections[0] && sections[0].title) || '';
+  return sections;
+}
+function readerParseMd(text) {
+  var lines = text.replace(/\r/g, '').split('\n');
+  var sections = [];
+  var cur = { title: '开头', body: [] };
+  var title = '';
+  lines.forEach(function(line) {
+    var m = line.match(/^#{1,3}\s+(.*?)\s*$/);
+    if (m && m[1]) {
+      if (cur.body.length) sections.push(cur);
+      cur = { title: m[1], body: [] };
+    } else {
+      cur.body.push(line);
+    }
+  });
+  if (cur.body.length || !sections.length) sections.push(cur);
+  if (!title) title = sections[0].title;
+  var chapters = sections.map(function(s) {
+    var html = '<h2>' + escHtml(s.title) + '</h2>' + (typeof simpleMarkdown === 'function' ? simpleMarkdown(s.body.join('\n')) : escHtml(s.body.join('\n')).replace(/\n/g, '<br>'));
+    var text = readerPlainText(html);
+    return { title: s.title, html: html, text: text };
+  });
+  return { title: title, author: '', cover: null, chapters: chapters };
+}
+
+/* —— 解析：DOCX —— */
+function readerParseDocx(ab) {
+  return loadScriptLib('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js').then(function() {
+    var M = (typeof mammoth !== 'undefined') ? mammoth : Mammoth;
+    return M.extractRawText({ arrayBuffer: ab });
+  }).then(function(result) {
+    var text = result.value || '';
+    var segs = readerSplitTxt(text);
+    var chapters = [];
+    for (var i = 0; i < segs.length; i++) {
+      var html = '<h2>' + escHtml(segs[i].title) + '</h2>' + segs[i].body.map(function(line) {
+        var t = line.trim();
+        if (!t) return '';
+        return '<p>' + escHtml(t) + '</p>';
+      }).join('');
+      chapters.push({ title: segs[i].title, html: html, text: readerPlainText(html) });
+    }
+    return { title: '', author: '', cover: null, chapters: chapters };
+  });
+}
+
+/* —— 解析：PDF —— */
+function readerParsePdf(ab) {
+  return _loadPdfjs().then(function() {
+    return pdfjsLib.getDocument({ data: ab }).promise;
+  }).then(function(pdf) {
+    var total = pdf.numPages;
+    var chapters = [];
+    var chain = Promise.resolve();
+    for (var i = 1; i <= total; i++) {
+      (function(pageNo) {
+        chain = chain.then(function() {
+          return pdf.getPage(pageNo).then(function(page) {
+            return page.getTextContent();
+          }).then(function(cont) {
+            var text = cont.items.map(function(it) { return it.str; }).join(' ');
+            chapters.push({ title: '第 ' + pageNo + ' 页', text: text, pageNo: pageNo, html: '' });
+          }).catch(function() {
+            chapters.push({ title: '第 ' + pageNo + ' 页', text: '', pageNo: pageNo, html: '' });
+          });
+        });
+      })(i);
+    }
+    return chain.then(function() {
+      return { title: '', author: '', cover: null, chapters: chapters, pdfDoc: pdf };
+    });
+  }).then(function(parsed) {
+    if (typeof parsed.pdfDoc.destroy === 'function') { try { parsed.pdfDoc.destroy(); } catch (e) {} }
+    return { title: parsed.title, author: parsed.author, cover: parsed.cover, chapters: parsed.chapters, pdfAb: ab };
+  });
+}
+
+/* —— 打开阅读 —— */
+function readerOpen(bookId) {
+  readerIdbGet('books', bookId).then(function(book) {
+    if (!book) { showToast('❌ 未找到该书'); return; }
+    readerIdbGet('content', bookId).then(function(content) {
+      if (!content || !content.chapters || !content.chapters.length) { showToast('❌ 书籍内容缺失，请删除后重新导入'); return; }
+      readerOpenWith(book, content.chapters);
+    });
+  });
+}
+function readerOpenWith(book, chapters) {
+  _readerBook = book;
+  _readerChapters = chapters;
+  var st = readerSettingsLoad();
+  _readerCurrent = { bookId: book.id, format: book.format, chapter: 0, page: 0, mode: st.mode === 'scroll' ? 'scroll' : 'paged', chapterPages: 1 };
+  _readerPdfDoc = null;
+  readerLoadNotesIndex(book.id).then(function() {
+    readerIdbGet('progress', book.id).then(function(p) {
+      if (p && p.chapter != null) {
+        _readerCurrent.chapter = p.chapter;
+        _readerCurrent.page = p.page || 0;
+      }
+      readerShowReader(book);
+    });
+  });
+}
+function readerLoadNotesIndex(bookId) {
+  return readerIdbGetAll('notes').then(function(list) {
+    var map = {};
+    list.forEach(function(n) { if (n.bookId === bookId) { (map[n.chapter] = map[n.chapter] || []).push(n); } });
+    _readerNotesByChapter = map;
+    return map;
+  });
+}
+function readerShowReader(book) {
+  readerCloseReaderHard();
+  var ov = document.createElement('div');
+  ov.className = 'reader-overlay';
+  ov.id = 'readerOverlay';
+  var st = readerSettingsLoad();
+  ov.setAttribute('data-theme', st.theme || 'light');
+  var h = '';
+  h += '<div class="reader-topbar">';
+  h += '<button class="rd-btn" data-act="close" title="返回">←</button>';
+  h += '<button class="rd-btn" data-act="toc" title="目录">☰</button>';
+  h += '<div class="reader-topbar-title" id="readerTitle">' + escHtml(book.title || '') + '</div>';
+  h += '<button class="rd-btn" data-act="search" title="搜索">🔍</button>';
+  h += '<button class="rd-btn" data-act="tts" title="朗读" id="readerTtsBtn">🎙</button>';
+  h += '<button class="rd-btn" data-act="autoscroll" title="自动滚动" id="readerAutoBtn">⏩</button>';
+  if (book.format === 'pdf') h += '<button class="rd-btn" data-act="pdfnote" title="本页笔记">📌</button>';
+  h += '<button class="rd-btn" data-act="settings" title="设置">⚙</button>';
+  h += '<button class="rd-btn" data-act="notes" title="摘录">📑</button>';
+  h += '</div>';
+  h += '<div class="reader-body">';
+  h += '<div class="rd-drawer" id="readerDrawer"><div class="rd-drawer-head"><span>目录</span><button class="rd-btn" data-act="toc">✕</button></div><div class="rd-drawer-list" id="readerTocList"></div></div>';
+  h += '<div class="reader-content-wrap" id="readerContentWrap">';
+  h += '<div class="reader-content rd-paged" id="readerContent"></div>';
+  h += '</div>';
+  h += '<div class="rd-pop" id="readerSearchPop" style="display:none">';
+  h += '<div class="rd-pop-row"><input type="search" id="readerSearchInput" placeholder="搜索全书…"></div>';
+  h += '<div class="rd-search-res" id="readerSearchRes"></div>';
+  h += '</div>';
+  h += '<div class="rd-pop" id="readerSettingsPop" style="display:none">';
+  h += '<div class="rd-pop-row"><span>字号</span><button class="rd-btn" data-act="fontdown">A-</button><button class="rd-btn" data-act="fontup">A+</button></div>';
+  h += '<div class="rd-pop-row"><span>行距</span><button class="rd-btn" data-act="lhdown">紧凑</button><button class="rd-btn" data-act="lhup">宽松</button></div>';
+  h += '<div class="rd-pop-row"><span>模式</span><button class="rd-theme-btn" data-act="mode-toggle">滚动/分页</button></div>';
+  h += '<div class="rd-pop-row"><span>主题</span><button class="rd-theme-btn" data-theme-set="light">☀️ 亮</button><button class="rd-theme-btn" data-theme-set="sepia">📜 护眼</button><button class="rd-theme-btn" data-theme-set="dark">🌙 暗</button></div>';
+  h += '</div>';
+  h += '</div>';
+  h += '<div class="reader-bottombar">';
+  h += '<button class="rd-btn" data-act="prev" title="上一页">◀</button>';
+  h += '<div class="reader-progress-track" id="readerProgressTrack"><i id="readerProgressFill"></i></div>';
+  h += '<span class="rd-progress-text" id="readerProgressText">0%</span>';
+  h += '<button class="rd-btn" data-act="next" title="下一页">▶</button>';
+  h += '</div>';
+  ov.innerHTML = h;
+  document.body.appendChild(ov);
+  var mt = ov.querySelector('[data-act="mode-toggle"]');
+  if (mt) mt.textContent = st.mode === 'scroll' ? '分页模式' : '滚动模式';
+  readerRenderToc();
+  if (book.format === 'pdf') {
+    _readerPdfDoc = null;
+    _loadPdfjs().then(function() {
+      if (book.raw) {
+        return readerReadAsArrayBuffer(book.raw);
+      } else if (book.rawBuf) {
+        return Promise.resolve(book.rawBuf);
+      }
+      return Promise.resolve(null);
+    }).then(function(ab) {
+      if (!ab) { showToast('❌ PDF 数据缺失'); readerCloseReader(); return; }
+      return pdfjsLib.getDocument({ data: ab }).promise;
+    }).then(function(pdf) {
+      if (pdf) { _readerPdfDoc = pdf; readerRenderChapter(); }
+    }).catch(function(err) {
+      showToast('❌ PDF 加载失败：' + escHtml(err && err.message ? err.message : '未知错误'));
+      readerCloseReader();
+    });
+  } else {
+    readerRenderChapter();
+  }
+  if (!_readerResizeBound) {
+    window.addEventListener('resize', readerOnResize);
+    _readerResizeBound = true;
+  }
+  readerStartHeartbeat();
+}
+function readerRenderToc() {
+  var list = $id('readerTocList');
+  if (!list || !_readerChapters) return;
+  var h = '';
+  for (var i = 0; i < _readerChapters.length; i++) {
+    var ch = _readerChapters[i];
+    var title = ch.title || ('第 ' + (i + 1) + ' 节');
+    if (title.length > 30) title = title.slice(0, 30) + '…';
+    h += '<button class="rd-toc-item" data-toc="' + i + '" id="rdToc_' + i + '">' + escHtml(title) + '</button>';
+  }
+  list.innerHTML = h;
+  readerHighlightToc();
+}
+function readerHighlightToc() {
+  if (!_readerCurrent) return;
+  var el = $id('rdToc_' + _readerCurrent.chapter);
+  if (!el) return;
+  var items = document.querySelectorAll('.rd-toc-item.rd-toc-active');
+  for (var i = 0; i < items.length; i++) items[i].classList.remove('rd-toc-active');
+  el.classList.add('rd-toc-active');
+  try { el.scrollIntoView({ block: 'nearest' }); } catch (e) {}
+}
+function readerRenderChapter() {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  var ch = _readerChapters[cur.chapter];
+  if (!ch) return;
+  var content = $id('readerContent');
+  if (!content) return;
+  if (cur.format === 'pdf') {
+    content.className = 'reader-content rd-scroll';
+    readerRenderPdfPage(ch);
+    return;
+  }
+  var notes = _readerNotesByChapter[cur.chapter] || [];
+  var html = '<div class="reader-chapter-block">' + (ch.html || escHtml(ch.text || '')) + '</div>';
+  content.innerHTML = html;
+  content.style.transform = '';
+  var root = content.firstElementChild;
+  if (root) {
+    for (var i = 0; i < notes.length; i++) {
+      if (notes[i].text) readerApplyOneHighlight(root, notes[i].text);
+    }
+  }
+  if (cur.mode === 'scroll') {
+    content.className = 'reader-content rd-scroll';
+    content.style.transform = '';
+  } else {
+    content.className = 'reader-content rd-paged';
+    void content.offsetWidth;
+    var pw = Math.max(1, content.clientWidth);
+    var total = Math.max(pw, content.scrollWidth);
+    cur.chapterPages = Math.max(1, Math.ceil(total / pw));
+    if (cur.page < 0) cur.page = 0;
+    if (cur.page >= cur.chapterPages) cur.page = cur.chapterPages - 1;
+    content.style.transform = 'translateX(-' + (cur.page * pw) + 'px)';
+  }
+  readerUpdateBottomBar();
+  readerHighlightToc();
+  readerSaveProgress();
+}
+function readerApplyOneHighlight(root, needle) {
+  if (!root || !needle) return;
+  var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+  var nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  for (var i = 0; i < nodes.length; i++) {
+    var node = nodes[i];
+    var t = node.nodeValue || '';
+    var idx = t.indexOf(needle);
+    if (idx < 0) continue;
+    try {
+      var mark = document.createElement('mark');
+      mark.className = 'rd-hl';
+      var range = document.createRange();
+      range.setStart(node, idx);
+      range.setEnd(node, idx + needle.length);
+      range.surroundContents(mark);
+      return;
+    } catch (e) { return; }
+  }
+}
+function readerRenderPdfPage(ch) {
+  var content = $id('readerContent');
+  if (!content) return;
+  var cur = _readerCurrent;
+  var idx = cur.chapter;
+  content.innerHTML = '<div class="rd-pdf-page" id="rdPdfWrap"><div style="color:var(--rd-muted);padding:20px">⏳ 正在渲染第 ' + (idx + 1) + ' 页…</div></div>';
+  var pdf = _readerPdfDoc;
+  if (!pdf) { return; }
+  pdf.getPage(idx + 1).then(function(page) {
+    var wrap = $id('rdPdfWrap');
+    if (!wrap) return;
+    var viewport1 = page.getViewport({ scale: 1 });
+    var avail = Math.max(300, wrap.clientWidth - 30);
+    var scale = Math.min(1.6, avail / viewport1.width);
+    var viewport = page.getViewport({ scale: scale });
+    var canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    canvas.style.maxWidth = '100%';
+    wrap.innerHTML = '';
+    wrap.appendChild(canvas);
+    page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise.then(function() {
+      cur.chapterPages = pdf.numPages;
+      readerUpdateBottomBar();
+      readerHighlightToc();
+      readerSaveProgress();
+    }).catch(function() {
+      wrap.innerHTML = '<div style="color:var(--rd-muted);padding:20px">❌ 本页渲染失败</div>';
+    });
+  }).catch(function() {
+    var wrap = $id('rdPdfWrap');
+    if (wrap) wrap.innerHTML = '<div style="color:var(--rd-muted);padding:20px">❌ 页面加载失败</div>';
+  });
+}
+function readerUpdateBottomBar() {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  var total = Math.max(1, _readerChapters.length);
+  var fill = $id('readerProgressFill');
+  var text = $id('readerProgressText');
+  var track = $id('readerProgressTrack');
+  var pct = cur.format === 'pdf'
+    ? (cur.chapter + 1) / (cur.chapterPages || total)
+    : cur.mode === 'scroll'
+      ? (cur.chapter + 0.5) / total
+      : (cur.chapter + ((cur.page + 1) / (cur.chapterPages || 1))) / total;
+  pct = Math.min(1, Math.max(0, pct));
+  var shown = cur.format === 'pdf'
+    ? '第 ' + (cur.chapter + 1) + ' / ' + (cur.chapterPages || total) + ' 页'
+    : cur.mode === 'scroll'
+      ? '第 ' + (cur.chapter + 1) + ' / ' + total + ' 章 · ' + Math.round(pct * 100) + '%'
+      : '第 ' + (cur.page + 1) + ' / ' + (cur.chapterPages || 1) + ' 页 · ' + Math.round(pct * 100) + '%';
+  if (fill) fill.style.width = Math.round(pct * 100) + '%';
+  if (text) text.textContent = shown;
+  var title = $id('readerTitle');
+  if (title) {
+    var chT = _readerChapters[cur.chapter] && _readerChapters[cur.chapter].title;
+    if (chT && chT !== '全书') title.textContent = (_readerBook ? _readerBook.title : '') + ' · ' + chT;
+    else title.textContent = _readerBook ? _readerBook.title : '';
+  }
+}
+function readerSaveProgress() {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  var total = Math.max(1, _readerChapters.length);
+  var pct = cur.format === 'pdf'
+    ? (cur.chapter + 1) / (cur.chapterPages || total)
+    : cur.mode === 'scroll'
+      ? (cur.chapter + 0.5) / total
+      : (cur.chapter + ((cur.page + 1) / (cur.chapterPages || 1))) / total;
+  pct = Math.min(1, Math.max(0, pct));
+  readerIdbPut('progress', { bookId: cur.bookId, chapter: cur.chapter, page: cur.page || 0, pct: pct, updatedAt: Date.now() });
+  readerIdbGet('books', cur.bookId).then(function(b) {
+    if (b) { b.lastReadAt = Date.now(); readerIdbPut('books', b); }
+  });
+}
+function readerNext() {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  if (cur.format === 'pdf') {
+    if (cur.chapter + 1 < _readerChapters.length) { cur.chapter++; readerRenderChapter(); }
+    else showToast('📖 已到最后一页');
+    return;
+  }
+  if (cur.mode === 'scroll') {
+    if (cur.chapter + 1 < _readerChapters.length) { cur.chapter++; cur.page = 0; readerRenderChapter(); }
+    else showToast('📖 已到最后一章');
+    return;
+  }
+  if (cur.page + 1 < (cur.chapterPages || 1)) { cur.page++; readerRenderChapter(); }
+  else if (cur.chapter + 1 < _readerChapters.length) { cur.chapter++; cur.page = 0; readerRenderChapter(); }
+  else showToast('📖 已读完');
+}
+function readerPrev() {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  if (cur.format === 'pdf') {
+    if (cur.chapter > 0) { cur.chapter--; readerRenderChapter(); }
+    else showToast('📖 已是第一页');
+    return;
+  }
+  if (cur.mode === 'scroll') {
+    if (cur.chapter > 0) { cur.chapter--; readerRenderChapter(); }
+    else showToast('📖 已是第一章');
+    return;
+  }
+  if (cur.page > 0) { cur.page--; readerRenderChapter(); }
+  else if (cur.chapter > 0) { cur.chapter--; cur.page = 9999; readerRenderChapter(); }
+  else showToast('📖 已是首页');
+}
+function readerGotoChapter(idx) {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  if (idx < 0 || idx >= _readerChapters.length) return;
+  cur.chapter = idx;
+  cur.page = 0;
+  var drawer = $id('readerDrawer');
+  if (drawer) drawer.classList.remove('open');
+  readerRenderChapter();
+}
+function readerOnResize() {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  if (cur.format === 'pdf') return;
+  if (cur.mode === 'paged') readerRenderChapter();
+}
+function readerCloseReader(keepShelf) {
+  readerAutoScrollStop();
+  readerStopHeartbeat();
+  readerTTSStop();
+  var ov = $id('readerOverlay');
+  if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+  if (_readerResizeBound) {
+    window.removeEventListener('resize', readerOnResize);
+    _readerResizeBound = false;
+  }
+  _readerCurrent = null;
+  _readerChapters = [];
+  _readerBook = null;
+  _readerPdfDoc = null;
+  if (!keepShelf) renderReaderPanel();
+}
+function readerCloseReaderHard() {
+  var ov = $id('readerOverlay');
+  if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+}
+
+/* —— 划线 / 笔记 —— */
+function readerOnMouseUp() {
+  var ov = $id('readerOverlay');
+  if (!ov) return;
+  var sel = window.getSelection();
+  var text = sel ? sel.toString().replace(/\s+/g, ' ').trim() : '';
+  readerHideSelTool();
+  if (!text || text.length > 500) { return; }
+  var range = sel.getRangeAt(0);
+  if (!range || !ov.contains(range.commonAncestorContainer)) return;
+  if (range.commonAncestorContainer === ov || range.commonAncestorContainer.parentNode === ov) return;
+  var rect = range.getBoundingClientRect();
+  if (!rect || rect.width === 0) return;
+  _readerSelText = text;
+  var tool = document.createElement('div');
+  tool.className = 'rd-sel-tool';
+  tool.id = 'rdSelTool';
+  var h = '';
+  h += '<button class="rd-sel-note" data-hl-note="1">📝 笔记</button>';
+  var colors = ['#ffe08a', '#ffb0c0', '#a8e6cf', '#a8d4ff', '#c8b0ff'];
+  for (var i = 0; i < colors.length; i++) {
+    h += '<span class="rd-sel-color" data-hl-color="' + colors[i] + '" style="background:' + colors[i] + '"></span>';
+  }
+  tool.innerHTML = h;
+  document.body.appendChild(tool);
+  var tw = tool.offsetWidth;
+  var x = rect.left + rect.width / 2 - tw / 2;
+  var y = rect.top - tool.offsetHeight - 8;
+  if (y < 8) y = rect.bottom + 8;
+  x = Math.max(8, Math.min(x, window.innerWidth - tw - 8));
+  tool.style.left = x + 'px';
+  tool.style.top = y + 'px';
+}
+function readerHideSelTool() {
+  var t = $id('rdSelTool');
+  if (t && t.parentNode) t.parentNode.removeChild(t);
+}
+function readerSaveNote(text, color, note) {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  var ch = _readerChapters[cur.chapter];
+  if (!ch) return;
+  var rec = {
+    id: 'n_' + Date.now().toString(36) + '_' + Math.floor(Math.random() * 1e6).toString(36),
+    bookId: cur.bookId, chapter: cur.chapter, chapterTitle: ch.title || ('第 ' + (cur.chapter + 1) + ' 节'),
+    page: cur.format === 'pdf' ? cur.chapter : (cur.mode === 'paged' ? cur.page : -1),
+    text: (text || '').slice(0, 500), color: color || '#ffe08a', note: note || '', createdAt: Date.now()
+  };
+  readerIdbPut('notes', rec).then(function() {
+    (_readerNotesByChapter[cur.chapter] = _readerNotesByChapter[cur.chapter] || []).push(rec);
+    if (cur.format === 'pdf') { readerRenderChapter(); }
+    else { readerRenderChapter(); }
+    showToast('✅ 已保存划线');
+  });
+}
+function readerOpenNoteModal(prefill, mode) {
+  _readerNoteMode = mode || 'highlight';
+  _readerNoteCb = null;
+  var m = document.createElement('div');
+  m.className = 'rd-note-modal';
+  m.id = 'rdNoteModal';
+  var h = '<div class="rd-note-box">';
+  h += '<div style="font-weight:600;margin-bottom:10px">' + (mode === 'pdf' ? '📌 本页笔记' : '📝 划线笔记') + '</div>';
+  if (mode === 'pdf') {
+    h += '<div style="font-size:12px;color:#888;margin-bottom:8px">记录到当前 PDF 页（页码锚点 + 可选截图）</div>';
+  } else {
+    h += '<div style="font-size:12px;color:#888;margin-bottom:8px">' + escHtml(prefill || '') + '</div>';
+  }
+  h += '<textarea id="rdNoteText" placeholder="写点笔记（可选）…"></textarea>';
+  h += '<div class="rd-note-actions">';
+  h += '<button class="rd-note-btn plain" data-note-cancel="1">取消</button>';
+  h += '<button class="rd-note-btn primary" data-note-ok="1">保存</button>';
+  h += '</div></div>';
+  m.innerHTML = h;
+  document.body.appendChild(m);
+  if (mode !== 'pdf') { _readerNoteCb = prefill || ''; }
+}
+function readerCloseNoteModal() {
+  var m = $id('rdNoteModal');
+  if (m && m.parentNode) m.parentNode.removeChild(m);
+  _readerNoteCb = null;
+}
+function readerConfirmNote() {
+  var ta = $id('rdNoteText');
+  var note = ta ? ta.value.trim() : '';
+  if (_readerNoteMode === 'pdf') {
+    var cur = _readerCurrent;
+    if (!cur) { readerCloseNoteModal(); return; }
+    var snap = null;
+    if (cur && cur.format === 'pdf') {
+      var cvs = document.querySelector('#rdPdfWrap canvas');
+      if (cvs) { try { snap = cvs.toDataURL('image/jpeg', 0.6); } catch (e) {} }
+    }
+    var ch = _readerChapters[cur.chapter];
+    var rec = {
+      id: 'n_' + Date.now().toString(36) + '_' + Math.floor(Math.random() * 1e6).toString(36),
+      bookId: cur.bookId, chapter: cur.chapter, chapterTitle: '第 ' + (cur.chapter + 1) + ' 页',
+      page: cur.chapter, text: '', color: '#a8d4ff', note: note || ('第 ' + (cur.chapter + 1) + ' 页笔记'), createdAt: Date.now(), snapshot: snap, isPdf: true
+    };
+    readerIdbPut('notes', rec).then(function() {
+      (_readerNotesByChapter[cur.chapter] = _readerNotesByChapter[cur.chapter] || []).push(rec);
+      showToast('✅ 已保存本页笔记');
+    });
+  } else {
+    if (!_readerSelText) { showToast('⚠️ 未选中文字'); }
+    else readerSaveNote(_readerSelText, '#ffe08a', note);
+  }
+  readerCloseNoteModal();
+}
+function renderReaderNotesView() {
+  var ov = $id('readerOverlay');
+  if (!ov || !_readerCurrent) return;
+  readerCloseReaderHard();
+  var area = $id('contentArea');
+  readerIdbGetAll('notes').then(function(list) {
+    var mine = list.filter(function(n) { return n.bookId === _readerCurrent.bookId; });
+    mine.sort(function(a, b) { return b.createdAt - a.createdAt; });
+    var h = '<div class="reader-shelf">';
+    h += '<div class="reader-shelf-header"><div style="font-size:16px;font-weight:700">📑 ' + escHtml(_readerBook ? _readerBook.title : '') + ' · 摘录</div>';
+    h += '<button class="reader-import-btn" data-rd-back="1">← 返回书架</button></div>';
+    if (!mine.length) {
+      h += '<div class="reader-empty"><div class="reader-empty-icon">📑</div><p>还没有摘录</p><p style="font-size:12px">阅读时选中文字即可划线高亮，或为 PDF 添加本页笔记</p></div>';
+    } else {
+      mine.forEach(function(n) {
+        h += '<div class="card anim-fade" style="padding:14px;margin-bottom:10px">';
+        h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
+        h += '<span style="font-size:12px;color:var(--text-muted)">' + escHtml(n.chapterTitle || '') + (n.page != null && n.page >= 0 ? ' · 第 ' + (n.page + 1) + ' 页' : '') + ' · ' + new Date(n.createdAt).toLocaleString() + '</span>';
+        h += '<span>';
+        h += '<button class="rd-note-btn plain" data-note-kb="' + n.id + '" style="font-size:12px">📚 存入知识库</button> ';
+        h += '<button class="rd-note-btn plain" data-note-del="' + n.id + '" style="font-size:12px;color:#c0392b">删除</button>';
+        h += '</span></div>';
+        if (n.snapshot) h += '<div style="margin-bottom:8px"><img src="' + n.snapshot + '" style="max-width:280px;border-radius:6px;border:1px solid #ddd"></div>';
+        if (n.text) h += '<div style="padding:10px;border-left:3px solid ' + (n.color || '#c9a227') + ';background:rgba(128,128,128,.06);border-radius:0 8px 8px 0;font-size:14px">' + escHtml(n.text) + '</div>';
+        if (n.note) h += '<div style="margin-top:8px;font-size:13px;color:var(--text-muted)">📝 ' + escHtml(n.note) + '</div>';
+        h += '</div>';
+      });
+    }
+    h += '</div>';
+    area.innerHTML = h;
+  });
+}
+function readerDeleteNote(noteId) {
+  readerIdbGet('notes', noteId).then(function(n) {
+    readerIdbDelete('notes', noteId).then(function() {
+      if (n) { var arr = _readerNotesByChapter[n.chapter] || []; _readerNotesByChapter[n.chapter] = arr.filter(function(x) { return x.id !== noteId; }); }
+      showToast('🗑 已删除摘录');
+      var ov = $id('readerOverlay');
+      if (ov) readerRenderChapter();
+      else renderReaderNotesView();
+    });
+  });
+}
+
+/* —— 知识库对接 —— */
+function readerReadingNotesLoad() {
+  var d = {};
+  try { d = JSON.parse(safeGetItem('ddj_knowledgebase', '{}') || '{}'); } catch (e) { d = {}; }
+  return Array.isArray(d.readingNotes) ? d.readingNotes : [];
+}
+function readerReadingNotesSave(list) {
+  var d = {};
+  try { d = JSON.parse(safeGetItem('ddj_knowledgebase', '{}') || '{}'); } catch (e) { d = {}; }
+  d.readingNotes = list;
+  safeSetItem('ddj_knowledgebase', JSON.stringify(d));
+}
+function readerSyncToKB(noteId) {
+  readerIdbGet('notes', noteId).then(function(n) {
+    if (!n) { showToast('❌ 笔记不存在'); return; }
+    var list = readerReadingNotesLoad();
+    list.unshift({
+      id: noteId, bookId: n.bookId, bookTitle: _readerBook ? _readerBook.title : (n.bookId || ''),
+      chapter: n.chapter, chapterTitle: n.chapterTitle || '', text: n.text || '', note: n.note || '',
+      color: n.color || '#c9a227', createdAt: n.createdAt || Date.now()
+    });
+    readerReadingNotesSave(list);
+    showToast('📚 已存入知识库（阅读摘录）');
+  });
+}
+function readerRenderKBNotesSection() {
+  var notes = readerReadingNotesLoad();
+  if (!notes.length) return '';
+  var h = '';
+  h += '<div style="margin-top:18px;padding:14px;border:1px solid rgba(120,120,120,.15);border-radius:10px;background:var(--bg-card,#fff)">';
+  h += '<div style="font-size:14px;font-weight:600;margin-bottom:10px">📖 阅读摘录 <span style="font-size:12px;color:var(--text-muted)">（来自阅读器）</span></div>';
+  for (var i = 0; i < notes.length; i++) {
+    var n = notes[i];
+    h += '<div style="padding:10px 0;border-bottom:1px solid rgba(120,120,120,.1);font-size:13px">';
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">';
+    h += '<b>' + escHtml(n.bookTitle || '') + '</b>';
+    h += '<button data-rdkb-del="' + i + '" style="border:none;background:transparent;color:#c0392b;cursor:pointer;font-size:12px">删除</button>';
+    h += '</div>';
+    h += '<div style="color:var(--text-muted);font-size:12px;margin-bottom:4px">' + escHtml(n.chapterTitle || '') + '</div>';
+    if (n.text) h += '<div style="padding:8px;border-left:3px solid ' + (n.color || '#c9a227') + ';background:rgba(128,128,128,.06);border-radius:0 6px 6px 0">' + escHtml(n.text) + '</div>';
+    if (n.note) h += '<div style="margin-top:6px;font-size:12px;color:var(--text-muted)">📝 ' + escHtml(n.note) + '</div>';
+    h += '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+/* —— 搜索 —— */
+function readerDoSearch(q) {
+  var res = $id('readerSearchRes');
+  if (!res) return;
+  q = (q || '').trim();
+  if (!q) { res.innerHTML = ''; return; }
+  var out = [];
+  for (var c = 0; c < _readerChapters.length; c++) {
+    var text = _readerChapters[c].text || '';
+    var idx = text.indexOf(q);
+    if (idx >= 0) {
+      var start = Math.max(0, idx - 18);
+      var end = Math.min(text.length, idx + q.length + 30);
+      var snip = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+      out.push({ c: c, title: _readerChapters[c].title || ('第 ' + (c + 1) + ' 节'), snip: snip });
+      if (out.length >= 30) break;
+    }
+  }
+  if (!out.length) { res.innerHTML = '<div style="padding:8px;color:var(--rd-muted);font-size:12px">无结果</div>'; return; }
+  var h = '';
+  for (var i = 0; i < out.length; i++) {
+    h += '<button class="rd-sr" data-sr="' + out[i].c + '"><div>' + escHtml(out[i].title) + '</div><div style="color:var(--rd-muted);margin-top:2px">' + escHtml(out[i].snip) + '</div></button>';
+  }
+  res.innerHTML = h;
+}
+function readerGotoSearchResult(chapterIdx) {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  var pop = $id('readerSearchPop');
+  if (pop) pop.style.display = 'none';
+  if (cur.format === 'pdf') {
+    cur.chapter = chapterIdx;
+    readerRenderChapter();
+    return;
+  }
+  cur.chapter = chapterIdx;
+  cur.page = 0;
+  if (cur.mode === 'paged') { readerRenderChapter(); }
+  else { readerRenderChapter(); }
+}
+
+/* —— TTS —— */
+function readerTTS() {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  if (window.__readerTTS) { readerTTSStop(); return; }
+  var ch = _readerChapters[cur.chapter];
+  var text = ch ? (ch.text || '') : '';
+  if (!text) { showToast('📄 本章无可朗读文字（PDF 暂不支持朗读）'); return; }
+  if (!window.speechSynthesis) { showToast('❌ 当前浏览器不支持语音朗读'); return; }
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  var st = readerSettingsLoad();
+  u.rate = st.ttsRate || 1;
+  u.pitch = 1;
+  u.onend = function() { window.__readerTTS = null; readerUpdateTTSBtn(); };
+  u.onerror = function() { window.__readerTTS = null; readerUpdateTTSBtn(); };
+  window.__readerTTS = u;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+  readerUpdateTTSBtn();
+}
+function readerTTSStop() {
+  if (window.speechSynthesis) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+  window.__readerTTS = null;
+  readerUpdateTTSBtn();
+}
+function readerUpdateTTSBtn() {
+  var btn = $id('readerTtsBtn');
+  if (btn) btn.textContent = window.__readerTTS ? '⏹' : '🎙';
+}
+
+/* —— 阅读统计 —— */
+function readerToday() {
+  var d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth() + 1 < 10 ? '0' : '') + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate();
+}
+function readerStartHeartbeat() {
+  readerStopHeartbeat();
+  _readerHeartbeat = setInterval(function() { readerAddReading(30); }, 30000);
+  readerAddReading(1);
+}
+function readerStopHeartbeat() {
+  if (_readerHeartbeat) { clearInterval(_readerHeartbeat); _readerHeartbeat = null; }
+}
+function readerAddReading(sec) {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  var bid = cur.bookId;
+  var today = readerToday();
+  readerIdbGet('stats', 'book:' + bid).then(function(s) {
+    s = s || { key: 'book:' + bid, bookId: bid, totalSeconds: 0 };
+    s.totalSeconds = (s.totalSeconds || 0) + sec;
+    return readerIdbPut('stats', s);
+  }).catch(function() {});
+  readerIdbGet('stats', 'day:' + today).then(function(d) {
+    d = d || { key: 'day:' + today, date: today, seconds: 0 };
+    d.seconds = (d.seconds || 0) + sec;
+    return readerIdbPut('stats', d);
+  }).catch(function() {});
+}
+function readerStatsView() {
+  var area = $id('contentArea');
+  area.innerHTML = '<div class="reader-shelf"><div class="reader-empty"><div class="reader-empty-icon">⏳</div><p>统计加载中…</p></div></div>';
+  Promise.all([readerIdbGetAll('stats'), readerIdbGetAll('books')]).then(function(r) {
+    var stats = r[0], books = r[1];
+    var byBook = {};
+    var daySec = {};
+    var today = readerToday();
+    var todaySec = 0;
+    var totalSec = 0;
+    stats.forEach(function(s) {
+      if (s.key && s.key.indexOf('book:') === 0) { byBook[s.bookId] = s.totalSeconds || 0; totalSec += (s.totalSeconds || 0); }
+      if (s.key && s.key.indexOf('day:') === 0) { daySec[s.date] = s.seconds || 0; if (s.date === today) todaySec = s.seconds || 0; }
+    });
+    var streak = 0;
+    var d = new Date();
+    if (!(daySec[readerToday()] > 0)) d.setDate(d.getDate() - 1);
+    while (daySec[d.getFullYear() + '-' + (d.getMonth() + 1 < 10 ? '0' : '') + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate()] > 0) {
+      streak++;
+      d.setDate(d.getDate() - 1);
+    }
+    var bookNames = {};
+    books.forEach(function(b) { bookNames[b.id] = b.title || '未命名'; });
+    var topId = null, topSec = 0;
+    for (var k in byBook) { if (byBook[k] > topSec) { topSec = byBook[k]; topId = k; } }
+    var h = '<div class="reader-shelf">';
+    h += '<div class="reader-shelf-header"><div style="font-size:16px;font-weight:700">📊 阅读统计</div>';
+    h += '<button class="reader-import-btn" data-rd-back="1">← 返回书架</button></div>';
+    h += '<div class="rd-stats-grid">';
+    h += '<div class="rd-stat-card"><div class="num">' + Math.round(totalSec / 60) + '</div><div class="lbl">累计阅读（分钟）</div></div>';
+    h += '<div class="rd-stat-card"><div class="num">' + Math.round(todaySec / 60) + '</div><div class="lbl">今日阅读（分钟）</div></div>';
+    h += '<div class="rd-stat-card"><div class="num">' + streak + '</div><div class="lbl">连续阅读（天）</div></div>';
+    h += '<div class="rd-stat-card"><div class="num">' + books.length + '</div><div class="lbl">藏书（本）</div></div>';
+    h += '</div>';
+    if (topId) h += '<div style="margin-top:14px;padding:12px;background:var(--bg-card,#fff);border-radius:10px;font-size:13px">🏆 读得最多的书：<b>' + escHtml(bookNames[topId] || '') + '</b>（' + Math.round(topSec / 60) + ' 分钟）</div>';
+    h += '</div>';
+    area.innerHTML = h;
+  });
+}
+function readerDeleteBook(bookId) {
+  if (!confirm('确定删除这本书？相关进度和摘录将一并删除。')) return;
+  readerIdbDelete('books', bookId).then(function() {
+    return readerIdbDelete('content', bookId);
+  }).then(function() {
+    return readerIdbDelete('progress', bookId);
+  }).then(function() {
+    return readerIdbGetAll('notes').then(function(list) {
+      var ps = [];
+      list.forEach(function(n) { if (n.bookId === bookId) ps.push(readerIdbDelete('notes', n.id)); });
+      return Promise.all(ps);
+    });
+  }).then(function() {
+    showToast('🗑 已删除');
+    renderReaderPanel();
+  });
+}
+
+/* —— 全局事件委托（幂等绑定一次）—— */
+/* —— 自动滚动 —— */
+function readerAutoScrollToggle() {
+  var cur = _readerCurrent;
+  if (!cur) return;
+  if (cur.format === 'pdf') { showToast('📄 PDF 模式暂不支持自动滚动'); return; }
+  if (cur.mode !== 'scroll') {
+    var st = readerSettingsLoad();
+    st.mode = 'scroll';
+    readerSettingsSave(st);
+    cur.mode = 'scroll';
+    readerRenderChapter();
+    var mbtn = document.querySelector('[data-act="mode-toggle"]');
+    if (mbtn) mbtn.textContent = '分页模式';
+  }
+  if (!_readerAuto.active) {
+    _readerAuto.active = true;
+    _readerAuto.speed = 1;
+    readerAutoScrollStart();
+  } else {
+    _readerAuto.speed += 1;
+    if (_readerAuto.speed > 3) readerAutoScrollStop();
+  }
+  readerAutoScrollUpdateBtn();
+}
+function readerAutoScrollStart() {
+  if (_readerAuto.timer) return;
+  _readerAuto.timer = setInterval(function() {
+    var c = $id('readerContent');
+    if (!c || !_readerAuto.active) return;
+    var px = [0, 1.5, 2.6, 4][_readerAuto.speed] || 1.5;
+    c.scrollTop += px;
+    if (c.scrollHeight > c.clientHeight && c.scrollTop + c.clientHeight >= c.scrollHeight - 6) {
+      if (_readerCurrent && _readerCurrent.chapter + 1 < _readerChapters.length) readerNext();
+      else readerAutoScrollStop();
+    }
+  }, 30);
+}
+function readerAutoScrollStop() {
+  _readerAuto.active = false;
+  _readerAuto.speed = 1;
+  if (_readerAuto.timer) { clearInterval(_readerAuto.timer); _readerAuto.timer = null; }
+  readerAutoScrollUpdateBtn();
+}
+function readerAutoScrollUpdateBtn() {
+  var btn = $id('readerAutoBtn');
+  if (!btn) return;
+  if (!_readerAuto.active) {
+    btn.textContent = '⏩';
+    btn.title = '自动滚动（点按开始，循环调速）';
+    btn.classList.remove('rd-auto-on');
+  } else {
+    var txt = ['', '慢速', '中速', '快速'][_readerAuto.speed] || '快速';
+    btn.textContent = '⏸';
+    btn.title = '自动滚动：' + txt + '（点按调速，快后再点停止）';
+    btn.classList.add('rd-auto-on');
+  }
+}
+
+function readerBindEvents() {
+  if (_readerBound) return;
+  _readerBound = true;
+  document.addEventListener('click', function(e) {
+    var t = e.target;
+    while (t && t !== document) {
+      if (t.getAttribute && t.hasAttribute) {
+        if (t.hasAttribute('data-rd-open')) { readerOpen(t.getAttribute('data-rd-open')); return; }
+        if (t.hasAttribute('data-rd-del')) { readerDeleteBook(t.getAttribute('data-rd-del')); return; }
+        if (t.hasAttribute('data-rd-stats')) { readerStatsView(); return; }
+        if (t.hasAttribute('data-rd-back')) { renderReaderPanel(); return; }
+        if (t.hasAttribute('data-rdkb-del')) {
+          var idx = parseInt(t.getAttribute('data-rdkb-del'), 10);
+          var list = readerReadingNotesLoad();
+          if (idx >= 0 && idx < list.length) list.splice(idx, 1);
+          readerReadingNotesSave(list);
+          showToast('🗑 已从知识库删除');
+          if (typeof renderKnowledgeBasePanel === 'function' && $id('contentArea') && $id('contentArea').innerHTML.indexOf('个人知识库') !== -1) renderKnowledgeBasePanel();
+          return;
+        }
+        if (t.hasAttribute('data-note-del')) { readerDeleteNote(t.getAttribute('data-note-del')); return; }
+        if (t.hasAttribute('data-note-kb')) { readerSyncToKB(t.getAttribute('data-note-kb')); return; }
+        if (t.hasAttribute('data-note-cancel')) { readerCloseNoteModal(); return; }
+        if (t.hasAttribute('data-note-ok')) { readerConfirmNote(); return; }
+        if (t.hasAttribute('data-hl-color')) {
+          var color = t.getAttribute('data-hl-color');
+          readerHideSelTool();
+          if (_readerSelText) readerSaveNote(_readerSelText, color, '');
+          return;
+        }
+        if (t.hasAttribute('data-hl-note')) {
+          var prefill = _readerSelText || '';
+          readerHideSelTool();
+          readerOpenNoteModal(prefill, 'highlight');
+          return;
+        }
+        if (t.hasAttribute('data-toc')) {
+          readerGotoChapter(parseInt(t.getAttribute('data-toc'), 10));
+          return;
+        }
+        if (t.hasAttribute('data-sr')) {
+          readerGotoSearchResult(parseInt(t.getAttribute('data-sr'), 10));
+          return;
+        }
+        if (t.hasAttribute('data-theme-set')) {
+          var st = readerSettingsLoad();
+          st.theme = t.getAttribute('data-theme-set');
+          readerSettingsSave(st);
+          var ov = $id('readerOverlay');
+          if (ov) ov.setAttribute('data-theme', st.theme);
+          return;
+        }
+        if (t.hasAttribute('data-act')) {
+          var act = t.getAttribute('data-act');
+          var ov2 = $id('readerOverlay');
+          var cur = _readerCurrent;
+          var st2;
+          if (act === 'close') { readerCloseReader(); }
+          else if (act === 'toc') { var dr = $id('readerDrawer'); if (dr) dr.classList.toggle('open'); }
+          else if (act === 'search') {
+            var sp = $id('readerSearchPop'); if (sp) sp.style.display = sp.style.display === 'none' ? 'block' : 'none';
+            var inp = $id('readerSearchInput'); if (inp) { inp.focus(); readerDoSearch(inp.value); }
+          }
+          else if (act === 'settings') {
+            var sp2 = $id('readerSettingsPop'); if (sp2) sp2.style.display = sp2.style.display === 'none' ? 'block' : 'none';
+          }
+          else if (act === 'notes') { readerCloseReader(true); renderReaderNotesView(); }
+          else if (act === 'pdfnote') { readerOpenNoteModal('', 'pdf'); }
+          else if (act === 'tts') { readerTTS(); }
+          else if (act === 'autoscroll') { readerAutoScrollToggle(); }
+          else if (act === 'prev') { readerPrev(); }
+          else if (act === 'next') { readerNext(); }
+          else if (act === 'fontup') { st2 = readerSettingsLoad(); st2.fontSize = Math.min(30, (st2.fontSize || 17) + 1); readerSettingsSave(st2); readerApplyFont(); }
+          else if (act === 'fontdown') { st2 = readerSettingsLoad(); st2.fontSize = Math.max(12, (st2.fontSize || 17) - 1); readerSettingsSave(st2); readerApplyFont(); }
+          else if (act === 'lhup') { st2 = readerSettingsLoad(); st2.lineHeight = Math.min(2.6, (st2.lineHeight || 1.9) + 0.2); readerSettingsSave(st2); readerApplyFont(); }
+          else if (act === 'lhdown') { st2 = readerSettingsLoad(); st2.lineHeight = Math.max(1.3, (st2.lineHeight || 1.9) - 0.2); readerSettingsSave(st2); readerApplyFont(); }
+          else if (act === 'mode-toggle') {
+            st2 = readerSettingsLoad();
+            st2.mode = st2.mode === 'scroll' ? 'paged' : 'scroll';
+            readerSettingsSave(st2);
+            if (cur) cur.mode = st2.mode;
+            readerRenderChapter();
+            var mbtn = ov2 && ov2.querySelector('[data-act="mode-toggle"]');
+            if (mbtn) mbtn.textContent = st2.mode === 'scroll' ? '分页模式' : '滚动模式';
+          }
+          return;
+        }
+      }
+      t = t.parentNode;
+    }
+  });
+  document.addEventListener('change', function(e) {
+    var t = e.target;
+    if (t && t.id === 'readerFileInput' && t.files && t.files.length) readerImportFiles(t.files);
+  });
+  document.addEventListener('keyup', function(e) {
+    if (e.target && e.target.id === 'readerSearchInput') readerDoSearch(e.target.value);
+  });
+  document.addEventListener('keydown', function(e) {
+    var ov = $id('readerOverlay');
+    if (!ov) return;
+    var nm = $id('rdNoteModal');
+    if (nm) { if (e.key === 'Escape') readerCloseNoteModal(); return; }
+    if (e.key === 'Escape') {
+      var sp = $id('readerSearchPop'); if (sp && sp.style.display !== 'none') { sp.style.display = 'none'; return; }
+      var sp2 = $id('readerSettingsPop'); if (sp2 && sp2.style.display !== 'none') { sp2.style.display = 'none'; return; }
+      var dr = $id('readerDrawer'); if (dr && dr.classList.contains('open')) { dr.classList.remove('open'); return; }
+      readerCloseReader();
+    } else if (e.key === 'ArrowRight') { readerNext(); }
+    else if (e.key === 'ArrowLeft') { readerPrev(); }
+  });
+  document.addEventListener('mouseup', readerOnMouseUp);
+  document.addEventListener('scroll', function() {
+    var t = $id('rdSelTool');
+    if (t) readerHideSelTool();
+  }, true);
+}
+function readerApplyFont() {
+  var st = readerSettingsLoad();
+  var c = $id('readerContent');
+  if (c) { c.style.fontSize = st.fontSize + 'px'; c.style.lineHeight = String(st.lineHeight); }
+  if (_readerCurrent && _readerCurrent.mode === 'paged') readerRenderChapter();
+}
+readerBindEvents();
+/* ===== 阅读器板块 End ===== */
+
 /* ============ PDF 板块 ============ */
 var _pdfTab = 'ai';
 var _pdfSession = null;
@@ -19202,7 +21125,8 @@ if (r) r.innerHTML = html;
 function pdfAiSummary() {
 if (!_pdfSession) return;
 _pdfAiBusy('AI 正在阅读 PDF 并提炼摘要与知识点');
-callAI({systemPrompt:'你是专业的学习内容提炼专家。阅读用户提供的 PDF 全文，生成结构化摘要与知识点清单。输出 Markdown：先写"## 摘要"并给出 300 字左右全文摘要；再写"## 知识点"并列出最重要的知识点，每条用"- 名称：一句话说明"。', prompt:_pdfSession.text, temperature:0.4, maxTokens:4096, timeout:120000})
+callAI({systemPrompt:'你是专业的学习内容提炼专家。阅读用户提供的 PDF 全文，生成结构化摘要与知识点清单。输出 Markdown：先写"## 摘要"并给出 300 字左右全文摘要；再写"## 知识点"并列出最重要的知识点，每条用"- 名称：一句话说明"。', prompt:_pdfSession.text, temperature:0.4, maxTokens:4096, timeout:120000,
+  stream:function(chunk,fullText){ _pdfAiResultHtml(pdfRenderMarkdown(fullText)); }})
 .then(function(resp){ _pdfAiResultHtml(pdfRenderMarkdown(resp)); })
 .catch(function(err){ _pdfAiResultHtml('<div style="color:#c0392b">❌ ' + escHtml(err.message) + '</div>'); });
 }
@@ -19212,7 +21136,8 @@ function pdfAiNotes() { if (_pdfSession) pdfGenerateCourse('notes'); }
 function pdfGenerateCourse(type) {
 var L = type==='quiz' ? {tag:'✏️ 自测题课程', act:'自测题'} : type==='cards' ? {tag:'🃏 记忆卡课程', act:'记忆卡'} : {tag:'📚 学习笔记课程', act:'学习笔记'};
 _pdfAiBusy('AI 正在生成' + L.act + '...');
-callAI({systemPrompt: pdfCourseSystemPrompt(type), prompt: _pdfSession.text, temperature:0.4, maxTokens:12288, timeout:180000})
+callAI({systemPrompt: pdfCourseSystemPrompt(type), prompt: _pdfSession.text, temperature:0.4, maxTokens:12288, timeout:180000,
+  stream:function(chunk,fullText){ _pdfAiResultHtml('<div style="text-align:left;white-space:pre-wrap;font-size:12px;color:var(--text-muted);line-height:1.6">'+escHtml(fullText)+'</div>'); }})
 .then(function(resp) {
 var obj = aiLearnParseJSON(resp);
 if (!obj || !obj.articles || !obj.articles.length) { _pdfAiResultHtml('<div style="color:#c0392b">❌ AI 返回格式异常，请重试</div>'); return; }
@@ -19496,6 +21421,7 @@ status.innerHTML = '❌ 解析 Excel 失败: ' + escHtml(err.message); status.st
 reader.readAsArrayBuffer(file);
 }
 function showAILoading(text, sub, isStream) {
+window._aiPendingLabel = text || '';
 var overlay = document.getElementById('aiLoadingOverlay');
 if (overlay) {
 document.getElementById('aiLoadingText').textContent = text || 'AI 处理中...';
@@ -19514,7 +21440,11 @@ overlay.classList.add('show');
 }
 function hideAILoading() {
 var overlay = document.getElementById('aiLoadingOverlay');
-if (overlay) overlay.classList.remove('show');
+if (overlay) {
+var _busy = false;
+if (window.aiTaskManager) { for (var _k in aiTaskManager.tasks) { var _t = aiTaskManager.tasks[_k]; if (_t && (_t.status === 'running' || _t.status === 'queued')) { _busy = true; break; } } }
+if (!_busy) overlay.classList.remove('show');
+}
 var sc = document.getElementById('aiStreamContent');
 if (sc) { sc.textContent = ''; sc.style.display = 'none'; }
 var sp = document.getElementById('aiLoadingSpinner');
@@ -19590,7 +21520,8 @@ var PANEL_DEFS = [
 			{mode:"dce", label:"🧠 决策工程"},
 {mode:"speed", label:"🚀 极速学习"},
 			{mode:"pdf", label:"📄 PDF"},
-			{mode:'netsec', label:'🛡️ 网络安全'}
+			{mode:'reader', label:'📖 阅读器'},
+				{mode:'netsec', label:'🛡️ 网络安全'}
 ];
 
 var PANEL_GROUPS = [
@@ -19605,7 +21536,8 @@ var PANEL_GROUPS = [
 {name:'🌿 身心与思维', modes:['yang','chuang','ask','he','ability','cso','fly']},
 {name:'🤖 工程与拆解', modes:['cyber','acu','decomp']},
 {name:'📄 PDF', modes:['pdf']},
-{name:'🛡️ 网络安全', modes:['netsec']}
+{name:'📚 阅读', modes:['reader']},
+	{name:'🛡️ 网络安全', modes:['netsec']}
 ];
 // panelOrder migration: move from loadState to after PANEL_DEFS to avoid undefined crash
 if (!state.panelOrder && state.hiddenPanels) {
@@ -19658,6 +21590,7 @@ wealth:"border-color:#b8860b;color:#8a6a10",
   games:"border-color:#7c4dff;color:#6a3dd6",
   pdf:"border-color:#c0392b;color:#a02020",
   publisher:"border-color:#3a7abd;color:#2a5a8a",
+  reader:"border-color:#c9a227;color:#8a6a1a",
   netsec:"border-color:#0a6e5c;color:#064e3b"
 };
 function getBadgeHTML(mode) {
@@ -20030,16 +21963,16 @@ function aiSearchDetailedStart() {
 aiSearchStart('detailed');
 }
 
-function _spb(v) { var e=document.getElementById('aiSearchProgressBar'); if(e) e.style.width=v; }
-function _spt(v) { var e=document.getElementById('aiSearchProgressText'); if(e) e.textContent=v; }
-function _sp(v) { var e=document.getElementById('aiSearchProgress'); if(e) e.style.display=v; }
+function _spb(v) { var e=aiSafe('aiSearchProgressBar'); if(e) e.style.width=v; }
+function _spt(v) { var e=aiSafe('aiSearchProgressText'); if(e) e.textContent=v; }
+function _sp(v) { var e=aiSafe('aiSearchProgress'); if(e) e.style.display=v; }
 
 function aiSearchAbortGeneration() {
 	if (!aiSearchGenerating) return;
 	aiSearchGenerating = false;
 	_aiGenAborted = true;
 	hideAILoading();
-	document.getElementById('aiSearchStatus').textContent = '⏹ 已终止（已生成 ' + (aiSearchCourse.articles ? aiSearchCourse.articles.length : 0) + ' 题）';
+	aiSafe('aiSearchStatus').textContent = '⏹ 已终止（已生成 ' + (aiSearchCourse.articles ? aiSearchCourse.articles.length : 0) + ' 题）';
 	_spb('100%');
 	aiSearchRenderPreview();
 }
@@ -20055,16 +21988,16 @@ syncAIConfigToState();
 var key = state.aiApiKey || '';
 if (!key) {
 showToast('⚠️ 请先在 AI 设置中配置 API Key');
-document.getElementById('aiSearchStatus').textContent = '⚠️ 请先在「🧠 学霸」→ AI设置中配置 API Key 并测试连接';
+aiSafe('aiSearchStatus').textContent = '⚠️ 请先在「🧠 学霸」→ AI设置中配置 API Key 并测试连接';
 return;
 }
 _aiGenAborted = false;
 aiSearchGenerating = true;
 showAILoading('正在生成课程大纲...', 'AI 正在分析内容结构');
-document.getElementById('aiSearchStatus').textContent = '⏳ 正在生成大纲...';
+aiSafe('aiSearchStatus').textContent = '⏳ 正在生成大纲...';
 _sp('block');
-var _pb = document.getElementById('aiSearchProgressBar'); if (_pb) _pb.style.width = '5%';
-document.getElementById('aiSearchPreview').style.display = 'none';
+var _pb = aiSafe('aiSearchProgressBar'); if (_pb) _pb.style.width = '5%';
+aiSafe('aiSearchPreview').style.display = 'none';
 document.getElementById('aiSearchDeployArea').style.display = 'none';
 aiSearchCourse = { name: name, chapters: [], articles: [], coreFramework: [], conceptNames: [], chapterCoreMap: [], colors: [] };
 aiSearchChaptersData = null;
@@ -20080,7 +22013,7 @@ function aiSearchGenerateOneChapter(idx) {
 	return new Promise(function(resolve) {
 		if (_aiGenAborted || !aiSearchGenerating) { resolve(); return; }
 		var ch = aiSearchCourse.chapters[idx];
-		document.getElementById('aiSearchStatus').textContent = '📝 生成中 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
+		aiSafe('aiSearchStatus').textContent = '📝 生成中 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 		var prompt = '你是《' + aiSearchCourse.name + '》研究专家。';
 		prompt += '请根据「' + ch + '」的内容拆分出若干道选择题。\n';
 		prompt += '拆分原则：\n1. 按内容单元拆分，每个单元是一个独立知识点，作为1道题\n2. 短篇内容整体为1个单元，出1道题\n3. 长篇内容按逻辑含义拆分，每个单元不超过100字\n4. 每个单元选取最有代表性的原文段落\n5. 4个选项，标注正确答案索引（0-3）\n6. 附详细解析（含原文依据 + 现代应用）\n7. 【专业要求】各选项文字长度要均衡，错误选项要有迷惑性\n';
@@ -20100,7 +22033,11 @@ function aiSearchGenerateOneChapter(idx) {
 			prompt: prompt,
 			temperature: 0.3,
 			maxTokens: AI_MAX_TOKENS_QUICK,
-			timeout: AI_TIMEOUT_DEFAULT
+			timeout: AI_TIMEOUT_DEFAULT,
+			stream: function(chunk, fullText) {
+				var st = aiSafe('aiSearchStatus');
+				if (st) st.textContent = '📝 生成中 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ') ' + fullText.length + '字';
+			}
 		}).then(function(text) {
 			try {
 				text = aiSearchExtractJSON(text);
@@ -20169,7 +22106,7 @@ function _finishBatchGen() {
 	var _statusMsg = '✅ 生成完成！共' + aiSearchCourse.chapters.length + '篇' + aiSearchCourse.articles.length + '题';
 	if (_errCount > 0) _statusMsg += ' (' + _okCount + '篇成功, ' + _errCount + '篇失败)';
 	if (_aiGenAborted) _statusMsg = '⏹ 已终止（已生成 ' + aiSearchCourse.articles.length + ' 题）';
-	document.getElementById('aiSearchStatus').textContent = _statusMsg;
+	aiSafe('aiSearchStatus').textContent = _statusMsg;
 	_spb('100%');
 	aiSearchRenderPreview();
 }
@@ -20222,30 +22159,30 @@ aiSearchCourse.chapterCoreMap = data.chapter_concept_map;
 aiSearchCourse.chapterCoreMap = data.chapters.map(function(_,i){ return [i+1, i % Math.max(1, concepts.length)]; });
 }
 }
-var _pb = document.getElementById('aiSearchProgressBar'); if (_pb) _pb.style.width = '10%';
+var _pb = aiSafe('aiSearchProgressBar'); if (_pb) _pb.style.width = '10%';
 var outlineOnly = document.getElementById('aiSearchOutlineOnly').checked;
 hideAILoading();
 if (outlineOnly) {
 aiSearchChapterStates = (aiSearchCourse.chapters || []).map(function(){ return {status:'pending', count:0, error:''} });
-document.getElementById('aiSearchStatus').textContent = '📋 大纲已生成，共' + aiSearchCourse.chapters.length + '篇，可逐篇点击🤖补充内容';
+aiSafe('aiSearchStatus').textContent = '📋 大纲已生成，共' + aiSearchCourse.chapters.length + '篇，可逐篇点击🤖补充内容';
 aiSearchChaptersData = [];
 aiSearchGenerating = false;
 aiSearchRenderPreview();
 } else if (_aiGenMode === 'detailed') {
-document.getElementById('aiSearchStatus').textContent = '📖 大纲已生成，正在拆分内容...';
+aiSafe('aiSearchStatus').textContent = '📖 大纲已生成，正在拆分内容...';
 aiSearchChaptersData = [];
 _aiGenSplitDone = false;
 _aiGenContentDone = false;
 aiSearchDetailedSplitNextChapter(0);
 } else {
-document.getElementById('aiSearchStatus').textContent = '📖 大纲已生成，共' + aiSearchCourse.chapters.length + '篇，正在逐章生成题目...';
+aiSafe('aiSearchStatus').textContent = '📖 大纲已生成，共' + aiSearchCourse.chapters.length + '篇，正在逐章生成题目...';
 aiSearchChaptersData = [];
 _displayAbortBtn(true);
 aiSearchGenerateNextChapter(0);
 }
 } catch(e) {
 hideAILoading();
-document.getElementById('aiSearchStatus').textContent = '❌ 解析大纲失败: ' + e.message;
+aiSafe('aiSearchStatus').textContent = '❌ 解析大纲失败: ' + e.message;
 aiSearchGenerating = false;
 }
 });
@@ -20261,7 +22198,7 @@ else if (aiSearchChaptersData[_si].error) _errCount++;
 }
 var _statusMsg = '✅ 生成完成！共' + aiSearchCourse.chapters.length + '篇' + aiSearchCourse.articles.length + '题';
 if (_errCount > 0) _statusMsg += ' (' + _okCount + '篇成功, ' + _errCount + '篇失败)';
-document.getElementById('aiSearchStatus').textContent = _statusMsg;
+aiSafe('aiSearchStatus').textContent = _statusMsg;
 _spb('100%');
 aiSearchRenderProgress();
 aiSearchRenderPreview();
@@ -20272,7 +22209,7 @@ if (aiSearchChapterStates && aiSearchChapterStates[idx]) {
 aiSearchChapterStates[idx].status = 'generating';
 aiSearchRenderProgress();
 }
-document.getElementById('aiSearchStatus').textContent = '📝 正在生成 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
+aiSafe('aiSearchStatus').textContent = '📝 正在生成 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 var pct = 10 + Math.round((idx / aiSearchCourse.chapters.length) * 85);
 _spb(pct + '%');
 _spt(ch);
@@ -20327,7 +22264,7 @@ aiSearchChapterStates[idx].status = 'error';
 aiSearchChapterStates[idx].error = e.message;
 }
 aiSearchChaptersData.push({ chapter: ch, count: 0, error: e.message });
-document.getElementById('aiSearchStatus').textContent = '⚠️ ' + ch + ' 解析失败: ' + e.message.slice(0, 60) + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
+aiSafe('aiSearchStatus').textContent = '⚠️ ' + ch + ' 解析失败: ' + e.message.slice(0, 60) + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 aiSearchRenderProgress();
 }
 aiSearchGenerateNextChapter(idx + 1);
@@ -20337,7 +22274,7 @@ aiSearchChapterStates[idx].status = 'error';
 aiSearchChapterStates[idx].error = (err && err.message) || 'API请求失败';
 }
 aiSearchChaptersData.push({ chapter: ch, count: 0, error: (err && err.message) || 'API请求失败' });
-document.getElementById('aiSearchStatus').textContent = '⚠️ ' + ch + ' API请求失败，跳过 (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
+aiSafe('aiSearchStatus').textContent = '⚠️ ' + ch + ' API请求失败，跳过 (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 aiSearchRenderProgress();
 aiSearchGenerateNextChapter(idx + 1);
 });
@@ -20351,7 +22288,7 @@ aiSearchRenderSplitPreview();
 return;
 }
 var ch = aiSearchCourse.chapters[idx];
-document.getElementById('aiSearchStatus').textContent = '📝 正在拆分 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
+aiSafe('aiSearchStatus').textContent = '📝 正在拆分 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 var pct = 10 + Math.round((idx / aiSearchCourse.chapters.length) * 85);
 _spb(pct + '%');
 _spt(ch);
@@ -20374,17 +22311,17 @@ t: items[i].t || ''
 aiSearchChaptersData.push({ chapter: ch, count: items.length });
 } catch(e) {
 aiSearchChaptersData.push({ chapter: ch, count: 0, error: e.message });
-document.getElementById('aiSearchStatus').textContent = '⚠️ ' + ch + ' 拆分解析失败: ' + e.message.slice(0, 60) + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
+aiSafe('aiSearchStatus').textContent = '⚠️ ' + ch + ' 拆分解析失败: ' + e.message.slice(0, 60) + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 }
 aiSearchDetailedSplitNextChapter(idx + 1);
 }, 0, function(err) {
 aiSearchChaptersData.push({ chapter: ch, count: 0, error: err.message || 'API请求失败' });
-document.getElementById('aiSearchStatus').textContent = '⚠️ ' + ch + ' API请求失败，跳过 (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
+aiSafe('aiSearchStatus').textContent = '⚠️ ' + ch + ' API请求失败，跳过 (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 aiSearchDetailedSplitNextChapter(idx + 1);
 });
 }
 function aiSearchRenderSplitPreview() {
-var div = document.getElementById('aiSearchPreview');
+var div = aiSafe('aiSearchPreview');
 div.style.display = 'block';
 var html = '<div style="background:#f8fafc;border:1px solid var(--border-light);border-radius:10px;padding:16px">';
 html += '<h4 style="color:#1a6a3a;margin-bottom:8px">📂 内容拆分预览: ' + aiSearchCourse.name + '</h4>';
@@ -20418,7 +22355,7 @@ html += '</div>';
 html += '<div style="margin-top:6px;text-align:center;font-size:12px;color:var(--text-muted)">检查内容拆分是否合理，不满意可点击「重新拆分」</div>';
 html += '</div>';
 div.innerHTML = html;
-document.getElementById('aiSearchStatus').textContent = '✅ 拆分完成！请检查拆分结果，满意后点击「开始生成内容」';
+aiSafe('aiSearchStatus').textContent = '✅ 拆分完成！请检查拆分结果，满意后点击「开始生成内容」';
 }
 function aiSearchDetailedRefreshSplit() {
 if (aiSearchGenerating) { alert('正在处理中，请等待...'); return; }
@@ -20428,9 +22365,9 @@ _aiGenSplitDone = false;
 _aiGenAborted = false;
 aiSearchGenerating = true;
 showAILoading('正在重新拆分内容...', 'AI 正在重新分析内容结构');
-document.getElementById('aiSearchStatus').textContent = '🔄 正在重新拆分...';
+aiSafe('aiSearchStatus').textContent = '🔄 正在重新拆分...';
 _spb('5%');
-document.getElementById('aiSearchPreview').style.display = 'none';
+aiSafe('aiSearchPreview').style.display = 'none';
 aiSearchDetailedSplitNextChapter(0);
 }
 function aiSearchDetailedGenerateContent() {
@@ -20446,7 +22383,7 @@ _aiGenAborted = false;
 aiSearchGenerating = true;
 _aiGenContentDone = false;
 showAILoading('正在生成学习内容...', 'AI 正在为每个内容块生成题目和详解');
-document.getElementById('aiSearchStatus').textContent = '📝 正在生成内容 (0/' + pending.length + ')...';
+aiSafe('aiSearchStatus').textContent = '📝 正在生成内容 (0/' + pending.length + ')...';
 _spb('0%');
 _spt('');
 aiSearchDetailedGenerateNextArticle(0, pending, articles);
@@ -20454,7 +22391,7 @@ aiSearchDetailedGenerateNextArticle(0, pending, articles);
 function aiSearchDetailedGenerateNextArticle(idx, pending, allArticles) {
 if (idx >= pending.length) { aiSearchDetailedContentDone(); return; }
 var article = pending[idx];
-document.getElementById('aiSearchStatus').textContent = '📝 正在生成内容 (' + (idx+1) + '/' + pending.length + ')...';
+aiSafe('aiSearchStatus').textContent = '📝 正在生成内容 (' + (idx+1) + '/' + pending.length + ')...';
 var pct = Math.round((idx / pending.length) * 100);
 _spb(pct + '%');
 _spt((article.t || '').substring(0, 40) + '...');
@@ -20463,9 +22400,13 @@ var optsText = _genOpts.text || '';
 var prompt = '你是《' + aiSearchCourse.name + '》研究专家。以下是一段原文内容：\n「' + (article.t || '') + '」\n\n请根据这段原文生成完整的学习内容。\n';
 prompt += '返回严格JSON格式（不要markdown包裹）：\n{\n  "q": "选择题题干",\n  "o": ["A选项", "B选项", "C选项", "D选项"],\n  "a": <0-3>,\n  "e": "详细解析",\n  "p": "白话解析",\n  "core": "核心内容摘要",\n  "exam": "核心考点",\n  "master": "师傅传授与解释",\n  "feynman": "费曼技巧",\n  "mne": "记忆宫殿出图画面",\n  "scene": "生活场景",\n  "imgPrompt": "图片提示词"\n}';
 if (optsText) prompt += '\n\n' + optsText;
-callAI({systemPrompt: '你是一个课程设计专家，擅长将知识转化为互动学习内容。', prompt: prompt, temperature: 0.7, maxTokens: 2048, timeout: 90000}).then(function(text) {
+callAI({systemPrompt: '你是一个课程设计专家，擅长将知识转化为互动学习内容。', prompt: prompt, temperature: 0.7, maxTokens: 2048, timeout: 90000,
+	stream: function(chunk, fullText) {
+		var st = aiSafe('aiSearchStatus');
+		if (st) st.textContent = '📝 正在生成内容 (' + (idx+1) + '/' + pending.length + ') ' + fullText.length + '字';
+	}}).then(function(text) {
 if (!text) {
-document.getElementById('aiSearchStatus').textContent = '⚠️ 第' + (idx+1) + '条生成失败，跳过 (' + (idx+1) + '/' + pending.length + ')';
+aiSafe('aiSearchStatus').textContent = '⚠️ 第' + (idx+1) + '条生成失败，跳过 (' + (idx+1) + '/' + pending.length + ')';
 aiSearchDetailedGenerateNextArticle(idx + 1, pending, allArticles);
 return;
 }
@@ -20490,11 +22431,11 @@ break;
 }
 }
 } catch(e) {
-document.getElementById('aiSearchStatus').textContent = '⚠️ 第' + (idx+1) + '条解析失败，跳过 (' + (idx+1) + '/' + pending.length + ')';
+aiSafe('aiSearchStatus').textContent = '⚠️ 第' + (idx+1) + '条解析失败，跳过 (' + (idx+1) + '/' + pending.length + ')';
 }
 aiSearchDetailedGenerateNextArticle(idx + 1, pending, allArticles);
 }).catch(function(err) {
-document.getElementById('aiSearchStatus').textContent = '⚠️ 第' + (idx+1) + '条API失败，跳过 (' + (idx+1) + '/' + pending.length + ')';
+aiSafe('aiSearchStatus').textContent = '⚠️ 第' + (idx+1) + '条API失败，跳过 (' + (idx+1) + '/' + pending.length + ')';
 aiSearchDetailedGenerateNextArticle(idx + 1, pending, allArticles);
 });
 }
@@ -20511,12 +22452,12 @@ if (aiSearchCourse.articles[_cdai].c === _cdch && aiSearchCourse.articles[_cdai]
 }
 aiSearchChaptersData.push({ chapter: _cdch, count: _cdcnt });
 }
-document.getElementById('aiSearchStatus').textContent = '🎉 内容生成完成！共 ' + aiSearchCourse.articles.length + ' 题';
+aiSafe('aiSearchStatus').textContent = '🎉 内容生成完成！共 ' + aiSearchCourse.articles.length + ' 题';
 _spb('100%');
 aiSearchRenderPreview();
 }
 function aiSearchRenderPreview() {
-var div = document.getElementById('aiSearchPreview');
+var div = aiSafe('aiSearchPreview');
 div.style.display = 'block';
 var html = '<div style="background:#f8fafc;border:1px solid #d0e0d0;border-radius:10px;padding:16px">';
 html += '<h4 style="color:#1a6a3a;margin-bottom:12px">📂 预览: ' + aiSearchCourse.name + '</h4>';
@@ -20630,7 +22571,7 @@ aiSearchRenderProgress();
 var ch = aiSearchCourse.chapters[idx];
 _aiGenAborted = false;
 aiSearchGenerating = true;
-document.getElementById('aiSearchStatus').textContent = '📝 正在生成 ' + ch + '...';
+aiSafe('aiSearchStatus').textContent = '📝 正在生成 ' + ch + '...';
 _sp('block');
 _spb('30%');
 _spt(ch);
@@ -20695,18 +22636,18 @@ found = true; break;
 }
 }
 if (!found) aiSearchChaptersData.push({ chapter: ch, count: newTotal });
-document.getElementById('aiSearchStatus').textContent = '✅ ' + ch + ' 追加完成！累计 ' + newTotal + ' 题（新增' + items.length + '题）';
+aiSafe('aiSearchStatus').textContent = '✅ ' + ch + ' 追加完成！累计 ' + newTotal + ' 题（新增' + items.length + '题）';
 _spb('100%');
 _spt('');
 } catch(e) {
 if (retryCount < AI_RETRY_MAX) {
-document.getElementById('aiSearchStatus').textContent = '🔄 ' + ch + ' 解析失败，自动重试(' + (retryCount+1) + '/' + AI_RETRY_MAX + ')...请AI综合资料重新生成';
+aiSafe('aiSearchStatus').textContent = '🔄 ' + ch + ' 解析失败，自动重试(' + (retryCount+1) + '/' + AI_RETRY_MAX + ')...请AI综合资料重新生成';
 _spb('0%');
 aiSearchGenerating = false;
 setTimeout(function(){ aiSearchGenerateSingleChapter(idx, retryCount+1); }, AI_RETRY_INTERVAL_JSON);
 return;
 }
-document.getElementById('aiSearchStatus').textContent = '❌ ' + ch + ' 生成失败（已重试3次）: ' + e.message;
+aiSafe('aiSearchStatus').textContent = '❌ ' + ch + ' 生成失败（已重试3次）: ' + e.message;
 if (!aiSearchChaptersData) aiSearchChaptersData = [];
 var found = false;
 for (var j = 0; j < aiSearchChaptersData.length; j++) {
@@ -20737,7 +22678,7 @@ var all = JSON.parse(safeGetItem(COURSES_DATA_KEY) || '{}');
 var course = all[name];
 if (!course) { alert('课程数据不存在'); return; }
 if (name === '道德经') { alert('道德经是内置课程，无需补充'); return; }
-var div = document.getElementById('aiSearchPreview');
+var div = aiSafe('aiSearchPreview');
 div.style.display = 'block';
 var html = '<div style="background:#f8fafc;border:1px solid #d0e0d0;border-radius:10px;padding:16px">';
 html += '<h4 style="color:#1a6a3a;margin-bottom:12px">📋 课程章节状态: ' + name + '</h4>';
@@ -20787,7 +22728,7 @@ var existingCount = (course.articles||[]).filter(function(a){ return a.c === cha
 retryCount = retryCount || 0;
 _aiGenAborted = false;
 aiSearchGenerating = true;
-document.getElementById('aiSearchStatus').textContent = '📝 正在补充 ' + chapterName + '...';
+aiSafe('aiSearchStatus').textContent = '📝 正在补充 ' + chapterName + '...';
 _sp('block');
 _spb('30%');
 _spt(chapterName);
@@ -20833,19 +22774,19 @@ p: items[i].p || ''
 }
 var newTotal = existingCount + items.length;
 StorageManager.saveCourse(courseName, course);
-document.getElementById('aiSearchStatus').textContent = '✅ ' + chapterName + ' 补充完成！累计 ' + newTotal + ' 题（新增' + items.length + '题，已保存）';
+aiSafe('aiSearchStatus').textContent = '✅ ' + chapterName + ' 补充完成！累计 ' + newTotal + ' 题（新增' + items.length + '题，已保存）';
 _spb('100%');
 _spt('');
 if (state.activeCourse === courseName) { switchCourse(courseName); }
 } catch(e) {
 if (retryCount < AI_RETRY_MAX) {
-document.getElementById('aiSearchStatus').textContent = '🔄 ' + chapterName + ' 解析失败，自动重试(' + (retryCount+1) + '/' + AI_RETRY_MAX + ')...请AI综合资料重新生成';
+aiSafe('aiSearchStatus').textContent = '🔄 ' + chapterName + ' 解析失败，自动重试(' + (retryCount+1) + '/' + AI_RETRY_MAX + ')...请AI综合资料重新生成';
 _spb('0%');
 aiSearchGenerating = false;
 setTimeout(function(){ aiSearchSupplementChapter(courseName, chapterName, retryCount+1); }, AI_RETRY_INTERVAL_JSON);
 return;
 }
-document.getElementById('aiSearchStatus').innerHTML = '❌ ' + escHtml(chapterName) + ' 生成失败（已重试3次）: ' + escHtml(e.message) + ' <button onclick="aiSearchSupplementChapter(\x27' + courseName.replace(/\x27/g,'\x27\\x27\x27') + '\x27,\x27' + chapterName.replace(/\x27/g,'\x27\\x27\x27') + '\x27,0)" style="margin-left:8px;padding:2px 10px;font-size:12px;background:#4a7a9a;color:#fff;border:none;border-radius:4px;cursor:pointer">🔄 重试</button>';
+aiSafe('aiSearchStatus').innerHTML = '❌ ' + escHtml(chapterName) + ' 生成失败（已重试3次）: ' + escHtml(e.message) + ' <button onclick="aiSearchSupplementChapter(\x27' + courseName.replace(/\x27/g,'\x27\\x27\x27') + '\x27,\x27' + chapterName.replace(/\x27/g,'\x27\\x27\x27') + '\x27,0)" style="margin-left:8px;padding:2px 10px;font-size:12px;background:#4a7a9a;color:#fff;border:none;border-radius:4px;cursor:pointer">🔄 重试</button>';
 }
 aiSearchGenerating = false;
 aiSearchShowCourseStatus();
@@ -20863,14 +22804,14 @@ if (idx >= aiSearchCourse.chapters.length || aiSearchAppendAllStop) {
 hideAILoading();
 aiSearchAppendAllStop = false;
 aiSearchGenerating = false;
-document.getElementById('aiSearchStatus').textContent = '✅ 追加完成！共 ' + aiSearchCourse.articles.length + ' 题';
+aiSafe('aiSearchStatus').textContent = '✅ 追加完成！共 ' + aiSearchCourse.articles.length + ' 题';
 _spb('100%');
 _spt('');
 aiSearchRenderPreview();
 return;
 }
 var ch = aiSearchCourse.chapters[idx];
-document.getElementById('aiSearchStatus').textContent = '📝 正在追加 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
+aiSafe('aiSearchStatus').textContent = '📝 正在追加 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 var pct = Math.round((idx / aiSearchCourse.chapters.length) * 100);
 _spb(pct + '%');
 _spt(ch);
@@ -20926,7 +22867,7 @@ aiSearchAppendAllNext(idx + 1);
 });
 }
 function aiSearchRenderProgress() {
-  var el = document.getElementById('aiSearchProgress');
+  var el = aiSafe('aiSearchProgress');
   if (!el) return;
   var states = aiSearchChapterStates || [];
   var chapters = aiSearchCourse ? aiSearchCourse.chapters : [];
@@ -21023,7 +22964,7 @@ try {
 StorageManager.saveCourse(name, courseData);
 switchCourse(name);
 renderAISearchPanel();
-document.getElementById('aiSearchStatus').textContent = '🎉 ' + name + ' 已部署并切换到新课程！';
+aiSafe('aiSearchStatus').textContent = '🎉 ' + name + ' 已部署并切换到新课程！';
 } catch(e) {
 alert('部署失败: ' + e.message);
 }
@@ -21063,7 +23004,7 @@ if (!state.aiApiKey && keyInput && keyInput.value) { state.aiApiKey = keyInput.v
 if (epInput && epInput.value && epInput.value !== state.aiEndpoint) { state.aiEndpoint = epInput.value; saveState(); }
 if (modelSelect && modelSelect.value && modelSelect.value !== state.aiModel) { state.aiModel = modelSelect.value; saveState(); }
 if (!state.aiApiKey) {
-document.getElementById('aiSearchStatus').textContent = '⚠️ 请在「🧠 学霸」→ AI设置中配置 API Key 并测试连接';
+aiSafe('aiSearchStatus').textContent = '⚠️ 请在「🧠 学霸」→ AI设置中配置 API Key 并测试连接';
 aiSearchGenerating = false; hideAILoading();
 return;
 }
@@ -21078,7 +23019,7 @@ callback(text);
 }).catch(function(err) {
 hideAILoading();
 if (onError) { onError(err); return; }
-document.getElementById('aiSearchStatus').textContent = '❌ ' + (err.message || '请求失败');
+aiSafe('aiSearchStatus').textContent = '❌ ' + (err.message || '请求失败');
 aiSearchGenerating = false;
 });
 }
@@ -21847,7 +23788,7 @@ _genIdx: -1,
 time: Date.now(),
 message: ''
 };
-renderExamMarket();
+if (currentMode === 'market') renderExamMarket();
 showToast('✅ 课程框架已生成，共 ' + data.chapters.length + ' 章，开始逐章生成试题...');
 setTimeout(function() { startHotGenNextChapter(topicId); }, 500);
 return HOT_GEN_STATE[topicId];
@@ -21855,7 +23796,7 @@ return HOT_GEN_STATE[topicId];
 console.error('[HotGen] 框架生成失败:', err.message || err);
 hideAILoading();
 HOT_GEN_STATE[topicId] = { step: 'error', message: '框架生成失败: ' + (err.message || '') };
-renderExamMarket();
+if (currentMode === 'market') renderExamMarket();
 throw err;
 });
 }
@@ -21890,7 +23831,7 @@ if (data.topics[i].id === topicId) { topic = data.topics[i]; break; }
 if (!topic) { topic = { name: st.framework.name, level: '' }; }
 st.chapterStates[chapterName].status = 'generating';
 st._genIdx = chIdx;
-renderExamMarket();
+if (currentMode === 'market') renderExamMarket();
 var level = topic.level || '';
 var hasLevel = (cat === 'k12' || cat === 'tips') && level;
 var perCh = hasLevel && level === 'primary' ? '6-8' : (hasLevel && level === 'senior' ? '10-15' : '8-12');
@@ -21946,7 +23887,7 @@ e: items[i].e || ''
 st.chapterStates[chapterName].status = 'done';
 st.chapterStates[chapterName].count = items.length;
 showToast('✅ ' + chapterName + ' 完成，生成 ' + items.length + ' 题');
-renderExamMarket();
+if (currentMode === 'market') renderExamMarket();
 startHotGenNextChapter(topicId);
 }).catch(function(err) {
 console.error('[HotGen] 章节生成失败:', err.message || err);
@@ -21954,7 +23895,7 @@ hideAILoading();
 st.chapterStates[chapterName].status = 'error';
 st.chapterStates[chapterName].error = err.message || '生成失败';
 showToast('❌ ' + chapterName + ' 生成失败，可点击 ❌ 重新生成');
-renderExamMarket();
+if (currentMode === 'market') renderExamMarket();
 startHotGenNextChapter(topicId);
 });
 }
@@ -21963,7 +23904,7 @@ var st = HOT_GEN_STATE[topicId];
 if (!st || st.step !== 'chapters') return;
 st.chapterStates[chapterName].status = 'pending';
 st.chapterStates[chapterName].error = '';
-renderExamMarket();
+if (currentMode === 'market') renderExamMarket();
 startHotGenNextChapter(topicId);
 }
 function finishHotGen(topicId) {
@@ -22001,7 +23942,7 @@ course,
 });
 }
 function aiGenerateExamCourse(topic, catKey, catData) {
-showAILoading('正在生成《' + topic.name + '》课程...', 'AI正在根据考试大纲构建课程体系');
+showAILoading('正在生成《' + topic.name + '》课程...', 'AI正在根据考试大纲构建课程体系', true);
 var prompt = buildExamPrompt(topic, catKey, catData);
 var tempMap = {primary:0.7, junior:0.5, senior:0.4};
 var temperature = topic.level && tempMap[topic.level] !== undefined ? tempMap[topic.level] : 0.5;
@@ -22009,7 +23950,8 @@ return callAI({
 prompt: prompt,
 temperature: temperature,
 maxTokens: AI_MAX_TOKENS_GENERATE * 2,
-timeout: 180000
+timeout: 180000,
+  stream: updateAILoadingStream
 }).then(function(text) {
 hideAILoading();
 var m = text.match(/\{[\s\S]*\}/);
@@ -27195,7 +29137,7 @@ showToast('✅ 内容生成完成，请部署到系统');
 renderSyllabusFinalPreview();
 }
 function renderSyllabusFinalPreview() {
-var previewEl = document.getElementById('aiSearchPreview');
+var previewEl = aiSafe('aiSearchPreview');
 var deployEl = document.getElementById('aiSearchDeployArea');
 if (!previewEl) return;
 var html = '<div class="card" style="margin-top:16px;padding:16px">';
@@ -27441,7 +29383,7 @@ html += '<button class="exam-start-btn" onclick=\'ankiImportConfirm(Array.from(d
 html += '<button class="exam-start-btn" onclick=\'document.getElementById("aiSearchPreview").style.display="none"\' style="padding:8px 20px;font-size:13px;background:#8a7a6a">✖ 取消</button>';
 html += '</div></div>';
 window._ankiImportData = data;
-var preview = document.getElementById('aiSearchPreview');
+var preview = aiSafe('aiSearchPreview');
 preview.style.display = 'block';
 preview.innerHTML = html;
 showToast('找到了 ' + available.length + ' 个牌组');
@@ -27486,7 +29428,7 @@ totalArticles += articles.length;
 try {
 localStorage.setItem(COURSES_DATA_KEY, JSON.stringify(courses));
 showToast('✅ 成功导入 ' + imported + ' 个牌组 (' + totalArticles + ' 张卡片)');
-document.getElementById('aiSearchPreview').style.display = 'none';
+aiSafe('aiSearchPreview').style.display = 'none';
 window._ankiImportData = null;
 updateUI();
 } catch(e) {
@@ -28304,7 +30246,11 @@ function callThinkTank() {
     prompt: result.prompt,
     temperature: 0.7,
     maxTokens: 12288,
-    timeout: 120000
+    timeout: 120000,
+    stream: function(chunk, fullText) {
+      if (loading) loading.style.display = 'none';
+      renderThinkTankResult(fullText);
+    }
   }).then(function(text) {
     if (loading) loading.style.display = 'none';
     renderThinkTankResult(text);
@@ -28686,7 +30632,11 @@ function callPatternAnalysis() {
     prompt: result.prompt,
     temperature: 0.7,
     maxTokens: 4096,
-    timeout: 120000
+    timeout: 120000,
+    stream: function(chunk, fullText) {
+      if (loading) loading.style.display = 'none';
+      renderPatternResult(fullText, result.mode);
+    }
   }).then(function(text) {
     if (loading) loading.style.display = 'none';
     renderPatternResult(text, result.mode);
@@ -37596,7 +39546,7 @@ function renderSkillPanel() {
   renderSkillHistory();
 }
 function buildSkillPrompt(skill) {
-  return '你是一位技能学习规划专家，精通各领域技能拆解与学习路径设计。\n\n用户想学习的技能是：「' + skill + '」\n\n请严格按照以下8个模块生成JSON格式的完整学习方案，全程面向零基础普通人，不讲专业术语，步骤落地化、可执行化：\n\n{\n  "goal": "学成后能达到的具体效果，清晰说明学会后可以做到哪些具体事情",\n  "roadmap": "分阶段完整学习路线，按照入门→基础实操→进阶强化→熟练精通排序，严格标注学习先后顺序，不能跳学",\n  "core": "必须优先吃透、决定成败的关键知识点，重点强调",\n  "secondary": "内容量大但非刚需的部分，说明哪些可以简化学习、暂时跳过",\n  "practice": "分阶段每天练什么、练习时长、怎么检验自己练会了",\n  "pitfalls": "新手90%会踩的坑、各阶段最容易遇到的错误和难点",\n  "solutions": "最简单成本最低的处理方案，拒绝专业晦涩方案",\n  "timeline": "从零开始完整学会一共需要多久，每周分配建议"\n}\n\n只输出JSON，不要其他文字。';
+  return '你是一位技能学习规划专家，精通各领域技能拆解与学习路径设计。\n\n用户想学习的技能是：「' + skill + '」\n\n请严格按照以下8个模块生成JSON格式的完整学习方案，全程面向零基础普通人，不讲专业术语，步骤落地化、可执行化：\n\n{\n  "goal": "学成后能达到的具体效果，清晰说明学会后可以做到哪些具体事情",\n  "roadmap": "分阶段完整学习路线，按照入门→基础实操→进阶强化→熟练精通排序，严格标注学习先后顺序，不能跳学",\n  "core": "必须优先吃透、决定成败的关键知识点，重点强调",\n  "secondary": "内容量大但非刚需的部分，说明哪些可以简化学习、暂时跳过",\n  "practice": "分阶段每天练什么、练习时长、怎么检验自己练会了",\n  "pitfalls": "新手90%会踩的坑、各阶段最容易遇到的错误和难点",\n  "solutions": "最简单成本最低的处理方案，拒绝专业晦涩方案",\n  "timeline": "从零开始完整学会一共需要多久，每周分配建议"\n}\n\n只输出一个合法的JSON对象，不要使用markdown代码块包裹，不要输出任何解释、前言、搜索来源或总结文字，所有字段必须完整填充。';
 }
 function callSkillAnalysis() {
   var input = $id('skillInput');
@@ -37610,8 +39560,7 @@ function callSkillAnalysis() {
     temperature: 0.5,
     maxTokens: 8192,
     timeout: 180000,
-    search: true,
-    stream: function(chunk, fullText) {}
+    search: true
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
     var plan = parseSkillPlan(fullText);
@@ -37639,7 +39588,41 @@ function parseSkillPlan(text) {
   if (start >= 0 && end > start) {
     try { var p = JSON.parse(text.substring(start, end + 1)); if (p && typeof p==='object') return p; } catch(e) {}
   }
+  // 4. Repair common JSON syntax errors (trailing commas)
+  if (start >= 0 && end > start) {
+    var fixed = text.substring(start, end + 1).replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');
+    try { var p = JSON.parse(fixed); if (p && typeof p==='object') return p; } catch(e) {}
+  }
+  // 5. Field-level fallback extraction (salvages partially-broken JSON)
+  var out = {}, any = false;
+  var keys = ['goal','roadmap','core','secondary','practice','pitfalls','solutions','timeline'];
+  for (var i = 0; i < keys.length; i++) {
+    var v = extractSkillField(text, keys[i]);
+    if (v !== undefined) { out[keys[i]] = v; any = true; }
+  }
+  if (any) return out;
   return null;
+}
+function extractSkillField(text, key) {
+  var m = text.match(new RegExp('"' + key + '"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"'));
+  if (m) return m[1];
+  var m2 = text.match(new RegExp('"' + key + '"\\s*:\\s*\\['));
+  if (m2) {
+    var idx = m2.index + m2[0].length - 1;
+    var depth = 0;
+    for (var i = idx; i < text.length; i++) {
+      if (text[i] === '[') depth++;
+      else if (text[i] === ']') {
+        depth--;
+        if (depth === 0) {
+          var arrText = text.substring(idx, i + 1);
+          try { var a = JSON.parse(arrText); if (Array.isArray(a)) return a; } catch(e) {}
+          return arrText;
+        }
+      }
+    }
+  }
+  return undefined;
 }
 function renderSkillPlan(plan, skillName) {
   var resultDiv = $id('skillResult');
@@ -38902,7 +40885,10 @@ function netsecAiAsk() {
     prompt: q,
     temperature: 0.5,
     maxTokens: 2048,
-    timeout: 120000
+    timeout: 120000,
+    stream: function(chunk, fullText) {
+      out.innerHTML = '<div class="ns-ai-answer">' + netsecEsc(fullText).replace(/\n/g, '<br>') + '</div>';
+    }
   }).then(function(text) {
     out.innerHTML = '<div class="ns-ai-answer">' + netsecEsc(text).replace(/\n/g, '<br>') + '</div>';
     if (btn) { btn.disabled = false; btn.textContent = '💬 提问'; }
