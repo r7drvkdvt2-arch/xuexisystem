@@ -19563,7 +19563,7 @@ function readerRenderShelf(books, progress) {
   h += '<div style="font-size:16px;font-weight:700">📖 我的书架 <span style="font-size:12px;color:var(--text-muted)">' + books.length + ' 本</span></div>';
   h += '<div class="reader-shelf-actions">';
   h += '<button class="reader-import-btn" data-rd-stats="1">📊 阅读统计</button>';
-  h += '<label class="reader-import-btn" style="cursor:pointer">📚 导入电子书<input type="file" id="readerFileInput" multiple accept=".epub,.txt,.md,.pdf,.docx,.mobi,.azw3" style="display:none"></label>';
+  h += '<label class="reader-import-btn" style="cursor:pointer">📚 导入电子书<input type="file" id="readerFileInput" multiple accept=".epub,.txt,.md,.pdf,.docx,.mobi,.azw3,application/epub+zip,application/pdf,application/x-mobipocket-ebook,application/vnd.amazon.ebook,application/x-ebook,application/octet-stream,text/plain,text/markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none"></label>';
   h += '</div></div>';
   if (!books.length) {
     h += '<div class="reader-empty"><div class="reader-empty-icon">📚</div><p>书架还是空的</p><p style="font-size:12px">点击右上角「导入电子书」添加 .epub / .txt / .md / .pdf / .docx / .mobi 文件</p></div>';
@@ -19612,19 +19612,52 @@ function readerAfterImport(ok, fail) {
 function readerImportOne(file) {
   var ext = readerExt(file.name);
   var supported = { epub: 1, txt: 1, md: 1, pdf: 1, docx: 1, mobi: 1, azw3: 1 };
-  if (!supported[ext]) return Promise.reject(new Error('不支持格式 .' + ext));
-  return readerParseFile(file, ext).then(function(parsed) {
+  var fmt = supported[ext] ? ext : null;
+  var p;
+  if (fmt) {
+    p = readerParseFile(file, fmt).then(function(parsed) { return { parsed: parsed, fmt: fmt }; });
+  } else {
+    p = readerReadAsArrayBuffer(file).then(function(ab) {
+      var s = readerSniffExt(ab);
+      if (!s) throw new Error('不支持格式 .' + ext);
+      return readerParseFile(file, s, ab).then(function(parsed) { return { parsed: parsed, fmt: s }; });
+    });
+  }
+  return p.then(function(r) {
     var id = 'b_' + Date.now().toString(36) + '_' + Math.floor(Math.random() * 1e6).toString(36);
     var book = {
-      id: id, title: parsed.title || readerTitleFromName(file.name), author: parsed.author || '',
-      format: ext, size: file.size || 0, addedAt: Date.now(), lastReadAt: Date.now(),
-      raw: file, cover: parsed.cover || null
+      id: id, title: r.parsed.title || readerTitleFromName(file.name), author: r.parsed.author || '',
+      format: r.fmt, size: file.size || 0, addedAt: Date.now(), lastReadAt: Date.now(),
+      raw: file, cover: r.parsed.cover || null
     };
-    var content = { bookId: id, format: ext, chapters: parsed.chapters || [] };
+    var content = { bookId: id, format: r.fmt, chapters: r.parsed.chapters || [] };
     return readerIdbPut('books', book).then(function() { return readerIdbPut('content', content); });
   });
 }
 function readerExt(name) { return (name.split('.').pop() || '').toLowerCase(); }
+function readerSniffExt(ab) {
+  var b = new Uint8Array(ab.slice(0, 8192));
+  if (b.length < 4) return null;
+  if (b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46) return 'pdf';
+  if (b[0] === 0x50 && b[1] === 0x4B && b[2] === 0x03 && b[3] === 0x04) {
+    var ascii = '';
+    for (var i = 0; i < b.length; i++) ascii += String.fromCharCode(b[i]);
+    if (ascii.indexOf('application/epub+zip') !== -1) return 'epub';
+    if (ascii.indexOf('[Content_Types].xml') !== -1 || ascii.indexOf('word/document.xml') !== -1) return 'docx';
+    return null;
+  }
+  if (b.length >= 82) {
+    try {
+      var view = new DataView(ab);
+      var numRecords = view.getUint16(76);
+      if (numRecords > 0) {
+        var rec0 = view.getUint32(78);
+        if (rec0 + 20 <= b.length && b[rec0 + 16] === 0x4D && b[rec0 + 17] === 0x4F && b[rec0 + 18] === 0x42 && b[rec0 + 19] === 0x49) return 'mobi';
+      }
+    } catch (e) {}
+  }
+  return null;
+}
 function readerTitleFromName(name) {
   var base = name.replace(/\.[^.]+$/, '');
   base = base.replace(/[_\-]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -19646,13 +19679,13 @@ function readerReadAsText(file) {
     r.readAsText(file);
   });
 }
-function readerParseFile(file, ext) {
+function readerParseFile(file, ext, pre) {
   if (ext === 'txt') return readerReadAsText(file).then(function(t) { return readerParseTxt(t); });
   if (ext === 'md') return readerReadAsText(file).then(function(t) { return readerParseMd(t); });
-  if (ext === 'docx') return readerReadAsArrayBuffer(file).then(function(ab) { return readerParseDocx(ab); });
-  if (ext === 'pdf') return readerReadAsArrayBuffer(file).then(function(ab) { return readerParsePdf(ab); });
-  if (ext === 'epub') return readerReadAsArrayBuffer(file).then(function(ab) { return readerParseEpub(ab); });
-  if (ext === 'mobi' || ext === 'azw3') return readerReadAsArrayBuffer(file).then(function(ab) { return readerParseMobi(ab); });
+  if (ext === 'docx') return (pre ? Promise.resolve(pre) : readerReadAsArrayBuffer(file)).then(function(ab) { return readerParseDocx(ab); });
+  if (ext === 'pdf') return (pre ? Promise.resolve(pre) : readerReadAsArrayBuffer(file)).then(function(ab) { return readerParsePdf(ab); });
+  if (ext === 'epub') return (pre ? Promise.resolve(pre) : readerReadAsArrayBuffer(file)).then(function(ab) { return readerParseEpub(ab); });
+  if (ext === 'mobi' || ext === 'azw3') return (pre ? Promise.resolve(pre) : readerReadAsArrayBuffer(file)).then(function(ab) { return readerParseMobi(ab); });
   return Promise.reject(new Error('不支持格式'));
 }
 
@@ -19756,7 +19789,7 @@ function readerLoadEpubChapter(zip, path, baseDir, idx) {
 function readerSanitizeHtml(str) {
   var tmp = document.createElement('div');
   tmp.innerHTML = str;
-  var bad = tmp.querySelectorAll('script,style,link,head,iframe,object,embed,form,base,meta');
+  var bad = tmp.querySelectorAll('script,style,link,head,iframe,object,embed,form,base,meta,svg,math,template,frame,frameset');
   for (var i = 0; i < bad.length; i++) { if (bad[i].parentNode) bad[i].parentNode.removeChild(bad[i]); }
   var all = tmp.querySelectorAll('*');
   for (var j = 0; j < all.length; j++) {
@@ -19764,8 +19797,15 @@ function readerSanitizeHtml(str) {
     for (var k = attrs.length - 1; k >= 0; k--) {
       var name = attrs[k].name.toLowerCase();
       var val = attrs[k].value;
-      if (name.indexOf('on') === 0) all[j].removeAttribute(attrs[k].name);
-      else if ((name === 'href' || name === 'src' || name === 'xlink:href') && /^\s*javascript:/i.test(val)) all[j].removeAttribute(attrs[k].name);
+      if (name.indexOf('on') === 0 || name === 'srcdoc' || name === 'sandbox' || name === 'target' || name === 'ping') { all[j].removeAttribute(attrs[k].name); continue; }
+      if (name === 'href' || name === 'src' || name === 'xlink:href' || name === 'formaction' || name === 'action' || name === 'poster') {
+        var v = val.trim().toLowerCase();
+        if (v.indexOf('javascript:') === 0 || v.indexOf('vbscript:') === 0 || v.indexOf('data:text/html') === 0) all[j].removeAttribute(attrs[k].name);
+      }
+      if (name === 'style') {
+        var st = val.replace(/\s/g, '').toLowerCase();
+        if (st.indexOf('expression(') !== -1 || st.indexOf('javascript:') !== -1 || st.indexOf('@import') !== -1) all[j].removeAttribute(attrs[k].name);
+      }
     }
   }
   return tmp.innerHTML;
