@@ -7353,6 +7353,7 @@ pegsetScenes: [],
 		anaSessions: [],
 		anaSettings: {},
 		advSessions: [],
+			aiExtracts: [],
 			advSettings: {},
 			indSessions: [],
 			indSettings: {},
@@ -7976,6 +7977,7 @@ var EDGE_VOICES = {
 var readState = null;
 var speechRate = parseFloat(safeGetItem('ddj_speechRate') || '1.0');
 var ttsVoice = safeGetItem('ddj_ttsVoice') || '';         // 空 = 默认引擎
+var _edgeHealthy = true;   // 本次会话内 Edge 网络 TTS 可用性（不可用则静默降级到系统语音）
 // --- Edge TTS 内部状态 ---
 var _eToken = null, _eTokenExp = 0;
 var _eWs = null, _eAudio = null;
@@ -8089,11 +8091,10 @@ var pFail = 0, pTotal = _runtimeProxies.length + _postProxyList.length;
 var wsFailed = false;
 function tryFallback() {
 if (pFail >= pTotal && wsFailed) {
+_edgeHealthy = false;
 if (window.speechSynthesis) {
-showToast('⚠️ 网络语音不可用，已切换为系统语音');
 _wsSpeak(text, wrapEnd);
 } else {
-showToast('⚠️ 语音网络异常，请检查连接');
 wrapEnd();
 }
 }
@@ -8106,7 +8107,7 @@ var pUrl = baseUrl + '?text=' + encodeURIComponent(text) + '&voice=' + encodeURI
 var pTimedOut = false;
 var pTimer = setTimeout(function() {
 pTimedOut = true; pFail++; tryFallback();
-}, 8000);
+}, 4000);
 fetch(pUrl).then(function(r) {
 if (isDone || pTimedOut) return; clearTimeout(pTimer);
 if (!r.ok) { pFail++; tryFallback(); return; }
@@ -8134,7 +8135,7 @@ for (var ppi = 0; ppi < _postProxyList.length; ppi++) {
 var ppTimedOut = false;
 var ppTimer = setTimeout(function() {
 ppTimedOut = true; pFail++; tryFallback();
-}, 8000);
+}, 4000);
 fetch(pp.url, {
 method: 'POST',
 headers: { 'Authorization': 'Bearer ' + pp.key, 'Content-Type': 'application/json' },
@@ -8161,7 +8162,7 @@ pFail++; tryFallback();
 })(_postProxyList[ppi]);
 }
 // ===== 路径 2：WebSocket（能连上就用，不能连就等 REST）=====
-_getEdgeToken().then(function(token) {
+Promise.resolve().then(function() {
 if (isDone) return;
 var connId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){
 var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16);
@@ -8250,7 +8251,7 @@ if (window.speechSynthesis) window.speechSynthesis.cancel();
 // --- 统一朗读调度（自动选引擎）---
 function speakText(text, onEnd) {
 // 选音色 → Edge TTS；不选 + speechSynthesis 可用 → Web Speech；不选 + 不可用 → Edge TTS 默认音色
-if (ttsVoice) { _edgeSpeak(text, onEnd); }
+if (ttsVoice && _edgeHealthy) { _edgeSpeak(text, onEnd); }
 else if (window.speechSynthesis) { _wsSpeak(text, onEnd); }
 else { _edgeSpeak(text, onEnd); }
 }
@@ -11910,6 +11911,8 @@ else if (mode==='speed') renderSpeedPanel();
 	else if (mode==='pdf') renderPdfPanel();
 	else if (mode==='reader') renderReaderPanel();
 	else if (mode==='netsec') renderNetsecPanel();
+	else if (mode==='remote') renderRemotePanel();
+	else if (mode==='translate') renderTranslatePanel();
 else renderStats();
 updateUI();
 if (!window._panelSwipeInit) { initPanelSwipe(); window._panelSwipeInit = true; }
@@ -20198,6 +20201,953 @@ function readerLoadNotesIndex(bookId) {
     return map;
   });
 }
+/* —— 翻译软件板块 —— */
+var TR_LANGS = [
+  { k: 'zh-Hans', n: '中文' }, { k: 'zh-Hant', n: '繁体中文' }, { k: 'en', n: '英文' },
+  { k: 'ja', n: '日文' }, { k: 'ko', n: '韩文' }, { k: 'fr', n: '法文' }, { k: 'de', n: '德文' },
+  { k: 'ru', n: '俄文' }, { k: 'es', n: '西班牙文' }, { k: 'pt', n: '葡萄牙文' },
+  { k: 'it', n: '意大利文' }, { k: 'vi', n: '越南文' }, { k: 'th', n: '泰文' }, { k: 'id', n: '印尼文' },
+  { k: 'ar', n: '阿拉伯文' }
+];
+var _trBatchEdge = 20;
+var _trBatchAi = 6;
+var _trLast = { texts: [], trans: [], from: 'auto', to: 'zh-Hans', detected: null };
+
+function trLangName(k) {
+  if (k === 'auto') return '自动检测';
+  for (var i = 0; i < TR_LANGS.length; i++) if (TR_LANGS[i].k === k) return TR_LANGS[i].n;
+  return k;
+}
+function trLangOptions(sel, withAuto) {
+  var h = '';
+  if (withAuto) h += '<option value="auto">🌐 自动检测</option>';
+  for (var i = 0; i < TR_LANGS.length; i++) {
+    var v = TR_LANGS[i].k;
+    h += '<option value="' + v + '"' + (v === sel ? ' selected' : '') + '>' + TR_LANGS[i].n + '</option>';
+  }
+  return h;
+}
+function trEngineNow() {
+  if (!state.trEngine) state.trEngine = 'edge';
+  return state.trEngine;
+}
+function trEngineName() { return trEngineNow() === 'ai' ? 'AI 大模型' : '免费微软'; }
+
+// 拆段：空行分段；超长段再按句读拆小，避免接口单条超限
+function trSplit(text) {
+  var parts = String(text || '').split(/\n{2,}/);
+  var out = [];
+  for (var i = 0; i < parts.length; i++) {
+    var p = parts[i].replace(/\s+/g, ' ').trim();
+    if (!p) continue;
+    if (p.length > 6000) {
+      var sents = p.split(/([。！？.!?])/);
+      var cur = '';
+      for (var j = 0; j < sents.length; j += 2) {
+        cur += (sents[j] || '') + (sents[j + 1] || '');
+        if (cur.length >= 5000) { out.push(cur.trim()); cur = ''; }
+      }
+      if (cur.trim()) out.push(cur.trim());
+    } else {
+      out.push(p);
+    }
+  }
+  return out;
+}
+
+// 免费微软 Edge 翻译：无需 key，省略 from = 自动检测；返回 { trans, detected }
+function trMsTranslate(texts, to, from) {
+  var url = 'https://edge.microsoft.com/translate/translatetext?to=' + encodeURIComponent(to);
+  if (from) url += '&from=' + encodeURIComponent(from);
+  return fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(texts)
+  }).then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function(arr) {
+    var out = [];
+    var detected = null;
+    for (var i = 0; i < arr.length; i++) {
+      var it = arr[i];
+      if (i === 0 && it.detectedLanguage && it.detectedLanguage.language) detected = it.detectedLanguage.language;
+      out.push((it.translations && it.translations[0] && it.translations[0].text) || '');
+    }
+    return { trans: out, detected: detected };
+  });
+}
+
+// AI 大模型翻译：复用 callAI，需 state.aiApiKey
+function trAiTranslate(texts, to, from) {
+  if (!state.aiApiKey) return Promise.reject({ needKey: true });
+  var prompt = '请把以下文字翻译成' + trLangName(to) + '。只输出译文，不要任何解释；段落之间用空行分隔：\n\n' + texts.join('\n\n');
+  return callAI({
+    systemPrompt: '你是专业翻译引擎，忠于原文语义，译文自然通顺。',
+    prompt: prompt,
+    temperature: 0.3,
+    maxTokens: 4000,
+    timeout: 120000
+  }).then(function(res) {
+    var t = String(res || '').trim();
+    var out = [];
+    if (t) {
+      var arr = t.split(/\n{2,}/);
+      for (var i = 0; i < arr.length; i++) {
+        var s = arr[i].replace(/\s+/g, ' ').trim();
+        if (s) out.push(s);
+      }
+    }
+    return { trans: out, detected: null };
+  });
+}
+function trTranslateBatch(texts, from, to) {
+  return trEngineNow() === 'ai' ? trAiTranslate(texts, to, from) : trMsTranslate(texts, to, from === 'auto' ? '' : from);
+}
+function trHistoryPush(src, dst, from, to) {
+  state.trHistory = state.trHistory || [];
+  state.trHistory.unshift({ ts: Date.now(), from: from, to: to, src: src, dst: dst, engine: trEngineName() });
+  if (state.trHistory.length > 50) state.trHistory.length = 50;
+  try { saveState(); } catch (e) {}
+}
+function trSpeak(text) {
+  if (!text) return;
+  try { speakText(text, function() {}); } catch (e) { showToast('⚠️ 朗读失败'); }
+}
+function trCopy(text, label) {
+  if (!text) return;
+  function done() { showToast(label || '✅ 已复制'); }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, function() { trCopyFallback(text); done(); });
+  } else { trCopyFallback(text); done(); }
+}
+function trCopyFallback(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+// —— 工作台板块 ——
+function renderTranslatePanel() {
+  if (!$id('trBoardCss')) {
+    var s = document.createElement('style');
+    s.id = 'trBoardCss';
+    s.textContent = '.tr-panel{max-width:900px;margin:0 auto;padding:14px}' +
+      '.tr-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}' +
+      '.tr-bar select{flex:1;min-width:0;padding:8px;border:1px solid #c8c8c8;border-radius:8px;font-size:15px;background:#fff;color:#222}' +
+      '.tr-input{width:100%;min-height:180px;box-sizing:border-box;padding:12px;border:1px solid #c8c8c8;border-radius:10px;font-size:16px;line-height:1.6;resize:vertical}' +
+      '.tr-btn{padding:8px 14px;border:1px solid #c8c8c8;border-radius:8px;background:#fff;font-size:14px;cursor:pointer;color:#333}' +
+      '.tr-btn.primary{background:#0a7ae0;border-color:#0a7ae0;color:#fff}' +
+      '.tr-btnrow{display:flex;gap:8px;flex-wrap:wrap}' +
+      '.tr-loading{color:#888;padding:10px 2px}' +
+      '.tr-hint{color:#888;font-size:13px;padding:6px 2px}' +
+      '.tr-pair{border-bottom:1px solid #eee;padding:10px 2px}' +
+      '.tr-src{color:#888;font-size:14px;line-height:1.6}' +
+      '.tr-dst{color:#111;font-size:16px;line-height:1.7;margin-top:4px}' +
+      '.tr-hist-item{border-bottom:1px solid #eee;padding:8px 2px}' +
+      '.tr-hist-src{color:#888;font-size:13px;line-height:1.5;max-height:60px;overflow:hidden}' +
+      '.tr-hist-dst{color:#111;font-size:15px;line-height:1.6;margin:4px 0}' +
+      '.tr-hist-meta{color:#aaa;font-size:12px}';
+    document.head.appendChild(s);
+  }
+  var el = $id('contentArea');
+  if (!el) return;
+  var eng = trEngineNow();
+  var from = state.trFrom || 'auto';
+  var to = state.trTo || 'zh-Hans';
+  el.innerHTML =
+    '<div class="tr-panel">' +
+      '<div class="tr-bar">' +
+        '<select data-tr-engine="1">' +
+          '<option value="edge"' + (eng === 'edge' ? ' selected' : '') + '>免费微软</option>' +
+          '<option value="ai"' + (eng === 'ai' ? ' selected' : '') + '>AI 大模型</option>' +
+        '</select>' +
+        '<select data-tr-from="1">' + trLangOptions(from, true) + '</select>' +
+        '<button class="tr-btn" data-tr-act="swap" title="交换语言">⇄</button>' +
+        '<select data-tr-to="1">' + trLangOptions(to, false) + '</select>' +
+      '</div>' +
+      '<textarea id="trInput" class="tr-input" placeholder="输入或粘贴要翻译的文字（整章粘贴会自动逐段双语对照）"></textarea>' +
+      '<div class="tr-bar tr-btnrow">' +
+        '<button class="tr-btn primary" data-tr-act="go">🔍 翻译</button>' +
+        '<button class="tr-btn" data-tr-act="clear">🧹 清空</button>' +
+        '<button class="tr-btn" data-tr-act="history">🕘 历史</button>' +
+        '<button class="tr-btn" data-tr-act="voice">🎙️ 实时语音翻译</button>' +
+      '</div>' +
+      '<div id="trResult"></div>' +
+      '<div id="trVoicePanel" style="display:none"></div>' +
+      '<div id="trHistory" style="display:none"></div>' +
+    '</div>';
+  if (!el._trBound) {
+    el._trBound = true;
+    el.addEventListener('click', function(e) {
+      var t = e.target;
+      while (t && t !== el) {
+        var act = t.getAttribute && t.getAttribute('data-tr-act');
+        if (act) { trPanelAct(act, t); return; }
+        var vact = t.getAttribute && t.getAttribute('data-vt-act');
+        if (vact) { vtPanelAct(vact, t); return; }
+        t = t.parentNode;
+      }
+    });
+    el.addEventListener('change', function(e) {
+      var t = e.target;
+      if (!t || !t.getAttribute) return;
+      if (t.hasAttribute('data-tr-engine')) { state.trEngine = t.value; try { saveState(); } catch (x) {} }
+      else if (t.hasAttribute('data-tr-from')) { state.trFrom = t.value; try { saveState(); } catch (x) {} }
+      else if (t.hasAttribute('data-tr-to')) { state.trTo = t.value; try { saveState(); } catch (x) {} }
+      else if (t.hasAttribute('data-vt-mode')) { vtState.mode = t.value; vtStopListen(); vtRenderPanel(); if (vtState.mode === 'single') vtAutoStart(); else if (vtState.mode === 'duo' && vtState.duoAuto) vtStartAutoListen(); }
+      else if (t.hasAttribute('data-vt-from')) { vtState.from = t.value; vtPersist(); if (vtState.listening && vtState.side === 'single') vtStartListen('single'); }
+      else if (t.hasAttribute('data-vt-to')) { vtState.to = t.value; vtPersist(); }
+      else if (t.hasAttribute('data-vt-a')) { vtState.a = t.value; vtPersist(); if (!vtState.duoAuto && vtState.listening && vtState.side === 'a') vtStartListen('a'); }
+      else if (t.hasAttribute('data-vt-b')) { vtState.b = t.value; vtPersist(); if (!vtState.duoAuto && vtState.listening && vtState.side === 'b') vtStartListen('b'); }
+    });
+  }
+  trHistoryRender();
+}
+
+function trPanelAct(act, btn) {
+  var idx = parseInt(btn.getAttribute('data-tr-idx'), 10);
+  if (isNaN(idx)) idx = -1;
+  var ri = parseInt(btn.getAttribute('data-tr-ridx'), 10);
+  if (isNaN(ri)) ri = -1;
+  var input = $id('trInput');
+  if (act === 'go') {
+    var text = input ? input.value : '';
+    if (!text.trim()) { showToast('❌ 请输入要翻译的文字'); return; }
+    trRun(text);
+  } else if (act === 'clear') {
+    if (input) input.value = '';
+    var r0 = $id('trResult'); if (r0) r0.innerHTML = '';
+  } else if (act === 'voice') {
+    var vp = $id('trVoicePanel');
+    if (vp) {
+      var vshowing = vp.style.display !== 'none';
+      vp.style.display = vshowing ? 'none' : 'block';
+      if (!vshowing) { vtRenderPanel(); vtAutoStart(); }
+    }
+  } else if (act === 'history') {
+    var h = $id('trHistory'), r1 = $id('trResult');
+    var showing = h && h.style.display !== 'none';
+    if (h) h.style.display = showing ? 'none' : 'block';
+    if (r1) r1.style.display = showing ? 'block' : 'none';
+    trHistoryRender();
+  } else if (act === 'swap') {
+    var el2 = $id('contentArea');
+    var fs = el2 ? el2.querySelector('[data-tr-from]') : null;
+    var ts = el2 ? el2.querySelector('[data-tr-to]') : null;
+    if (fs && ts) {
+      var tmp = fs.value; fs.value = ts.value; ts.value = tmp;
+      state.trFrom = fs.value; state.trTo = ts.value;
+      try { saveState(); } catch (x) {}
+    }
+  } else if (act === 'speak') {
+    var txt = ri >= 0 ? (_trLast.trans[ri] || '') : _trLast.trans.join('\n\n');
+    trSpeak(txt);
+  } else if (act === 'copy-dst') {
+    var t2 = ri >= 0 ? (_trLast.trans[ri] || '') : _trLast.trans.join('\n\n');
+    trCopy(t2, '✅ 译文已复制');
+  } else if (act === 'copy-src') {
+    var t3 = ri >= 0 ? (_trLast.texts[ri] || '') : _trLast.texts.join('\n\n');
+    trCopy(t3, '✅ 原文已复制');
+  } else if (act === 'hist-copy') {
+    var it = (state.trHistory || [])[idx]; if (it) trCopy(it.dst, '✅ 译文已复制');
+  } else if (act === 'hist-speak') {
+    var it2 = (state.trHistory || [])[idx]; if (it2) trSpeak(it2.dst);
+  } else if (act === 'hist-del') {
+    state.trHistory = state.trHistory || [];
+    if (idx >= 0 && idx < state.trHistory.length) { state.trHistory.splice(idx, 1); try { saveState(); } catch (x) {} trHistoryRender(); }
+  } else if (act === 'hist-clear') {
+    state.trHistory = []; try { saveState(); } catch (x) {} trHistoryRender();
+  }
+}
+
+function trRun(text) {
+  var el = $id('contentArea');
+  var fromSel = el ? el.querySelector('[data-tr-from]') : null;
+  var toSel = el ? el.querySelector('[data-tr-to]') : null;
+  var from = (fromSel && fromSel.value) || 'auto';
+  var to = (toSel && toSel.value) || 'zh-Hans';
+  if (from !== 'auto' && to === from) { showToast('⚠️ 源语言和目标语言相同'); return; }
+  var texts = trSplit(text);
+  if (!texts.length) { showToast('❌ 没有可翻译的文字'); return; }
+  var r = $id('trResult');
+  if (r) r.innerHTML = '<div class="tr-loading">⏳ 正在翻译…（' + trEngineName() + '）</div>';
+  var bs = trEngineNow() === 'ai' ? _trBatchAi : _trBatchEdge;
+  var flat = new Array(texts.length);
+  var detected = null;
+  var seq = Promise.resolve();
+  for (var i = 0; i < texts.length; i += bs) {
+    (function(batch, base) {
+      seq = seq.then(function() {
+        return trTranslateBatch(batch, from, to).then(function(res) {
+          if (res.detected && !detected) detected = res.detected;
+          for (var k = 0; k < res.trans.length; k++) flat[base + k] = res.trans[k];
+        });
+      });
+    })(texts.slice(i, i + bs), i);
+  }
+  seq.then(function() {
+    _trLast = { texts: texts, trans: flat, from: from, to: to, detected: detected };
+    trRenderResult();
+    trHistoryPush(texts.join('\n\n'), flat.join('\n\n'), from, to);
+  }).catch(function(err) {
+    var r2 = $id('trResult');
+    var msg = (err && err.needKey) ? '使用 AI 翻译需先在「AI 设置」配置密钥，或切换回免费微软。'
+      : ('翻译失败：' + ((err && err.message) || '网络异常') + '，可切换引擎重试。');
+    if (r2) r2.innerHTML = '<div class="tr-loading">❌ ' + escHtml(msg) + '</div>';
+    showToast('❌ 翻译失败');
+  });
+}
+
+function trRenderResult() {
+  var r = $id('trResult');
+  if (!r) return;
+  var L = _trLast;
+  var h = '<div class="tr-bar tr-btnrow">' +
+    '<button class="tr-btn" data-tr-act="speak" data-tr-ridx="-1">🔊 朗读译文</button>' +
+    '<button class="tr-btn" data-tr-act="copy-dst" data-tr-ridx="-1">📋 复制译文</button>' +
+    '<button class="tr-btn" data-tr-act="copy-src" data-tr-ridx="-1">📋 复制原文</button>' +
+  '</div>';
+  if (L.from === 'auto') {
+    h += '<div class="tr-hint">🔎 源语言：' + (L.detected ? trLangName(L.detected) : '自动检测') + '</div>';
+  }
+  h += '<div class="tr-pairs">';
+  for (var i = 0; i < L.texts.length; i++) {
+    h += '<div class="tr-pair"><div class="tr-src">' + escHtml(L.texts[i]) + '</div><div class="tr-dst">' + escHtml(L.trans[i] || '') + '</div></div>';
+  }
+  h += '</div>';
+  r.innerHTML = h;
+}
+
+function trHistoryRender() {
+  var h = $id('trHistory');
+  if (!h) return;
+  var arr = state.trHistory || [];
+  var html = '<div class="tr-bar tr-btnrow"><span>🕘 翻译历史（' + arr.length + '）</span>' +
+    (arr.length ? '<button class="tr-btn" data-tr-act="hist-clear">🧹 清空</button>' : '') + '</div>';
+  if (!arr.length) {
+    html += '<div class="tr-loading">暂无记录</div>';
+  }
+  for (var i = 0; i < arr.length; i++) {
+    var it = arr[i];
+    var when = new Date(it.ts).toLocaleString();
+    html += '<div class="tr-hist-item">' +
+      '<div class="tr-hist-meta">' + escHtml(trLangName(it.from)) + ' → ' + escHtml(trLangName(it.to)) + ' · ' + escHtml(it.engine || '') + ' · ' + escHtml(when) + '</div>' +
+      '<div class="tr-hist-src">' + escHtml(it.src) + '</div>' +
+      '<div class="tr-hist-dst">' + escHtml(it.dst) + '</div>' +
+      '<div class="tr-bar tr-btnrow">' +
+        '<button class="tr-btn" data-tr-act="hist-copy" data-tr-idx="' + i + '">📋 复制</button>' +
+        '<button class="tr-btn" data-tr-act="hist-speak" data-tr-idx="' + i + '">🔊 朗读</button>' +
+        '<button class="tr-btn" data-tr-act="hist-del" data-tr-idx="' + i + '">🗑 删除</button>' +
+      '</div>' +
+    '</div>';
+  }
+  h.innerHTML = html;
+}
+
+// ===== 实时语音翻译（Web Speech 优先 + AI 转写兜底）=====
+var VT_REC_LANG = {
+'zh-Hans':'zh-CN','zh-Hant':'zh-TW','en':'en-US','ja':'ja-JP','ko':'ko-KR','fr':'fr-FR','de':'de-DE',
+'ru':'ru-RU','es':'es-ES','pt':'pt-PT','it':'it-IT','vi':'vi-VN','th':'th-TH','id':'id-ID','ar':'ar-SA'
+};
+var VT_WHISPER = {
+'zh-Hans':'zh','zh-Hant':'zh','en':'en','ja':'ja','ko':'ko','fr':'fr','de':'de','ru':'ru','es':'es','pt':'pt','it':'it','vi':'vi','th':'th','id':'id','ar':'ar'
+};
+var VT_VOICE = { 'zh-Hans':'zh-CN-XiaoxiaoNeural', 'zh-Hant':'zh-CN-XiaoxiaoNeural', 'en':'en-US-JennyNeural' };
+var vtLogArr = [];
+var vtState = {
+mode: 'single', from: state.vtFrom || 'zh-Hans', to: state.vtTo || 'en', a: state.vtA || 'zh-Hans', b: state.vtB || 'en',
+rec: null, mediaRec: null, recSkip: false, listening: false, side: null, busy: false, stopIntent: false, duoAuto: !!(state.vtDuoAuto), lastSide: null, vadStop: null, wsTick: 0
+};
+function vtRecLang(k) { return VT_REC_LANG[k] || (k === 'auto' ? 'zh-CN' : 'en-US'); }
+function vtWhisperLang(k) { return VT_WHISPER[k] || 'en'; }
+function vtListenLang(side) {
+  if (side === 'a') return vtState.a;
+  if (side === 'b') return vtState.b;
+  return vtState.from;
+}
+function vtPersist() {
+  state.vtFrom = vtState.from; state.vtTo = vtState.to; state.vtA = vtState.a; state.vtB = vtState.b; state.vtDuoAuto = vtState.duoAuto;
+  try { saveState(); } catch (e) {}
+}
+function vtStatus(msg) { var el = $id('vtStatus'); if (el) el.textContent = msg; }
+function vtLogAdd(side, from, to, src, dst) {
+  vtLogArr.unshift({ side: side, from: from, to: to, src: src, dst: dst });
+  if (vtLogArr.length > 30) vtLogArr.length = 30;
+}
+function vtRenderLog() {
+  var box = $id('vtLog');
+  if (!box) return;
+  if (!vtLogArr.length) { box.innerHTML = '<div class="tr-loading">暂无记录</div>'; return; }
+  var h = '';
+  for (var i = 0; i < vtLogArr.length; i++) {
+    var it = vtLogArr[i];
+    var dir = it.side === 'a' ? 'A → B' : (it.side === 'b' ? 'B → A' : trLangName(it.from) + ' → ' + trLangName(it.to));
+    h += '<div class="tr-pair"><div class="tr-src">' + escHtml(dir) + ' · ' + escHtml(it.src) + '</div>' +
+      '<div class="tr-dst">' + escHtml(it.dst) + '</div></div>';
+  }
+  box.innerHTML = h;
+}
+function vtUIUpdate() {
+  var host = $id('trVoicePanel');
+  if (!host) return;
+  if (vtState.mode === 'single') {
+    var b = host.querySelector('[data-vt-act="mic"]');
+    if (b) b.textContent = (vtState.listening && vtState.side === 'single') ? '⏹ 停止' : '🎤 开始';
+  } else if (vtState.duoAuto) {
+    var am = host.querySelector('[data-vt-act="auto-mic"]');
+    if (am) am.textContent = vtState.listening ? '⏹ 停止' : '🎤 自动监听';
+  } else {
+    var a = host.querySelector('[data-vt-act="a-mic"]');
+    var bb = host.querySelector('[data-vt-act="b-mic"]');
+    if (a) a.textContent = (vtState.listening && vtState.side === 'a') ? '⏹ 停止' : '🎤 A 说话';
+    if (bb) bb.textContent = (vtState.listening && vtState.side === 'b') ? '⏹ 停止' : '🎤 B 说话';
+  }
+}
+// 临时覆写全局 ttsVoice 为目标语音色，读完后恢复（if 守卫防并发交错恢复）
+function vtSpeakTo(lang, text, onEnd) {
+  var want = (VT_VOICE[lang] && _edgeHealthy) ? VT_VOICE[lang] : '';
+  var old = ttsVoice;
+  ttsVoice = want;
+  function done() { if (ttsVoice === want) ttsVoice = old; if (onEnd) onEnd(); }
+  try { speakText(text, done); } catch (e) { done(); }
+}
+// 完全免手：仅 Web Speech 可用时打开即自动聆听（AI 兜底无法自动停，保持手动）
+function vtAutoStart() {
+  if (vtState.mode !== 'single' || vtState.listening || vtState.busy) return;
+  var R = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!R || vtState.recSkip) return;
+  vtStartListen('single');
+}
+function vtStopListen() {
+  vtState.stopIntent = true;
+  if (vtState.vadStop) { try { vtState.vadStop(); } catch (e) {} vtState.vadStop = null; }
+  if (vtState.rec) { try { vtState.rec.stop(); } catch (e) {} vtState.rec = null; }
+  if (vtState.mediaRec && vtState.mediaRec.state === 'recording') { try { vtState.mediaRec.stop(); } catch (e) {} }
+  vtState.listening = false;
+  vtUIUpdate();
+}
+function vtProcess(side, text) {
+  vtState.lastSide = side;
+  vtState.busy = true;
+  vtState.stopIntent = true;
+  vtStopListen();
+  var from, to;
+  if (side === 'a') { from = vtState.a; to = vtState.b; }
+  else if (side === 'b') { from = vtState.b; to = vtState.a; }
+  else { from = vtState.from; to = vtState.to; }
+  vtStatus('⏳ 翻译中…');
+  return trTranslateBatch([text], from, to).then(function(res) {
+    var dst = (res && res.trans && res.trans[0]) || '';
+    vtState.busy = false;
+    if (dst) {
+      vtLogAdd(side, from, to, text, dst);
+      vtRenderLog();
+      vtSpeakTo(to, dst, function() {
+        if (vtState.mode === 'single') {
+          setTimeout(function() {
+            if (vtState.mode === 'single' && !vtState.rec && !vtState.busy) vtStartListen('single');
+          }, 200);
+        } else if (vtState.duoAuto) {
+          setTimeout(function() {
+            if (vtState.duoAuto && !vtState.rec && !vtState.mediaRec && !vtState.busy) vtStartAutoListen();
+          }, 300);
+        }
+        vtUIUpdate();
+      });
+    } else {
+      vtStatus('⏳ 未识别到语音');
+      vtUIUpdate();
+    }
+  }).catch(function(err) {
+    vtState.busy = false;
+    var msg = (err && err.needKey) ? 'AI 翻译需配置密钥，请切回免费微软' : ('翻译失败：' + ((err && err.message) || '网络异常'));
+    vtStatus('❌ ' + msg);
+    showToast('❌ ' + msg);
+    vtUIUpdate();
+  });
+}
+function vtStartListen(side) {
+  if (vtState.busy) { vtStatus('⏳ 处理中，请稍候'); return; }
+  var R = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!R || vtState.recSkip) { vtMediaFallback(side); return; }
+  var lang = vtRecLang(vtListenLang(side));
+  vtStopListen();
+  vtState.side = side;
+  vtState.listening = true;
+  vtState.stopIntent = false;
+  var rec = new R();
+  vtState.rec = rec;
+  rec.lang = lang;
+  rec.continuous = true;
+  rec.interimResults = false;
+  rec.maxAlternatives = 1;
+  rec.onresult = function(e) {
+    var t = '';
+    try {
+      for (var i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) t += e.results[i][0].transcript;
+      }
+    } catch (ign) {}
+    if (t.trim()) {
+      vtState.stopIntent = true;
+      try { rec.stop(); } catch (x) {}
+      vtProcess(side, t.trim());
+    }
+  };
+  rec.onerror = function(e) {
+    try {
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+        vtState.rec = null; vtState.listening = false; vtState.recSkip = true; vtState.stopIntent = true;
+        vtUIUpdate();
+        vtMediaFallback(side);
+        return;
+      }
+      if (e.error === 'aborted' || e.error === 'no-speech') {
+        vtState.rec = null; vtState.listening = false;
+        vtUIUpdate();
+        if (!vtState.stopIntent && vtState.mode === 'single' && !vtState.busy) {
+          setTimeout(function() {
+            if (vtState.mode === 'single' && !vtState.rec && !vtState.busy && !vtState.stopIntent) vtStartListen('single');
+          }, 300);
+        }
+        return;
+      }
+      vtState.rec = null; vtState.listening = false; vtState.stopIntent = true;
+      vtStatus('❌ 识别失败：' + e.error);
+      vtUIUpdate();
+    } catch (ign) {}
+  };
+  rec.onend = function() {
+    vtState.rec = null;
+    vtState.listening = false;
+    if (!vtState.stopIntent && vtState.mode === 'single' && !vtState.busy) {
+      setTimeout(function() {
+        if (vtState.mode === 'single' && !vtState.rec && !vtState.busy && !vtState.stopIntent) vtStartListen('single');
+      }, 300);
+    }
+    vtUIUpdate();
+  };
+  try {
+    rec.start();
+    vtState.stopIntent = false;
+    vtUIUpdate();
+    vtStatus('🎤 聆听中… 再次点击停止');
+  } catch (e) {
+    vtState.recSkip = true;
+    vtState.rec = null;
+    vtState.listening = false;
+    vtUIUpdate();
+    vtMediaFallback(side);
+  }
+}
+function vtTranscribeAudio(blob, side) {
+  var lang = vtWhisperLang(vtListenLang(side));
+  if (blob.size < 500) { vtStatus('⏳ 录音太短，请重试'); vtUIUpdate(); return; }
+  var key = (state.aiApiKey || '');
+  var ep = (state.aiTranscribeEndpoint || '').trim() ||
+    (state.aiEndpoint || AI_PROVIDERS.deepseek.endpoint).replace(/\/chat\/completions$/, '/audio/transcriptions');
+  if (!key) { vtStatus('❌ 未配置 API 密钥'); vtUIUpdate(); return; }
+  if (ep.indexOf('deepseek') > 0) {
+    vtStatus('❌ DeepSeek 不支持语音转写，请配置 OpenAI 兼容的转写端点');
+    showToast('🎤 DeepSeek 不支持语音转写。请在 AI 设置中配置转写端点');
+    vtUIUpdate();
+    return;
+  }
+  var fd = new FormData();
+  fd.append('file', blob, 'recording.webm');
+  fd.append('model', 'whisper-1');
+  fd.append('language', lang);
+  fetch(ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
+    .then(function(r) { if (!r.ok) return r.text().then(function(t) { throw new Error('转写失败 (' + r.status + ')：' + (t || '').slice(0, 120)); }); return r.json(); })
+    .then(function(data) {
+      var text = (data.text || '').trim();
+      if (text) vtProcess(side, text);
+      else { vtStatus('⏳ 未识别到语音'); vtUIUpdate(); }
+    })
+    .catch(function(err) { vtStatus('❌ ' + (err.message || '转写失败').slice(0, 60)); vtUIUpdate(); });
+}
+function vtMediaFallback(side) {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    vtStatus('❌ 此浏览器不支持语音输入，请用 Chrome/Edge');
+    showToast('🎤 请使用 Chrome/Edge 浏览器');
+    return;
+  }
+  if (!state.aiApiKey || !(state.aiTranscribeEndpoint || state.aiEndpoint)) {
+    vtStatus('❌ 语音转写未配置');
+    showToast('🎤 请在 AI 设置→语音转写中配置 API Key 和转写端点');
+    return;
+  }
+  vtState.stopIntent = true;
+  vtState.listening = false;
+  var chunks = [];
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    try {
+      var mime = (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('audio/webm')) ? 'audio/webm' : '';
+      var mr = new MediaRecorder(stream, mime ? { mimeType: mime } : {});
+      vtState.mediaRec = mr;
+      mr.ondataavailable = function(e) { if (e.data.size > 0) chunks.push(e.data); };
+      mr.onstop = function() {
+        stream.getTracks().forEach(function(t) { t.stop(); });
+        vtState.mediaRec = null;
+        if (!chunks.length) { vtStatus('⏳ 录音太短，请重试'); vtUIUpdate(); return; }
+        var blob = new Blob(chunks, { type: 'audio/webm' });
+        vtStatus('⏳ AI 转写中…');
+        vtTranscribeAudio(blob, side);
+      };
+      mr.onerror = function() {
+        stream.getTracks().forEach(function(t) { t.stop(); });
+        vtState.mediaRec = null;
+        vtStatus('❌ 录音出错');
+        vtUIUpdate();
+      };
+      mr.start();
+      vtState.listening = true;
+      vtUIUpdate();
+      vtStatus('🎤 录音中… 再次点击停止');
+    } catch (e) {
+      stream.getTracks().forEach(function(t) { t.stop(); });
+      vtState.mediaRec = null;
+      vtStatus('❌ 录音启动失败');
+      vtUIUpdate();
+    }
+  }).catch(function() {
+    vtStatus('❌ 麦克风访问被拒绝');
+    vtUIUpdate();
+  });
+}
+function vtRenderPanel() {
+  var host = $id('trVoicePanel');
+  if (!host) return;
+  var mode = vtState.mode;
+  var singleRow = '<div class="tr-bar">' +
+    '<select data-vt-from>' + trLangOptions(vtState.from, false) + '</select>' +
+    '<button class="tr-btn" data-vt-act="swap" title="交换语言">⇄</button>' +
+    '<select data-vt-to>' + trLangOptions(vtState.to, false) + '</select>' +
+    '<button class="tr-btn primary" data-vt-act="mic">' + ((vtState.listening && vtState.side === 'single') ? '⏹ 停止' : '🎤 开始') + '</button>' +
+    '<button class="tr-btn" data-vt-act="clear" title="清空记录">🧹</button>' +
+    '</div>';
+  var duoRow;
+  if (vtState.duoAuto) {
+    duoRow = '<div class="tr-bar">' +
+      '<span style="color:#888">A</span><select data-vt-a>' + trLangOptions(vtState.a, false) + '</select>' +
+      '<span style="color:#888">B</span><select data-vt-b>' + trLangOptions(vtState.b, false) + '</select>' +
+      '<button class="tr-btn primary" data-vt-act="auto-mic">🎤 自动监听</button>' +
+      '<button class="tr-btn" data-vt-act="duo-auto" title="关闭自动识别语言">🔁 自动</button>' +
+      '<button class="tr-btn" data-vt-act="clear" title="清空记录">🧹</button>' +
+      '</div>';
+  } else {
+    duoRow = '<div class="tr-bar">' +
+      '<select data-vt-a>' + trLangOptions(vtState.a, false) + '</select>' +
+      '<button class="tr-btn primary" data-vt-act="a-mic">' + ((vtState.listening && vtState.side === 'a') ? '⏹ 停止' : '🎤 A 说话') + '</button>' +
+      '<span style="color:#888">⇄</span>' +
+      '<select data-vt-b>' + trLangOptions(vtState.b, false) + '</select>' +
+      '<button class="tr-btn primary" data-vt-act="b-mic">' + ((vtState.listening && vtState.side === 'b') ? '⏹ 停止' : '🎤 B 说话') + '</button>' +
+      '<button class="tr-btn" data-vt-act="duo-auto" title="开启自动识别语言">🔁 自动</button>' +
+      '<button class="tr-btn" data-vt-act="clear" title="清空记录">🧹</button>' +
+      '</div>';
+  }
+  var hint = mode === 'single'
+    ? '打开即自动聆听：直接说话，自动识别→翻译→朗读；点「⏹ 停止」可暂停'
+    : (vtState.duoAuto ? '自动识别语言：说出 A 或 B 侧语言，自动翻到另一侧朗读（有 AI key 用 AI 判断语种，否则浏览器尽力识别）'
+       : '点「A/B 说话」，说完自动翻译成对方语言并朗读；对方回话点另一边；开「🔁 自动」可免手自动识别');
+  host.innerHTML =
+    '<div class="tr-panel" style="border:1px solid #ddd;border-radius:10px;margin-top:10px">' +
+      '<div class="tr-bar"><b>🎙 实时语音翻译</b>' +
+        '<label style="margin-left:14px"><input type="radio" name="vtMode" value="single" data-vt-mode="single"' + (mode === 'single' ? ' checked' : '') + '> 单向逐句</label>' +
+        '<label style="margin-left:10px"><input type="radio" name="vtMode" value="duo" data-vt-mode="duo"' + (mode === 'duo' ? ' checked' : '') + '> 双人对话</label>' +
+      '</div>' +
+      (mode === 'single' ? singleRow : duoRow) +
+      '<div class="tr-hint" id="vtStatus">💡 ' + hint + '</div>' +
+      '<div id="vtLog" style="max-height:320px;overflow:auto"></div>' +
+    '</div>';
+  vtRenderLog();
+  vtUIUpdate();
+}
+function vtPanelAct(act, btn) {
+  if (act === 'duo-auto') {
+    vtStopListen();
+    vtState.duoAuto = !vtState.duoAuto;
+    vtPersist();
+    vtRenderPanel();
+    if (vtState.duoAuto) vtStartAutoListen();
+  } else if (act === 'auto-mic') {
+    if (vtState.listening) vtStopListen();
+    else vtStartAutoListen();
+  } else if (act === 'mic') {
+    if (vtState.listening && vtState.side === 'single') vtStopListen();
+    else vtStartListen('single');
+  } else if (act === 'a-mic') {
+    if (vtState.listening && vtState.side === 'a') vtStopListen();
+    else vtStartListen('a');
+  } else if (act === 'b-mic') {
+    if (vtState.listening && vtState.side === 'b') vtStopListen();
+    else vtStartListen('b');
+  } else if (act === 'swap') {
+    var tmp = vtState.from; vtState.from = vtState.to; vtState.to = tmp;
+    vtPersist();
+    vtRenderPanel();
+  } else if (act === 'clear') {
+    vtLogArr.length = 0;
+    vtRenderLog();
+  }
+}
+
+// —— 双人自动识别语言（AI whisper 自动检测优先，浏览器尽力降级）——
+function vtStartAutoListen() {
+  if (vtState.busy) { vtStatus('⏳ 处理中，请稍候'); return; }
+  var key = (state.aiApiKey || '');
+  var ep = (state.aiTranscribeEndpoint || '').trim() ||
+    (state.aiEndpoint || AI_PROVIDERS.deepseek.endpoint).replace(/\/chat\/completions$/, '/audio/transcriptions');
+  if (key && ep.indexOf('deepseek') < 0) { vtAutoRecord(); return; }
+  vtWsAuto();
+}
+function vtAutoRecord() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    vtStatus('❌ 此浏览器不支持语音输入，请用 Chrome/Edge'); vtUIUpdate(); return;
+  }
+  vtState.stopIntent = false;
+  vtState.listening = true;
+  vtUIUpdate();
+  var chunks = [];
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    var mime = (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('audio/webm')) ? 'audio/webm' : '';
+    var mr = new MediaRecorder(stream, mime ? { mimeType: mime } : {});
+    vtState.mediaRec = mr;
+    mr.ondataavailable = function(e) { if (e.data.size > 0) chunks.push(e.data); };
+    mr.onstop = function() {
+      stream.getTracks().forEach(function(t) { t.stop(); });
+      vtState.mediaRec = null;
+      if (vtState.vadStop) { try { vtState.vadStop(); } catch (e) {} vtState.vadStop = null; }
+      if (!chunks.length) { vtStatus('⏳ 未检测到语音'); vtUIUpdate(); return; }
+      var blob = new Blob(chunks, { type: 'audio/webm' });
+      vtStatus('⏳ AI 识别语种并转写…');
+      vtTranscribeAuto(blob);
+    };
+    mr.start();
+    vtState.vadStop = vtStartVad(stream, function() {
+      if (vtState.mediaRec && vtState.mediaRec.state === 'recording') { try { vtState.mediaRec.stop(); } catch (e) {} }
+    });
+    vtStatus('🎤 自动聆听中… 说出任意一侧语言');
+  }).catch(function() {
+    vtState.listening = false;
+    vtStatus('❌ 麦克风访问被拒绝');
+    vtUIUpdate();
+  });
+}
+function vtStartVad(stream, onEnd) {
+  try {
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    var ctx = new Ctx();
+    var src = ctx.createMediaStreamSource(stream);
+    var ana = ctx.createAnalyser();
+    ana.fftSize = 512;
+    src.connect(ana);
+    var buf = new Uint8Array(ana.frequencyBinCount);
+    var silentMs = 0;
+    var timer = setInterval(function() {
+      ana.getByteFrequencyData(buf);
+      var sum = 0;
+      for (var i = 0; i < buf.length; i++) sum += buf[i];
+      var avg = sum / buf.length;
+      if (avg < 5) silentMs += 200; else silentMs = 0;
+      if (silentMs >= 1300) { clearInterval(timer); if (ctx.state !== 'closed') ctx.close(); onEnd(); }
+    }, 200);
+    return function() { clearInterval(timer); if (ctx.state !== 'closed') ctx.close(); };
+  } catch (e) { return null; }
+}
+function vtTranscribeAuto(blob) {
+  if (blob.size < 500) { vtStatus('⏳ 录音太短，请重试'); vtUIUpdate(); return; }
+  var key = (state.aiApiKey || '');
+  var ep = (state.aiTranscribeEndpoint || '').trim() ||
+    (state.aiEndpoint || AI_PROVIDERS.deepseek.endpoint).replace(/\/chat\/completions$/, '/audio/transcriptions');
+  var fd = new FormData();
+  fd.append('file', blob, 'recording.webm');
+  fd.append('model', 'whisper-1');
+  return fetch(ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
+    .then(function(r) { if (!r.ok) return r.text().then(function(t) { throw new Error('转写失败 (' + r.status + ')：' + (t || '').slice(0, 120)); }); return r.json(); })
+    .then(function(data) {
+      var text = (data.text || '').trim();
+      var det = (data.language || '').toLowerCase();
+      if (text) {
+        var side = vtSideFromWhisper(det) || vtState.lastSide || 'a';
+        vtProcess(side, text);
+      } else { vtStatus('⏳ 未识别到语音'); vtUIUpdate(); }
+    })
+    .catch(function(err) { vtStatus('❌ ' + (err.message || '转写失败').slice(0, 60)); vtUIUpdate(); });
+}
+function vtSideFromWhisper(det) {
+  if (!det) return null;
+  var wa = vtWhisperLang(vtState.a), wb = vtWhisperLang(vtState.b);
+  if (wa && wa === det && wb !== det) return 'a';
+  if (wb && wb === det && wa !== det) return 'b';
+  if (wa === det) return 'a';
+  return null;
+}
+function vtScriptLang(text) {
+  if (/[぀-ヿ]/.test(text)) return 'ja';
+  if (/[가-힯]/.test(text)) return 'ko';
+  if (/[฀-๿]/.test(text)) return 'th';
+  if (/[؀-ۿ]/.test(text)) return 'ar';
+  if (/[Ѐ-ӿ]/.test(text)) return 'ru';
+  if (/[一-鿿]/.test(text)) return 'zh';
+  if (/[A-Za-z]/.test(text)) return 'latin';
+  return '';
+}
+function vtSideMatches(script, lang) {
+  if (script === 'zh') return lang === 'zh-Hans' || lang === 'zh-Hant';
+  return lang === script;
+}
+function vtWhichSide(text) {
+  var g = vtScriptLang(text);
+  var a = vtState.a, b = vtState.b;
+  if (g && g !== 'latin') {
+    if (vtSideMatches(g, a)) return 'a';
+    if (vtSideMatches(g, b)) return 'b';
+  }
+  if (g === 'latin') {
+    var lat = ['en', 'fr', 'de', 'es', 'pt', 'it', 'vi', 'id'];
+    var aLat = lat.indexOf(a) >= 0, bLat = lat.indexOf(b) >= 0;
+    if (aLat && !bLat) return 'a';
+    if (bLat && !aLat) return 'b';
+  }
+  return vtState.lastSide || 'a';
+}
+function vtWsAuto() {
+  if (vtState.busy) { vtStatus('⏳ 处理中，请稍候'); return; }
+  var R = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!R || vtState.recSkip) { vtStatus('❌ 浏览器语音识别不可用'); vtUIUpdate(); return; }
+  vtState.stopIntent = false;
+  vtState.listening = true;
+  vtState.side = vtState.lastSide || 'a';
+  vtUIUpdate();
+  var lang = vtRecLang(vtListenLang(vtState.side));
+  var rec = new R();
+  vtState.rec = rec;
+  rec.lang = lang;
+  rec.continuous = true;
+  rec.interimResults = false;
+  rec.maxAlternatives = 1;
+  rec.onresult = function(e) {
+    var t = '';
+    try {
+      for (var i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) t += e.results[i][0].transcript;
+      }
+    } catch (ign) {}
+    if (t.trim()) {
+      vtState.stopIntent = true;
+      try { rec.stop(); } catch (x) {}
+      vtProcess(vtWhichSide(t.trim()), t.trim());
+    }
+  };
+  rec.onerror = function(e) {
+    try {
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+        vtState.rec = null; vtState.listening = false; vtState.recSkip = true; vtState.stopIntent = true;
+        vtStatus('❌ 语音识别被拒绝');
+        vtUIUpdate();
+        return;
+      }
+      if (e.error === 'aborted' || e.error === 'no-speech') {
+        vtState.rec = null; vtState.listening = false;
+        vtAutoWsRetry();
+        return;
+      }
+      vtState.rec = null; vtState.listening = false; vtState.stopIntent = true;
+      vtStatus('❌ 识别失败：' + e.error);
+      vtUIUpdate();
+    } catch (ign) {}
+  };
+  rec.onend = function() {
+    vtState.rec = null;
+    vtState.listening = false;
+    if (!vtState.stopIntent) vtAutoWsRetry();
+    vtUIUpdate();
+  };
+  try {
+    rec.start();
+    vtState.stopIntent = false;
+    vtUIUpdate();
+    vtStatus('🎤 自动聆听中（浏览器引擎）…');
+  } catch (e) {
+    vtState.recSkip = true;
+    vtState.rec = null;
+    vtState.listening = false;
+    vtUIUpdate();
+    vtStatus('❌ 语音识别启动失败');
+  }
+}
+function vtAutoWsRetry() {
+  if (vtState.stopIntent || !vtState.duoAuto || vtState.busy) return;
+  vtState.wsTick = (vtState.wsTick || 0) + 1;
+  if (vtState.wsTick % 3 === 0) {
+    vtState.side = (vtState.side === 'a') ? 'b' : 'a';
+  }
+  setTimeout(function() {
+    if (vtState.duoAuto && !vtState.rec && !vtState.mediaRec && !vtState.busy && !vtState.stopIntent) vtWsAuto();
+  }, 400);
+}
+
+// —— 阅读器划词翻译 ——
+function readerTranslateSelection() {
+  var text = _readerSelText || '';
+  if (!text) { showToast('❌ 未选中文字'); return; }
+  var old = $id('rdTrModal');
+  if (old && old.parentNode) old.parentNode.removeChild(old);
+  var m = document.createElement('div');
+  m.className = 'rd-note-modal';
+  m.id = 'rdTrModal';
+  var eng = trEngineNow();
+  m.innerHTML = '<div class="rd-note-box" style="max-width:90vw">' +
+    '<div style="font-weight:600;margin-bottom:8px">🔍 翻译' +
+      ' <select data-tr-engine="1" style="margin-left:6px;padding:4px 6px;border:1px solid #c8c8c8;border-radius:6px">' +
+        '<option value="edge"' + (eng === 'edge' ? ' selected' : '') + '>免费微软</option>' +
+        '<option value="ai"' + (eng === 'ai' ? ' selected' : '') + '>AI 大模型</option>' +
+      '</select>' +
+    '</div>' +
+    '<div style="font-size:12px;color:#888;margin-bottom:6px">' + escHtml(text) + '</div>' +
+    '<div id="rdTrDst"><div class="tr-loading">⏳ 正在翻译…</div></div>' +
+    '<div class="rd-note-actions">' +
+      '<button class="rd-note-btn plain" data-tr-act="rdtr-close">关闭</button>' +
+      '<button class="rd-note-btn plain" data-tr-act="copy-dst" data-tr-ridx="-1">📋 复制</button>' +
+      '<button class="rd-note-btn plain" data-tr-act="speak" data-tr-ridx="-1">🔊 朗读</button>' +
+    '</div></div>';
+  document.body.appendChild(m);
+  m.addEventListener('click', function(e) {
+    var t = e.target;
+    if (t === m) { if (m.parentNode) m.parentNode.removeChild(m); return; }
+    while (t && t !== m) {
+      if (t.getAttribute && t.getAttribute('data-tr-act')) {
+        var a = t.getAttribute('data-tr-act');
+        if (a === 'rdtr-close') { if (m.parentNode) m.parentNode.removeChild(m); }
+        else trPanelAct(a, t);
+        return;
+      }
+      t = t.parentNode;
+    }
+  });
+  m.addEventListener('change', function(e) {
+    var t = e.target;
+    if (t && t.getAttribute && t.hasAttribute('data-tr-engine')) { state.trEngine = t.value; try { saveState(); } catch (x) {} }
+  });
+  trTranslateBatch([text], 'auto', 'zh-Hans').then(function(res) {
+    var dst = $id('rdTrDst');
+    if (!dst) return;
+    var trans = (res.trans && res.trans[0]) || '';
+    _trLast = { texts: [text], trans: [trans], from: 'auto', to: 'zh-Hans', detected: res.detected };
+    dst.innerHTML = '<div class="tr-dst">' + escHtml(trans) + '</div>';
+  }).catch(function(err) {
+    var dst = $id('rdTrDst');
+    if (dst) dst.innerHTML = '<div class="tr-loading">❌ ' + escHtml((err && err.needKey) ? 'AI 翻译需先配置密钥，或切回免费微软' : ((err && err.message) || '翻译失败')) + '</div>';
+  });
+}
+
 function readerShowReader(book) {
   readerCloseReaderHard();
   var ov = document.createElement('div');
@@ -20213,6 +21163,8 @@ function readerShowReader(book) {
   h += '<button class="rd-btn" data-act="search" title="搜索">🔍</button>';
   h += '<button class="rd-btn" data-act="tts" title="朗读" id="readerTtsBtn">🎙</button>';
   h += '<button class="rd-btn" data-act="autoscroll" title="自动滚动" id="readerAutoBtn">⏩</button>';
+  h += '<button class="rd-btn" data-act="ai-extract" title="AI提炼">✨</button>'
+  h += '<button class="rd-btn" data-act="ai-records" title="提炼记录">📚</button>';
   if (book.format === 'pdf') h += '<button class="rd-btn" data-act="pdfnote" title="本页笔记">📌</button>';
   h += '<button class="rd-btn" data-act="settings" title="设置">⚙</button>';
   h += '<button class="rd-btn" data-act="notes" title="摘录">📑</button>';
@@ -20241,6 +21193,8 @@ function readerShowReader(book) {
   h += '</div>';
   ov.innerHTML = h;
   document.body.appendChild(ov);
+  readerSwipeAttach(ov);
+  readerTtsTapAttach(ov);
   var mt = ov.querySelector('[data-act="mode-toggle"]');
   if (mt) mt.textContent = st.mode === 'scroll' ? '分页模式' : '滚动模式';
   readerRenderToc();
@@ -20300,6 +21254,7 @@ function readerRenderChapter() {
   if (!ch) return;
   var content = $id('readerContent');
   if (!content) return;
+  readerTTSStop();
   if (cur.format === 'pdf') {
     content.className = 'reader-content rd-scroll';
     readerRenderPdfPage(ch);
@@ -20479,6 +21434,38 @@ function readerOnResize() {
   if (cur.format === 'pdf') return;
   if (cur.mode === 'paged') readerRenderChapter();
 }
+
+/* —— 手机滑动翻页 —— */
+var _rdSwipe = { x0: 0, y0: 0, t0: 0, active: false };
+function readerSwipeAttach(ov) {
+  var wrap = ov.querySelector('#readerContentWrap');
+  if (!wrap || wrap._rdSwipeAttached) return;
+  wrap._rdSwipeAttached = true;
+  wrap.style.touchAction = 'pan-y';
+  wrap.addEventListener('touchstart', function(e) {
+    var t = e.changedTouches && e.changedTouches[0];
+    if (!t) return;
+    _rdSwipe.x0 = t.clientX; _rdSwipe.y0 = t.clientY; _rdSwipe.t0 = Date.now(); _rdSwipe.active = true;
+  }, { passive: true });
+  wrap.addEventListener('touchmove', function(e) {
+    if (!_rdSwipe.active) return;
+    var t = e.changedTouches && e.changedTouches[0];
+    if (!t) return;
+    var dx = t.clientX - _rdSwipe.x0, dy = t.clientY - _rdSwipe.y0;
+    if (Math.abs(dy) > Math.abs(dx)) _rdSwipe.active = false;
+  }, { passive: true });
+  wrap.addEventListener('touchend', function(e) {
+    if (!_rdSwipe.active) return;
+    _rdSwipe.active = false;
+    var t = e.changedTouches && e.changedTouches[0];
+    if (!t) return;
+    var dx = t.clientX - _rdSwipe.x0, dy = t.clientY - _rdSwipe.y0;
+    var dt = Date.now() - _rdSwipe.t0;
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) || dt > 700) return;
+    if (dx < 0) readerNext(); else readerPrev();
+  }, { passive: true });
+}
+
 function readerCloseReader(keepShelf) {
   readerAutoScrollStop();
   readerStopHeartbeat();
@@ -20514,11 +21501,16 @@ function readerOnMouseUp() {
   var rect = range.getBoundingClientRect();
   if (!rect || rect.width === 0) return;
   _readerSelText = text;
+  var _sn = range.startContainer;
+  var _sb = _sn && _sn.nodeType === 3 ? _sn.parentNode : _sn;
+  _readerSelBlock = _sb && _sb.closest ? _sb.closest('p,h1,h2,h3,h4,li,blockquote,td,th') : null;
   var tool = document.createElement('div');
   tool.className = 'rd-sel-tool';
   tool.id = 'rdSelTool';
   var h = '';
   h += '<button class="rd-sel-note" data-hl-note="1">📝 笔记</button>';
+  h += '<button class="rd-sel-note" data-hl-tts="1">🔊 朗读</button>';
+  h += '<button class="rd-sel-note" data-hl-tr="1">🔍 翻译</button>';
   var colors = ['#ffe08a', '#ffb0c0', '#a8e6cf', '#a8d4ff', '#c8b0ff'];
   for (var i = 0; i < colors.length; i++) {
     h += '<span class="rd-sel-color" data-hl-color="' + colors[i] + '" style="background:' + colors[i] + '"></span>';
@@ -20534,6 +21526,7 @@ function readerOnMouseUp() {
   tool.style.top = y + 'px';
 }
 function readerHideSelTool() {
+  _readerSelBlock = null;
   var t = $id('rdSelTool');
   if (t && t.parentNode) t.parentNode.removeChild(t);
 }
@@ -20741,30 +21734,137 @@ function readerGotoSearchResult(chapterIdx) {
   else { readerRenderChapter(); }
 }
 
-/* —— TTS —— */
+/* —— TTS：按段落分块朗读 + 自动对焦 + 选哪读哪 —— */
+var _readerTTSIndex = [];   // [{el, text}] 当前章节的朗读单元（块级元素）
+var _readerTTSState = null; // { idx } 当前读到第几块
+var _readerSelBlock = null; // 划词选区所在的块元素
+
+function readerTtsIndexContent(content) {
+  _readerTTSIndex = [];
+  var root = content && content.querySelector ? content.querySelector('.reader-chapter-block') : null;
+  if (!root) return;
+  var els = root.querySelectorAll('p,h1,h2,h3,h4,li,blockquote,td,th');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!t) continue;
+    _readerTTSIndex.push({ el: el, text: t });
+  }
+}
+
+function readerTTSStartFrom(blockIdx) {
+  var cur = _readerCurrent;
+  if (!cur || cur.format === 'pdf') { showToast('📄 PDF 暂不支持朗读'); return; }
+  if (!window.speechSynthesis) { showToast('❌ 当前浏览器不支持语音朗读'); return; }
+  var content = $id('readerContent');
+  readerTtsIndexContent(content);
+  if (!_readerTTSIndex.length) { showToast('📄 本章无可朗读文字'); return; }
+  if (blockIdx == null || blockIdx < 0) blockIdx = 0;
+  if (blockIdx >= _readerTTSIndex.length) blockIdx = _readerTTSIndex.length - 1;
+  _readerTTSState = { idx: blockIdx };
+  window.__readerTTS = true;
+  readerUpdateTTSBtn();
+  if (window.speechSynthesis.cancel) window.speechSynthesis.cancel();
+  _readerTTSSpeakNext();
+}
+
+function _readerTTSSpeakNext() {
+  if (!window.__readerTTS || !_readerTTSState) return;
+  var st = _readerTTSState;
+  if (st.idx >= _readerTTSIndex.length) {
+    readerTTSStop();
+    showToast('✅ 本章朗读完毕');
+    return;
+  }
+  var unit = _readerTTSIndex[st.idx];
+  var content = $id('readerContent');
+  var cur = _readerCurrent;
+  if (content && unit.el) {
+    var prev = content.querySelector('.rd-tts-on');
+    if (prev) prev.classList.remove('rd-tts-on');
+    unit.el.classList.add('rd-tts-on');
+    if (cur && cur.mode === 'paged') {
+      var cr = content.getBoundingClientRect();
+      var er = unit.el.getBoundingClientRect();
+      var pw = Math.max(1, content.clientWidth);
+      var page = cur.page + Math.round((er.left - cr.left) / pw);
+      var max = Math.max(0, (cur.chapterPages || 1) - 1);
+      page = Math.max(0, Math.min(page, max));
+      if (page !== cur.page) {
+        cur.page = page;
+        content.style.transform = 'translateX(-' + (page * pw) + 'px)';
+        readerUpdateBottomBar();
+      }
+    } else {
+      try { unit.el.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) { unit.el.scrollIntoView(); }
+    }
+  }
+  var stt = readerSettingsLoad();
+  var u = new SpeechSynthesisUtterance(unit.text);
+  u.lang = 'zh-CN';
+  u.rate = stt.ttsRate || 1;
+  u.pitch = 1;
+  u.onend = function() { if (_readerTTSState === st) { st.idx++; _readerTTSSpeakNext(); } };
+  u.onerror = function() { if (_readerTTSState === st) { st.idx++; _readerTTSSpeakNext(); } };
+  if (window.speechSynthesis.speak) window.speechSynthesis.speak(u);
+}
+
 function readerTTS() {
   var cur = _readerCurrent;
   if (!cur) return;
   if (window.__readerTTS) { readerTTSStop(); return; }
-  var ch = _readerChapters[cur.chapter];
-  var text = ch ? (ch.text || '') : '';
-  if (!text) { showToast('📄 本章无可朗读文字（PDF 暂不支持朗读）'); return; }
+  if (cur.format === 'pdf') { showToast('📄 PDF 暂不支持朗读'); return; }
   if (!window.speechSynthesis) { showToast('❌ 当前浏览器不支持语音朗读'); return; }
-  var u = new SpeechSynthesisUtterance(text);
-  u.lang = 'zh-CN';
-  var st = readerSettingsLoad();
-  u.rate = st.ttsRate || 1;
-  u.pitch = 1;
-  u.onend = function() { window.__readerTTS = null; readerUpdateTTSBtn(); };
-  u.onerror = function() { window.__readerTTS = null; readerUpdateTTSBtn(); };
-  window.__readerTTS = u;
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(u);
-  readerUpdateTTSBtn();
+  var content = $id('readerContent');
+  var startIdx = 0;
+  if (_readerSelBlock && content) {
+    readerTtsIndexContent(content);
+    startIdx = _readerTTSIndex.findIndex(function(x) { return x.el === _readerSelBlock; });
+    if (startIdx < 0) startIdx = 0;
+  }
+  readerTTSStartFrom(startIdx);
 }
+
+function readerTTSFromSelection() {
+  if (!_readerSelBlock) { showToast('❌ 未定位到所选文字'); return; }
+  var content = $id('readerContent');
+  readerTtsIndexContent(content);
+  var idx = _readerTTSIndex.findIndex(function(x) { return x.el === _readerSelBlock; });
+  if (idx < 0) { showToast('❌ 未定位到所选文字'); return; }
+  readerTTSStartFrom(idx);
+}
+
+function readerTtsTapAttach(ov) {
+  var content = ov.querySelector('#readerContent');
+  if (!content || content._rdTtsTap) return;
+  content._rdTtsTap = true;
+  content.addEventListener('click', function(e) {
+    var target = e.target;
+    if (!target || !target.closest) return;
+    if (target.closest('a[href]')) return;
+    var sel = window.getSelection();
+    if (sel && sel.rangeCount && sel.toString().trim()) return;
+    if ($id('rdSelTool')) return;
+    var cur = _readerCurrent;
+    if (!cur || cur.format === 'pdf') return;
+    var b = target.closest('p,h1,h2,h3,h4,li,blockquote,td,th');
+    if (!b) return;
+    readerTtsIndexContent(content);
+    var idx = _readerTTSIndex.findIndex(function(x) { return x.el === b; });
+    if (idx < 0) return;
+    readerTTSStartFrom(idx);
+  });
+}
+
 function readerTTSStop() {
-  if (window.speechSynthesis) { try { window.speechSynthesis.cancel(); } catch (e) {} }
   window.__readerTTS = null;
+  _readerTTSState = null;
+  if (window.speechSynthesis && window.speechSynthesis.cancel) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+  var content = $id('readerContent');
+  if (content) {
+    var hl = content.querySelector('.rd-tts-on');
+    if (hl) hl.classList.remove('rd-tts-on');
+  }
   readerUpdateTTSBtn();
 }
 function readerUpdateTTSBtn() {
@@ -20953,6 +22053,16 @@ function readerBindEvents() {
           readerOpenNoteModal(prefill, 'highlight');
           return;
         }
+        if (t.hasAttribute('data-hl-tts')) {
+          readerTTSFromSelection();
+          readerHideSelTool();
+          return;
+        }
+        if (t.hasAttribute('data-hl-tr')) {
+          readerTranslateSelection();
+          readerHideSelTool();
+          return;
+        }
         if (t.hasAttribute('data-toc')) {
           readerGotoChapter(parseInt(t.getAttribute('data-toc'), 10));
           return;
@@ -20987,6 +22097,8 @@ function readerBindEvents() {
           else if (act === 'pdfnote') { readerOpenNoteModal('', 'pdf'); }
           else if (act === 'tts') { readerTTS(); }
           else if (act === 'autoscroll') { readerAutoScrollToggle(); }
+          else if (act === 'ai-extract') { readerOpenAiExtract(); }
+          else if (act === 'ai-records') { readerOpenAiRecords(); }
           else if (act === 'prev') { readerPrev(); }
           else if (act === 'next') { readerNext(); }
           else if (act === 'fontup') { st2 = readerSettingsLoad(); st2.fontSize = Math.min(30, (st2.fontSize || 17) + 1); readerSettingsSave(st2); readerApplyFont(); }
@@ -21170,6 +22282,346 @@ callAI({systemPrompt:'你是专业的学习内容提炼专家。阅读用户提�
 .then(function(resp){ _pdfAiResultHtml(pdfRenderMarkdown(resp)); })
 .catch(function(err){ _pdfAiResultHtml('<div style="color:#c0392b">❌ ' + escHtml(err.message) + '</div>'); });
 }
+// ===== 阅读器 AI 提炼 =====
+var _readerAiScope = 'book';
+var _readerAiMode = 'summary';
+var _readerAiText = '';
+var _readerAiBusy = false;
+var _readerAiSeq = 0;
+
+function readerOpenAiExtract() {
+  var old = $id('rdAiExtractModal');
+  if (old && old.parentNode) old.parentNode.removeChild(old);
+  _readerAiScope = 'book';
+  _readerAiMode = 'summary';
+  _readerAiText = '';
+  _readerAiBusy = false;
+  _readerAiRecordId = null;
+  _readerAiEditMode = false;
+  var m = document.createElement('div');
+  m.className = 'rd-note-modal';
+  m.id = 'rdAiExtractModal';
+  m.style.zIndex = '10030';
+  m.innerHTML =
+    '<style>.rd-ai-seg.on{background:#3a8a6a!important;color:#fff!important;border-color:#3a8a6a!important;}#rdAiExtractModal .adv-output ul,#rdAiExtractModal .adv-output ol{padding-left:22px;margin:4px 0}#rdAiExtractModal .adv-output li{margin:3px 0}</style>' +
+    '<div class="rd-note-box" style="width:min(680px,92%)">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:600;margin-bottom:10px">✨ AI 提炼<span data-ai-close style="cursor:pointer;color:#888">✕</span></div>' +
+    '<div style="margin-bottom:8px"><span style="margin-right:8px;font-size:13px;color:#666">范围</span>' +
+    '<button class="rd-ai-seg on" data-ai-scope="book" style="padding:4px 12px;border:1px solid #d0d0d0;border-radius:6px;background:#fff;color:#333;cursor:pointer;font-size:13px">全书</button>' +
+    '<button class="rd-ai-seg" data-ai-scope="chapter" style="padding:4px 12px;border:1px solid #d0d0d0;border-radius:6px;background:#fff;color:#333;cursor:pointer;font-size:13px">当前章节</button></div>' +
+    '<div style="margin-bottom:8px"><span style="margin-right:8px;font-size:13px;color:#666">模式</span>' +
+    '<button class="rd-ai-seg on" data-ai-mode="summary" style="padding:4px 12px;border:1px solid #d0d0d0;border-radius:6px;background:#fff;color:#333;cursor:pointer;font-size:13px">核心摘要</button>' +
+    '<button class="rd-ai-seg" data-ai-mode="knowledge" style="padding:4px 12px;border:1px solid #d0d0d0;border-radius:6px;background:#fff;color:#333;cursor:pointer;font-size:13px">知识点</button>' +
+    '<button class="rd-ai-seg" data-ai-mode="outline" style="padding:4px 12px;border:1px solid #d0d0d0;border-radius:6px;background:#fff;color:#333;cursor:pointer;font-size:13px">全书大纲</button></div>' +
+    '<div id="aiTruncNote" style="display:none;background:#fff7d6;border:1px solid #e6cf7a;color:#7a5c00;font-size:12px;padding:6px 10px;border-radius:6px;margin-bottom:8px"></div>' +
+    '<div id="aiExtractResult" style="max-height:50vh;overflow:auto;background:#fafafa;border:1px solid #eee;border-radius:8px;padding:12px;font-size:13px;line-height:1.7"></div>' +
+    '<div class="rd-note-actions">' +
+    '<button class="rd-note-btn plain" data-ai-copy>复制</button>' +
+    '<button class="rd-note-btn plain" data-ai-edit>✏️ 编辑</button>' +
+    '<button class="rd-note-btn plain" data-ai-save>💾 保存</button>' +
+    '<button class="rd-note-btn plain" data-ai-close>关闭</button>' +
+    '<button class="rd-note-btn primary" data-ai-run>开始提炼</button>' +
+    '</div></div>';
+  document.body.appendChild(m);
+  m.addEventListener('click', function(e) {
+    var t = e.target;
+    while (t && t !== m) {
+      if (t.hasAttribute('data-ai-scope')) {
+        _readerAiScope = t.getAttribute('data-ai-scope');
+        var sels = m.querySelectorAll('[data-ai-scope]');
+        for (var i = 0; i < sels.length; i++) sels[i].classList.toggle('on', sels[i] === t);
+        return;
+      }
+      if (t.hasAttribute('data-ai-mode')) {
+        _readerAiMode = t.getAttribute('data-ai-mode');
+        var sels2 = m.querySelectorAll('[data-ai-mode]');
+        for (var j = 0; j < sels2.length; j++) sels2[j].classList.toggle('on', sels2[j] === t);
+        return;
+      }
+      if (t.hasAttribute('data-ai-run')) { readerAiExtractRun(); return; }
+      if (t.hasAttribute('data-ai-edit')) { readerAiToggleEdit(); return; }
+      if (t.hasAttribute('data-ai-save')) { readerAiSave(); return; }
+      if (t.hasAttribute('data-ai-copy')) { readerAiCopyText(); return; }
+      if (t.hasAttribute('data-ai-close')) { if (m.parentNode) m.parentNode.removeChild(m); return; }
+      t = t.parentNode;
+    }
+  });
+}
+
+function readerAiCopyText() {
+  if (!_readerAiText) { showToast('⚠️ 暂无内容可复制'); return; }
+  function onOk() { showToast('✅ 已复制'); }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(_readerAiText).then(onOk).catch(function() { readerAiCopyFallback(onOk); });
+  } else {
+    readerAiCopyFallback(onOk);
+  }
+}
+
+function readerAiCopyFallback(onOk) {
+  var ta = document.createElement('textarea');
+  ta.value = _readerAiText;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); onOk(); } catch (e) { showToast('❌ 复制失败'); }
+  if (ta.parentNode) ta.parentNode.removeChild(ta);
+}
+
+function readerAiTruncate(text, limit) {
+  if (!text || text.length <= limit) return { text: text || '', truncated: false };
+  return { text: text.slice(0, limit) + '\n\n[内容较长，已截取前 ' + limit + ' 字，共 ' + text.length + ' 字]', truncated: true };
+}
+
+function readerAiPrompt(mode) {
+  if (mode === 'knowledge') return '你是专业的知识点提炼专家。从用户提供的书籍内容中提取重要知识点。输出 Markdown，要求主次分明、层次清晰：先写"## 知识点总览"用 2-3 句话概括内容主题；再写"## 分类知识点"，按主题用"### 类别"归类，每类 2-6 条，每条格式"- **知识点名称**：一句话定义或要点说明"；共提取 10-30 条，重要知识点用 **加粗** 突出。';
+  if (mode === 'outline') return '你是专业的书籍大纲提炼专家。通读用户提供的书籍内容，还原结构化大纲。输出 Markdown 层级标题，要求主次分明：# 书名/主题 → ## 部分或大主题 → ### 章或小节，每节附一条"- 一句话要点"；内容有显式章节标题时保留原标题；层级用 # / ## / ### 明确区分。';
+  return '你是专业的学习内容提炼专家。阅读用户提供的书籍内容，提炼核心要点。输出 Markdown，要求主次分明、层次清晰：先写"## 一、核心摘要"给出 300-500 字高度概括；再写"## 二、关键结论"列出 3-8 条最重要结论或行动要点，每条用 **加粗** 结论名加一句话展开；如含专业术语，追加"## 三、重要概念"用"- **术语**：定义"形式列出 3-6 条。';
+}
+
+function readerAiSetResult(html) {
+  var r = $id('aiExtractResult');
+  if (r) r.innerHTML = html;
+}
+
+function readerAiExtractRun() {
+  if (_readerAiBusy) return;
+  var chapters = _readerChapters;
+  if (!chapters || !chapters.length || !_readerCurrent || _readerCurrent.chapter == null) {
+    showToast('⚠️ 无可提炼内容');
+    var mo = $id('rdAiExtractModal');
+    if (mo && mo.parentNode) mo.parentNode.removeChild(mo);
+    return;
+  }
+  _readerAiRecordId = null;
+  _readerAiEditMode = false;
+  var text = '';
+  if (_readerAiScope === 'chapter') {
+    var ch = chapters[_readerCurrent.chapter];
+    if (ch) text = ch.text || readerPlainText(ch.html || '');
+    if (!text || !text.trim()) { readerAiSetResult('<div style="color:#c0392b">⚠️ 本章无文字内容</div>'); return; }
+  } else {
+    var parts = [];
+    for (var i = 0; i < chapters.length; i++) {
+      var c = chapters[i];
+      parts.push('【' + (c.title || ('第' + (i + 1) + '节')) + '】\n' + (c.text || readerPlainText(c.html || '')));
+    }
+    text = parts.join('\n\n');
+  }
+  var tc = readerAiTruncate(text, AI_REF_MAX_CHARS);
+  var note = $id('aiTruncNote');
+  if (note) {
+    if (tc.truncated) { note.style.display = 'block'; note.textContent = '⚠️ 内容较长，已截取前 ' + AI_REF_MAX_CHARS + ' 字参与提炼（原文共 ' + text.length + ' 字）'; }
+    else { note.style.display = 'none'; }
+  }
+  _readerAiBusy = true;
+  var runBtn = null;
+  var mo2 = $id('rdAiExtractModal');
+  if (mo2) runBtn = mo2.querySelector('[data-ai-run]');
+  var editBtn = mo2 ? mo2.querySelector('[data-ai-edit]') : null;
+  var saveBtn = mo2 ? mo2.querySelector('[data-ai-save]') : null;
+  if (runBtn) { runBtn.disabled = true; runBtn.style.opacity = '0.6'; }
+  if (editBtn) { editBtn.disabled = true; editBtn.style.opacity = '0.6'; }
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.style.opacity = '0.6'; }
+  var modeLabel = _readerAiMode === 'knowledge' ? '知识点' : (_readerAiMode === 'outline' ? '全书大纲' : '核心摘要');
+  readerAiSetResult('<div style="text-align:center;color:#888;padding:24px;font-size:13px">⏳ AI 正在提炼' + modeLabel + '...</div>');
+  var mySeq = ++_readerAiSeq;
+  callAI({
+    systemPrompt: readerAiPrompt(_readerAiMode),
+    prompt: tc.text,
+    temperature: 0.4,
+    maxTokens: AI_MAX_TOKENS_QUICK,
+    timeout: AI_TIMEOUT_DEFAULT,
+    stream: function(chunk, fullText) {
+      if (mySeq !== _readerAiSeq) return;
+      _readerAiText = fullText;
+      _readerAiRender();
+    }
+  }).then(function(resp) {
+    if (mySeq !== _readerAiSeq) return;
+    _readerAiText = resp || '';
+    _readerAiRender();
+  }).catch(function(err) {
+    if (mySeq !== _readerAiSeq) return;
+    readerAiSetResult('<div style="color:#c0392b">❌ ' + escHtml((err && err.message) || '提炼失败') + '</div>');
+  }).finally(function() {
+    if (mySeq === _readerAiSeq) {
+      _readerAiBusy = false;
+      if (runBtn) { runBtn.disabled = false; runBtn.style.opacity = ''; }
+      if (editBtn) { editBtn.disabled = false; editBtn.style.opacity = ''; }
+      if (saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = ''; }
+    }
+  });
+}
+
+
+// ===== 阅读器 AI 提炼：保存/编辑/记录 =====
+var _readerAiEditMode = false;
+var _readerAiRecordId = null;
+var _aiCodeBlocks = [];
+
+function readerAiRenderMd(txt) {
+  _aiCodeBlocks.length = 0;
+  if (!txt) return '<div class="adv-output"></div>';
+  var html = txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/```([\s\S]*?)```/g, function(m, c) { _aiCodeBlocks.push(c); return '@@AICB@@' + (_aiCodeBlocks.length - 1) + '@@'; })
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/###\s*(.+)/g,'<h4 class="adv-h4">$1</h4>')
+    .replace(/##\s*(.+)/g,'<h3 class="adv-h3">$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  html = html.replace(/((?:^\d+[.)]\s.*(?:\n|$))+)/gm, function(m) {
+    var items = m.trim().split('\n'), out = '<ol>';
+    for (var i = 0; i < items.length; i++) out += '<li>' + items[i].replace(/^\d+[.)]\s*/, '') + '</li>';
+    return out + '</ol>';
+  });
+  html = html.replace(/((?:^[-*•]\s.*(?:\n|$))+)/gm, function(m) {
+    var items = m.trim().split('\n'), out = '<ul>';
+    for (var i = 0; i < items.length; i++) out += '<li>' + items[i].replace(/^[-*•]\s*/, '') + '</li>';
+    return out + '</ul>';
+  });
+  html = html.replace(/@@AICB@@(\d+)@@/g, function(m, i) { return '<pre><code>' + _aiCodeBlocks[Number(i)] + '</code></pre>'; });
+  html = html.replace(/\n/g,'<br>');
+  html = renderLatex(html);
+  html = _enhanceContent(html);
+  return '<div class="adv-output">'+html+'</div>';
+}
+
+function _readerAiRender() {
+  var r = $id('aiExtractResult');
+  if (!r) return;
+  if (_readerAiEditMode) {
+    r.innerHTML = '<textarea id="aiExtractEdit" style="width:100%;min-height:36vh;box-sizing:border-box;border:none;outline:none;background:transparent;font:13px/1.7 monospace;color:inherit;resize:vertical">' + escHtml(_readerAiText || '') + '</textarea>';
+  } else {
+    r.innerHTML = (_readerAiText && _readerAiText.trim()) ? readerAiRenderMd(_readerAiText) : '<div style="color:#888;text-align:center;padding:24px;font-size:13px">暂无内容</div>';
+  }
+}
+
+function readerAiToggleEdit() {
+  if (_readerAiBusy) { showToast('⏳ 提炼进行中，请稍候'); return; }
+  if (!_readerAiText || !_readerAiText.trim()) { showToast('⚠️ 暂无内容可编辑'); return; }
+  _readerAiEditMode = !_readerAiEditMode;
+  _readerAiRender();
+  var m = $id('rdAiExtractModal');
+  if (m) {
+    var eb = m.querySelector('[data-ai-edit]');
+    if (eb) eb.textContent = _readerAiEditMode ? '📋 预览' : '✏️ 编辑';
+  }
+}
+
+function readerAiSave() {
+  if (_readerAiEditMode) {
+    var ta = $id('aiExtractEdit');
+    if (ta) _readerAiText = ta.value;
+  }
+  if (!_readerAiText || !_readerAiText.trim()) { showToast('⚠️ 暂无内容可保存'); return; }
+  if (!state.aiExtracts) state.aiExtracts = [];
+  if (_readerAiRecordId) {
+    var found = false;
+    for (var i = 0; i < state.aiExtracts.length; i++) {
+      if (state.aiExtracts[i].id === _readerAiRecordId) {
+        state.aiExtracts[i].content = _readerAiText;
+        state.aiExtracts[i].date = new Date().toISOString();
+        found = true;
+        break;
+      }
+    }
+    if (found) { showToast('✅ 已更新记录'); saveState(); return; }
+    _readerAiRecordId = null;
+  }
+  state.aiExtracts.unshift({
+    id: Date.now(),
+    bookTitle: (_readerBook && _readerBook.title) || '未命名书',
+    bookId: _readerBook ? _readerBook.id : null,
+    scope: _readerAiScope,
+    mode: _readerAiMode,
+    content: _readerAiText,
+    date: new Date().toISOString()
+  });
+  if (state.aiExtracts.length > 100) state.aiExtracts.length = 100;
+  showToast('✅ 已保存');
+  saveState();
+}
+
+function readerOpenAiRecords() {
+  var old = $id('rdAiRecordsModal');
+  if (old && old.parentNode) old.parentNode.removeChild(old);
+  var recs = state.aiExtracts || [];
+  var m = document.createElement('div');
+  m.className = 'rd-note-modal';
+  m.id = 'rdAiRecordsModal';
+  m.style.zIndex = '10040';
+  var h = '<div class="rd-note-box" style="width:min(640px,92%)">';
+  h += '<div style="display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:600;margin-bottom:10px">📚 AI 提炼记录（' + recs.length + '）<span data-ai-close style="cursor:pointer;color:#888">✕</span></div>';
+  if (!recs.length) {
+    h += '<div style="color:#888;text-align:center;padding:24px;font-size:13px">还没有保存的提炼记录<br>在 ✨ AI 提炼 弹窗里点「💾 保存」即可留档</div>';
+  } else {
+    h += '<div style="max-height:50vh;overflow:auto">';
+    for (var i = 0; i < recs.length; i++) {
+      var r = recs[i];
+      var modeLabel = r.mode === 'knowledge' ? '知识点' : (r.mode === 'outline' ? '全书大纲' : '核心摘要');
+      var scopeLabel = r.scope === 'chapter' ? '当前章节' : '全书';
+      var d = r.date ? new Date(r.date) : new Date();
+      var ds = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+      var raw = (r.content || '').replace(/^#+[ \t]*/gm, '').replace(/\*\*/g, '').replace(/\s+/g, ' ').trim();
+      var preview = raw.slice(0, 40);
+      h += '<div data-ai-rec-view="' + r.id + '" style="border:1px solid #eee;border-radius:8px;padding:8px 10px;margin-bottom:6px;cursor:pointer">';
+      h += '<div style="font-size:12px;color:#888">' + ds + ' · 《' + escHtml(r.bookTitle || '') + '》 · ' + scopeLabel + ' · ' + modeLabel + '</div>';
+      h += '<div style="font-size:13px;color:#333;margin:4px 0">' + escHtml(preview) + (raw.length > 40 ? '…' : '') + '</div>';
+      h += '<button data-ai-rec-del="' + r.id + '" style="background:none;border:none;color:#c0392b;cursor:pointer;font-size:12px;padding:0">🗑 删除</button>';
+      h += '</div>';
+    }
+    h += '</div>';
+  }
+  h += '<div class="rd-note-actions"><button class="rd-note-btn plain" data-ai-close>关闭</button></div>';
+  h += '</div>';
+  m.innerHTML = h;
+  document.body.appendChild(m);
+  m.addEventListener('click', function(e) {
+    var t = e.target;
+    while (t && t !== m) {
+      if (t.hasAttribute('data-ai-close')) { if (m.parentNode) m.parentNode.removeChild(m); return; }
+      if (t.hasAttribute('data-ai-rec-del')) { readerAiDeleteRecord(Number(t.getAttribute('data-ai-rec-del'))); return; }
+      if (t.hasAttribute('data-ai-rec-view')) { readerAiViewRecord(Number(t.getAttribute('data-ai-rec-view'))); return; }
+      t = t.parentNode;
+    }
+  });
+}
+
+function readerAiDeleteRecord(id) {
+  if (!state.aiExtracts) return;
+  state.aiExtracts = state.aiExtracts.filter(function(r) { return r.id !== id; });
+  saveState();
+  var m = $id('rdAiRecordsModal');
+  if (m && m.parentNode) { m.parentNode.removeChild(m); readerOpenAiRecords(); }
+  showToast('🗑 已删除');
+}
+
+function readerAiViewRecord(id) {
+  var recs = state.aiExtracts || [];
+  var rec = null;
+  for (var i = 0; i < recs.length; i++) { if (recs[i].id === id) { rec = recs[i]; break; } }
+  if (!rec) { showToast('❌ 记录未找到'); return; }
+  var rm = $id('rdAiRecordsModal');
+  if (rm && rm.parentNode) rm.parentNode.removeChild(rm);
+  readerOpenAiExtract();
+  _readerAiRecordId = rec.id;
+  _readerAiScope = rec.scope === 'chapter' ? 'chapter' : 'book';
+  _readerAiMode = rec.mode === 'knowledge' ? 'knowledge' : (rec.mode === 'outline' ? 'outline' : 'summary');
+  _readerAiText = rec.content || '';
+  _readerAiEditMode = false;
+  var m = $id('rdAiExtractModal');
+  if (m) {
+    var scopeBtns = m.querySelectorAll('[data-ai-scope]');
+    for (var j = 0; j < scopeBtns.length; j++) scopeBtns[j].classList.toggle('on', scopeBtns[j].getAttribute('data-ai-scope') === _readerAiScope);
+    var modeBtns = m.querySelectorAll('[data-ai-mode]');
+    for (var k = 0; k < modeBtns.length; k++) modeBtns[k].classList.toggle('on', modeBtns[k].getAttribute('data-ai-mode') === _readerAiMode);
+  }
+  _readerAiRender();
+}
+
+
 function pdfAiQuiz() { if (_pdfSession) pdfGenerateCourse('quiz'); }
 function pdfAiCards() { if (_pdfSession) pdfGenerateCourse('cards'); }
 function pdfAiNotes() { if (_pdfSession) pdfGenerateCourse('notes'); }
@@ -21561,7 +23013,9 @@ var PANEL_DEFS = [
 {mode:"speed", label:"🚀 极速学习"},
 			{mode:"pdf", label:"📄 PDF"},
 			{mode:'reader', label:'📖 阅读器'},
-				{mode:'netsec', label:'🛡️ 网络安全'}
+				{mode:'netsec', label:'🛡️ 网络安全'},
+				{mode:'remote', label:'🖥️ 远程控制'},
+				{mode:'translate', label:'🌐 翻译软件'}
 ];
 
 var PANEL_GROUPS = [
@@ -21577,7 +23031,8 @@ var PANEL_GROUPS = [
 {name:'🤖 工程与拆解', modes:['cyber','acu','decomp']},
 {name:'📄 PDF', modes:['pdf']},
 {name:'📚 阅读', modes:['reader']},
-	{name:'🛡️ 网络安全', modes:['netsec']}
+	{name:'🛡️ 网络安全', modes:['netsec']},
+	{name:'🔌 远程工具', modes:['remote']}
 ];
 // panelOrder migration: move from loadState to after PANEL_DEFS to avoid undefined crash
 if (!state.panelOrder && state.hiddenPanels) {
@@ -21631,9 +23086,10 @@ wealth:"border-color:#b8860b;color:#8a6a10",
   pdf:"border-color:#c0392b;color:#a02020",
   publisher:"border-color:#3a7abd;color:#2a5a8a",
   reader:"border-color:#c9a227;color:#8a6a1a",
-  netsec:"border-color:#0a6e5c;color:#064e3b"
-};
-function getBadgeHTML(mode) {
+  netsec:"border-color:#0a6e5c;color:#064e3b",
+  remote:"border-color:#0a6e5c;color:#064e3b",
+  translate:"border-color:#0a7ae0;color:#0a5a9a"
+};function getBadgeHTML(mode) {
 if (mode==='wrongset') return ' <span class="badge" id="wrongSetBadge">0</span>';
 if (mode==='bookmark') return ' <span class="badge" id="bookmarkBadge">0</span>';
 return '';
@@ -43507,3 +44963,56 @@ function renderCreatorHistory() {
 </script>
 </body>
 </html>
+<style>
+/* ===== 🖥️ 远程控制 板块（简单入口） ===== */
+.rct-wrap { padding: 16px; max-width: 680px; margin: 0 auto; }
+.rct-card { background: var(--card-bg,#fff); border: 1px solid var(--border,#c8c0b4); border-radius: 12px; padding: 20px; }
+.rct-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #0a6e5c; }
+.rct-desc { font-size: 13px; color: var(--text-secondary,#777); line-height: 1.6; margin-bottom: 16px; }
+.rct-desc b { color: #0a6e5c; }
+.rct-steps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.rct-step { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text,#3a3226); }
+.rct-step span { width: 22px; height: 22px; border-radius: 50%; background: #0a6e5c; color: #fff; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rct-apps { display: flex; flex-direction: column; gap: 10px; }
+.rct-app { display: block; border: 1px solid var(--border,#c8c0b4); border-radius: 10px; padding: 12px 14px; text-decoration: none; color: var(--text,#3a3226); background: var(--bg,#faf8f3); }
+.rct-app:hover { border-color: #0a6e5c; }
+.rct-app-name { font-size: 15px; font-weight: 600; color: #0a6e5c; }
+.rct-app-desc { font-size: 12px; color: var(--text-secondary,#888); margin-top: 3px; }
+.rct-tip { font-size: 12px; color: var(--text-secondary,#888); margin-top: 16px; line-height: 1.7; background: var(--bg-hover-light,#f2eee6); border-radius: 8px; padding: 10px 12px; }
+.dark-mode .rct-card { background: #2a2a3e; }
+.dark-mode .rct-app { background: #1e1e2e; color: #e0e0e0; border-color: #4a3a50; }
+</style>
+<script>
+
+function renderRemotePanel() {
+  var el = document.getElementById('contentArea');
+  if (!el) return;
+  el.innerHTML =
+    '<div class="rct-wrap">' +
+      '<div class="rct-card">' +
+        '<div class="rct-title">🖥️ 远程控制电脑</div>' +
+        '<div class="rct-desc">浏览器里没法直接操控电脑，用下面这些<b>现成免费软件</b>就行——电脑上装一个，手机装同款 App，登录同一账号即可远程看屏幕+操控。</div>' +
+        '<div class="rct-steps">' +
+          '<div class="rct-step"><span>1</span> 被控电脑安装软件并登录账号</div>' +
+          '<div class="rct-step"><span>2</span> 手机 / 另一台电脑安装同款 App，登录同一账号</div>' +
+          '<div class="rct-step"><span>3</span> 在 App 里点你的电脑图标，即可远程控制</div>' +
+        '</div>' +
+        '<div class="rct-apps">' +
+          '<a class="rct-app" href="https://www.todesk.com" target="_blank" rel="noopener">' +
+            '<div class="rct-app-name">ToDesk</div>' +
+            '<div class="rct-app-desc">免费流畅，电脑 / 手机都支持</div>' +
+          '</a>' +
+          '<a class="rct-app" href="https://sunlogin.oray.com" target="_blank" rel="noopener">' +
+            '<div class="rct-app-name">向日葵</div>' +
+            '<div class="rct-app-desc">老牌远程软件，功能齐全</div>' +
+          '</a>' +
+          '<a class="rct-app" href="https://www.microsoft.com/zh-cn/windows/remote-desktop-app" target="_blank" rel="noopener">' +
+            '<div class="rct-app-name">微软远程桌面</div>' +
+            '<div class="rct-app-desc">Windows 自带，简单可靠</div>' +
+          '</a>' +
+        '</div>' +
+        '<div class="rct-tip">💡 用 ToDesk / 向日葵：电脑端设置固定设备码，之后不用守着电脑也能随时连。</div>' +
+      '</div>' +
+    '</div>';
+}
+</script>
