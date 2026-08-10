@@ -7305,6 +7305,8 @@ licenseActivatedAt: 0,
 licenseEnabled: true,
 trialStart: 0,
 aiTranscribeEndpoint: '',
+ttTutorLang: 'en',
+tutorConv: {}, // AI 外语家教：{语种: [{role,text,zh?}]} 各保留最近20条
 // v15: 每日打卡
 dailyReportLastShown: '',
 sessionStartTime: 0,
@@ -20356,6 +20358,7 @@ function renderTranslatePanel() {
   }
   var el = $id('contentArea');
   if (!el) return;
+  if (typeof ttState !== 'undefined' && ttState.on) ttStopAll();
   var eng = trEngineNow();
   var from = state.trFrom || 'auto';
   var to = state.trTo || 'zh-Hans';
@@ -20376,9 +20379,11 @@ function renderTranslatePanel() {
         '<button class="tr-btn" data-tr-act="clear">🧹 清空</button>' +
         '<button class="tr-btn" data-tr-act="history">🕘 历史</button>' +
         '<button class="tr-btn" data-tr-act="voice">🎙️ 实时语音翻译</button>' +
+        '<button class="tr-btn" data-tr-act="tutor">👩🏫 AI 外语家教</button>' +
       '</div>' +
       '<div id="trResult"></div>' +
       '<div id="trVoicePanel" style="display:none"></div>' +
+      '<div id="trTutorPanel" style="display:none"></div>' +
       '<div id="trHistory" style="display:none"></div>' +
     '</div>';
   if (!el._trBound) {
@@ -20390,6 +20395,8 @@ function renderTranslatePanel() {
         if (act) { trPanelAct(act, t); return; }
         var vact = t.getAttribute && t.getAttribute('data-vt-act');
         if (vact) { vtPanelAct(vact, t); return; }
+        var ttact = t.getAttribute && t.getAttribute('data-tt-act');
+        if (ttact) { ttPanelAct(ttact, t); return; }
         t = t.parentNode;
       }
     });
@@ -20404,6 +20411,7 @@ function renderTranslatePanel() {
       else if (t.hasAttribute('data-vt-to')) { vtState.to = t.value; vtPersist(); }
       else if (t.hasAttribute('data-vt-a')) { vtState.a = t.value; vtPersist(); if (!vtState.duoAuto && vtState.listening && vtState.side === 'a') vtStartListen('a'); }
       else if (t.hasAttribute('data-vt-b')) { vtState.b = t.value; vtPersist(); if (!vtState.duoAuto && vtState.listening && vtState.side === 'b') vtStartListen('b'); }
+      else if (t.hasAttribute('data-tt-lang')) { ttState.lang = t.value; ttPersist(); ttStopAll(); ttRenderPanel(); }
     });
   }
   trHistoryRender();
@@ -20428,6 +20436,14 @@ function trPanelAct(act, btn) {
       var vshowing = vp.style.display !== 'none';
       vp.style.display = vshowing ? 'none' : 'block';
       if (!vshowing) { vtRenderPanel(); vtAutoStart(); }
+    }
+  } else if (act === 'tutor') {
+    var tp = $id('trTutorPanel');
+    if (tp) {
+      var tshowing = tp.style.display !== 'none';
+      tp.style.display = tshowing ? 'none' : 'block';
+      if (!tshowing) ttRenderPanel();
+      else ttStopAll();
     }
   } else if (act === 'history') {
     var h = $id('trHistory'), r1 = $id('trResult');
@@ -20745,31 +20761,55 @@ function vtStartListen(side) {
     vtMediaFallback(side);
   }
 }
+function _ttTranscribeConfig() {
+  var custom = (state.aiTranscribeEndpoint || '').trim();
+  if (custom) return { ep: custom, model: 'whisper-1' };
+  var p = state.aiProvider || 'deepseek';
+  var providerEp = { siliconflow: 'https://api.siliconflow.cn/v1/audio/transcriptions', groq: 'https://api.groq.com/openai/v1/audio/transcriptions', openai: 'https://api.openai.com/v1/audio/transcriptions' }[p];
+  var providerModel = { siliconflow: 'FunAudioLLM/SenseVoiceSmall', groq: 'whisper-large-v3-turbo', openai: 'whisper-1' }[p] || 'whisper-1';
+  var ep = (state.aiEndpoint || '').trim();
+  var model = 'whisper-1';
+  if (ep) {
+    ep = ep.replace(/\/chat\/completions$/, '/audio/transcriptions');
+    model = providerModel;
+  } else if (providerEp) {
+    ep = providerEp;
+    model = providerModel;
+  } else {
+    ep = (AI_PROVIDERS[p] || AI_PROVIDERS.deepseek).endpoint.replace(/\/chat\/completions$/, '/audio/transcriptions');
+    model = 'whisper-1';
+  }
+  return { ep: ep, model: model };
+}
+function _ttTranscribeErr(err) {
+  var m = String((err && err.message) || '转写失败');
+  if (/401|403/.test(m)) m += '。语音转写认证失败：若当前服务商是 DeepSeek，它不支持语音转写；请在 AI 设置改用「硅基流动/Groq/OpenAI」，或填写语音转写端点';
+  return '❌ ' + m.slice(0, 130);
+}
 function vtTranscribeAudio(blob, side) {
   var lang = vtWhisperLang(vtListenLang(side));
   if (blob.size < 500) { vtStatus('⏳ 录音太短，请重试'); vtUIUpdate(); return; }
   var key = (state.aiApiKey || '');
-  var ep = (state.aiTranscribeEndpoint || '').trim() ||
-    (state.aiEndpoint || AI_PROVIDERS.deepseek.endpoint).replace(/\/chat\/completions$/, '/audio/transcriptions');
+  var cfg = _ttTranscribeConfig();
   if (!key) { vtStatus('❌ 未配置 API 密钥'); vtUIUpdate(); return; }
-  if (ep.indexOf('deepseek') > 0) {
-    vtStatus('❌ DeepSeek 不支持语音转写，请配置 OpenAI 兼容的转写端点');
-    showToast('🎤 DeepSeek 不支持语音转写。请在 AI 设置中配置转写端点');
+  if (cfg.ep.indexOf('deepseek') > 0) {
+    vtStatus('❌ DeepSeek 不支持语音转写。请在 AI 设置改用「硅基流动/Groq/OpenAI」，或填写语音转写端点');
+    showToast('🎤 DeepSeek 不支持语音转写。请在 AI 设置改用「硅基流动/Groq/OpenAI」，或填写语音转写端点');
     vtUIUpdate();
     return;
   }
   var fd = new FormData();
   fd.append('file', blob, 'recording.webm');
-  fd.append('model', 'whisper-1');
+  fd.append('model', cfg.model);
   fd.append('language', lang);
-  fetch(ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
+  fetch(cfg.ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
     .then(function(r) { if (!r.ok) return r.text().then(function(t) { throw new Error('转写失败 (' + r.status + ')：' + (t || '').slice(0, 120)); }); return r.json(); })
     .then(function(data) {
       var text = (data.text || '').trim();
       if (text) vtProcess(side, text);
       else { vtStatus('⏳ 未识别到语音'); vtUIUpdate(); }
     })
-    .catch(function(err) { vtStatus('❌ ' + (err.message || '转写失败').slice(0, 60)); vtUIUpdate(); });
+    .catch(function(err) { vtStatus(_ttTranscribeErr(err)); vtUIUpdate(); });
 }
 function vtMediaFallback(side) {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -20785,14 +20825,13 @@ function vtMediaFallback(side) {
   vtState.stopIntent = true;
   vtState.listening = false;
   var chunks = [];
-  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+  _getMicStream(function(stream) {
     try {
       var mime = (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('audio/webm')) ? 'audio/webm' : '';
       var mr = new MediaRecorder(stream, mime ? { mimeType: mime } : {});
       vtState.mediaRec = mr;
       mr.ondataavailable = function(e) { if (e.data.size > 0) chunks.push(e.data); };
       mr.onstop = function() {
-        stream.getTracks().forEach(function(t) { t.stop(); });
         vtState.mediaRec = null;
         if (!chunks.length) { vtStatus('⏳ 录音太短，请重试'); vtUIUpdate(); return; }
         var blob = new Blob(chunks, { type: 'audio/webm' });
@@ -20800,7 +20839,6 @@ function vtMediaFallback(side) {
         vtTranscribeAudio(blob, side);
       };
       mr.onerror = function() {
-        stream.getTracks().forEach(function(t) { t.stop(); });
         vtState.mediaRec = null;
         vtStatus('❌ 录音出错');
         vtUIUpdate();
@@ -20810,12 +20848,11 @@ function vtMediaFallback(side) {
       vtUIUpdate();
       vtStatus('🎤 录音中… 再次点击停止');
     } catch (e) {
-      stream.getTracks().forEach(function(t) { t.stop(); });
       vtState.mediaRec = null;
       vtStatus('❌ 录音启动失败');
       vtUIUpdate();
     }
-  }).catch(function() {
+  }, function() {
     vtStatus('❌ 麦克风访问被拒绝');
     vtUIUpdate();
   });
@@ -20901,9 +20938,8 @@ function vtPanelAct(act, btn) {
 function vtStartAutoListen() {
   if (vtState.busy) { vtStatus('⏳ 处理中，请稍候'); return; }
   var key = (state.aiApiKey || '');
-  var ep = (state.aiTranscribeEndpoint || '').trim() ||
-    (state.aiEndpoint || AI_PROVIDERS.deepseek.endpoint).replace(/\/chat\/completions$/, '/audio/transcriptions');
-  if (key && ep.indexOf('deepseek') < 0) { vtAutoRecord(); return; }
+  var cfg = _ttTranscribeConfig();
+  if (key && cfg.ep.indexOf('deepseek') < 0) { vtAutoRecord(); return; }
   vtWsAuto();
 }
 function vtAutoRecord() {
@@ -20914,13 +20950,13 @@ function vtAutoRecord() {
   vtState.listening = true;
   vtUIUpdate();
   var chunks = [];
-  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+  _getMicStream(function(stream) {
+    if (!vtState.duoAuto) return;
     var mime = (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('audio/webm')) ? 'audio/webm' : '';
     var mr = new MediaRecorder(stream, mime ? { mimeType: mime } : {});
     vtState.mediaRec = mr;
     mr.ondataavailable = function(e) { if (e.data.size > 0) chunks.push(e.data); };
     mr.onstop = function() {
-      stream.getTracks().forEach(function(t) { t.stop(); });
       vtState.mediaRec = null;
       if (vtState.vadStop) { try { vtState.vadStop(); } catch (e) {} vtState.vadStop = null; }
       if (!chunks.length) { vtStatus('⏳ 未检测到语音'); vtUIUpdate(); return; }
@@ -20933,7 +20969,7 @@ function vtAutoRecord() {
       if (vtState.mediaRec && vtState.mediaRec.state === 'recording') { try { vtState.mediaRec.stop(); } catch (e) {} }
     });
     vtStatus('🎤 自动聆听中… 说出任意一侧语言');
-  }).catch(function() {
+  }, function() {
     vtState.listening = false;
     vtStatus('❌ 麦克风访问被拒绝');
     vtUIUpdate();
@@ -20964,12 +21000,11 @@ function vtStartVad(stream, onEnd) {
 function vtTranscribeAuto(blob) {
   if (blob.size < 500) { vtStatus('⏳ 录音太短，请重试'); vtUIUpdate(); return; }
   var key = (state.aiApiKey || '');
-  var ep = (state.aiTranscribeEndpoint || '').trim() ||
-    (state.aiEndpoint || AI_PROVIDERS.deepseek.endpoint).replace(/\/chat\/completions$/, '/audio/transcriptions');
+  var cfg = _ttTranscribeConfig();
   var fd = new FormData();
   fd.append('file', blob, 'recording.webm');
-  fd.append('model', 'whisper-1');
-  return fetch(ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
+  fd.append('model', cfg.model);
+  return fetch(cfg.ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
     .then(function(r) { if (!r.ok) return r.text().then(function(t) { throw new Error('转写失败 (' + r.status + ')：' + (t || '').slice(0, 120)); }); return r.json(); })
     .then(function(data) {
       var text = (data.text || '').trim();
@@ -20979,7 +21014,7 @@ function vtTranscribeAuto(blob) {
         vtProcess(side, text);
       } else { vtStatus('⏳ 未识别到语音'); vtUIUpdate(); }
     })
-    .catch(function(err) { vtStatus('❌ ' + (err.message || '转写失败').slice(0, 60)); vtUIUpdate(); });
+    .catch(function(err) { vtStatus(_ttTranscribeErr(err)); vtUIUpdate(); });
 }
 function vtSideFromWhisper(det) {
   if (!det) return null;
@@ -21092,6 +21127,432 @@ function vtAutoWsRetry() {
   setTimeout(function() {
     if (vtState.duoAuto && !vtState.rec && !vtState.mediaRec && !vtState.busy && !vtState.stopIntent) vtWsAuto();
   }, 400);
+}
+
+// ===== AI 外语家教（语音对话教学聊天）=====
+var TT_REC_LANG = {
+'zh-Hans':'zh-CN','zh-Hant':'zh-TW','en':'en-US','ja':'ja-JP','ko':'ko-KR','fr':'fr-FR','de':'de-DE',
+'ru':'ru-RU','es':'es-ES','pt':'pt-PT','it':'it-IT','vi':'vi-VN','th':'th-TH','id':'id-ID','ar':'ar-SA'
+};
+var TT_WHISPER = {
+'zh-Hans':'zh','zh-Hant':'zh','en':'en','ja':'ja','ko':'ko','fr':'fr','de':'de','ru':'ru','es':'es','pt':'pt','it':'it','vi':'vi','th':'th','id':'id','ar':'ar'
+};
+var TT_VOICE = { 'zh-Hans':'zh-CN-XiaoxiaoNeural', 'zh-Hant':'zh-CN-XiaoxiaoNeural', 'en':'en-US-JennyNeural' };
+var ttState = {
+  on: false, listening: false, busy: false, stopIntent: false,
+  rec: null, mediaRec: null, recSkip: false, vadStop: null, whisperMode: false,
+  lang: state.ttTutorLang || 'en', conv: [], pending: null
+};
+// —— 麦克风流一次性授权并全局复用：避免免手循环每轮重新弹权限框 ——
+var _micStream = null;
+function _getMicStream(cb, onErr) {
+  if (_micStream && _micStream.active) { cb(_micStream); return; }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { if (onErr) onErr('unsupported'); return; }
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(s) {
+    _micStream = s;
+    if (cb) cb(s);
+  }).catch(function() { if (onErr) onErr('denied'); });
+}
+window.addEventListener('beforeunload', function() {
+  if (_micStream) { try { _micStream.getTracks().forEach(function(t) { t.stop(); }); } catch (e) {} _micStream = null; }
+});
+function ttRecLang(k) { return TT_REC_LANG[k] || 'en-US'; }
+function ttWhisperLang(k) { return TT_WHISPER[k] || 'en'; }
+function ttStatus(msg) { var el = $id('trttStatus'); if (el) el.textContent = msg; }
+function ttPersist() {
+  state.ttTutorLang = ttState.lang;
+  if (!state.tutorConv || typeof state.tutorConv !== 'object') state.tutorConv = {};
+  state.tutorConv[ttState.lang] = ttState.conv.slice(-20);
+  try { saveState(); } catch (e) {}
+}
+function ttLoad() {
+  if (ttState.on || ttState.busy) return;
+  var all = state.tutorConv || {};
+  var arr = all[ttState.lang];
+  ttState.conv = (Array.isArray(arr) ? arr : []).slice();
+}
+function ttSysPrompt() {
+  var langName = trLangName(ttState.lang);
+  return '你是「' + langName + '」的 AI 外语家教老师，正在与一位中文母语学习者进行一对一语音对话练习。\n' +
+    '【输出格式】每次回复必须严格只输出一个 JSON 对象，禁止输出任何其他文字、解释或 Markdown 代码块围栏：\n' +
+    '{"reply":"<目标语言正文>","zh":"<中文译文>"}\n' +
+    '规则：\n' +
+    '1. "reply" 用目标语言自然、口语化地回应，长度 2~4 句（约 30~90 字），贴近真实对话，不要过长或堆砌讲解。\n' +
+    '2. "zh" 是与 reply 逐句对应的中文译文，帮助学习者理解。\n' +
+    '3. JSON 必须是合法可解析的单个对象；字符串内的双引号必须转义为 \\" ，换行请勿直接写在字符串内。\n' +
+    '【教学风格】\n' +
+    '1. 始终扮演目标语言母语老师，全程用目标语言说话。\n' +
+    '2. 主动温和纠错：若学生句子有语法或用词错误，在 reply 中先肯定，再指出正确说法并给一个简单例句。\n' +
+    '3. 由浅入深：按学生水平调节难度；学生句子简短或出错时，回复更简单、更有耐心。\n' +
+    '4. 每轮包含一点鼓励，让学生愿意继续开口。\n' +
+    '5. 保持对话感：像真实聊天，可提一个引导性问题让对话继续，不要连续长篇教学。';
+}
+function ttBuildMsgs() {
+  var msgs = [{ role: 'system', content: ttSysPrompt() }];
+  var hist = ttState.conv.slice(-20);
+  for (var i = 0; i < hist.length; i++) {
+    var m = hist[i];
+    msgs.push({ role: m.role, content: m.text });
+  }
+  return msgs;
+}
+function ttParseReply(raw) {
+  var s = String(raw || '').trim();
+  s = s.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
+  var m = s.match(/\{[\s\S]*\}/);
+  if (m) s = m[0];
+  try {
+    var o = JSON.parse(s);
+    if (o && typeof o.reply === 'string') return { reply: o.reply, zh: (typeof o.zh === 'string' ? o.zh : '') };
+  } catch (e) {}
+  return { reply: String(raw || ''), zh: '' };
+}
+function ttBubbleAI(m) {
+  var zh = '';
+  if (m.zh) zh = '<div class="trtt-zh"><span class="trtt-zhlbl">中文译文</span>' + escHtml(m.zh) + '</div>';
+  return '<div class="trtt-row ai"><div class="trtt-bubble"><div class="trtt-name">👩🏫 老师</div>' +
+    '<div class="trtt-lang">' + escHtml(m.text) + '</div>' + zh + '</div></div>';
+}
+function ttRenderChat() {
+  var box = $id('trttChat');
+  if (!box) return;
+  var h = '';
+  for (var i = 0; i < ttState.conv.length; i++) {
+    var m = ttState.conv[i];
+    if (m.role === 'user') h += '<div class="trtt-row usr"><div class="trtt-bubble">' + escHtml(m.text) + '</div></div>';
+    else h += ttBubbleAI(m);
+  }
+  if (ttState.pending) h += ttBubbleAI(ttState.pending);
+  box.innerHTML = h;
+  box.scrollTop = box.scrollHeight;
+}
+function ttUpdateUI() {
+  var b = $id('trttMic');
+  if (b) b.textContent = ttState.on ? '⏹ 停止' : '🎤 开始';
+}
+function ttRenderPanel() {
+  var host = $id('trTutorPanel');
+  if (!host) return;
+  if (!$id('trttCss')) {
+    var st = document.createElement('style');
+    st.id = 'trttCss';
+    st.textContent = '.trtt-chat{max-height:340px;overflow:auto;padding:6px 4px;background:#fafafa;border:1px solid #eee;border-radius:8px}' +
+      '.trtt-row{display:flex;margin:6px 0}.trtt-row.usr{justify-content:flex-end}.trtt-row.ai{justify-content:flex-start}' +
+      '.trtt-bubble{max-width:78%;padding:8px 10px;border-radius:10px;font-size:14px;line-height:1.5;white-space:pre-wrap;word-break:break-word}' +
+      '.trtt-row.usr .trtt-bubble{background:#e3f2fd;border:1px solid #bbdefb}' +
+      '.trtt-row.ai .trtt-bubble{background:#fff8e1;border:1px solid #ffe0b2}' +
+      '.trtt-name{font-size:12px;color:#888;margin-bottom:2px}' +
+      '.trtt-lang{font-size:16px;color:#1a1a1a}' +
+      '.trtt-zh{margin-top:6px;padding-top:6px;border-top:1px dashed #ddd;font-size:13px;color:#777}' +
+      '.trtt-zhlbl{color:#999;font-size:11px;margin-right:4px}';
+    document.head.appendChild(st);
+  }
+  host.innerHTML =
+    '<div class="tr-panel" style="border:1px solid #ddd;border-radius:10px;margin-top:10px">' +
+      '<div class="tr-bar"><b>👩🏫 AI 外语家教</b></div>' +
+      '<div class="tr-bar">' +
+        '<select data-tt-lang>' + trLangOptions(ttState.lang, false) + '</select>' +
+        '<button class="tr-btn primary" data-tt-act="mic" id="trttMic">🎤 开始</button>' +
+        '<button class="tr-btn" data-tt-act="clear" title="清空对话">🧹 清空</button>' +
+      '</div>' +
+      '<div class="tr-hint" id="trttStatus">💡 选目标语 → 点「🎤 开始」→ 说话 → AI 老师双语回复并朗读 → 自动循环；点「⏹ 停止」暂停</div>' +
+      '<div class="trtt-chat" id="trttChat"></div>' +
+      '<div class="tr-bar" style="margin-top:8px">' +
+        '<input id="trttInp" type="text" placeholder="也可打字发送（回车或点发送）…" style="flex:1;min-width:0;padding:8px 10px;border:1px solid #c8c8c8;border-radius:8px;font-size:14px">' +
+        '<button class="tr-btn primary" data-tt-act="send">发送</button>' +
+      '</div>' +
+    '</div>';
+  var inp = $id('trttInp');
+  if (inp && !inp._ttBound) {
+    inp._ttBound = true;
+    inp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); ttPanelAct('send', inp); }
+    });
+  }
+  ttLoad();
+  ttRenderChat();
+  ttUpdateUI();
+}
+function ttStartListen() {
+  if (!ttState.on || ttState.busy) return;
+  var R = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!R || ttState.recSkip) { ttMediaFallback(); return; }
+  ttStopListen();
+  ttState.listening = true;
+  ttState.stopIntent = false;
+  var rec = new R();
+  ttState.rec = rec;
+  rec.lang = ttRecLang(ttState.lang);
+  rec.continuous = true;
+  rec.interimResults = false;
+  rec.maxAlternatives = 1;
+  rec.onresult = function(e) {
+    var t = '';
+    try {
+      for (var i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) t += e.results[i][0].transcript;
+      }
+    } catch (ign) {}
+    if (t.trim()) {
+      ttState.stopIntent = true;
+      try { rec.stop(); } catch (x) {}
+      ttProcess(t.trim());
+    }
+  };
+  rec.onerror = function(e) {
+    try {
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+        ttState.rec = null; ttState.listening = false; ttState.recSkip = true; ttState.stopIntent = true;
+        ttStatus('❌ 语音识别被拒绝，改用 AI 转写…');
+        ttUpdateUI();
+        ttMediaFallback();
+        return;
+      }
+      if (e.error === 'aborted' || e.error === 'no-speech') {
+        ttState.rec = null; ttState.listening = false;
+        ttAutoReListen();
+        return;
+      }
+      ttState.rec = null; ttState.listening = false; ttState.stopIntent = true;
+      ttStatus('❌ 识别失败：' + e.error);
+      ttUpdateUI();
+    } catch (ign) {}
+  };
+  rec.onend = function() {
+    ttState.rec = null;
+    ttState.listening = false;
+    if (!ttState.stopIntent) ttAutoReListen();
+    ttUpdateUI();
+  };
+  try {
+    rec.start();
+    ttState.stopIntent = false;
+    ttUpdateUI();
+    ttStatus('🎤 聆听中… 直接用目标语说话');
+  } catch (e) {
+    ttState.recSkip = true;
+    ttState.rec = null;
+    ttState.listening = false;
+    ttUpdateUI();
+    ttMediaFallback();
+  }
+}
+function ttStartVad(stream, onEnd) {
+  try {
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    var ctx = new Ctx();
+    var src = ctx.createMediaStreamSource(stream);
+    var ana = ctx.createAnalyser();
+    ana.fftSize = 512;
+    src.connect(ana);
+    var buf = new Uint8Array(ana.frequencyBinCount);
+    var silentMs = 0;
+    var timer = setInterval(function() {
+      ana.getByteFrequencyData(buf);
+      var sum = 0;
+      for (var i = 0; i < buf.length; i++) sum += buf[i];
+      var avg = sum / buf.length;
+      if (avg < 5) silentMs += 200; else silentMs = 0;
+      if (silentMs >= 1300) { clearInterval(timer); if (ctx.state !== 'closed') ctx.close(); onEnd(); }
+    }, 200);
+    return function() { clearInterval(timer); if (ctx.state !== 'closed') ctx.close(); };
+  } catch (e) { return null; }
+}
+function ttMediaFallback() {
+  if (!ttState.on) return;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    ttStatus('❌ 此浏览器不支持语音输入，请用 Chrome/Edge');
+    return;
+  }
+  if (!state.aiApiKey || !(state.aiTranscribeEndpoint || state.aiEndpoint)) {
+    ttStatus('❌ 未配置语音转写，无法使用 AI 转写');
+    return;
+  }
+  ttState.stopIntent = true;
+  ttState.listening = false;
+  ttState.whisperMode = true;
+  var chunks = [];
+  _getMicStream(function(stream) {
+    if (!ttState.on) return;
+    var mime = (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('audio/webm')) ? 'audio/webm' : '';
+    var mr = new MediaRecorder(stream, mime ? { mimeType: mime } : {});
+    ttState.mediaRec = mr;
+    mr.ondataavailable = function(e) { if (e.data.size > 0) chunks.push(e.data); };
+    mr.onstop = function() {
+      ttState.mediaRec = null;
+      if (ttState.vadStop) { try { ttState.vadStop(); } catch (e) {} ttState.vadStop = null; }
+      if (!ttState.on) return;
+      if (!chunks.length) { ttStatus('⏳ 未检测到语音'); ttContinueLoop(); return; }
+      var blob = new Blob(chunks, { type: 'audio/webm' });
+      ttStatus('⏳ AI 转写中…');
+      ttTranscribeAudio(blob);
+    };
+    mr.start();
+    ttState.vadStop = ttStartVad(stream, function() {
+      if (ttState.mediaRec && ttState.mediaRec.state === 'recording') { try { ttState.mediaRec.stop(); } catch (e) {} }
+    });
+    ttState.listening = true;
+    ttUpdateUI();
+    ttStatus('🎤 录音中（AI 转写）… 说话或静音自动结束');
+  }, function() {
+    ttState.listening = false;
+    ttStatus('❌ 麦克风访问被拒绝');
+    ttUpdateUI();
+  });
+}
+function ttTranscribeAudio(blob) {
+  if (blob.size < 500) { ttStatus('⏳ 录音太短，请重试'); ttContinueLoop(); return; }
+  var key = (state.aiApiKey || '');
+  var cfg = _ttTranscribeConfig();
+  if (!key) { ttStatus('❌ 未配置 API 密钥'); ttUpdateUI(); return; }
+  if (cfg.ep.indexOf('deepseek') > 0) {
+    ttStatus('❌ DeepSeek 不支持语音转写。请在 AI 设置改用「硅基流动/Groq/OpenAI」，或填写语音转写端点');
+    showToast('🎤 DeepSeek 不支持语音转写。请在 AI 设置改用「硅基流动/Groq/OpenAI」，或填写语音转写端点');
+    ttUpdateUI();
+    return;
+  }
+  var fd = new FormData();
+  fd.append('file', blob, 'recording.webm');
+  fd.append('model', cfg.model);
+  fd.append('language', ttWhisperLang(ttState.lang));
+  fetch(cfg.ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
+    .then(function(r) { if (!r.ok) return r.text().then(function(t) { throw new Error('转写失败 (' + r.status + ')：' + (t || '').slice(0, 120)); }); return r.json(); })
+    .then(function(data) {
+      var text = (data.text || '').trim();
+      if (text) ttProcess(text);
+      else { ttStatus('⏳ 未识别到语音'); ttContinueLoop(); }
+    })
+    .catch(function(err) {
+      ttStatus(_ttTranscribeErr(err));
+      ttContinueLoop();
+    });
+}
+function ttProcess(text) {
+  var t = (text || '').trim();
+  ttState.stopIntent = true;
+  ttStopListen();
+  ttState.busy = true;
+  if (!t) { ttState.stopIntent = false; ttContinueLoop(); return; }
+  ttState.conv.push({ role: 'user', text: t });
+  ttRenderChat();
+  ttStatus('⏳ 老师思考中…');
+  var pending = { role: 'assistant', text: '', zh: '' };
+  ttState.pending = pending;
+  ttRenderChat();
+  var msgs = ttBuildMsgs();
+  callAI({
+    messages: msgs, temperature: 0.6, maxTokens: 600, timeout: 120000, rawResponse: true,
+    stream: function(chunk, fullText) {
+      if (pending !== ttState.pending) return;
+      pending.text = fullText;
+      ttRenderChat();
+    }
+  }).then(function(fullText) {
+    if (pending !== ttState.pending) return;
+    ttState.pending = null;
+    var p = ttParseReply(fullText);
+    pending.text = p.reply; pending.zh = p.zh;
+    ttState.conv.push(pending);
+    ttPersist();
+    ttRenderChat();
+    ttStatus('🔊 朗读中…');
+    ttSpeak(pending.text);
+  }, function(err) {
+    ttState.pending = null;
+    ttState.busy = false;
+    ttStatus('❌ ' + ((err && err.message) || '生成失败'));
+    showToast('❌ ' + ((err && err.message) || '生成失败'));
+    ttRenderChat();
+    ttState.stopIntent = false;
+    ttContinueLoop();
+  });
+}
+function ttSpeak(text) {
+  var want = (TT_VOICE[ttState.lang] && _edgeHealthy) ? TT_VOICE[ttState.lang] : '';
+  var old = ttsVoice;
+  ttsVoice = want;
+  function done() {
+    if (ttsVoice === want) ttsVoice = old;
+    ttState.busy = false;
+    ttState.stopIntent = false;
+    ttContinueLoop();
+  }
+  try { speakText(text, done); } catch (e) { done(); }
+}
+function ttAutoReListen() {
+  if (!ttState.on || ttState.stopIntent || ttState.busy) return;
+  setTimeout(function() {
+    if (ttState.on && !ttState.stopIntent && !ttState.busy && !ttState.rec && !ttState.mediaRec) ttStartListen();
+  }, 300);
+}
+function ttContinueLoop() {
+  ttState.busy = false;
+  if (ttState.on && !ttState.stopIntent) {
+    setTimeout(function() {
+      if (ttState.on && !ttState.stopIntent && !ttState.busy && !ttState.rec && !ttState.mediaRec) ttStartListen();
+    }, 200);
+  }
+  ttUpdateUI();
+}
+function ttStopListen() {
+  ttState.stopIntent = true;
+  if (ttState.vadStop) { try { ttState.vadStop(); } catch (e) {} ttState.vadStop = null; }
+  if (ttState.rec) { try { ttState.rec.stop(); } catch (e) {} ttState.rec = null; }
+  if (ttState.mediaRec && ttState.mediaRec.state === 'recording') { try { ttState.mediaRec.stop(); } catch (e) {} }
+  ttState.listening = false;
+  ttUpdateUI();
+}
+function ttStopAll() {
+  ttStopListen();
+  try { if (typeof _wsStop === 'function') _wsStop(); } catch (e) {}
+  try { if (typeof _edgeStop === 'function') _edgeStop(); } catch (e) {}
+  ttState.on = false;
+  ttState.busy = false;
+  ttState.stopIntent = true;
+  ttUpdateUI();
+}
+function ttStart() {
+  if (!state.aiApiKey && !state.aiEndpoint) {
+    ttStatus('❌ 请先在「AI 设置」配置 API Key');
+    showToast('❌ AI 外语家教需要配置 AI API Key');
+    return;
+  }
+  ttState.on = true;
+  ttState.stopIntent = false;
+  ttState.busy = false;
+  _getMicStream(function() {
+    if (!ttState.on) return;
+    ttStartListen();
+    ttUpdateUI();
+    ttStatus('🎤 免手循环已开启… 请说话');
+  }, function() {
+    ttState.on = false;
+    ttStatus('❌ 麦克风访问被拒绝');
+    ttUpdateUI();
+  });
+}
+function ttPanelAct(act, btn) {
+  if (act === 'mic') {
+    if (ttState.on) ttStopAll();
+    else ttStart();
+  } else if (act === 'clear') {
+    ttStopAll();
+    ttState.conv = [];
+    ttState.pending = null;
+    ttPersist();
+    ttRenderChat();
+    ttUpdateUI();
+    ttStatus('已清空对话');
+  } else if (act === 'send') {
+    var inp = $id('trttInp');
+    var v = (inp && inp.value || '').trim();
+    if (!v) { showToast('❌ 请输入内容'); return; }
+    if (inp) inp.value = '';
+    ttState.on = false;
+    ttStopListen();
+    ttProcess(v);
+  }
 }
 
 // —— 阅读器划词翻译 ——
