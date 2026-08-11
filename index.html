@@ -1179,9 +1179,9 @@ textarea.ns-input{resize:vertical;width:100%;font-family:inherit}
 .ges-help-gesture{font-size:13px;font-weight:600;flex:0 0 130px}
 .ges-help-action{font-size:13px;color:#4a4238;flex:1}
 /* AI 加载覆盖层 */
-.ai-loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:99999;align-items:center;justify-content:center}
+.ai-loading-overlay{display:none;position:fixed;top:0;left:0;right:0;background:transparent;z-index:99999;align-items:flex-start;justify-content:center;padding-top:64px;pointer-events:none}
 .ai-loading-overlay.show{display:flex}
-.ai-loading-card{background:#fff;border-radius:12px;padding:24px 32px;text-align:center;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,0.2)}
+.ai-loading-card{background:#fff;border-radius:10px;padding:8px 16px;text-align:center;max-width:520px;box-shadow:0 2px 12px rgba(0,0,0,0.12);border:1px solid #e5ddd0}
 .ai-loading-card .spinner{display:inline-block;width:32px;height:32px;border:3px solid #e8ddd0;border-top-color:#6a4a8a;border-radius:50%;animation:aiSpin .8s linear infinite;margin-bottom:12px}
 @keyframes aiSpin{to{transform:rotate(360deg)}}
 .ai-loading-card .text{font-size:14px;color:#2c1810;font-weight:600}
@@ -1675,6 +1675,19 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .hot-status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
 .hot-status-dot.green{background:#2d7a3a}
 .hot-status-dot.yellow{background:#d4a030}
+/* v16b: 古典文学板块 */
+.jd-group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:18px}
+.jd-group-card{border:1.5px solid var(--border,#e0d5c5);border-radius:12px;padding:18px 16px;background:var(--card-bg,#fffdf7);cursor:pointer;text-align:center;transition:background .2s,color .2s,border-color .2s,transform .2s,box-shadow .2s}
+.jd-group-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1);border-color:#d4a030}
+.dark-mode .jd-group-card:hover{border-color:#d4a030}
+.jd-group-icon{font-size:34px;line-height:1;margin-bottom:8px}
+.jd-group-name{font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px}
+.jd-group-count{font-size:12px;color:var(--text-muted);margin-bottom:6px}
+.jd-group-desc{font-size:12px;color:var(--text-secondary)}
+.jd-group-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.jd-back-btn{padding:6px 14px;border:1.5px solid var(--border,#e0d5c5);border-radius:20px;background:var(--card-bg);font-size:12px;font-weight:600;cursor:pointer;color:var(--text-secondary);transition:background .2s,color .2s,border-color .2s}
+.jd-back-btn:hover{background:#8a6a20;color:#fff;border-color:#8a6a20}
+.jd-group-head h3{font-size:18px;font-weight:700;color:var(--text);margin:0}
 .hot-status-dot.red{background:#c0392b}
 .hot-gen-progress{padding:8px 0 0;border-top:1px solid var(--border,#e0d5c5);margin-top:8px}
 .hot-chapter-dot{font-size:12px;cursor:pointer;padding:1px 2px}
@@ -1699,7 +1712,8 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 /* 流式输出文本区 */
 .ai-stream-content{margin-top:12px;max-height:300px;overflow-y:auto;text-align:left;font-size:13px;color:#2c1810;background:#f8f4ee;border-radius:6px;padding:10px 12px;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-width:500px}
 .dark-mode .ai-stream-content{background:#1a1a3e;color:#d4c8b8}
-.ai-task-dock{position:fixed;right:16px;bottom:16px;z-index:99990;width:320px;max-width:calc(100vw - 32px);background:var(--bg-card,#fff);border:1px solid rgba(0,0,0,0.12);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.25);font-size:13px;overflow:hidden}
+.dark-mode .ai-loading-card{background:#1a1a3e;border-color:#2c2c5a}
+.ai-task-dock{position:fixed;right:16px;bottom:16px;z-index:99990;width:420px;max-width:calc(100vw - 32px);background:var(--bg-card,#fff);border:1px solid rgba(0,0,0,0.12);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.25);font-size:13px;overflow:hidden}
 .ai-task-dock-hdr{display:flex;align-items:center;gap:8px;padding:10px 12px;background:linear-gradient(135deg,#2a5a7a,#4a9aaa);color:#fff;cursor:pointer;font-weight:600}
 .ai-task-dock-title{flex:1}
 .ai-task-clear{margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,0.5);color:#fff;border-radius:6px;padding:2px 8px;cursor:pointer;font-size:12px}
@@ -1710,10 +1724,11 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .ai-task-card.done{border-left:3px solid #27ae60}
 .ai-task-card.stopped{border-left:3px solid #95a5a6}
 .ai-task-card.running,.ai-task-card.queued{border-left:3px solid #4a9aaa}
-.ai-task-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ai-task-line{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;white-space:nowrap;min-width:0}
 .ai-task-ic{width:18px}
-.ai-task-label{font-weight:600;flex:1;min-width:60px;word-break:break-all}
+.ai-task-label{font-weight:600;flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .ai-task-st{font-size:11px;color:#888}
+.ai-task-time{font-size:11px;color:#888;margin-left:2px}
 .ai-task-btn{margin-left:2px;padding:2px 8px;border:none;border-radius:6px;background:#eef2f6;color:#2c3e50;cursor:pointer;font-size:12px}
 .ai-task-btn[data-ai-stop]{background:#fdecea;color:#c0392b}
 .ai-task-body{margin-top:6px;max-height:180px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;background:#f8f4ee;border-radius:6px;padding:8px 10px;font-size:12px;color:#2c1810;line-height:1.6}
@@ -1948,27 +1963,21 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .pt-btn-outline:hover{background:var(--bg-hover)}
 .pt-section{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:12px}
 .pt-section-hdr{font-size:14px;font-weight:600;cursor:pointer;padding:4px 0;user-select:none;display:flex;justify-content:space-between;align-items:center}
-.pt-dim-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.pt-dim-chip{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:16px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--bg-card);color:var(--text-secondary);transition:all .2s;user-select:none}
-.pt-dim-chip.active{background:#1a3a6a;border-color:#3a6aaa;color:#e0e8f8}
-.dark-mode .pt-dim-chip.active{background:#2a4a7a;border-color:#5a8ad4;color:#c8d8f0}
+.pt-dim-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.pt-dim-card{flex:1;text-align:center;padding:14px 10px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;transition:all .2s;user-select:none}
+.pt-dim-card:hover{background:var(--bg-hover)}
+.pt-dim-card.active{background:#1a2a4a;border-color:#3a6aaa;color:#e0e8f8}
+.dark-mode .pt-dim-card.active{background:#2a4a7a;border-color:#5a8ad4;color:#c8d8f0}
+.pt-dim-icon{font-size:24px;margin-bottom:4px}
+.pt-dim-label{font-size:16px;font-weight:700}
+.pt-dim-desc{font-size:11px;opacity:.7;margin-top:2px}
 .pt-mode-row{display:flex;gap:12px;margin-top:8px}
 .pt-mode-opt{font-size:13px;cursor:pointer;padding:4px 0}
 .pt-mode-opt input{margin-right:6px}
 .pt-loading{display:none;align-items:center;justify-content:center;gap:12px;padding:30px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
 .pt-spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:#5a8ad4;border-radius:50%;animation:pt-spin .8s linear infinite}
 @keyframes pt-spin{to{transform:rotate(360deg)}}
-.pt-result{margin-bottom:16px}
-.pt-phase{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden}
-.pt-phase-hdr{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--border);user-select:none;transition:background .2s}
-.pt-phase-hdr:hover{background:var(--bg-hover)}
-.pt-phase-num{width:22px;height:22px;border-radius:50%;background:#2a4a8a;color:#e0e8f8;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.pt-phase-icon{font-size:14px;flex-shrink:0}
-.pt-phase-title{font-size:14px;font-weight:600;flex:1}
-.pt-phase-toggle{font-size:11px;color:var(--text-muted)}
-.pt-phase-body{padding:16px;font-size:14px;line-height:1.8;color:var(--text)}
-.pt-phase-body strong{color:#2a4a8a}
-.dark-mode .pt-phase-body strong{color:#6a9ad4}
+.pt-result{margin-bottom:16px;padding:12px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;min-height:60px}
 .pt-empty{color:var(--text-muted);font-size:13px;text-align:center;padding:12px}
 .pt-error{text-align:center;padding:30px;color:var(--danger);font-size:14px}
 .pt-history-body{margin-top:8px}
@@ -7212,6 +7221,7 @@ var TRIAL_DAYS = 7;           // 试用天数
 var WRITE_SIMILARITY_THRESHOLD = 0.7;  // 默写相似度阈值
 var TOAST_DURATION = 2000;  // Toast 消失时间 ms
 var _lastChapters = [];  // 交错学习：最近章节记录（最多2个）
+var _randomHistory = [];  // 随机模式浏览历史（上一题支持）
 function defaultState() {
 return {
 dataVersion: 1,
@@ -7335,7 +7345,7 @@ pegsetScenes: [],
 		thinktankAnalyses: [],
 		thinktankSelectedAdvisors: [],
 	patternAnalyses: [],
-	patternSettings: { dimensions: { essence: true, crossDomain: true, history: true, action: true }, mode: 'deep' },
+	patternSettings: { mode: 'deep' },
 	metaSessions: [],
 	metaSettings: { stage: 'deconstruct', skill: '', goal: '' },
 		bizSessions: [],
@@ -11710,31 +11720,51 @@ return {article:article, source:'sequential'};
 return null;
 }
 function getNextRandom() {
-if (state.randomOrder.length===0 || state.randomIndex >= state.randomOrder.length) {
+// 基于当前范围构建有效题集合（范围筛选变化后，旧随机序列会失效）
 var filtered = getFilteredArticles();
+var validSet = {};
 var indices = [];
-for (var i=0; i<filtered.length; i++) indices.push(filtered[i].id);
+for (var i=0; i<filtered.length; i++) { validSet[filtered[i].id] = true; indices.push(filtered[i].id); }
 if (indices.length===0) return null;
+var needReshuffle = (state.randomOrder.length===0 || state.randomIndex >= state.randomOrder.length);
+if (!needReshuffle) {
+// 剩余候选已无有效题时（范围变化），重新洗牌
+var hasValid = false;
+for (var j=state.randomIndex; j<state.randomOrder.length; j++) {
+if (validSet[state.randomOrder[j]]) { hasValid = true; break; }
+}
+needReshuffle = !hasValid;
+}
+if (needReshuffle) {
 state.randomOrder = shuffleArray(indices);
 state.randomIndex = 0;
 saveState();
 }
-if (state.randomIndex < state.randomOrder.length) {
 // 交错学习：尝试跳过最近章节
 var startIdx = state.randomIndex;
 var picked = null, pickedIdx = -1;
 for (var attempt = 0; attempt < 10 && startIdx + attempt < state.randomOrder.length; attempt++) {
 var candidateId = state.randomOrder[startIdx + attempt];
 var candidate = ARTICLES[candidateId-1];
-if (!candidate || _lastChapters.indexOf(candidate.c) === -1) {
+if (candidate && validSet[candidateId] && _lastChapters.indexOf(candidate.c) === -1) {
 picked = candidate; pickedIdx = startIdx + attempt; break;
 }
 }
 if (!picked) {
-// 10次尝试均未找到不同章节，清空历史，用第一个候选
+// 10次尝试均未找到不同章节，清空历史，取第一个仍在范围内的候选
 _lastChapters = [];
-picked = ARTICLES[state.randomOrder[startIdx]-1];
-pickedIdx = startIdx;
+for (var k=startIdx; k<state.randomOrder.length; k++) {
+var ck = state.randomOrder[k];
+if (validSet[ck]) { picked = ARTICLES[ck-1]; pickedIdx = k; break; }
+}
+if (!picked) {
+// 剩余全部失效，重新洗牌后从头取
+state.randomOrder = shuffleArray(indices);
+state.randomIndex = 0;
+saveState();
+picked = ARTICLES[state.randomOrder[0]-1];
+pickedIdx = 0;
+}
 }
 state.randomIndex = pickedIdx + 1;
 saveState();
@@ -11744,8 +11774,6 @@ _lastChapters.push(picked.c);
 if (_lastChapters.length > 2) _lastChapters.shift();
 }
 return {article: picked, source: 'random'};
-}
-return null;
 }
 function getNextArticle() {
 // 1. 艾宾浩斯到期复习（错题集中的由错题集模式处理）
@@ -11801,14 +11829,20 @@ if (result) renderArticle(result.article, result.source);
 else showEmpty('&#x1f389; 所有题目已完成！');
 } else {
 var result = getNextArticle();
-if (result) renderArticle(result.article, result.source);
+if (result) {
+if (currentMode === 'random' && _randomHistory[_randomHistory.length-1] !== result.article.id) {
+_randomHistory.push(result.article.id);
+if (_randomHistory.length > 500) _randomHistory.shift();
+}
+renderArticle(result.article, result.source);
+}
 else showEmpty('&#x1f389; 当前范围内所有题目已完成！');
 }
 }
 function prevQuestion() {
 stopPerQuestionTimer();
 stopReading();
-if (currentMode!=='sequential') { showToast('此模式下暂不支持返回上一题'); return; }
+if (currentMode === 'sequential') {
 if (state.learnIndex < 2) {
 // 到第一题后循环回最后一题
 var filtered = getFilteredArticles();
@@ -11822,6 +11856,21 @@ state.learnIndex -= 2;
 var result = getNextSequential();
 if (result) renderArticle(result.article, result.source);
 else { state.learnIndex += 2; showToast('无法返回上一题'); }
+return;
+}
+if (currentMode === 'random') {
+// 随机模式：沿浏览历史返回上一题
+if (_randomHistory.length >= 2) {
+_randomHistory.pop();
+var prevId = _randomHistory[_randomHistory.length - 1];
+var prevArt = ARTICLES[prevId-1];
+if (prevArt && isInRange(prevArt.id)) { renderArticle(prevArt, 'random'); return; }
+}
+showToast('已经是第一题了');
+return;
+}
+showToast('此模式下暂不支持返回上一题');
+return;
 }
 function switchMode(mode) {  try {
 if (typeof resetZoomTransform === 'function') resetZoomTransform();
@@ -11836,7 +11885,9 @@ return;
 }
 stopPerQuestionTimer();
 stopReading();
-if (mode==='random' && (state.randomOrder.length===0 || state.randomIndex>=state.randomOrder.length)) {
+if (mode==='random') {
+_randomHistory = [];
+if (state.randomOrder.length===0 || state.randomIndex>=state.randomOrder.length) {
 var filtered = getFilteredArticles();
 var indices = [];
 for (var i=0; i<filtered.length; i++) indices.push(filtered[i].id);
@@ -11844,6 +11895,7 @@ if (indices.length>0) {
 state.randomOrder = shuffleArray(indices);
 state.randomIndex = 0;
 saveState();
+}
 }
 }
 currentMode = mode;
@@ -12998,6 +13050,7 @@ var aiTaskManager = {
 		var self = this;
 		var task = { id: 'ait' + (this.seq++), panel: opts.panel || '', label: opts.label || 'AI 请求', status: 'queued', content: '', error: '', controller: new AbortController(), startTime: Date.now(), stream: !!opts.stream, _resolve: null, _released: false, _ended: false };
 		this.tasks[task.id] = task; this.order.push(task.id);
+		this._ensureTick();
 		return new Promise(function(resolve) {
 			task._resolve = resolve;
 			self._pump(task);
@@ -13044,6 +13097,7 @@ var aiTaskManager = {
 	end: function(id, err) {
 		var task = this.tasks[id]; if (!task || task._ended) return;
 		task._ended = true;
+		task.endTime = Date.now();
 		if (err) { task.error = err.message || String(err); if (task.status !== 'stopped') task.status = 'error'; }
 		else if (task.status !== 'stopped') task.status = 'done';
 		task.content = task.content || '';
@@ -13060,15 +13114,40 @@ var aiTaskManager = {
 		this.render();
 	},
 	_statusName: function(s) { return { queued: '排队中', running: '生成中', done: '已完成', error: '失败', stopped: '已停止' }[s] || s; },
+	_elapsedStr: function(t) {
+		var ms = ((t.endTime || Date.now()) - t.startTime);
+		return Math.floor(ms / 1000) + 's';
+	},
+	_ensureTick: function() {
+		var self = this;
+		if (this._tick) return;
+		this._tick = setInterval(function() {
+			var any = false;
+			for (var k in self.tasks) {
+				var t = self.tasks[k];
+				if (!t || (t.status !== 'running' && t.status !== 'queued')) continue;
+				any = true;
+				var el = document.getElementById('ai-task-time-' + t.id);
+				if (el) el.textContent = self._elapsedStr(t);
+			}
+			if (!any) self._stopTick();
+		}, 1000);
+	},
+	_stopTick: function() {
+		if (this._tick) { clearInterval(this._tick); this._tick = null; }
+	},
 	_cardHtml: function(t) {
 		var icons = { queued: '⏳', running: '⏳', done: '✅', error: '❌', stopped: '⏹' };
 		var label = t.label || t.panel || 'AI';
 		var lenStr = t.content && t.content.length ? ' · ' + t.content.length + '字' : '';
+		var timeStr = (t.status === 'running' || t.status === 'queued')
+			? ' · <span class="ai-task-time" id="ai-task-time-' + t.id + '">已运行 ' + this._elapsedStr(t) + '</span>'
+			: (t.endTime ? ' · 耗时 ' + this._elapsedStr(t) : '');
 		var exp = this.expandedId === t.id;
 		var btnStop = (t.status === 'running' || t.status === 'queued') ? '<button class="ai-task-btn" data-ai-stop="' + t.id + '">⏹ 停止</button>' : '';
 		var btnExp = (t.status === 'done' || t.status === 'error' || t.status === 'stopped') ? '<button class="ai-task-btn" data-ai-expand="' + t.id + '">' + (exp ? '▴ 收起' : '▾ 结果') + '</button>' : '';
 		var body = exp ? '<div class="ai-task-body">' + escHtml(t.content || t.error || '') + '</div>' : '';
-		return '<div class="ai-task-card ' + t.status + '" data-ai-open="' + t.id + '" title="点击打开对应板块"><div class="ai-task-line"><span class="ai-task-ic">' + (icons[t.status] || '⏳') + '</span><span class="ai-task-label">' + escHtml(label) + '</span><span class="ai-task-st">' + this._statusName(t.status) + '</span>' + lenStr + btnStop + btnExp + '</div>' + body + '</div>';
+		return '<div class="ai-task-card ' + t.status + '" data-ai-open="' + t.id + '" title="点击打开对应板块"><div class="ai-task-line"><span class="ai-task-ic">' + (icons[t.status] || '⏳') + '</span><span class="ai-task-label">' + escHtml(label) + '</span><span class="ai-task-st">' + this._statusName(t.status) + '</span>' + lenStr + timeStr + btnStop + btnExp + '</div>' + body + '</div>';
 	},
 	render: function() {
 		var dock = document.getElementById('aiTaskDock'); if (!dock) return;
@@ -20761,55 +20840,31 @@ function vtStartListen(side) {
     vtMediaFallback(side);
   }
 }
-function _ttTranscribeConfig() {
-  var custom = (state.aiTranscribeEndpoint || '').trim();
-  if (custom) return { ep: custom, model: 'whisper-1' };
-  var p = state.aiProvider || 'deepseek';
-  var providerEp = { siliconflow: 'https://api.siliconflow.cn/v1/audio/transcriptions', groq: 'https://api.groq.com/openai/v1/audio/transcriptions', openai: 'https://api.openai.com/v1/audio/transcriptions' }[p];
-  var providerModel = { siliconflow: 'FunAudioLLM/SenseVoiceSmall', groq: 'whisper-large-v3-turbo', openai: 'whisper-1' }[p] || 'whisper-1';
-  var ep = (state.aiEndpoint || '').trim();
-  var model = 'whisper-1';
-  if (ep) {
-    ep = ep.replace(/\/chat\/completions$/, '/audio/transcriptions');
-    model = providerModel;
-  } else if (providerEp) {
-    ep = providerEp;
-    model = providerModel;
-  } else {
-    ep = (AI_PROVIDERS[p] || AI_PROVIDERS.deepseek).endpoint.replace(/\/chat\/completions$/, '/audio/transcriptions');
-    model = 'whisper-1';
-  }
-  return { ep: ep, model: model };
-}
-function _ttTranscribeErr(err) {
-  var m = String((err && err.message) || '转写失败');
-  if (/401|403/.test(m)) m += '。语音转写认证失败：若当前服务商是 DeepSeek，它不支持语音转写；请在 AI 设置改用「硅基流动/Groq/OpenAI」，或填写语音转写端点';
-  return '❌ ' + m.slice(0, 130);
-}
 function vtTranscribeAudio(blob, side) {
   var lang = vtWhisperLang(vtListenLang(side));
   if (blob.size < 500) { vtStatus('⏳ 录音太短，请重试'); vtUIUpdate(); return; }
   var key = (state.aiApiKey || '');
-  var cfg = _ttTranscribeConfig();
+  var ep = (state.aiTranscribeEndpoint || '').trim() ||
+    (state.aiEndpoint || AI_PROVIDERS.deepseek.endpoint).replace(/\/chat\/completions$/, '/audio/transcriptions');
   if (!key) { vtStatus('❌ 未配置 API 密钥'); vtUIUpdate(); return; }
-  if (cfg.ep.indexOf('deepseek') > 0) {
-    vtStatus('❌ DeepSeek 不支持语音转写。请在 AI 设置改用「硅基流动/Groq/OpenAI」，或填写语音转写端点');
-    showToast('🎤 DeepSeek 不支持语音转写。请在 AI 设置改用「硅基流动/Groq/OpenAI」，或填写语音转写端点');
+  if (ep.indexOf('deepseek') > 0) {
+    vtStatus('❌ DeepSeek 不支持语音转写，请配置 OpenAI 兼容的转写端点');
+    showToast('🎤 DeepSeek 不支持语音转写。请在 AI 设置中配置转写端点');
     vtUIUpdate();
     return;
   }
   var fd = new FormData();
   fd.append('file', blob, 'recording.webm');
-  fd.append('model', cfg.model);
+  fd.append('model', 'whisper-1');
   fd.append('language', lang);
-  fetch(cfg.ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
+  fetch(ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
     .then(function(r) { if (!r.ok) return r.text().then(function(t) { throw new Error('转写失败 (' + r.status + ')：' + (t || '').slice(0, 120)); }); return r.json(); })
     .then(function(data) {
       var text = (data.text || '').trim();
       if (text) vtProcess(side, text);
       else { vtStatus('⏳ 未识别到语音'); vtUIUpdate(); }
     })
-    .catch(function(err) { vtStatus(_ttTranscribeErr(err)); vtUIUpdate(); });
+    .catch(function(err) { vtStatus('❌ ' + (err.message || '转写失败').slice(0, 60)); vtUIUpdate(); });
 }
 function vtMediaFallback(side) {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -20938,8 +20993,9 @@ function vtPanelAct(act, btn) {
 function vtStartAutoListen() {
   if (vtState.busy) { vtStatus('⏳ 处理中，请稍候'); return; }
   var key = (state.aiApiKey || '');
-  var cfg = _ttTranscribeConfig();
-  if (key && cfg.ep.indexOf('deepseek') < 0) { vtAutoRecord(); return; }
+  var ep = (state.aiTranscribeEndpoint || '').trim() ||
+    (state.aiEndpoint || AI_PROVIDERS.deepseek.endpoint).replace(/\/chat\/completions$/, '/audio/transcriptions');
+  if (key && ep.indexOf('deepseek') < 0) { vtAutoRecord(); return; }
   vtWsAuto();
 }
 function vtAutoRecord() {
@@ -21000,11 +21056,12 @@ function vtStartVad(stream, onEnd) {
 function vtTranscribeAuto(blob) {
   if (blob.size < 500) { vtStatus('⏳ 录音太短，请重试'); vtUIUpdate(); return; }
   var key = (state.aiApiKey || '');
-  var cfg = _ttTranscribeConfig();
+  var ep = (state.aiTranscribeEndpoint || '').trim() ||
+    (state.aiEndpoint || AI_PROVIDERS.deepseek.endpoint).replace(/\/chat\/completions$/, '/audio/transcriptions');
   var fd = new FormData();
   fd.append('file', blob, 'recording.webm');
-  fd.append('model', cfg.model);
-  return fetch(cfg.ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
+  fd.append('model', 'whisper-1');
+  return fetch(ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
     .then(function(r) { if (!r.ok) return r.text().then(function(t) { throw new Error('转写失败 (' + r.status + ')：' + (t || '').slice(0, 120)); }); return r.json(); })
     .then(function(data) {
       var text = (data.text || '').trim();
@@ -21014,7 +21071,7 @@ function vtTranscribeAuto(blob) {
         vtProcess(side, text);
       } else { vtStatus('⏳ 未识别到语音'); vtUIUpdate(); }
     })
-    .catch(function(err) { vtStatus(_ttTranscribeErr(err)); vtUIUpdate(); });
+    .catch(function(err) { vtStatus('❌ ' + (err.message || '转写失败').slice(0, 60)); vtUIUpdate(); });
 }
 function vtSideFromWhisper(det) {
   if (!det) return null;
@@ -21404,19 +21461,20 @@ function ttMediaFallback() {
 function ttTranscribeAudio(blob) {
   if (blob.size < 500) { ttStatus('⏳ 录音太短，请重试'); ttContinueLoop(); return; }
   var key = (state.aiApiKey || '');
-  var cfg = _ttTranscribeConfig();
+  var ep = (state.aiTranscribeEndpoint || '').trim() ||
+    (state.aiEndpoint || AI_PROVIDERS.deepseek.endpoint).replace(/\/chat\/completions$/, '/audio/transcriptions');
   if (!key) { ttStatus('❌ 未配置 API 密钥'); ttUpdateUI(); return; }
-  if (cfg.ep.indexOf('deepseek') > 0) {
-    ttStatus('❌ DeepSeek 不支持语音转写。请在 AI 设置改用「硅基流动/Groq/OpenAI」，或填写语音转写端点');
-    showToast('🎤 DeepSeek 不支持语音转写。请在 AI 设置改用「硅基流动/Groq/OpenAI」，或填写语音转写端点');
+  if (ep.indexOf('deepseek') > 0) {
+    ttStatus('❌ DeepSeek 不支持语音转写，请配置 OpenAI 兼容转写端点');
+    showToast('🎤 DeepSeek 不支持语音转写。请在 AI 设置中配置转写端点');
     ttUpdateUI();
     return;
   }
   var fd = new FormData();
   fd.append('file', blob, 'recording.webm');
-  fd.append('model', cfg.model);
+  fd.append('model', 'whisper-1');
   fd.append('language', ttWhisperLang(ttState.lang));
-  fetch(cfg.ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
+  fetch(ep, { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: fd })
     .then(function(r) { if (!r.ok) return r.text().then(function(t) { throw new Error('转写失败 (' + r.status + ')：' + (t || '').slice(0, 120)); }); return r.json(); })
     .then(function(data) {
       var text = (data.text || '').trim();
@@ -21424,7 +21482,7 @@ function ttTranscribeAudio(blob) {
       else { ttStatus('⏳ 未识别到语音'); ttContinueLoop(); }
     })
     .catch(function(err) {
-      ttStatus(_ttTranscribeErr(err));
+      ttStatus('❌ ' + (err.message || '转写失败').slice(0, 60));
       ttContinueLoop();
     });
 }
@@ -24992,9 +25050,17 @@ var html = '<div class="card">';
 html += '<div class="market-tabs">';
 html += '<button class="market-tab' + (tab==='packs'?' active':'') + '" onclick="switchMarketTab(\'packs\')">📦 题库</button>';
 html += '<button class="market-tab' + (tab==='hot'?' active':'') + '" onclick="switchMarketTab(\'hot\')">🔥 热门资料</button>';
+html += '<button class="market-tab' + (tab==='jingdian'?' active':'') + '" onclick="switchMarketTab(\'jingdian\')">📜 古典文学</button>';
 html += '</div>';
 if (tab === 'hot') {
 html += renderHotExamSection();
+html += '</div>';
+area.innerHTML = html;
+initHotEvents();
+return;
+}
+if (tab === 'jingdian') {
+html += renderJingdianSection();
 html += '</div>';
 area.innerHTML = html;
 initHotEvents();
@@ -25451,6 +25517,61 @@ name: '教资', desc: '教师资格考试',
 topics: [
 {id:'teach_mid',name:'教师资格证(中学)',tags:['教育','国内','中级'],pop:5}
 ]
+},
+jingdian: {
+name: '📜 古典文学', desc: '中国古典经典文学',
+groups: [
+{key:'sishu_wujing', name:'四书五经', icon:'📖', desc:'儒家核心经典', topics:[
+{id:'jd-lunyu',name:'论语',tags:['学而','为政','里仁','述而','先进'],pop:5},
+{id:'jd-mengzi',name:'孟子',tags:['梁惠王','公孙丑','滕文公','尽心'],pop:4},
+{id:'jd-daxue',name:'大学',tags:['三纲八目','明明德','格物致知','修齐治平'],pop:3},
+{id:'jd-zhongyong',name:'中庸',tags:['中和之道','慎独','诚','达道达德'],pop:3},
+{id:'jd-shijing',name:'诗经',tags:['国风','雅','颂','赋比兴'],pop:5},
+{id:'jd-shujing',name:'尚书',tags:['典谟训诰','虞书','夏书','周书'],pop:3},
+{id:'jd-liji',name:'礼记',tags:['礼运','学记','乐记','冠昏丧祭'],pop:3},
+{id:'jd-zhouyi',name:'周易',tags:['六十四卦','八卦','系辞','彖传象传'],pop:4},
+{id:'jd-chunqiu',name:'春秋',tags:['编年史','微言大义','五霸','三传'],pop:3}
+]},
+{key:'zhuzi', name:'诸子百家', icon:'🧠', desc:'先秦诸子思想', topics:[
+{id:'jd-daodejing',name:'道德经',tags:['道可道','无为','上善若水','道法自然'],pop:5},
+{id:'jd-zhuangzi',name:'庄子',tags:['逍遥游','齐物论','养生主','秋水'],pop:5},
+{id:'jd-xunzi',name:'荀子',tags:['劝学','性恶','天论','礼论'],pop:3},
+{id:'jd-mozi',name:'墨子',tags:['兼爱','非攻','尚贤','尚同'],pop:3},
+{id:'jd-hanfeizi',name:'韩非子',tags:['法术势','五蠹','说难','寓言'],pop:4},
+{id:'jd-sunzi',name:'孙子兵法',tags:['始计','作战','谋攻','虚实','军形'],pop:4},
+{id:'jd-guiguzi',name:'鬼谷子',tags:['捭阖','纵横','揣摩','权谋'],pop:3}
+]},
+{key:'shixue', name:'史学经典', icon:'📜', desc:'纪传与编年体史著', topics:[
+{id:'jd-shiji',name:'史记',tags:['本纪','世家','列传','十表八书'],pop:5},
+{id:'jd-zizhitongjian',name:'资治通鉴',tags:['编年','周纪','汉纪','唐纪'],pop:4},
+{id:'jd-zuozhuan',name:'左传',tags:['春秋左氏传','城濮之战','郑伯克段','行人辞令'],pop:3},
+{id:'jd-zhanguoce',name:'战国策',tags:['纵横家言','说辞','寓言','荆轲刺秦'],pop:3},
+{id:'jd-hanshu',name:'汉书',tags:['断代史','食货志','苏武传','班固'],pop:3}
+]},
+{key:'shici', name:'诗词曲赋', icon:'🖋️', desc:'历代韵文菁华', topics:[
+{id:'jd-tangshi',name:'唐诗三百首',tags:['李白','杜甫','王维','白居易','李商隐'],pop:5},
+{id:'jd-songci',name:'宋词三百首',tags:['苏轼','辛弃疾','李清照','柳永','晏殊'],pop:5},
+{id:'jd-chuci',name:'楚辞',tags:['离骚','九歌','天问','九章','屈原'],pop:4},
+{id:'jd-yuefu',name:'乐府诗集',tags:['相和歌','杂曲歌','木兰诗','孔雀东南飞'],pop:3},
+{id:'jd-yuanqu',name:'元曲三百首',tags:['散曲','杂剧','马致远','关汉卿','白朴'],pop:3},
+{id:'jd-wenxin',name:'文心雕龙',tags:['神思','体性','风骨','情采'],pop:3}
+]},
+{key:'xiaoshuo', name:'古典小说', icon:'🏮', desc:'四大名著与世情小说', topics:[
+{id:'jd-hongloumeng',name:'红楼梦',tags:['贾府兴衰','宝黛钗','大观园','金陵十二钗'],pop:5},
+{id:'jd-sanguo',name:'三国演义',tags:['桃园结义','官渡','赤壁之战','五虎将','计谋'],pop:5},
+{id:'jd-shuihu',name:'水浒传',tags:['一百单八将','梁山聚义','鲁智深','林冲','武松'],pop:4},
+{id:'jd-xiyouji',name:'西游记',tags:['西天取经','九九八十一难','孙悟空','师徒四人'],pop:4},
+{id:'jd-liaozhai',name:'聊斋志异',tags:['狐仙','鬼怪','讽喻','蒲松龄'],pop:4},
+{id:'jd-rulin',name:'儒林外史',tags:['科举讽刺','范进中举','严监生','匡超人'],pop:3}
+]},
+{key:'mengxue', name:'蒙学箴言', icon:'🧒', desc:'蒙学启蒙与处世箴言', topics:[
+{id:'jd-guwen',name:'古文观止',tags:['唐宋八大家','游记','论说','选文菁华'],pop:4},
+{id:'jd-shishuo',name:'世说新语',tags:['德行','言语','雅量','识鉴'],pop:3},
+{id:'jd-caigentan',name:'菜根谭',tags:['修身','处世','警句','清言'],pop:4},
+{id:'jd-zengguang',name:'增广贤文',tags:['格言','处世','古训','对仗'],pop:3},
+{id:'jd-sanbaiqian',name:'蒙学三百千',tags:['三字经','百家姓','千字文','启蒙'],pop:3}
+]}
+]
 }
 };
 // 热门资料生成状态
@@ -25595,14 +25716,79 @@ var stateKey = (cat === 'tips') ? 'hotExamTipsLevel' : 'hotExamK12Level';
 if (lv) { state[stateKey] = lv; saveState(); renderExamMarket(); }
 };
 });
+// 古典文学大类钻取
+area.querySelectorAll('.jd-group-card').forEach(function(el) {
+el.onclick = function() {
+var k = this.getAttribute('data-jdgroup');
+if (k) { state.hotJingdianGroup = k; saveState(); renderExamMarket(); }
+};
+});
+area.querySelectorAll('.jd-back-btn').forEach(function(el) {
+el.onclick = function() {
+state.hotJingdianGroup = ''; saveState(); renderExamMarket();
+};
+});
+}
+function renderJingdianSection() {
+var data = HOT_EXAM_TOPICS.jingdian;
+if (!data) return '';
+var html = '';
+html += '<div class="market-hero"><h2>📜 古典文学</h2><p>四书五经、诸子百家、史学典籍、诗词曲赋、古典小说与蒙学箴言——中国古典经典文学，AI 实时生成课程</p></div>';
+var g = state.hotJingdianGroup || '';
+var group = null;
+if (g) {
+for (var gi = 0; gi < data.groups.length; gi++) {
+if (data.groups[gi].key === g) { group = data.groups[gi]; break; }
+}
+if (!group) { state.hotJingdianGroup = ''; g = ''; }
+}
+if (!g) {
+html += '<div class="jd-group-grid">';
+for (var gi = 0; gi < data.groups.length; gi++) {
+var gr = data.groups[gi];
+html += '<div class="jd-group-card" data-jdgroup="' + gr.key + '">';
+html += '<div class="jd-group-icon">' + gr.icon + '</div>';
+html += '<div class="jd-group-name">' + escHtml(gr.name) + '</div>';
+html += '<div class="jd-group-count">' + gr.topics.length + ' 部经典</div>';
+html += '<div class="jd-group-desc">' + escHtml(gr.desc || '') + '</div>';
+html += '</div>';
+}
+html += '</div>';
+} else {
+html += '<div class="jd-group-head"><button class="jd-back-btn" data-jdback>← 全部类别</button><h3>' + escHtml(group.name) + ' · ' + group.topics.length + ' 部</h3></div>';
+for (var i = 0; i < group.topics.length; i++) {
+html += renderHotTopicCard(group.topics[i]);
+}
+}
+return html;
 }
 function startHotGen(topicId) {
 var cat = state.hotExamCategory || 'gongkao';
 var data = HOT_EXAM_TOPICS[cat];
-if (!data) return;
 var topic = null;
-for (var i = 0; i < data.topics.length; i++) {
-if (data.topics[i].id === topicId) { topic = data.topics[i]; break; }
+// 兼容平铺 topics 与嵌套 groups(古典文学)两种结构
+function findHotTopic(d) {
+if (!d) return null;
+if (d.topics) {
+for (var i = 0; i < d.topics.length; i++) {
+if (d.topics[i].id === topicId) return d.topics[i];
+}
+}
+if (d.groups) {
+for (var gi = 0; gi < d.groups.length; gi++) {
+var gr = d.groups[gi];
+for (var j = 0; j < gr.topics.length; j++) {
+if (gr.topics[j].id === topicId) return gr.topics[j];
+}
+}
+}
+return null;
+}
+topic = findHotTopic(data);
+if (!topic && cat !== 'jingdian') {
+cat = 'jingdian';
+data = HOT_EXAM_TOPICS.jingdian;
+topic = findHotTopic(data);
 }
 if (!topic) return;
 // 检查 API Key
@@ -25618,7 +25804,7 @@ if (epInput && epInput.value) { state.aiEndpoint = epInput.value; saveState(); }
 var modelSelect = document.getElementById('aiModelSelect');
 if (modelSelect && modelSelect.value) { state.aiModel = modelSelect.value; saveState(); }
 // 两阶段生成：先框架 → 再逐章
-HOT_GEN_STATE[topicId] = { step: 'framework', time: Date.now() };
+HOT_GEN_STATE[topicId] = { step: 'framework', time: Date.now(), catKey: cat };
 renderExamMarket();
 aiGenerateHotFramework(topicId, topic, cat, data).catch(function(err) {
 // 错误已由 aiGenerateHotFramework 内部处理
@@ -25642,7 +25828,8 @@ senior: catKey === 'tips'
 var role = hasLevel && roleMap[level] ? roleMap[level]
 : (catKey === 'tips' ? '你是一位资深的考试技巧培训专家，擅长各类高效学习方法和应试策略'
 : (catKey === 'life' ? '你是一位经验丰富的生活技能指导专家，擅长用通俗易懂的语言和实例讲解实用生活技巧和方法'
-: '你是一位资深的' + catData.name + '考试培训专家'));
+: (catKey === 'jingdian' ? '你是一位资深的国学学者与中国古典文学研究专家，精通四书五经、诸子百家、史学典籍、诗词曲赋与古典小说，讲解深入浅出，重视原文训诂、主旨阐发与名句赏析'
+: '你是一位资深的' + catData.name + '考试培训专家')));
 role += '，拥有20年一线教学经验。\n\n【教学标准】\n1. 每道题标注其考查的认知层次（记忆/理解/应用/分析/评价）\n2. 干扰项必须基于学生真实常见错误，具有诊断价值而非随机编造\n3. 解析需包含：考点定位+解题思路+易错提醒+知识延伸\n4. 题目难度要有梯度，从基础到拔高逐步递进\n5. 所有内容基于该科目最新的考试大纲和标准教材，确保准确可靠';
 // 各学段参数
 var configs = {
@@ -25650,7 +25837,10 @@ primary: { chapters:'3-4 单元', perCh:'6-8', total:'20-30 题', opts:3, optsDe
 junior:  { chapters:'3-5 章节', perCh:'8-12', total:'30-45 题', opts:4, optsDesc:'4 个选项（A/B/C/D）', style:'语言清晰规范，覆盖中考常见考点。\n- t 字段为精讲风格：先概括核心要点再分点讲解\n- 解析需指出考点出处和解题思路' },
 senior:  { chapters:'4-6 专题', perCh:'10-15', total:'40-60 题', opts:4, optsDesc:'4 个选项（A/B/C/D）', style:'语言严谨深入，覆盖高考高频考点。\n- t 字段为精讲风格：概念解析+考点分析+解题技巧\n- 解析包含：考点分析+解题思路+易错提醒\n- 可包含高考真题改编题' }
 };
-var cfg = hasLevel && configs[level] ? configs[level] : { chapters:'3-6 核心章节', perCh:'8-15', total:'30-60 题', opts:4, optsDesc:'4 个选项（A/B/C/D）', style:'所有知识点准确可靠，基于官方考试大纲和标准教材。\n- t 字段为精讲风格：先概括核心要点再详解知识点' };
+var cfg = hasLevel && configs[level] ? configs[level]
+: (catKey === 'jingdian'
+? { chapters:'按作品原有篇目/章节结构划分', perCh:'6-10', total:'30-50 题', opts:4, optsDesc:'4 个选项（A/B/C/D）', style:'基于通行版本原文与权威译注，确保准确可靠。\n- t 字段为精讲：先呈现原文（节选）与白话译文，再讲主旨、名句赏析与文史背景\n- 解析需注明原文出处、写作背景及思想内涵' }
+: { chapters:'3-6 核心章节', perCh:'8-15', total:'30-60 题', opts:4, optsDesc:'4 个选项（A/B/C/D）', style:'所有知识点准确可靠，基于官方考试大纲和标准教材。\n- t 字段为精讲风格：先概括核心要点再详解知识点' });
 var prompt = role + '，专门辅导「' + topic.name + '」科目。\n\n'
 + '请为「' + topic.name + '」生成一个完整的学习课程，包含多个章节和对应试题。\n\n'
 + '要求：\n'
@@ -25701,11 +25891,12 @@ var level = topic.level || '';
 var hasLevel = (catKey === 'k12' || catKey === 'tips') && level;
 var role = hasLevel
 ? '你是一位资深的教育专家'
+: (catKey === 'jingdian' ? '你是一位资深的国学学者与中国古典文学研究专家，精通四书五经、诸子百家、史学典籍、诗词曲赋与古典小说，讲解深入浅出，重视原文训诂、主旨阐发与名句赏析'
 : (catKey === 'life' ? '你是一位经验丰富的生活技能指导专家，擅长将复杂的生活技巧系统化并设计为易于掌握的课程体系'
-: '你是一位资深的' + catData.name + '考试培训专家');
+: '你是一位资深的' + catData.name + '考试培训专家'));
 var prompt = role + '，专门研究「' + topic.name + '」。\n\n'
 + '请为「' + topic.name + '」设计一个完整的课程大纲。\n'
-+ '根据该科目的核心知识体系，划分 4-6 个章节。\n'
++ (catKey === 'jingdian' ? '根据该作品的原有篇目/章节结构划分章节。\n' : '根据该科目的核心知识体系，划分 4-6 个章节。\n')
 + '注意：\n'
 + '- 章节名称要清晰简洁\n'
 + '- 覆盖该科目的核心知识点\n'
@@ -25738,6 +25929,7 @@ chapterStates[data.chapters[i]] = { status: 'pending', count: 0, error: '' };
 // 更新生成状态
 HOT_GEN_STATE[topicId] = {
 step: 'chapters',
+catKey: catKey,
 framework: { name: data.name || topic.name, chapters: data.chapters },
 chapterStates: chapterStates,
 articles: [],
@@ -25782,7 +25974,7 @@ var st = HOT_GEN_STATE[topicId];
 var cat = state.hotExamCategory || 'gongkao';
 var data = HOT_EXAM_TOPICS[cat];
 var topic = null;
-for (var i = 0; i < (data ? data.topics.length : 0); i++) {
+for (var i = 0; i < (data && data.topics ? data.topics.length : 0); i++) {
 if (data.topics[i].id === topicId) { topic = data.topics[i]; break; }
 }
 if (!topic) { topic = { name: st.framework.name, level: '' }; }
@@ -25791,14 +25983,15 @@ st._genIdx = chIdx;
 if (currentMode === 'market') renderExamMarket();
 var level = topic.level || '';
 var hasLevel = (cat === 'k12' || cat === 'tips') && level;
-var perCh = hasLevel && level === 'primary' ? '6-8' : (hasLevel && level === 'senior' ? '10-15' : '8-12');
-var prompt = '你是一位资深教育专家，专门辅导「' + st.framework.name + '」。\n\n'
+var isJd = (st.catKey === 'jingdian');
+var perCh = isJd ? '6-10' : (hasLevel && level === 'primary' ? '6-8' : (hasLevel && level === 'senior' ? '10-15' : '8-12'));
+var prompt = (isJd ? '你是一位资深的国学学者与中国古典文学研究专家，精通四书五经、诸子百家、史学典籍、诗词曲赋与古典小说，讲解深入浅出，重视原文训诂、主旨阐发与名句赏析' : '你是一位资深教育专家') + '，专门辅导「' + st.framework.name + '」。\n\n'
 + '请为「' + chapterName + '」生成试题。\n\n'
 + '要求：\n'
 + '1. 根据该章节的核心知识点，生成 ' + perCh + ' 道高质量选择题\n'
 + '2. 题目覆盖该章节最重要的知识点\n'
 + '3. 每道题包含：知识点原文（t字段）、题干（q字段）、4 个选项 A/B/C/D（o字段）、正确答案索引（a字段）、详细解析（e字段）\n\n'
-+ '所有知识点准确可靠。\n- t 字段为精讲风格：先概括核心要点再详解知识点\n\n'
++ (isJd ? '所有知识点基于通行版本原文与权威译注，确保准确可靠。\n- t 字段为精讲：先呈现原文（节选）与白话译文，再讲主旨、名句赏析与文史背景\n- 解析需注明原文出处、写作背景及思想内涵' : '所有知识点准确可靠。\n- t 字段为精讲风格：先概括核心要点再详解知识点') + '\n\n'
 + '请严格按以下 JSON 数组格式返回（不要使用 markdown 代码块）：\n'
 + '[\n'
 + '  {\n'
@@ -25883,7 +26076,7 @@ renderExamMarket();
 var cat = state.hotExamCategory || 'gongkao';
 var data = HOT_EXAM_TOPICS[cat];
 var topic = null;
-for (var i = 0; i < (data ? data.topics.length : 0); i++) {
+for (var i = 0; i < (data && data.topics ? data.topics.length : 0); i++) {
 if (data.topics[i].id === topicId) { topic = data.topics[i]; break; }
 }
 if (!topic) topic = { name: st.framework.name };
@@ -32446,133 +32639,109 @@ function toggleTTHistory() {
 
 /* ===== 格物 · 规律发现引擎 ===== */
 function initPTState() {
-  if (!state.patternSettings) state.patternSettings = { dimensions: { essence: true, crossDomain: true, history: true, action: true }, mode: 'deep' };
+  if (!state.patternSettings) state.patternSettings = { mode: 'deep' };
   if (!state.patternAnalyses) state.patternAnalyses = [];
 }
 function setPTMode(mode) {
   if (!state.patternSettings) initPTState();
   state.patternSettings.mode = mode;
   saveState();
-  showToast(mode === 'deep' ? '\u{1F52C}\u{FE0F} 深度剖析模式：4\u{9636}\u{6BB5}\u{9010}\u{5C42}\u{6DF1}\u{5165}\u{89E3}\u{6790}\u{89C4}\u{5F8B}' : '⚡ \u{5FEB}\u{901F}\u{6D1E}\u{5BDF}\u{6A21}\u{5F0F}\u{FF1A}\u{5355}\u{6B21}\u{8F93}\u{51FA}\u{6838}\u{5FC3}\u{89C4}\u{5F8B}\u{6D1E}\u{5BDF}');
-}
-function togglePTDim(dim) {
-  if (!state.patternSettings) initPTState();
-  if (!state.patternSettings.dimensions) state.patternSettings.dimensions = { essence: true, crossDomain: true, history: true, action: true };
-  state.patternSettings.dimensions[dim] = state.patternSettings.dimensions[dim] === false ? true : false;
-  saveState();
-  var chip = document.querySelector('.pt-dim-chip[data-dim="'+dim+'"]');
-  if (chip) chip.classList.toggle('active');
+  showToast(mode === 'deep' ? '深度剖析模式：四维详解' : '快速洞察模式：四维精炼');
 }
 function renderPatternPanel() {
   if (!window._ptInit) { initPTState(); window._ptInit = true; }
   var area = $id('contentArea');
-  var settings = state.patternSettings || { dimensions: { essence: true, crossDomain: true, history: true, action: true }, mode: 'deep' };
-  var html = '';
-  var h=[];
-  h.push('<div class="pt-hero"><div class="pt-hero-icon">\u{1F30C}</div><h2 class="pt-hero-title">格物 · 规律发现引擎</h2><p class="pt-hero-sub">穿透表象，洞见底层规律 · 一通百通，万变不离其宗</p></div>');
+  var settings = state.patternSettings || { mode: 'deep' };
+  var active = window._ptActiveDim || 'essence';
+  var dims = [
+    { id: 'essence', icon: '🧬', label: '本质定义', desc: '一句话洞见本质' },
+    { id: 'crossDomain', icon: '🌐', label: '跨域映射', desc: '一理贯通·多域印证' },
+    { id: 'history', icon: '📜', label: '历史案例', desc: '经典佐证·异同提炼' },
+    { id: 'action', icon: '🚀', label: '行动指引', desc: '顺势而为·落地行动' }
+  ];
+  var h = [];
+  h.push('<div class="pt-hero"><div class="pt-hero-icon">🌌</div><h2 class="pt-hero-title">格物 · 规律发现引擎</h2><p class="pt-hero-sub">穿透表象，洞见底层规律 · 一通百通，万变不离其宗</p></div>');
   h.push('<div class="pt-input-card"><textarea id="ptInput" class="pt-textarea" placeholder="描述你遇到的现象、问题或困境…"></textarea>');
-  h.push('<div class="pt-input-actions"><button class="pt-btn pt-btn-primary" onclick="callPatternAnalysis()">\u{1F50D} 探究规律</button></div></div>');
+  h.push('<div class="pt-input-actions"><button class="pt-btn pt-btn-primary" onclick="callPatternAnalysis()">🔍 探究规律</button></div></div>');
   h.push('<div class="pt-section"><div class="pt-section-hdr" id="ptOptsHdr">⚙️ 分析设置 <span id="ptOptsToggle">▼</span></div>');
-  h.push('<div id="ptOptsBody">');
-  h.push('<div class="pt-mode-row">');
-  h.push('<label class="pt-mode-opt"><input type="radio" name="ptMode" value="deep"'+(settings.mode==='deep'?' checked':'')+'> \u{1F52C}️ 深度剖析（4阶段）</label>');
-  h.push('<label class="pt-mode-opt"><input type="radio" name="ptMode" value="quick"'+(settings.mode==='quick'?' checked':'')+'> ⚡ 快速洞察（单次）</label>');
-  h.push('</div><div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">分析维度：</div><div class="pt-dim-row">');
-  var dims=[{k:'essence',l:'\u{1F9EC} 本质定义'},{k:'crossDomain',l:'\u{1F310} 跨域映射'},{k:'history',l:'\u{1F4DC} 历史案例'},{k:'action',l:'\u{1F680} 行动指引'}];
-  for (var di=0;di<dims.length;di++) {
-    var d=dims[di], a=settings.dimensions[d.k]!==false;
-    h.push('<span class="pt-dim-chip'+(a?' active':'')+'" data-dim="'+d.k+'">'+d.l+'</span>');
-  }
+  h.push('<div id="ptOptsBody"><div class="pt-mode-row">');
+  h.push('<label class="pt-mode-opt"><input type="radio" name="ptMode" value="deep"'+(settings.mode==='deep'?' checked':'')+'> 🔬️ 深度剖析</label>');
+  h.push('<label class="pt-mode-opt"><input type="radio" name="ptMode" value="quick"'+(settings.mode==='quick'?' checked':'')+'> ⚡ 快速洞察</label>');
   h.push('</div></div></div>');
-  h.push('<div id="ptLoading" class="pt-loading"><div class="pt-spinner"></div><span>\u{1F50D} 正在探寻规律…</span></div>');
+  h.push('<div class="pt-section"><div class="pt-section-hdr">📊 四维规律分析</div><div class="pt-dim-row">');
+  for (var si = 0; si < dims.length; si++) {
+    var s = dims[si];
+    h.push('<div class="pt-dim-card'+(active===s.id?' active':'')+'" data-dim="'+s.id+'" onclick="switchPTDim(\''+s.id+'\')">');
+    h.push('<div class="pt-dim-icon">'+s.icon+'</div><div class="pt-dim-label">'+s.label+'</div><div class="pt-dim-desc">'+s.desc+'</div></div>');
+  }
+  h.push('</div></div>');
+  h.push('<div id="ptLoading" class="pt-loading"><div class="pt-spinner"></div><span>🔍 正在探寻规律…</span></div>');
   h.push('<div id="ptResult" class="pt-result"></div>');
-  h.push('<div class="pt-section"><div class="pt-section-hdr" id="ptHistHdr">\u{1F4DA} 历史记录 (<span id="ptHistoryCount">0</span>) <span id="ptHistToggle">▼</span></div>');
+  h.push('<div class="pt-section"><div class="pt-section-hdr" id="ptHistHdr">📚 历史记录 (<span id="ptHistoryCount">0</span>) <span id="ptHistToggle">▼</span></div>');
   h.push('<div id="ptHistoryBody"><div id="ptHistoryList"></div></div></div>');
-  h.push('<div class="pt-guide">\u{1F4A1} 输入现象，AI识别普遍规律，给出跨领域洞见和行动建议。</div>');
+  h.push('<div class="pt-guide">💡 输入现象 → AI 四维规律分析 → 点卡片切换查看</div>');
   area.innerHTML = h.join('');
-  // bind events
   $id('ptOptsHdr').onclick = function(){var el=$id('ptOptsBody');el.style.display=el.style.display==='none'?'':'none';};
   $id('ptHistHdr').onclick = togglePTHistory;
   var radios = document.querySelectorAll('[name="ptMode"]');
   for (var ri=0;ri<radios.length;ri++) radios[ri].onchange = function(){setPTMode(this.value);};
-  var chips = document.querySelectorAll('.pt-dim-chip');
-  for (var ci=0;ci<chips.length;ci++) chips[ci].onclick = function(){togglePTDim(this.getAttribute('data-dim'));};
   renderPatternHistory();
+  renderPTDimContent();
   updateUI();
 }
 function buildPatternPrompt() {
   var input = $id('ptInput');
-  if (!input) { showToast('\u{8BF7}\u{5148}\u{6253}\u{5F00}\u{683C}\u{7269}\u{9762}\u{677F}'); return null; }
+  if (!input) { showToast('请先打开格物面板'); return null; }
   var problem = input.value.trim();
-  if (!problem) { showToast('\u{8BF7}\u{5148}\u{63CF}\u{8FF0}\u{4F60}\u{60F3}\u{8981}\u{63A2}\u{7A76}\u{7684}\u{73B0}\u{8C61}'); return null; }
-  var settings = state.patternSettings || { dimensions: { essence: true, crossDomain: true, history: true, action: true }, mode: 'deep' };
-  var dims = settings.dimensions || {};
+  if (!problem) { showToast('请先描述你想要探究的现象'); return null; }
+  var settings = state.patternSettings || { mode: 'deep' };
   var mode = settings.mode || 'deep';
   var prompt = '';
-  prompt += '\u{4F60}\u{662F}\u{4E00}\u{4E2A}\u{7CBE}\u{901A}\u{4E1C}\u{897F}\u{65B9}\u{54F2}\u{5B66}\u{3001}\u{79D1}\u{5B66}\u{3001}\u{5546}\u{4E1A}\u{3001}\u{5386}\u{53F2}\u{5E95}\u{5C42}\u{89C4}\u{5F8B}\u{7684}\u{667A}\u{6167}\u{5BFC}\u{5E08}\u{3002}\u{4F60}\u{7684}\u{4F7F}\u{547D}\u{662F}\u{5E2E}\u{52A9}\u{7528}\u{6237}\u{201C}\u{7A7F}\u{900F}\u{8868}\u{8C61}\u{FF0C}\u{6D1E}\u{89C1}\u{89C4}\u{5F8B}\u{201D}\u{3002}\n';
-  prompt += '\u{6838}\u{5FC3}\u{7406}\u{5FF5}\u{FF1A}\u{4E00}\u{901A}\u{767E}\u{901A}\u{2014}\u{2014}\u{6240}\u{6709}\u{73B0}\u{8C61}\u{80CC}\u{540E}\u{90FD}\u{6709}\u{666E}\u{9002}\u{89C4}\u{5F8B}\u{3002}\u{770B}\u{61C2}\u{89C4}\u{5F8B}\u{FF0C}\u{5219}\u{987A}\u{52BF}\u{800C}\u{4E3A}\u{FF0C}\u{4E8B}\u{534A}\u{529F}\u{500D}\u{3002}\n';
-  prompt += '\u{4F60}\u{7684}\u{5206}\u{6790}\u{5FC5}\u{987B}\u{57FA}\u{4E8E}\u{771F}\u{5B9E}\u{7684}\u{7406}\u{8BBA}\u{548C}\u{7ECF}\u{5178}\u{51FA}\u{5904}\u{FF0C}\u{62D2}\u{7EDD}\u{6CDB}\u{6CDB}\u{800C}\u{8C08}\u{3002}\u{7528}\u{4E2D}\u{6587}\u{8F93}\u{51FA}\u{3002}\n';
+  prompt += '你是一个精通东西方哲学、科学、商业、历史底层规律的智慧导师。你的使命是帮助用户"穿透表象，洞见规律"。\n';
+  prompt += '核心理念：一通百通——所有现象背后都有普适规律。看懂规律，则顺势而为，事半功倍。\n';
+  prompt += '你的分析必须基于真实的理论和经典出处，拒绝泛泛而谈。用中文输出。\n';
   prompt += '\n';
-  prompt += '=== \u{7528}\u{6237}\u{63CF}\u{8FF0}\u{7684}\u{73B0}\u{8C61} ===\n';
+  prompt += '=== 用户描述的现象 ===\n';
   prompt += problem + '\n';
   prompt += '\n';
-  prompt += '=== \u{666E}\u{9002}\u{89C4}\u{5F8B}\u{77E5}\u{8BC6}\u{5E93}\u{FF08}\u{4F9B}\u{5F15}\u{7528}\u{FF09} ===\n';
+  prompt += '=== 普适规律知识库（供引用） ===\n';
   for (var pi=0;pi<PATTERN_LAWS.length;pi++) {
     var law = PATTERN_LAWS[pi];
-    prompt += '- ' + law.chineseName + '\u{FF08}' + law.name + '\u{FF09}\u{FF1A}' + law.desc + ' \u{51FA}\u{5904}\u{FF1A}' + law.source + ' \u{4F8B}\u{FF1A}' + law.example + '\n';
+    prompt += '- ' + law.chineseName + '（' + law.name + '）：' + law.desc + ' 出处：' + law.source + ' 例：' + law.example + '\n';
   }
   prompt += '\n';
   if (mode === 'deep') {
-    prompt += '=== \u{5206}\u{6790}\u{8981}\u{6C42}\u{FF08}\u{6DF1}\u{5EA6}\u{5256}\u{6790}\u{6A21}\u{5F0F}\u{FF09} ===\n';
-    prompt += '\u{8BF7}\u{4F60}\u{6309}\u{4EE5}\u{4E0B}4\u{4E2A}\u{9636}\u{6BB5}\u{9010}\u{5C42}\u{6DF1}\u{5165}\u{5206}\u{6790}\u{FF0C}\u{6BCF}\u{4E2A}\u{9636}\u{6BB5}\u{7528}\u{4E2D}\u{6587}\u{8F93}\u{51FA}\u{5E76}\u{7528} === \u{7B2C}\u{4E00}\u{9636}\u{6BB5}/\u{7B2C}\u{4E8C}\u{9636}\u{6BB5}/\u{7B2C}\u{4E09}\u{9636}\u{6BB5}/\u{7B2C}\u{56DB}\u{9636}\u{6BB5} === \u{6807}\u{8BB0}\u{FF1A}\n\n';
-    if (dims.essence !== false) {
-      prompt += '=== \u{7B2C}\u{4E00}\u{9636}\u{6BB5} \u{00B7} \u{73B0}\u{8C61}\u{89E3}\u{6784} ===\n';
-      prompt += '\u{8981}\u{6C42}\u{FF1A}\n';
-      prompt += '1. \u{5265}\u{79BB}\u{7528}\u{6237}\u{63CF}\u{8FF0}\u{7684}\u{8868}\u{5C42}\u{7EC6}\u{8282}\u{FF0C}\u{63D0}\u{53D6}\u{6838}\u{5FC3}\u{7ED3}\u{6784}\u{3002}\n';
-      prompt += '2. \u{95EE}\u{81EA}\u{5DF1}\u{FF1A}\u{8FD9}\u{4E2A}\u{73B0}\u{8C61}\u{7684}\u{672C}\u{8D28}\u{662F}\u{4EC0}\u{4E48}\u{FF1F}\u{53BB}\u{6389}\u{6240}\u{6709}\u{4FEE}\u{9970}\u{548C}\u{60C5}\u{7EEA}\u{4E4B}\u{540E}\u{FF0C}\u{5269}\u{4E0B}\u{4EC0}\u{4E48}\u{FF1F}\n';
-      prompt += '3. \u{7528}\u{4E00}\u{53E5}\u{8BDD}\u{6982}\u{62EC}\u{6838}\u{5FC3}\u{77DB}\u{76FE}\u{6216}\u{9A71}\u{52A8}\u{529B}\u{3002}\n';
-      prompt += '4. \u{5206}\u{6790}\u{8FD9}\u{4E2A}\u{73B0}\u{8C61}\u{7684}\u{7ED3}\u{6784}\u{8981}\u{7D20}\u{FF1A}\u{4E3B}\u{4F53}\u{3001}\u{5BA2}\u{4F53}\u{3001}\u{52A8}\u{529B}\u{3001}\u{963B}\u{529B}\u{3001}\u{73AF}\u{5883}\u{3002}\n\n';
-    }
-    prompt += '=== \u{7B2C}\u{4E8C}\u{9636}\u{6BB5} \u{00B7} \u{89C4}\u{5F8B}\u{6620}\u{5C04} ===\n';
-    prompt += '\u{8981}\u{6C42}\u{FF1A}\n';
-    prompt += '1. \u{4ECE}\u{89C4}\u{5F8B}\u{77E5}\u{8BC6}\u{5E93}\u{4E2D}\u{8BC6}\u{522B}\u{54EA}\u{4E9B}\u{89C4}\u{5F8B}\u{6B63}\u{5728}\u{8FD9}\u{4E2A}\u{73B0}\u{8C61}\u{4E2D}\u{8FD0}\u{884C}\u{3002}\n';
-    prompt += '2. \u{5F15}\u{7528}\u{7ECF}\u{5178}\u{51FA}\u{5904}\u{FF08}\u{9053}\u{5FB7}\u{7ECF}\u{3001}\u{6613}\u{7ECF}\u{3001}\u{6BDB}\u{6CFD}\u{4E1C}\u{7B49}\u{FF09}\u{6765}\u{652F}\u{6491}\u{5206}\u{6790}\u{3002}\n';
-    prompt += '3. \u{89E3}\u{91CA}\u{6BCF}\u{6761}\u{89C4}\u{5F8B}\u{5728}\u{8FD9}\u{4E2A}\u{5177}\u{4F53}\u{60C5}\u{5883}\u{4E2D}\u{662F}\u{5982}\u{4F55}\u{4F53}\u{73B0}\u{7684}\u{3002}\n';
-    prompt += '4. \u{5224}\u{65AD}\u{4E3B}\u{8981}\u{89C4}\u{5F8B}\u{548C}\u{6B21}\u{8981}\u{89C4}\u{5F8B}\u{FF0C}\u{8BF4}\u{660E}\u{5B83}\u{4EEC}\u{4E4B}\u{95F4}\u{7684}\u{4E92}\u{52A8}\u{5173}\u{7CFB}\u{3002}\n\n';
-    if (dims.crossDomain !== false) {
-      prompt += '=== \u{7B2C}\u{4E09}\u{9636}\u{6BB5} \u{00B7} \u{8DE8}\u{57DF}\u{8D2F}\u{901A} ===\n';
-      prompt += '\u{8981}\u{6C42}\u{FF1A}\n';
-      prompt += '1. \u{5C55}\u{793A}\u{540C}\u{4E00}\u{4E2A}\u{89C4}\u{5F8B}\u{5728}\u{5176}\u{4ED6}\u{9886}\u{57DF}\u{4E2D}\u{7684}\u{8868}\u{73B0}\u{FF08}\u{81F3}\u{5C11}3\u{4E2A}\u{4E0D}\u{540C}\u{9886}\u{57DF}\u{FF09}\u{3002}\n';
-      if (dims.history !== false) {
-        prompt += '2. \u{5F15}\u{7528}\u{81F3}\u{5C11}2\u{4E2A}\u{5386}\u{53F2}\u{6848}\u{4F8B}\u{6765}\u{4F50}\u{8BC1}\u{3002}\n';
-        prompt += '3. \u{5206}\u{6790}\u{8FD9}\u{4E9B}\u{6848}\u{4F8B}\u{7684}\u{5F02}\u{540C}\u{FF0C}\u{4ECE}\u{4E2D}\u{63D0}\u{70BC}\u{666E}\u{9002}\u{6027}\u{7684}\u{6D1E}\u{89C1}\u{3002}\n';
-      } else {
-        prompt += '2. \u{5206}\u{6790}\u{8FD9}\u{4E9B}\u{6848}\u{4F8B}\u{7684}\u{5F02}\u{540C}\u{FF0C}\u{4ECE}\u{4E2D}\u{63D0}\u{70BC}\u{666E}\u{9002}\u{6027}\u{7684}\u{6D1E}\u{89C1}\u{3002}\n';
-      }
-      prompt += '4. \u{8BF4}\u{660E}\u{201C}\u{4E00}\u{901A}\u{767E}\u{901A}\u{201D}\u{5728}\u{8FD9}\u{4E2A}\u{89C4}\u{5F8B}\u{4E0A}\u{5982}\u{4F55}\u{4F53}\u{73B0}\u{3002}\n\n';
-    }
-    if (dims.action !== false) {
-      prompt += '=== \u{7B2C}\u{56DB}\u{9636}\u{6BB5} \u{00B7} \u{987A}\u{52BF}\u{800C}\u{4E3A} ===\n';
-      prompt += '\u{8981}\u{6C42}\u{FF1A}\n';
-      prompt += '1. \u{57FA}\u{4E8E}\u{4EE5}\u{4E0A}\u{5206}\u{6790}\u{FF0C}\u{7ED9}\u{51FA}\u{987A}\u{5E94}\u{8FD9}\u{4E2A}\u{89C4}\u{5F8B}\u{7684}\u{884C}\u{52A8}\u{5EFA}\u{8BAE}\u{3002}\n';
-      prompt += '2. \u{6307}\u{51FA}\u{5E38}\u{89C1}\u{7684}\u{8BEF}\u{533A}\u{FF1A}\u{4EBA}\u{4EEC}\u{901A}\u{5E38}\u{4F1A}\u{600E}\u{6837}\u{4E0E}\u{8FD9}\u{4E2A}\u{89C4}\u{5F8B}\u{8F83}\u{52B2}\u{FF1F}\n';
-      prompt += '3. \u{50CF}\u{6C34}\u{4E00}\u{6837}\u{2014}\u{2014}\u{7ED9}\u{51FA}\u{67D4}\u{97E7}\u{3001}\u{7075}\u{6D3B}\u{7684}\u{5E94}\u{5BF9}\u{7B56}\u{7565}\u{3002}\n';
-      prompt += '4. \u{9488}\u{5BF9}\u{7528}\u{6237}\u{7684}\u{5177}\u{4F53}\u{60C5}\u{5883}\u{7ED9}\u{51FA}\u{53EF}\u{64CD}\u{4F5C}\u{7684}\u{4E0B}\u{4E00}\u{6B65}\u{884C}\u{52A8}\u{3002}\n\n';
-    }
-    prompt += '\u{8BF7}\u{786E}\u{4FDD}\u{6BCF}\u{4E2A}\u{9636}\u{6BB5}\u{7684}\u{5185}\u{5BB9}\u{6709}\u{6DF1}\u{5EA6}\u{3001}\u{6709}\u{51FA}\u{5904}\u{3001}\u{6709}\u{6D1E}\u{89C1}\u{FF0C}\u{62D2}\u{7EDD}\u{5957}\u{8BDD}\u{548C}\u{7A7A}\u{8BDD}\u{3002}\n';
+    prompt += '=== 分析要求（深度剖析模式） ===\n';
+    prompt += '请对上述现象做深度剖析，严格按以下 4 个维度输出，每个维度用「=== 维度名 ===」作为标题行开头，内容要有深度、有出处、有洞见，拒绝套话和空话。\n\n';
+    prompt += '=== 本质定义 ===\n';
+    prompt += '1. 剥离开用户描述的表层细节，提取核心结构。\n';
+    prompt += '2. 问自己：这个现象的本质是什么？去掉所有修饰和情绪之后，剩下什么？\n';
+    prompt += '3. 用一句话概括核心矛盾或驱动力。\n';
+    prompt += '4. 分析这个现象的结构要素：主体、客体、动力、阻力、环境。\n\n';
+    prompt += '=== 跨域映射 ===\n';
+    prompt += '1. 从规律知识库中识别哪些规律正在这个现象中运行。\n';
+    prompt += '2. 引用经典出处（道德经、易经、毛选等）来支撑分析。\n';
+    prompt += '3. 展示同一规律在至少 3 个不同领域的表现。\n';
+    prompt += '4. 说明"一通百通"在这个规律上如何体现。\n\n';
+    prompt += '=== 历史案例 ===\n';
+    prompt += '1. 引用至少 2 个历史案例来佐证。\n';
+    prompt += '2. 分析这些案例的异同，从中提炼普适性的洞察。\n\n';
+    prompt += '=== 行动指引 ===\n';
+    prompt += '1. 基于以上分析，给出顺应这个规律的行动建议。\n';
+    prompt += '2. 指出常见的误区：人们通常会怎样与这个规律较劲？\n';
+    prompt += '3. 像水一样——给出柔韧、灵活的应对策略。\n';
+    prompt += '4. 针对用户的具体情境给出可操作的下一步行动。\n';
   } else {
-    prompt += '=== \u{5206}\u{6790}\u{8981}\u{6C42}\u{FF08}\u{5FEB}\u{901F}\u{6D1E}\u{5BDF}\u{6A21}\u{5F0F}\u{FF09} ===\n';
-    prompt += '\u{8BF7}\u{5BF9}\u{7528}\u{6237}\u{63CF}\u{8FF0}\u{7684}\u{73B0}\u{8C61}\u{8FDB}\u{884C}\u{5FEB}\u{901F}\u{89C4}\u{5F8B}\u{6D1E}\u{5BDF}\u{FF1A}\n';
-    prompt += '1. \u{6838}\u{5FC3}\u{89C4}\u{5F8B}\u{FF1A}\u{4EC0}\u{4E48}\u{89C4}\u{5F8B}\u{5728}\u{4E3B}\u{5BFC}\u{8FD9}\u{4E2A}\u{73B0}\u{8C61}\u{FF1F}\u{FF08}\u{5F15}\u{7528}\u{7ECF}\u{5178}\u{51FA}\u{5904}\u{FF09}\n';
-    prompt += '2. \u{4E00}\u{53E5}\u{8BDD}\u{6D1E}\u{89C1}\u{FF1A}\u{7528}\u{4E00}\u{53E5}\u{8BDD}\u{7A7F}\u{900F}\u{8FD9}\u{4E2A}\u{73B0}\u{8C61}\u{7684}\u{672C}\u{8D28}\u{3002}\n';
-    prompt += '3. \u{8DE8}\u{57DF}\u{5370}\u{8BC1}\u{FF1A}\u{8FD9}\u{4E2A}\u{89C4}\u{5F8B}\u{5728}\u{53E6}\u{5916}1-2\u{4E2A}\u{9886}\u{57DF}\u{7684}\u{8868}\u{73B0}\u{3002}\n';
-    if (dims.essence !== false) {
-      prompt += '4. \u{672C}\u{8D28}\u{5B9A}\u{4E49}\u{FF1A}\u{8FD9}\u{4E2A}\u{73B0}\u{8C61}\u{7684}\u{6838}\u{5FC3}\u{7ED3}\u{6784}\u{662F}\u{4EC0}\u{4E48}\u{FF1F}\n';
-    }
-    if (dims.action !== false) {
-      prompt += '5. \u{884C}\u{52A8}\u{63D0}\u{793A}\u{FF1A}\u{987A}\u{5E94}\u{6B64}\u{89C4}\u{5F8B}\u{7684}\u{5173}\u{952E}\u{5EFA}\u{8BAE}\u{3002}\n';
-    }
-    prompt += '\u{7528}\u{7B80}\u{6D01}\u{6709}\u{529B}\u{7684}\u{8BED}\u{8A00}\u{8F93}\u{51FA}\u{FF0C}\u{76F4}\u{63A5}\u{7ED9}\u{51FA}\u{6D1E}\u{89C1}\u{3002}\n';
+    prompt += '=== 分析要求（快速洞察模式） ===\n';
+    prompt += '请对用户描述的现象进行快速规律洞察，严格按以下 4 个维度输出，每个维度用「=== 维度名 ===」作为标题行开头，语言简洁有力，直接给出洞察。\n\n';
+    prompt += '=== 本质定义 ===\n';
+    prompt += '这个现象的本质是什么？用一句话穿透。\n\n';
+    prompt += '=== 跨域映射 ===\n';
+    prompt += '这个规律在另外 1-2 个领域的表现。\n\n';
+    prompt += '=== 历史案例 ===\n';
+    prompt += '1-2 个经典案例佐证。\n\n';
+    prompt += '=== 行动指引 ===\n';
+    prompt += '顺应此规律的关键建议。\n';
   }
   return { prompt: prompt, problem: problem, mode: mode };
 }
@@ -32588,11 +32757,11 @@ function callPatternAnalysis() {
     systemPrompt: systemPrompt,
     prompt: result.prompt,
     temperature: 0.7,
-    maxTokens: 4096,
-    timeout: 120000,
+    maxTokens: 8192,
+    timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) loading.style.display = 'none';
-      renderPatternResult(fullText, result.mode);
+      if (resultDiv) resultDiv.innerHTML = formatPTContent(fullText);
     }
   }).then(function(text) {
     if (loading) loading.style.display = 'none';
@@ -32604,15 +32773,6 @@ function callPatternAnalysis() {
     showToast('❌ \u{5206}\u{6790}\u{5931}\u{8D25}\u{FF1A}'+msg);
     if (resultDiv) resultDiv.innerHTML = '<div class="pt-error">❌ \u{5206}\u{6790}\u{5931}\u{8D25}\u{FF1A}'+escHtml(msg)+'<br><button class="pt-btn pt-btn-primary" onclick="callPatternAnalysis()" style="margin-top:12px">\u{91CD}\u{8BD5}</button></div>';
 });
-}
-function extractPTPhase(text, startMarker, endMarker) {
-  var si = text.indexOf(startMarker);
-  if (si === -1) return '';
-  si += startMarker.length;
-  if (!endMarker) return text.substring(si).trim();
-  var ei = text.indexOf(endMarker, si);
-  if (ei === -1) return text.substring(si).trim();
-  return text.substring(si, ei).trim();
 }
 function formatPTContent(txt) {
   if (!txt) return '';
@@ -32626,68 +32786,81 @@ function formatPTContent(txt) {
   s = _enhanceContent(s);
   return s;
 }
-function togglePTPhase(hdr) {
-  var body = hdr.nextElementSibling;
-  var toggle = hdr.querySelector('.pt-phase-toggle');
-  if (body && toggle) {
-    var isHidden = body.style.display === 'none';
-    body.style.display = isHidden ? '' : 'none';
-    toggle.textContent = isHidden ? '▼' : '▶';
-  }
-}
 function renderPatternResult(text, mode) {
-  var div = $id('ptResult');
-  if (!div) return;
-  if (!text) { div.innerHTML = '<div class="pt-empty">AI \u{672A}\u{8FD4}\u{56DE}\u{6709}\u{6548}\u{7ED3}\u{679C}\u{FF0C}\u{8BF7}\u{91CD}\u{8BD5}\u{3002}</div>'; return; }
-  var html = '<div class="pt-result">';
-  if (mode === 'deep') {
-    var phases = [
-      { num: '\u{4E00}', title: '\u{73B0}\u{8C61}\u{89E3}\u{6784}', icon: '\u{1F52D}', marker: '\u{7B2C}\u{4E00}\u{9636}\u{6BB5}' },
-      { num: '\u{4E8C}', title: '\u{89C4}\u{5F8B}\u{6620}\u{5C04}', icon: '\u{1F4E1}', marker: '\u{7B2C}\u{4E8C}\u{9636}\u{6BB5}' },
-      { num: '\u{4E09}', title: '\u{8DE8}\u{57DF}\u{8D2F}\u{901A}', icon: '\u{1F310}', marker: '\u{7B2C}\u{4E09}\u{9636}\u{6BB5}' },
-      { num: '\u{56DB}', title: '\u{987A}\u{52BF}\u{800C}\u{4E3A}', icon: '\u{1F4AA}', marker: '\u{7B2C}\u{56DB}\u{9636}\u{6BB5}' }
-    ];
-    for (var pi=0;pi<phases.length;pi++) {
-      var ph = phases[pi];
-      var content = '';
-      if (pi < phases.length-1) {
-        content = extractPTPhase(text, ph.marker, phases[pi+1].marker);
-      } else {
-        content = extractPTPhase(text, ph.marker, null);
-      }
-      // Fallback for when AI omits the · separator
-      if (!content) {
-        var altMarker = '\u{7B2C}'+['\u{4E00}','\u{4E8C}','\u{4E09}','\u{56DB}'][pi]+'\u{9636}\u{6BB5}';
-        if (pi < phases.length-1) {
-          content = extractPTPhase(text, altMarker, '\u{7B2C}'+['\u{4E8C}','\u{4E09}','\u{56DB}','\u{4E94}'][pi]+'\u{9636}\u{6BB5}');
-        } else {
-          content = extractPTPhase(text, altMarker, null);
-        }
-      }
-      var display = pi === 0 ? '' : 'none';
-      html += '<div class="pt-phase">';
-      html += '<div class="pt-phase-hdr" onclick="togglePTPhase(this)">';
-      html += '<span class="pt-phase-num">'+ph.num+'</span>';
-      html += '<span class="pt-phase-icon">'+ph.icon+'</span>';
-      html += '<span class="pt-phase-title">'+ph.title+'</span>';
-      html += '<span class="pt-phase-toggle">'+(pi===0?'▼':'▶')+'</span>';
-      html += '</div>';
-      html += '<div class="pt-phase-body" style="display:'+display+'">'+(content?formatPTContent(content):'<em>(\u{6B64}\u{9636}\u{6BB5}\u{672A}\u{8F93}\u{51FA})</em>')+'</div>';
-      html += '</div>';
+  if (!text) { var rd = $id('ptResult'); if (rd) rd.innerHTML = '<div class="pt-empty">AI 未返回有效结果，请重试。</div>'; return; }
+  window._ptDims = parsePTDims(text);
+  switchPTDim('essence');
 }
-  } else {
-    html += '<div class="pt-phase">';
-    html += '<div class="pt-phase-hdr" onclick="togglePTPhase(this)">';
-    html += '<span class="pt-phase-num">\u{4E00}</span>';
-    html += '<span class="pt-phase-icon">⚡</span>';
-    html += '<span class="pt-phase-title">\u{89C4}\u{5F8B}\u{6D1E}\u{5BDF}</span>';
-    html += '<span class="pt-phase-toggle">▼</span>';
-    html += '</div>';
-    html += '<div class="pt-phase-body">'+formatPTContent(text)+'</div>';
-    html += '</div>';
+function switchPTDim(dim) {
+  window._ptActiveDim = dim;
+  var cards = document.querySelectorAll('.pt-dim-card');
+  for (var i=0;i<cards.length;i++)
+    cards[i].classList.toggle('active', cards[i].getAttribute('data-dim')===dim);
+  renderPTDimContent();
 }
-  html += '</div>';
-  div.innerHTML = html;
+function renderPTDimContent() {
+  var rd = $id('ptResult');
+  if (!rd) return;
+  var dims = window._ptDims;
+  if (!dims) { rd.innerHTML = '<div class="pt-empty">输入现象并点击「探究规律」，AI 将从四个维度解析规律</div>'; return; }
+  var active = window._ptActiveDim || 'essence';
+  var c = dims[active];
+  var html = c ? formatPTContent(c) : '<div class="pt-empty">暂无内容</div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="pt-btn pt-btn-outline" onclick="callPTAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  rd.innerHTML = html;
+}
+function parsePTDims(text) {
+  var dims = { essence:'', crossDomain:'', history:'', action:'' };
+  var markers = [
+    { id: 'essence', re: /^[\s*\-]*=+\s*本质定义[^\n]*$/m },
+    { id: 'crossDomain', re: /^[\s*\-]*=+\s*跨域映射[^\n]*$/m },
+    { id: 'history', re: /^[\s*\-]*=+\s*历史案例[^\n]*$/m },
+    { id: 'action', re: /^[\s*\-]*=+\s*行动指引[^\n]*$/m }
+  ];
+  var positions = [];
+  for (var i=0;i<markers.length;i++) {
+    var m = markers[i].re.exec(text);
+    if (!m) continue;
+    positions.push({ id: markers[i].id, start: m.index + m[0].length, head: m.index });
+  }
+  positions.sort(function(a,b){ return a.head - b.head; });
+  for (var j=0;j<positions.length;j++) {
+    var end = (j < positions.length-1) ? positions[j+1].head : text.length;
+    dims[positions[j].id] = text.substring(positions[j].start, end).trim();
+  }
+  return dims;
+}
+function buildPTAppendPrompt(dimId) {
+  var input = $id('ptInput');
+  if (!input) return '';
+  var text = input.value.trim();
+  if (!text) { showToast('请先输入你想探究的现象'); return null; }
+  var labels = { essence:'本质定义', crossDomain:'跨域映射', history:'历史案例', action:'行动指引' };
+  var label = labels[dimId] || dimId;
+  var existing = window._ptDims ? (window._ptDims[dimId] || '') : '';
+  return '你是一位规律洞察导师。\n\n已有分析：\n' + (existing.substring(0,1000) || '暂无') + '\n\n请从更深的层面展开【'+label+'】，引用经典出处，补充更多内容，不要简单重复已有内容。\n\n请用「=== '+label+' ===」作为标题行开头输出。';
+}
+function callPTAppend(dimId) {
+  var prompt = buildPTAppendPrompt(dimId);
+  if (!prompt) return;
+  var loading = $id('ptLoading');
+  var resultDiv = $id('ptResult');
+  if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
+  callAI({
+    prompt: prompt, temperature: 0.7, maxTokens: 4096, timeout: 120000,
+    stream: function(chunk, fullText) {
+      if (resultDiv) resultDiv.innerHTML = formatPTContent(fullText);
+    }
+  }).then(function(text) {
+    if (loading) loading.style.display = 'none';
+    if (!window._ptDims) window._ptDims = { essence:'', crossDomain:'', history:'', action:'' };
+    window._ptDims[dimId] = text.replace(/^===\s*.*?===\s*\n?/, '');
+    renderPTDimContent();
+  }).catch(function(err) {
+    if (loading) loading.style.display = 'none';
+    var msg = err && err.detail ? err.detail : (err && err.message ? err.message : '未知错误');
+    showToast('❌ 追加失败：'+msg);
+  });
 }
 function savePatternResult(problem, text, mode) {
   if (!state.patternAnalyses) state.patternAnalyses = [];
@@ -40996,7 +41169,7 @@ function getAdjacentPanel(dir) {
 function doSwipeAnim(dir) {
   if (_swipeData.locked) return;
   if (STEP_MODES[currentMode]) { swipeStep(dir); return; }
-  if (currentMode === 'sequential') { swipeQuestion(dir); return; }
+  if (currentMode === 'sequential' || currentMode === 'random') { swipeQuestion(dir); return; }
   _swipeData.locked = true;
   var area = $id('contentArea');
   var container = $id('app');
@@ -41056,7 +41229,7 @@ function initPanelSwipe() {
   area._swipeAttached = true;
 }
 function _swipeHandler(e) {
-  var EXCLUDED = ['random','wrongset','rhythm','memorytrain'];
+  var EXCLUDED = ['wrongset','rhythm','memorytrain'];
   if (EXCLUDED.indexOf(currentMode) !== -1) return;
   if (!isTouchDevice()) return;
   if (e.touches.length > 1) return;   // 多指手势交给手势系统处理
