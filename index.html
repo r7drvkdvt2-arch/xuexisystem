@@ -7738,6 +7738,7 @@ state.rangeEnd = parseInt(document.getElementById('rangeEnd').value)||81;
 state.learnIndex = 0;
 state.randomOrder = [];
 state.randomIndex = 0;
+_randomHistory = [];
 // 清理不在范围内的错题集和复习计划
 state.wrongSetIds = state.wrongSetIds.filter(function(id){ return isInRange(id); });
 Object.keys(state.nextDue).forEach(function(k){
@@ -7766,7 +7767,12 @@ return { wrongCount: state.wrongCount[id]||0, consecutiveCorrect: state.consecut
 }
 function renderArticle(article, source) {
 if (!article) { showEmpty(); return; }
-if (!isInRange(article.id)) { nextQuestion(); return; }
+if (!isInRange(article.id)) {
+// 范围筛选变化后快照失效的兜底：直接落到范围内第一题，绝不递归（防死循环）
+var _f = getFilteredArticles();
+if (_f.length) { article = _f[0]; source = 'random'; }
+else { showEmpty(); return; }
+}
 currentArticle = article; answered = false;
 if (currentMode === 'master') { renderMasterCycle(article); return; }
 var area = $id('contentArea');
@@ -7797,8 +7803,13 @@ artHtml = '<div class="cloze-text" id="clozeText">'+renderClozeTextFormatted(art
 } else {
 var _marksArr = (state.textMarks && state.textMarks[state.activeCourse] && state.textMarks[state.activeCourse][article.id]) || [];
 var _markedText = _marksArr.length ? applyTextMarks(article.t, _marksArr) : null;
-if (pegImgHtml) {
-artHtml = '<div class="mpc-original-wrap mpc-article-peg-wrap"><div class="mpc-original-text mpc-article-text" style="display:flex;align-items:center;line-height:1.9;font-size:var(--fs-article, 18px);padding:16px;min-width:0"><div style="flex:1;min-width:0">'+(_markedText || (currentMode === 'sequential' || currentMode === 'random' ? sentenceMarkdown(article.t) : simpleMarkdown(article.t)))+'</div></div><div class="mpc-original-peg' + (state._pegImagesHidden ? ' peg-global-hidden' : '') + '" id="artPegColumn_' + article.id + '">' + pegImgHtml + '</div></div>';
+if (pegImgHtml || article.vpCourseId || article.vpSourceId) {
+var _textHtml = (_markedText || (currentMode === 'sequential' || currentMode === 'random' ? sentenceMarkdown(article.t) : simpleMarkdown(article.t)));
+if (article.vpCourseId || article.vpSourceId) {
+artHtml = '<div class="mpc-original-wrap mpc-article-peg-wrap" style="flex-direction:column;align-items:stretch">'+(_textHtml?'<div class="mpc-original-text mpc-article-text" style="line-height:1.9;font-size:var(--fs-article, 18px);padding:16px">'+_textHtml+'</div>':'')+'<div style="display:flex;flex-direction:row;gap:10px;align-items:flex-start"><div id="vpArticleMedia_'+article.id+'" style="flex:1 1 75%;min-width:120px;max-width:75%"></div><div class="mpc-original-peg'+(state._pegImagesHidden?' peg-global-hidden':'')+'" id="artPegColumn_'+article.id+'" style="flex:0 0 25%;max-width:25%;min-width:0">'+pegImgHtml+'</div></div></div>';
+} else {
+artHtml = '<div class="mpc-original-wrap mpc-article-peg-wrap">'+(_textHtml?'<div class="mpc-original-text mpc-article-text" style="line-height:1.9;font-size:var(--fs-article, 18px);padding:16px">'+_textHtml+'</div>':'')+'<div class="mpc-original-peg'+(state._pegImagesHidden?' peg-global-hidden':'')+'" id="artPegColumn_'+article.id+'">'+pegImgHtml+'</div></div>';
+}
 } else {
 artHtml = '<div class="article-text">'+(_markedText || (currentMode === 'sequential' || currentMode === 'random' ? sentenceMarkdown(article.t) : simpleMarkdown(article.t)))+'</div>';
 }
@@ -7825,15 +7836,20 @@ var metaHtml = state.metaJudgmentEnabled !== false ? '<div class="meta-bar" id="
 [1,2,3,4,5].map(function(n){ return '<span class="meta-btn" data-meta="'+article.id+'-'+n+'" onclick="setMetaConfidence('+article.id+','+n+')">'+n+'</span>'; }).join('')+
 '</div>' : '';
 // recallQuizHtml is set above for recall mode
-if (pegImgHtml && (dm === 'exam' || dm === 'recite' || dm === 'write' || dm === 'cloze')) {
+if ((pegImgHtml || article.vpCourseId || article.vpSourceId) && (dm === 'exam' || dm === 'recite' || dm === 'write' || dm === 'cloze')) {
+if (article.vpCourseId || article.vpSourceId) {
+artHtml = '<div class="mpc-original-wrap mpc-article-peg-wrap" style="flex-direction:column;align-items:stretch"><div class="mpc-original-text mpc-article-text" style="flex:1;min-width:0">'+artHtml+'</div><div style="display:flex;flex-direction:row;gap:10px;align-items:flex-start"><div id="vpArticleMedia_'+article.id+'" style="flex:1 1 75%;min-width:120px;max-width:75%"></div><div class="mpc-original-peg'+(state._pegImagesHidden?' peg-global-hidden':'')+'" id="artPegColumn_'+article.id+'" style="flex:0 0 25%;max-width:25%;min-width:0">'+pegImgHtml+'</div></div></div>';
+} else {
 artHtml = '<div class="mpc-original-wrap mpc-article-peg-wrap"><div class="mpc-original-text mpc-article-text" style="flex:1;min-width:0">'+artHtml+'</div><div class="mpc-original-peg'+(state._pegImagesHidden?' peg-global-hidden':'')+'" id="artPegColumn_'+article.id+'">'+pegImgHtml+'</div></div>';
 }
+}
 var knowledgeHtml = renderKnowledgeDetailPanel(article);
-area.innerHTML = '<div class="card anim-fade"><div class="article-meta">'+(source==='random'?'🔀 ':source==='review'?'🔁 ':source==='wrongset'?'📕 ':source==='bookmark'?'📌 ':'')+'第'+article.id+'题 · '+article.c+tags+'<span class="pq-badge" id="pqTimer" class="d-none"></span>'+renderDiffTag(article.id)+'<span class="bm-star '+(isBookmarked(article.id)?'on':'off')+'" data-bm="'+article.id+'">⭐</span>'+(pegImgHtml?'<button class="peg-global-toggle" data-action="'+(state._pegImagesHidden?'show':'hide')+'" onclick="toggleAllArticlePegs('+(state._pegImagesHidden?'true':'false')+')" style="margin-left:8px;font-size:11px">'+(state._pegImagesHidden?'👁 全部显示':'🙌 全部隐藏')+'</button>':'')+'<button class="kw-toggle" id="kwToggleBtn" data-active="0" onclick="toggleMemoryKwHighlight()" style="margin-left:8px;font-size:11px">🤖 AI标红</button><button id="kwExtractBtn" onclick="toggleKwPanel('+article.id+')" style="margin-left:6px;font-size:11px">🧠 关键词</button><button onclick="showKnowledgeCardUI()" style="margin-left:6px;font-size:11px">🖼️ 卡片</button></div>'+renderPegLinkButton(article.id)+''+artHtml+feyHtml+metaHtml+recallQuizHtml+quizHtml+knowledgeHtml+'<div id="feedbackArea"></div><div id="kwPanel_'+article.id+'" style="display:none"></div><div id="nextButtonArea"></div>'+renderNoteArea(article)+'</div><div style="font-size:12px;color:#8a7a6a;text-align:center;padding:8px">'+
+area.innerHTML = '<div class="card anim-fade"><div class="article-meta">'+(source==='random'?'🔀 ':source==='review'?'🔁 ':source==='wrongset'?'📕 ':source==='bookmark'?'📌 ':'')+'第'+article.id+'题 · '+article.c+tags+'<span class="pq-badge" id="pqTimer" class="d-none"></span>'+renderDiffTag(article.id)+'<span class="bm-star '+(isBookmarked(article.id)?'on':'off')+'" data-bm="'+article.id+'">⭐</span>'+(pegImgHtml?'<button class="peg-global-toggle" data-action="'+(state._pegImagesHidden?'show':'hide')+'" onclick="toggleAllArticlePegs('+(state._pegImagesHidden?'true':'false')+')" style="margin-left:8px;font-size:11px">'+(state._pegImagesHidden?'👁 全部显示':'🙌 全部隐藏')+'</button>':'')+'<button class="kw-toggle" id="kwToggleBtn" data-active="0" onclick="toggleMemoryKwHighlight()" style="margin-left:8px;font-size:11px">🤖 AI标红</button><button id="kwExtractBtn" onclick="toggleKwPanel('+article.id+')" style="margin-left:6px;font-size:11px">🧠 关键词</button><button onclick="showKnowledgeCardUI()" style="margin-left:6px;font-size:11px">🖼️ 卡片</button></div>'+renderPegLinkButton(article.id)+((article.vpCourseId||article.vpSourceId)?'':'<div id="vpArticleMedia_'+article.id+'"></div>')+artHtml+feyHtml+metaHtml+recallQuizHtml+quizHtml+knowledgeHtml+'<div id="feedbackArea"></div><div id="kwPanel_'+article.id+'" style="display:none"></div><div id="nextButtonArea"></div>'+renderNoteArea(article)+'</div><div style="font-size:12px;color:#8a7a6a;text-align:center;padding:8px">'+
 '🔖 '+getRangeLabel().replace('🎯 ','')+' · '+state.answered.length+'/'+ARTICLES.length+'答过</div>';
 _domCache = {}; // 清除 DOM 缓存，避免引用到已移除的旧元素
 updateProgress();
 loadPegImageForCurrentArticle(article.id);
+loadVpArticleMedia(article);
 if (state.perQuestionEnabled) { startPerQuestionTimer(); }
 showNextButton();
 // 切换题目时重置关键词高亮状态
@@ -12302,6 +12318,7 @@ return html;
 }
 function goToChapter(num) {
 state.rangeMode = 'custom'; state.rangeStart = num; state.rangeEnd = num;
+state.randomOrder = []; state.randomIndex = 0; _randomHistory = [];
 saveState(); updateRangeLabel();
 if (currentMode === 'dashboard') switchMode('sequential');
 else nextQuestion();
@@ -29625,11 +29642,43 @@ function deployVideoPalaceToSystem(courseId){
   var c=getVpCourse(courseId);if(!c){showToast('❌ 不存在');return;}
   var segs=getVpSegmentsForCourse(courseId);if(!segs.length){showToast('❌ 无片段');return;}
   var cn=c.name+' (语言宫殿)';var articles=[];
-  segs.forEach(function(s){articles.push({id:s.index,c:cn,t:s.transcript||'(视频片段 #'+s.index+')',q:'🎯 回忆这段视频',o:['查看答案'],a:0,e:s.notes||'',p:s.translation||''});});
+  segs.forEach(function(s){
+    var art={id:s.index,c:cn,t:s.transcript||'',q:'🎯 回忆这段内容',o:['查看答案'],a:0,e:s.notes||'',p:s.translation||''};
+    if(s.imageId){art.vpCourseId=c.id;art.vpImageId=s.imageId;}
+    if(s.sourceVideoId){art.vpSourceId=s.sourceVideoId;}
+    articles.push(art);
+  });
   // 直接保存 (StorageManager 自动处理 IndexedDB 或 localStorage)
   StorageManager.saveCourse(cn, {chapters:[cn], articles:articles});
+  state.rangeMode='all';
   showToast('✅ 已部署! 切换至「'+cn+'」');
   switchCourse(cn);
+  switchMode('sequential');
+}
+var _vpArticleVideoUrls = {};
+function loadVpArticleMedia(article){
+  if(!article)return;
+  var el=document.getElementById('vpArticleMedia_'+article.id);if(!el)return;
+  if(article.vpCourseId&&article.vpImageId){
+    getVpCourseImageUrl(article.vpCourseId,article.vpImageId).then(function(d){
+      if(!d)return;
+      var e=document.getElementById('vpArticleMedia_'+article.id);
+      if(e)e.innerHTML='<div style="text-align:center;margin-bottom:14px"><img src="'+d+'" style="max-width:100%;max-height:420px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.15)"></div>';
+    }).catch(function(){});
+    return;
+  }
+  if(article.vpSourceId){
+    if(_vpArticleVideoUrls[article.vpSourceId]){renderVpArticleVideo(article,_vpArticleVideoUrls[article.vpSourceId]);return;}
+    idbGetLargeBlob('videopalace_source_'+article.vpSourceId).then(function(blob){
+      if(!blob)return;
+      var url=URL.createObjectURL(blob);_vpArticleVideoUrls[article.vpSourceId]=url;
+      renderVpArticleVideo(article,url);
+    }).catch(function(){});
+  }
+}
+function renderVpArticleVideo(article,url){
+  var e=document.getElementById('vpArticleMedia_'+article.id);
+  if(e)e.innerHTML='<div style="text-align:center;margin-bottom:14px"><video controls preload="metadata" src="'+url+'" style="width:100%;max-height:420px;border-radius:8px;background:#000"></video></div>';
 }
 // ===== 存储管理 UI 控制 =====
 var _storagePanelOpen = false;
