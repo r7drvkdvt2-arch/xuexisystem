@@ -3918,6 +3918,9 @@ body.pwa-mode .container{padding-bottom:env(safe-area-inset-bottom,16px)}
 .vec:after{content:"\2192";position:absolute;font-size:11px;top:-.8em;left:50%;margin-left:-.3em}
 .hat{border-top:1px solid var(--text);padding-top:1px}
 .bar{text-decoration:overline}
+.math-raw{white-space:normal}
+.math-raw.math-block{display:block;text-align:center;margin:10px 0;overflow-x:auto}
+.math-raw.math-inline{display:inline-block;vertical-align:middle;padding:0 2px;font-size:15px;line-height:1.6}
 
 /* ===== 法道 · 律师天团咨询 ===== */
 .law-hero{text-align:center;padding:24px 16px;background:linear-gradient(135deg,#0a1a2a,#1a2a4a);border-radius:12px;margin-bottom:16px;color:#c9d8e8}
@@ -4639,6 +4642,7 @@ function formatIchingOutput(text){
   html=html.replace(/\n/g,'<br>');
   html='<p>'+html+'</p>';
   html=html.replace(/<p><\/p>/g,'');
+  html=mathSafe(html);
   return html;
 }
 
@@ -4924,7 +4928,7 @@ function callCyberAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🤖 AI 控制系统设计中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🤖 AI 分析中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatCyberContent(fullText);
@@ -5106,7 +5110,7 @@ function callAcuAnalysis() {
   var resultDiv = $id('acuResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🪡 AI 配穴分析中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
-  callAI({ prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+  callAI({ prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🪡 AI 配穴分析中 (' + fullText.length + ' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatAcuContent(fullText);
@@ -5337,7 +5341,7 @@ function callDecompAnalysis() {
   var resultDiv = $id('decompResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🧩 AI 拆解中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
-  callAI({ prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+  callAI({ prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🧩 AI 拆解中 (' + fullText.length + ' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatDecompContent(fullText);
@@ -6553,8 +6557,8 @@ sessionStats: state.sessionStats
 };
 try { safeSetItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) { console.warn('saveCourseProgress failed', e); }
 }
-function switchCourse(name) {
-if (name === state.activeCourse) return;
+function switchCourse(name, force) {
+if (name === state.activeCourse && !force) return;
 saveCourseProgress();
 state.activeCourse = name;
 // Restore builtin data when switching back to 道德经
@@ -7821,14 +7825,14 @@ var _optOrder = showQuiz ? shuffleArray((article.o||[]).map(function(_oi,_ii){re
 var recallQuizHtml = '';
 if (dm === 'recall') {
 var _roOrder = shuffleArray((article.o||[]).map(function(_oi,_ii){return _ii;}));
-var _roHtml = '<div class="question">'+article.q+'</div><div class="recall-area" id="recallArea"><div class="recall-overlay" id="recallOverlay" onclick="revealRecallOptions()"><div class="ro-icon">💭</div><div class="ro-hint">先自己回忆答案，想好了再点击查看选项</div><button class="ro-btn" onclick="event.stopPropagation();revealRecallOptions()">点击显示选项</button></div><div class="recall-options-hidden" id="recallOptionsArea"><div class="options" id="optionsContainer">'+
-_roOrder.map(function(_idx,_i){ return '<div class="option" data-idx="'+_idx+'" onclick="selectOption('+_idx+')"><span class="label">'+'ABCD'[_i]+'</span>'+article.o[_idx]+'</div>';
+var _roHtml = '<div class="question">'+mathSafe(article.q)+'</div><div class="recall-area" id="recallArea"><div class="recall-overlay" id="recallOverlay" onclick="revealRecallOptions()"><div class="ro-icon">💭</div><div class="ro-hint">先自己回忆答案，想好了再点击查看选项</div><button class="ro-btn" onclick="event.stopPropagation();revealRecallOptions()">点击显示选项</button></div><div class="recall-options-hidden" id="recallOptionsArea"><div class="options" id="optionsContainer">'+
+_roOrder.map(function(_idx,_i){ return '<div class="option" data-idx="'+_idx+'" onclick="selectOption('+_idx+')"><span class="label">'+'ABCD'[_i]+'</span>'+mathSafe(article.o[_idx])+'</div>';
 }).join('')+
 '</div></div></div>';
 recallQuizHtml = _roHtml;
 }
-var quizHtml = showQuiz ? '<div class="question">'+article.q+'</div><div class="options" id="optionsContainer">'+
-_optOrder.map(function(_idx,_i){ return '<div class="option" data-idx="'+_idx+'" onclick="selectOption('+_idx+')"><span class="label">'+'ABCD'[_i]+'</span>'+article.o[_idx]+'</div>';
+var quizHtml = showQuiz ? '<div class="question">'+mathSafe(article.q)+'</div><div class="options" id="optionsContainer">'+
+_optOrder.map(function(_idx,_i){ return '<div class="option" data-idx="'+_idx+'" onclick="selectOption('+_idx+')"><span class="label">'+'ABCD'[_i]+'</span>'+mathSafe(article.o[_idx])+'</div>';
 }).join('')+
 '</div>' : '';
 // 元认知自信度
@@ -7921,7 +7925,7 @@ checkAchievements(); saveState(); updateUI(); showNextButton();
 try { triggerCheckin(); } catch(e){}
 }
 function showFeedback(correct, msg) {
-var extra = (!correct&&currentArticle) ? '<br><br><b>解析：</b>'+escHtml(currentArticle.e) : '';
+var extra = (!correct&&currentArticle) ? '<br><br><b>解析：</b>'+mathSafe(escHtml(currentArticle.e)) : '';
 $id('feedbackArea').innerHTML = '<div class="feedback '+(correct?'correct':'wrong')+'">'+msg+extra+'</div>';
 }
 function showNextButton() {
@@ -12545,6 +12549,7 @@ try { requestPersist(); checkStorageUsage(); initFromIDB(); } catch(e){}
 try { checkAuthStatus(); } catch(e){}
 try { switchMode('core'); } catch(e){}
 try { updateRangeLabel(); } catch(e){}
+try { _installMathObserver(); } catch(e){}
 }
 // ── Login Modal ───────────────────────────────────────────
 function showLoginModal(){
@@ -12748,13 +12753,14 @@ general: '\n\n【专业标准】\n1. 深度分析：不要停留于表面定义�
 education: '\n\n【教学标准】\n1. 诊断性反馈：指出学生理解中的具体偏差和盲区，而非泛泛评价\n2. 可操作建议：每个反馈都附带具体的改进方向和下一步行动\n3. 概念精确：严格区分相似概念，避免混淆\n4. 证据支撑：引用原文或领域公认观点作为论据',
 exam: '\n\n【出题标准】\n1. 考查深层理解：题目必须要求运用、分析、综合或评价，而非事实回忆\n2. 干扰项设计：错误选项必须基于真实常见误解，而非随机编造\n3. 难度递进：题目应按认知层次从理解到应用逐题递进\n4. 答案严谨：每道题的解析必须给出明确的推理链'
 };
+var MATH_FORMAT_RULE = '\n\n【公式格式要求】\n1. 所有数学公式必须用 $...$（行内）或 $$...$$（独立成行）包裹，例如 $x^2 + y^2 = z^2$、$$\\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$$\n2. 化学方程式、化学式、离子符号必须用 \\ce{...} 包裹，例如 \\ce{2H2 + O2 -> 2H2O}\n3. 分式、根号、上下标、求和、积分、极限等一律用 LaTeX 标准写法，且必须用 $ 包裹\n4. 不要裸写 \\frac、\\sqrt、^、_ 等命令而不加 $ 分隔符';
 function _applyQuality(opts) {
 if (opts._enhanced || opts.rawResponse) return;
 var hadSys = !!opts.systemPrompt;
 if (opts.systemPrompt) {
-opts.systemPrompt += PROFESSIONAL_STANDARDS.general;
+opts.systemPrompt += PROFESSIONAL_STANDARDS.general + MATH_FORMAT_RULE;
 } else if (opts.prompt && typeof opts.prompt === 'string') {
-opts.prompt = PROFESSIONAL_STANDARDS.general + '\n\n' + opts.prompt;
+opts.prompt = MATH_FORMAT_RULE + '\n\n' + PROFESSIONAL_STANDARDS.general + '\n\n' + opts.prompt;
 }
 if (opts.taskType === 'education') {
 var ed = PROFESSIONAL_STANDARDS.education;
@@ -12911,6 +12917,7 @@ var reader = response.body.getReader();
 var decoder = new TextDecoder();
 var buffer = '';
 var fullText = '';
+var _sawDone = false, _finishReason = null;
 function pump() {
 return reader.read().then(function(result) {
 if (result.done) {
@@ -12920,15 +12927,19 @@ for (var j = 0; j < lines.length; j++) {
 var line = lines[j].trim();
 if (line.startsWith('data:')) {
 var dataStr = line.slice(5).trim();
-if (dataStr === '[DONE]') continue;
+if (dataStr === '[DONE]') { _sawDone = true; continue; }
 try {
 var parsed = JSON.parse(dataStr);
+if (parsed && parsed.error) { var _sseEm = (parsed.error && parsed.error.message) || String(parsed.error); var _sseErr = new Error(_sseEm); _sseErr.isSse = true; throw _sseErr; }
 var content = parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content;
 if (content) { fullText += content; onChunk(content, fullText); }
-} catch(e) {}
+var _fr = parsed.choices && parsed.choices[0] && parsed.choices[0].finish_reason;
+if (_fr) _finishReason = _fr;
+} catch(e) { if (e && e.isSse) throw e; }
 }
 }
 }
+readSSEStream._lastFinishReason = _finishReason || (_sawDone ? 'stop' : 'cut');
 return fullText;
 }
 buffer += decoder.decode(result.value, {stream: true});
@@ -12938,12 +12949,15 @@ for (var i = 0; i < lines.length; i++) {
 var line = lines[i].trim();
 if (line.startsWith('data:')) {
 var dataStr = line.slice(5).trim();
-if (dataStr === '[DONE]') continue;
+if (dataStr === '[DONE]') { _sawDone = true; continue; }
 try {
 var parsed = JSON.parse(dataStr);
+if (parsed && parsed.error) { var _sseEm = (parsed.error && parsed.error.message) || String(parsed.error); var _sseErr = new Error(_sseEm); _sseErr.isSse = true; throw _sseErr; }
 var content = parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content;
 if (content) { fullText += content; onChunk(content, fullText); }
-} catch(e) {}
+var _fr = parsed.choices && parsed.choices[0] && parsed.choices[0].finish_reason;
+if (_fr) _finishReason = _fr;
+} catch(e) { if (e && e.isSse) throw e; }
 }
 }
 return pump();
@@ -13249,6 +13263,26 @@ var aiTaskManager = {
 };
 aiTaskManager.init();
 
+// 流式渲染节流：合并短时间内的多次 chunk，只渲染最新全文；.flush() 强制渲染最终稿
+function throttleStream(fn, ms) {
+  var last = 0, timer = null, pending = null, err = null;
+  function run(args) { last = Date.now(); pending = null; err = null; try { fn.apply(null, args); } catch (e) { err = e; } }
+  function flush() {
+    if (timer) { clearTimeout(timer); timer = null; }
+    if (pending) run(pending);
+    if (err) { var e = err; err = null; throw e; }
+  }
+  function wrapped() {
+    pending = arguments;
+    if (timer) return;
+    var wait = ms - (Date.now() - last);
+    if (wait <= 0) run(pending);
+    else timer = setTimeout(function(){ timer = null; run(pending); }, wait);
+  }
+  wrapped.flush = flush;
+  return wrapped;
+}
+
 // ===== 统一 AI 调用（带重试 + 错误提示） =====
 function callAI(options) {
 // 统一 AI 调用（带重试 + 错误提示）——每次请求注册到 aiTaskManager：独立并发/手动停止/状态隔离
@@ -13265,11 +13299,15 @@ var merged = {};
 for (var _k in options) merged[_k] = options[_k];
 merged.controller = task.controller;
 if (streamFn) {
+var throttled = throttleStream(streamFn, 80);
 merged.stream = function(chunk, fullText) {
 aiTaskManager.setContent(task.id, fullText);
-streamFn(chunk, fullText);
+throttled(chunk, fullText);
 };
-return aiApiCallStream(merged, merged.stream);
+return aiApiCallStream(merged, merged.stream).then(function(rt) {
+throttled.flush();
+return rt;
+});
 }
 var maxRetries = options.retries !== undefined ? options.retries : AI_RETRY_MAX;
 var retryDelay = options.retryDelay || AI_RETRY_INTERVAL_NETWORK;
@@ -13297,6 +13335,9 @@ throw new Error(userMsg);
 return doCall();
 }).then(function(text) {
 aiTaskManager.end(task ? task.id : null);
+if (streamFn && text && (readSSEStream._lastFinishReason === 'length' || readSSEStream._lastFinishReason === 'cut')) {
+showToast('⚠️ 内容未完整返回（达到输出上限或被中断），末尾可能缺失');
+}
 return text;
 }, function(err) {
 aiTaskManager.end(task ? task.id : null, err);
@@ -16005,10 +16046,15 @@ box.innerHTML = '<div style="padding:14px;background:#fdf8f0;border:1px solid #e
 '<div style="display:flex;gap:6px;align-items:center;padding:6px 0">🔄 分析概念核心...</div>' +
 '<div style="display:flex;gap:6px;align-items:center;padding:6px 0">🔄 拆解动作技能...</div>' +
 '<div style="display:flex;gap:6px;align-items:center;padding:6px 0">🔄 排序练习步骤...</div></div></div>';
-aiApiCall({
+callAI({
 prompt: '请将以下核心概念拆解为可以刻意练习的具体动作步骤。要求：1. 每个步骤是一个可操作的动作技能 2. 按照从易到难排序 3. 每个步骤包含练习方法和判断标准 4. 用简洁的语言，每步不超过50字。\n\n概念名称：'+item.concept+'\n概念解析：'+item.q+'\n详细内容：'+(item.s?item.s.map(function(sec){return sec.content.replace(/<[^>]+>/g,'');}).join('\\n'):item.a?item.a.replace(/<[^>]+>/g,''):''),
 temperature: 0.8,
-maxTokens: 800
+maxTokens: 800,
+stream: function(chunk, fullText) {
+if (box) box.innerHTML = '<div style="padding:14px;background:#f0f7ee;border:1px solid #b8d8b0;border-radius:8px;margin-top:12px">' +
+'<div style="font-weight:700;color:#2d7a3a;margin-bottom:8px">🎯 刻意练习方案</div>' +
+'<div style="font-size:14px;line-height:1.8;color:#2c1810">'+simpleMarkdown(fullText)+'</div></div>';
+},
 }).then(function(text){
 box.innerHTML = '<div style="padding:14px;background:#f0f7ee;border:1px solid #b8d8b0;border-radius:8px;margin-top:12px">' +
 '<div style="font-weight:700;color:#2d7a3a;margin-bottom:8px">🎯 刻意练习方案</div>' +
@@ -18661,7 +18707,7 @@ var p = '你是一位顶尖学习策略专家。请你分析“' + s.topic + '�
 if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请给出该领域所有专家都一致认同的 **5 个核心思维模型**。这些思维模型应该是：\n1. 该领域最基础、最底层的思考框架\n2. 所有专家都默认使用的分析工具\n3. 能帮助初学者快速建立专家思维\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "models": [\n    {"name": "思维模型名称", "explanation": "详细解释（100-200字）"}\n  ]\n}';
 showAILoading('正在提取核心思维模型...', 'AI正在分析 "' + s.topic + '" 领域的核心思维模型');
-callAI({systemPrompt: '你是一位在目标领域拥有超过20年研究经验的资深教授和学科方法论专家，长期从事该领域的教学与研究工作。\n\n你的核心能力：\n1. 精通该领域的思维模型体系，能从海量知识中提炼最根本的认知框架\n2. 擅长区分"真理解"与"死记硬背"，能剖析一个认知框架为何是底层而非表面的\n3. 对学术界的前沿争论和未解之谜有深入把握，能指出共识与分歧\n\n工作要求：\n1. 每个输出必须体现学者级别的思维深度，而非科普级别的表面介绍\n2. 给出的思维模型必须是该领域专家共同体真正认可的核心框架，而非随意列举\n3. 避免任何泛泛而谈或模板化的套话，每个论断要具体、可验证\n4. 如果某个问题在学术界有不同观点，必须呈现而不是回避单一视角\n5. 每个模型的解释需包含：其核心假设、适用边界、以及与该领域其他模型的关系', prompt: p, temperature: 0.3, maxTokens: 12288, timeout: 120000, taskType: 'education'})
+callAI({systemPrompt: '你是一位在目标领域拥有超过20年研究经验的资深教授和学科方法论专家，长期从事该领域的教学与研究工作。\n\n你的核心能力：\n1. 精通该领域的思维模型体系，能从海量知识中提炼最根本的认知框架\n2. 擅长区分"真理解"与"死记硬背"，能剖析一个认知框架为何是底层而非表面的\n3. 对学术界的前沿争论和未解之谜有深入把握，能指出共识与分歧\n\n工作要求：\n1. 每个输出必须体现学者级别的思维深度，而非科普级别的表面介绍\n2. 给出的思维模型必须是该领域专家共同体真正认可的核心框架，而非随意列举\n3. 避免任何泛泛而谈或模板化的套话，每个论断要具体、可验证\n4. 如果某个问题在学术界有不同观点，必须呈现而不是回避单一视角\n5. 每个模型的解释需包含：其核心假设、适用边界、以及与该领域其他模型的关系', prompt: p, temperature: 0.3, maxTokens: 16384, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return;
@@ -18693,7 +18739,7 @@ var p = '基于“' + s.topic + '”领域，请找出目前专家之间 **争�
 if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "debates": [\n    {"topic": "争论核心问题", "sideA": "观点A标题", "argA": "观点A的最强论据（100-200字）", "sideB": "观点B标题", "argB": "观点B的最强论据（100-200字）"}\n  ]\n}';
 showAILoading('正在探索领域争论...', 'AI正在分析 "' + s.topic + '" 领域的学术争论');
-callAI({systemPrompt: '你是一位治学严谨的学术研究方法论专家，熟悉该领域的主要学术流派、范式演化和关键争论。\n\n你的核心能力：\n1. 精准识别学术共识与分歧的边界，不会将边缘观点当作主流呈现\n2. 擅长剖析争论背后的深层原因：是定义分歧、方法论差异、还是世界观对立\n3. 能评估各派论据的强弱，而非简单地"各打五十大板"\n\n工作要求：\n1. 每个争论焦点的描述必须精确到具体主张和论据，而非含糊的"存在不同看法"\n2. 对于每个观点，需呈现其最强、最有代表性的论据，而非捏造的稻草人\n3. 明确指出哪些问题是已有定论的、哪些仍在争论中\n4. 评估各派观点在学术界的主流程度（是共识？多数派？还是少数派？）', prompt: p, temperature: 0.4, maxTokens: 12288, timeout: 120000, taskType: 'education'})
+callAI({systemPrompt: '你是一位治学严谨的学术研究方法论专家，熟悉该领域的主要学术流派、范式演化和关键争论。\n\n你的核心能力：\n1. 精准识别学术共识与分歧的边界，不会将边缘观点当作主流呈现\n2. 擅长剖析争论背后的深层原因：是定义分歧、方法论差异、还是世界观对立\n3. 能评估各派论据的强弱，而非简单地"各打五十大板"\n\n工作要求：\n1. 每个争论焦点的描述必须精确到具体主张和论据，而非含糊的"存在不同看法"\n2. 对于每个观点，需呈现其最强、最有代表性的论据，而非捏造的稻草人\n3. 明确指出哪些问题是已有定论的、哪些仍在争论中\n4. 评估各派观点在学术界的主流程度（是共识？多数派？还是少数派？）', prompt: p, temperature: 0.4, maxTokens: 16384, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return;
@@ -18724,7 +18770,7 @@ if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "questions": [\n    {"id": 0, "type": "open", "question": "问题描述...", "modelAnswer": "标准的深度理解答案要点"},\n    {"id": 1, "type": "open", "question": "问题描述...", "modelAnswer": "标准的深度理解答案要点（包含评分要点）"}\n  ]\n}';
 var _gen = ++_aiLearnPhaseCGen;
 showAILoading('正在生成深度测试题...', 'AI正在为 "' + s.topic + '" 设计10道深度问答题', true);
-callAI({systemPrompt: '你是一位教育测评与测量学专家，专长于基于认知层次理论（如Bloom认知分类、SOLO分类法）设计高质量测评工具。\n\n你的核心能力：\n1. 精准区分"事实记忆"与"深层理解"，能设计出直击思维方式而非知识储备的题目\n2. 擅长多维度命题：能从概念理解、应用分析、综合评价等不同认知层次设计题目\n【出题标准】\n1. 每道题必须考查特定认知层次（在题目标注：理解/应用/分析/评价/创造）\n2. 题干表述精确无歧义，不能通过措辞暗示正确选项\n3. 开放题的modelAnswer需包含评分要点和不同层次答案的区分标准\n4. 整套题目应覆盖不同认知层次，从理解到高阶思维递进', prompt: p, temperature: 0.4, maxTokens: 12288, timeout: 120000, taskType: 'exam',
+callAI({systemPrompt: '你是一位教育测评与测量学专家，专长于基于认知层次理论（如Bloom认知分类、SOLO分类法）设计高质量测评工具。\n\n你的核心能力：\n1. 精准区分"事实记忆"与"深层理解"，能设计出直击思维方式而非知识储备的题目\n2. 擅长多维度命题：能从概念理解、应用分析、综合评价等不同认知层次设计题目\n【出题标准】\n1. 每道题必须考查特定认知层次（在题目标注：理解/应用/分析/评价/创造）\n2. 题干表述精确无歧义，不能通过措辞暗示正确选项\n3. 开放题的modelAnswer需包含评分要点和不同层次答案的区分标准\n4. 整套题目应覆盖不同认知层次，从理解到高阶思维递进', prompt: p, temperature: 0.4, maxTokens: 16384, timeout: 120000, taskType: 'exam',
   stream: updateAILoadingStream})
 .then(function(resp) {
 hideAILoading();
@@ -18779,7 +18825,7 @@ if (!allAnswered) { showToast('请回答所有题目后再提交'); return; }
 var evalPrompt = '你是一个严格的学习评估专家。以下是一位学生对“' + s.topic + '”领域深度测试题的回答。\n\n请逐题评估他的回答是否展示了**真正的理解**还是**表面的记忆**。\n\n评分标准：\n- 8-10分：真正理解 - 能用自己的语言解释原理，能举一反三，能分析关联\n- 5-7分：较好理解 - 要点正确但深度不足，有初步的关联分析\n- 3-4分：部分理解 - 答案基本正确但缺乏深度，套用书本语言\n- 1-2分：微弱理解 - 触及表面但未掌握核心\n- 0分：不理解或死记硬背 - 答案错误或只是背诵定义\n\n题目和回答：\n' + JSON.stringify(qas, null, 2) + '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "overallScore": 75,\n  "maxScore": 100,\n  "evaluations": [\n    {"id": 0, "score": 8, "feedback": "你真正理解了...", "suggestion": "可以进一步思考..."}\n  ],\n  "summary": "总体评估和建议..."\n}';
 var _evalGen = _aiLearnPhaseCGen;
 showAILoading('正在评估你的答案...', 'AI正在逐题分析你的理解深度');
-callAI({systemPrompt: '你是一位严格的学术评估专家，擅长通过学生的答题表现精确诊断其理解深度。\n\n你的评估方法论：\n1. 逐题分析：对每道题进行独立评估，而非整体印象打分\n2. 多维判断：从"答案正确性"、"推理质量"、"概念关联能力"、"迁移应用能力"四个维度评估\n3. 证据驱动：评分必须有明确依据，指出学生的回答中哪些表述暴露/证明了真正的理解\n\n【评估标准】\n- 8-10分：真正理解 — 能用自己的语言解释原理，能举一反三（不仅限于课程中的例子），能分析关联\n- 5-7分：较好理解 — 要点正确但深度不足，有初步的关联分析但局限于课程内容\n- 3-4分：部分理解 — 答案基本正确但缺乏深度，套用课程语言而非自己的理解\n- 1-2分：微弱理解 — 触及表面但未掌握核心，或存在概念性错误\n- 0分：不理解或死记硬背 — 答案错误、无关，或只是逐字背诵定义而未展现理解\n\n工作要求：\n1. 每个评分必须附上具体的依据（引用学生回答的原文）\n2. 反馈要诊断性而非评价性：告诉学生"哪里没理解"和"为什么"比"答得好/差"更有价值\n3. 改进建议必须有可操作性，而非泛泛的"继续努力"', prompt: evalPrompt, temperature: 0.3, maxTokens: 12288, timeout: 120000, taskType: 'education'})
+callAI({systemPrompt: '你是一位严格的学术评估专家，擅长通过学生的答题表现精确诊断其理解深度。\n\n你的评估方法论：\n1. 逐题分析：对每道题进行独立评估，而非整体印象打分\n2. 多维判断：从"答案正确性"、"推理质量"、"概念关联能力"、"迁移应用能力"四个维度评估\n3. 证据驱动：评分必须有明确依据，指出学生的回答中哪些表述暴露/证明了真正的理解\n\n【评估标准】\n- 8-10分：真正理解 — 能用自己的语言解释原理，能举一反三（不仅限于课程中的例子），能分析关联\n- 5-7分：较好理解 — 要点正确但深度不足，有初步的关联分析但局限于课程内容\n- 3-4分：部分理解 — 答案基本正确但缺乏深度，套用课程语言而非自己的理解\n- 1-2分：微弱理解 — 触及表面但未掌握核心，或存在概念性错误\n- 0分：不理解或死记硬背 — 答案错误、无关，或只是逐字背诵定义而未展现理解\n\n工作要求：\n1. 每个评分必须附上具体的依据（引用学生回答的原文）\n2. 反馈要诊断性而非评价性：告诉学生"哪里没理解"和"为什么"比"答得好/差"更有价值\n3. 改进建议必须有可操作性，而非泛泛的"继续努力"', prompt: evalPrompt, temperature: 0.3, maxTokens: 16384, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 if (_evalGen !== _aiLearnPhaseCGen) return; // 防止旧评估覆盖刷新后的数据
@@ -18874,9 +18920,8 @@ articles.push({ id: id++, c: chapters[2], t: q.question, p: q.modelAnswer || '',
 }
 var courseData = { chapters: chapters, articles: articles, coreFramework: [], conceptNames: [], chapterCoreMap: [], colors: [] };
 try {
-all[finalName] = courseData;
-safeSetItem(COURSES_DATA_KEY, JSON.stringify(all));
-switchCourse(finalName);
+StorageManager.saveCourse(finalName, courseData);
+switchCourse(finalName, true);
 showToast('✅ 已部署为课程「' + finalName + '」并切换到新课程');
 } catch(e) {
 showToast('❌ 部署失败: ' + (e.message || e));
@@ -19232,7 +19277,7 @@ var cd = kbGetCourseData(courseName);
 if (!cd) { _kbProcessing = false; showToast('课程数据不存在'); return; }
 var prompt = buildPrompt(courseName, cd);
 showAILoading(loadingMsg, '正在分析 "' + courseName + '"', true);
-callAI({systemPrompt: systemPrompt, prompt: prompt, temperature: 0.3, maxTokens: 12288, timeout: 120000,
+callAI({systemPrompt: systemPrompt, prompt: prompt, temperature: 0.3, maxTokens: 16384, timeout: 120000,
   stream: updateAILoadingStream})
 .then(function(resp) {
 hideAILoading();
@@ -19390,7 +19435,7 @@ if (allConcepts.length < 2) { showToast('至少需要两门课程完成概念分
 _kbProcessing = true;
 var prompt = '请分析以下多门课程的核心概念，构建跨课程知识图谱。\n已分析课程及其核心概念：\n' + courseConceptText + '\n\n要求：\n1. 合并所有概念，去重同义概念\n2. 发现跨课程的概念关联\n3. 标注每个概念来源于哪些课程\n4. 标注概念间的语义关系类型\n\n请以JSON格式返回：\n{"nodes": [{"id":"概念唯一ID","label":"概念显示名","group":"来源课程","mastery":0.7}],"edges": [{"source":"概念ID1","target":"概念ID2","relationship":"支持/互补/对立"}]}';
 showAILoading('正在构建跨课程知识图谱...', 'AI 正在分析多门课程的概念关联');
-callAI({systemPrompt: '你是一位知识图谱和跨学科分析专家，擅长发现不同知识体系之间的深层结构关联。\n\n你的核心方法论：\n1. 关系类型精准分类：能在因果关系、类比关系、前提-推论关系、互补关系等不同类型间准确区分\n2. 跨域迁移识别：能发现同一抽象结构在不同领域的具体表现（如"反馈回路"在生物学、经济学和工程学中的不同形式）\n3. 整合性思维：不是简单罗列关联，而是构建整合性的知识网络\n\n工作要求：\n1. 每个关联必须有实质性的分析支撑，而非表面术语相似\n2. 标注关联的强度（strong/medium/weak）和类型\n3. 整合后的知识图谱应揭示出单个课程无法呈现的洞见\n4. 按关联强度或主题聚类组织呈现。请严格以JSON格式返回。', prompt: prompt, temperature: 0.3, maxTokens: 12288, timeout: 120000, taskType: 'education'})
+callAI({systemPrompt: '你是一位知识图谱和跨学科分析专家，擅长发现不同知识体系之间的深层结构关联。\n\n你的核心方法论：\n1. 关系类型精准分类：能在因果关系、类比关系、前提-推论关系、互补关系等不同类型间准确区分\n2. 跨域迁移识别：能发现同一抽象结构在不同领域的具体表现（如"反馈回路"在生物学、经济学和工程学中的不同形式）\n3. 整合性思维：不是简单罗列关联，而是构建整合性的知识网络\n\n工作要求：\n1. 每个关联必须有实质性的分析支撑，而非表面术语相似\n2. 标注关联的强度（strong/medium/weak）和类型\n3. 整合后的知识图谱应揭示出单个课程无法呈现的洞见\n4. 按关联强度或主题聚类组织呈现。请严格以JSON格式返回。', prompt: prompt, temperature: 0.3, maxTokens: 16384, timeout: 120000, taskType: 'education'})
 .then(function(resp) {
 hideAILoading();
 _kbProcessing = false;
@@ -23000,8 +23045,10 @@ var _aiCodeBlocks = [];
 function readerAiRenderMd(txt) {
   _aiCodeBlocks.length = 0;
   if (!txt) return '<div class="adv-output"></div>';
-  var html = txt
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  var M = [];
+  var html = protectMath(txt, M);
+  html = wrapBareLatex(html, M);
+  html = escHtml(html)
     .replace(/```([\s\S]*?)```/g, function(m, c) { _aiCodeBlocks.push(c); return '@@AICB@@' + (_aiCodeBlocks.length - 1) + '@@'; })
     .replace(/`([^`]+)`/g,'<code>$1</code>')
     .replace(/###\s*(.+)/g,'<h4 class="adv-h4">$1</h4>')
@@ -23019,7 +23066,7 @@ function readerAiRenderMd(txt) {
   });
   html = html.replace(/@@AICB@@(\d+)@@/g, function(m, i) { return '<pre><code>' + _aiCodeBlocks[Number(i)] + '</code></pre>'; });
   html = html.replace(/\n/g,'<br>');
-  html = renderLatex(html);
+  html = restoreMath(html, M);
   html = _enhanceContent(html);
   return '<div class="adv-output">'+html+'</div>';
 }
@@ -23404,6 +23451,7 @@ html += '<div style="line-height:1.7;color:var(--text);margin:2px 0">' + line + 
 }
 });
 if (inList) html += '</ul>';
+html=mathSafe(html);
 return html;
 }
 function extractXlsx(file) {
@@ -24219,23 +24267,24 @@ aiSearchGenerating = false;
 }
 });
 }
-function aiSearchGenerateNextChapter(idx) {
-if (idx >= aiSearchCourse.chapters.length) {
-hideAILoading();
-aiSearchGenerating = false;
-var _okCount = 0, _errCount = 0;
-for (var _si = 0; _si < (aiSearchChaptersData||[]).length; _si++) {
-if (aiSearchChaptersData[_si].count > 0) _okCount++;
-else if (aiSearchChaptersData[_si].error) _errCount++;
+function aiSearchGenerateNextChapter() {
+if (_aiGenAborted || !aiSearchGenerating) { aiSearchGenFinish(); return; }
+var chs = aiSearchCourse.chapters;
+var started = 0, allDone = true;
+for (var i = 0; i < chs.length; i++) {
+var st = aiSearchChapterStates[i];
+if (st && (st.status === 'done' || st.status === 'error')) continue;
+if (st && st.status === 'generating') { allDone = false; continue; }
+allDone = false;
+if (started < AI_GEN_CONCURRENCY) {
+started++;
+aiSearchChapterStates[i] = { status: 'generating', count: 0, error: '' };
+aiSearchGenerateChapter(i);
 }
-var _statusMsg = '✅ 生成完成！共' + aiSearchCourse.chapters.length + '篇' + aiSearchCourse.articles.length + '题';
-if (_errCount > 0) _statusMsg += ' (' + _okCount + '篇成功, ' + _errCount + '篇失败)';
-aiSafe('aiSearchStatus').textContent = _statusMsg;
-_spb('100%');
-aiSearchRenderProgress();
-aiSearchRenderPreview();
-return;
 }
+if (allDone) aiSearchGenFinish();
+}
+function aiSearchGenerateChapter(idx) {
 var ch = aiSearchCourse.chapters[idx];
 if (aiSearchChapterStates && aiSearchChapterStates[idx]) {
 aiSearchChapterStates[idx].status = 'generating';
@@ -24299,7 +24348,7 @@ aiSearchChaptersData.push({ chapter: ch, count: 0, error: e.message });
 aiSafe('aiSearchStatus').textContent = '⚠️ ' + ch + ' 解析失败: ' + e.message.slice(0, 60) + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 aiSearchRenderProgress();
 }
-aiSearchGenerateNextChapter(idx + 1);
+aiSearchGenerateNextChapter();
 }, 0, function(err) {
 if (aiSearchChapterStates && aiSearchChapterStates[idx]) {
 aiSearchChapterStates[idx].status = 'error';
@@ -24308,17 +24357,49 @@ aiSearchChapterStates[idx].error = (err && err.message) || 'API请求失败';
 aiSearchChaptersData.push({ chapter: ch, count: 0, error: (err && err.message) || 'API请求失败' });
 aiSafe('aiSearchStatus').textContent = '⚠️ ' + ch + ' API请求失败，跳过 (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 aiSearchRenderProgress();
-aiSearchGenerateNextChapter(idx + 1);
+aiSearchGenerateNextChapter();
 });
 }
-function aiSearchDetailedSplitNextChapter(idx) {
-if (idx >= aiSearchCourse.chapters.length) {
+function aiSearchGenFinish() {
 hideAILoading();
 aiSearchGenerating = false;
-_aiGenSplitDone = true;
-aiSearchRenderSplitPreview();
-return;
+var _okCount = 0, _errCount = 0;
+for (var _si = 0; _si < (aiSearchChapterStates||[]).length; _si++) {
+if (aiSearchChapterStates[_si] && aiSearchChapterStates[_si].status === 'done') _okCount++;
+else if (aiSearchChapterStates[_si] && aiSearchChapterStates[_si].status === 'error') _errCount++;
 }
+var _statusMsg = '✅ 生成完成！共' + aiSearchCourse.chapters.length + '篇' + aiSearchCourse.articles.length + '题';
+if (_errCount > 0) _statusMsg += ' (' + _okCount + '篇成功, ' + _errCount + '篇失败)';
+if (_aiGenAborted) _statusMsg = '⏹ 已终止（已生成 ' + aiSearchCourse.articles.length + ' 题）';
+aiSafe('aiSearchStatus').textContent = _statusMsg;
+_spb('100%');
+aiSearchChaptersData = aiSearchCourse.chapters.map(function(ch){
+return { chapter: ch, count: aiSearchCourse.articles.filter(function(a){ return a.c === ch; }).length };
+});
+aiSearchCourse.articles.sort(function(a, b) {
+return aiSearchCourse.chapters.indexOf(a.c) - aiSearchCourse.chapters.indexOf(b.c);
+});
+aiSearchRenderProgress();
+aiSearchRenderPreview();
+}
+function aiSearchDetailedSplitNextChapter() {
+if (_aiGenAborted || !aiSearchGenerating) { aiSearchSplitFinish(); return; }
+var chs = aiSearchCourse.chapters;
+var started = 0, allDone = true;
+for (var i = 0; i < chs.length; i++) {
+var st = aiSearchChapterStates[i];
+if (st && (st.status === 'done' || st.status === 'error')) continue;
+if (st && st.status === 'generating') { allDone = false; continue; }
+allDone = false;
+if (started < AI_GEN_CONCURRENCY) {
+started++;
+aiSearchChapterStates[i] = { status: 'generating', count: 0, error: '' };
+aiSearchDetailedSplitOne(i);
+}
+}
+if (allDone) aiSearchSplitFinish();
+}
+function aiSearchDetailedSplitOne(idx) {
 var ch = aiSearchCourse.chapters[idx];
 aiSafe('aiSearchStatus').textContent = '📝 正在拆分 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 var pct = 10 + Math.round((idx / aiSearchCourse.chapters.length) * 85);
@@ -24341,16 +24422,37 @@ t: items[i].t || ''
 });
 }
 aiSearchChaptersData.push({ chapter: ch, count: items.length });
+if (aiSearchChapterStates && aiSearchChapterStates[idx]) {
+aiSearchChapterStates[idx].status = 'done';
+aiSearchChapterStates[idx].count = items.length;
+}
 } catch(e) {
 aiSearchChaptersData.push({ chapter: ch, count: 0, error: e.message });
+if (aiSearchChapterStates && aiSearchChapterStates[idx]) {
+aiSearchChapterStates[idx].status = 'error';
+aiSearchChapterStates[idx].error = e.message;
+}
 aiSafe('aiSearchStatus').textContent = '⚠️ ' + ch + ' 拆分解析失败: ' + e.message.slice(0, 60) + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 }
-aiSearchDetailedSplitNextChapter(idx + 1);
+aiSearchDetailedSplitNextChapter();
 }, 0, function(err) {
 aiSearchChaptersData.push({ chapter: ch, count: 0, error: err.message || 'API请求失败' });
+if (aiSearchChapterStates && aiSearchChapterStates[idx]) {
+aiSearchChapterStates[idx].status = 'error';
+aiSearchChapterStates[idx].error = err.message || 'API请求失败';
+}
 aiSafe('aiSearchStatus').textContent = '⚠️ ' + ch + ' API请求失败，跳过 (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
-aiSearchDetailedSplitNextChapter(idx + 1);
+aiSearchDetailedSplitNextChapter();
 });
+}
+function aiSearchSplitFinish() {
+hideAILoading();
+aiSearchGenerating = false;
+_aiGenSplitDone = true;
+aiSearchCourse.articles.sort(function(a, b) {
+return aiSearchCourse.chapters.indexOf(a.c) - aiSearchCourse.chapters.indexOf(b.c);
+});
+aiSearchRenderSplitPreview();
 }
 function aiSearchRenderSplitPreview() {
 var div = aiSafe('aiSearchPreview');
@@ -24394,6 +24496,7 @@ if (aiSearchGenerating) { alert('正在处理中，请等待...'); return; }
 aiSearchCourse.articles = [];
 aiSearchChaptersData = [];
 _aiGenSplitDone = false;
+aiSearchChapterStates = aiSearchCourse.chapters.map(function(){ return {status:'pending', count:0, error:''}; });
 _aiGenAborted = false;
 aiSearchGenerating = true;
 showAILoading('正在重新拆分内容...', 'AI 正在重新分析内容结构');
@@ -24408,7 +24511,7 @@ var articles = aiSearchCourse.articles;
 if (articles.length === 0) { alert('没有可生成的内容'); return; }
 var pending = [];
 for (var _gai = 0; _gai < articles.length; _gai++) {
-if (!articles[_gai].q) pending.push(articles[_gai]);
+if (!articles[_gai].q) { articles[_gai]._genState = 'pending'; delete articles[_gai]._genRetry; pending.push(articles[_gai]); }
 }
 if (pending.length === 0) { aiSearchDetailedContentDone(); return; }
 _aiGenAborted = false;
@@ -24418,14 +24521,30 @@ showAILoading('正在生成学习内容...', 'AI 正在为每个内容块生成�
 aiSafe('aiSearchStatus').textContent = '📝 正在生成内容 (0/' + pending.length + ')...';
 _spb('0%');
 _spt('');
-aiSearchDetailedGenerateNextArticle(0, pending, articles);
+aiSearchDetailedGenPump(pending);
 }
-function aiSearchDetailedGenerateNextArticle(idx, pending, allArticles) {
-if (idx >= pending.length) { aiSearchDetailedContentDone(); return; }
-var article = pending[idx];
-aiSafe('aiSearchStatus').textContent = '📝 正在生成内容 (' + (idx+1) + '/' + pending.length + ')...';
-var pct = Math.round((idx / pending.length) * 100);
-_spb(pct + '%');
+function aiSearchDetailedGenPump(pending) {
+if (_aiGenAborted || !aiSearchGenerating) { aiSearchDetailedContentDone(); return; }
+var started = 0, allDone = true;
+for (var i = 0; i < pending.length; i++) {
+var art = pending[i];
+if (art._genState === 'done' || art._genState === 'error') continue;
+if (art._genState === 'generating') { allDone = false; continue; }
+allDone = false;
+if (started < AI_GEN_CONCURRENCY) {
+started++;
+art._genState = 'generating';
+aiSearchDetailedGenOne(art, i, pending);
+}
+}
+if (allDone) aiSearchDetailedContentDone();
+}
+function aiSearchDetailedGenOne(article, idx, pending) {
+article._genState = 'generating';
+var _doneN = 0;
+for (var _dk = 0; _dk < pending.length; _dk++) { if (pending[_dk]._genState === 'done' || pending[_dk]._genState === 'error') _doneN++; }
+aiSafe('aiSearchStatus').textContent = '📝 正在生成内容 (' + _doneN + '/' + pending.length + ')...';
+_spb(Math.round(_doneN / pending.length * 100) + '%');
 _spt((article.t || '').substring(0, 40) + '...');
 var _genOpts = aiSearchGetOptionsPrompt();
 var optsText = _genOpts.text || '';
@@ -24435,40 +24554,46 @@ if (optsText) prompt += '\n\n' + optsText;
 callAI({systemPrompt: '你是一个课程设计专家，擅长将知识转化为互动学习内容。', prompt: prompt, temperature: 0.7, maxTokens: 2048, timeout: 90000,
 	stream: function(chunk, fullText) {
 		var st = aiSafe('aiSearchStatus');
-		if (st) st.textContent = '📝 正在生成内容 (' + (idx+1) + '/' + pending.length + ') ' + fullText.length + '字';
+		if (st) st.textContent = '📝 正在生成内容 (' + (_doneN+1) + '/' + pending.length + ') ' + fullText.length + '字';
 	}}).then(function(text) {
 if (!text) {
-aiSafe('aiSearchStatus').textContent = '⚠️ 第' + (idx+1) + '条生成失败，跳过 (' + (idx+1) + '/' + pending.length + ')';
-aiSearchDetailedGenerateNextArticle(idx + 1, pending, allArticles);
+article._genState = 'error';
+aiSearchDetailedGenPump(pending);
 return;
 }
 text = text.replace(/```[\s\S]*?```/g,'').trim();
 try {
 var data = JSON.parse(text);
-for (var _upi = 0; _upi < allArticles.length; _upi++) {
-if (allArticles[_upi].id === article.id) {
-allArticles[_upi].q = data.q || '';
-allArticles[_upi].o = data.o || ['','','',''];
-allArticles[_upi].a = data.a !== undefined ? data.a : 0;
-allArticles[_upi].e = data.e || '';
-allArticles[_upi].p = data.p || '';
-allArticles[_upi].core = data.core || '';
-allArticles[_upi].exam = data.exam || '';
-allArticles[_upi].master = data.master || '';
-allArticles[_upi].feynman = data.feynman || '';
-allArticles[_upi].mne = data.mne || '';
-allArticles[_upi].scene = data.scene || '';
-allArticles[_upi].imgPrompt = data.imgPrompt || '';
-break;
-}
-}
+article.q = data.q || '';
+article.o = data.o || ['','','',''];
+article.a = data.a !== undefined ? data.a : 0;
+article.e = data.e || '';
+article.p = data.p || '';
+article.core = data.core || '';
+article.exam = data.exam || '';
+article.master = data.master || '';
+article.feynman = data.feynman || '';
+article.mne = data.mne || '';
+article.scene = data.scene || '';
+article.imgPrompt = data.imgPrompt || '';
+article._genState = 'done';
 } catch(e) {
+article._genState = 'error';
 aiSafe('aiSearchStatus').textContent = '⚠️ 第' + (idx+1) + '条解析失败，跳过 (' + (idx+1) + '/' + pending.length + ')';
 }
-aiSearchDetailedGenerateNextArticle(idx + 1, pending, allArticles);
+aiSearchDetailedGenPump(pending);
 }).catch(function(err) {
+var msg = (err.message || '').toLowerCase();
+var r = article._genRetry || 0;
+if ((msg.indexOf('429') !== -1 || msg.indexOf('rate_limit') !== -1) && r < 2) {
+article._genRetry = r + 1;
+showToast('⚠️ 触发限速，自动重试... (' + (r+1) + '/2)');
+setTimeout(function() { aiSearchDetailedGenOne(article, idx, pending); }, 3000);
+return;
+}
+article._genState = 'error';
 aiSafe('aiSearchStatus').textContent = '⚠️ 第' + (idx+1) + '条API失败，跳过 (' + (idx+1) + '/' + pending.length + ')';
-aiSearchDetailedGenerateNextArticle(idx + 1, pending, allArticles);
+aiSearchDetailedGenPump(pending);
 });
 }
 function aiSearchDetailedContentDone() {
@@ -24749,7 +24874,7 @@ function aiSearchRedeployCourse() {
 var sel = document.getElementById('aiCourseSelect');
 var name = sel ? sel.value : '';
 if (!name) { alert('请先选择一门课程'); return; }
-switchCourse(name);
+switchCourse(name, true);
 showToast('✅ ' + name + ' 已重新部署');
 }
 function aiSearchSupplementChapter(courseName, chapterName, retryCount) {
@@ -24809,7 +24934,7 @@ StorageManager.saveCourse(courseName, course);
 aiSafe('aiSearchStatus').textContent = '✅ ' + chapterName + ' 补充完成！累计 ' + newTotal + ' 题（新增' + items.length + '题，已保存）';
 _spb('100%');
 _spt('');
-if (state.activeCourse === courseName) { switchCourse(courseName); }
+if (state.activeCourse === courseName) { switchCourse(courseName, true); }
 } catch(e) {
 if (retryCount < AI_RETRY_MAX) {
 aiSafe('aiSearchStatus').textContent = '🔄 ' + chapterName + ' 解析失败，自动重试(' + (retryCount+1) + '/' + AI_RETRY_MAX + ')...请AI综合资料重新生成';
@@ -24828,20 +24953,32 @@ function aiSearchAppendAll() {
 if (aiSearchGenerating) { alert('正在生成中，请等待...'); return; }
 if (!aiSearchCourse || !aiSearchCourse.chapters.length) return;
 if (!confirm('将为全部 ' + aiSearchCourse.chapters.length + ' 篇追加题目（按内容单元自动拆分），需要多次AI调用，是否继续？')) return;
-aiSearchAppendAllNext(0);
+_aiGenAborted = false;
+aiSearchGenerating = true;
+aiSearchAppendAllStop = false;
+aiSearchAppendStates = aiSearchCourse.chapters.map(function(){ return 'pending'; });
+showAILoading('正在追加全部篇章...', 'AI 正在为每篇补充题目');
+aiSearchAppendAllNext();
 }
 var aiSearchAppendAllStop = false;
-function aiSearchAppendAllNext(idx) {
-if (idx >= aiSearchCourse.chapters.length || aiSearchAppendAllStop) {
-hideAILoading();
-aiSearchAppendAllStop = false;
-aiSearchGenerating = false;
-aiSafe('aiSearchStatus').textContent = '✅ 追加完成！共 ' + aiSearchCourse.articles.length + ' 题';
-_spb('100%');
-_spt('');
-aiSearchRenderPreview();
-return;
+var aiSearchAppendStates = [];
+function aiSearchAppendAllNext() {
+if (aiSearchAppendAllStop || !aiSearchGenerating) { aiSearchAppendFinish(); return; }
+var chs = aiSearchCourse.chapters;
+var started = 0, allDone = true;
+for (var i = 0; i < chs.length; i++) {
+if (aiSearchAppendStates[i] === 'done' || aiSearchAppendStates[i] === 'error') continue;
+if (aiSearchAppendStates[i] === 'generating') { allDone = false; continue; }
+allDone = false;
+if (started < AI_GEN_CONCURRENCY) {
+started++;
+aiSearchAppendStates[i] = 'generating';
+aiSearchAppendOne(i);
 }
+}
+if (allDone) aiSearchAppendFinish();
+}
+function aiSearchAppendOne(idx) {
 var ch = aiSearchCourse.chapters[idx];
 aiSafe('aiSearchStatus').textContent = '📝 正在追加 ' + ch + ' (' + (idx+1) + '/' + aiSearchCourse.chapters.length + ')';
 var pct = Math.round((idx / aiSearchCourse.chapters.length) * 100);
@@ -24887,6 +25024,7 @@ found = true; break;
 }
 }
 if (!found) aiSearchChaptersData.push({ chapter: ch, count: items.length });
+aiSearchAppendStates[idx] = 'done';
 } catch(e) {
 if (!aiSearchChaptersData) aiSearchChaptersData = [];
 var found = false;
@@ -24894,9 +25032,25 @@ for (var j = 0; j < aiSearchChaptersData.length; j++) {
 if (aiSearchChaptersData[j].chapter === ch) { found = true; break; }
 }
 if (!found) aiSearchChaptersData.push({ chapter: ch, count: 0, error: e.message });
+aiSearchAppendStates[idx] = 'error';
 }
-aiSearchAppendAllNext(idx + 1);
+aiSearchAppendAllNext();
 });
+}
+function aiSearchAppendFinish() {
+hideAILoading();
+aiSearchAppendAllStop = false;
+aiSearchGenerating = false;
+aiSafe('aiSearchStatus').textContent = '✅ 追加完成！共 ' + aiSearchCourse.articles.length + ' 题';
+_spb('100%');
+_spt('');
+aiSearchChaptersData = aiSearchCourse.chapters.map(function(ch){
+return { chapter: ch, count: aiSearchCourse.articles.filter(function(a){ return a.c === ch; }).length };
+});
+aiSearchCourse.articles.sort(function(a, b) {
+return aiSearchCourse.chapters.indexOf(a.c) - aiSearchCourse.chapters.indexOf(b.c);
+});
+aiSearchRenderPreview();
 }
 function aiSearchRenderProgress() {
   var el = aiSafe('aiSearchProgress');
@@ -24994,7 +25148,7 @@ colors: aiSearchCourse.colors
 };
 try {
 StorageManager.saveCourse(name, courseData);
-switchCourse(name);
+switchCourse(name, true);
 renderAISearchPanel();
 aiSafe('aiSearchStatus').textContent = '🎉 ' + name + ' 已部署并切换到新课程！';
 } catch(e) {
@@ -25045,7 +25199,10 @@ systemPrompt: '你是一位在教育学和课程设计领域拥有深厚学术�
 prompt: prompt,
 temperature: 0.7,
 maxTokens: AI_MAX_TOKENS_GENERATE,
-timeout: AI_TIMEOUT_DEFAULT
+timeout: AI_TIMEOUT_DEFAULT,
+stream: function(chunk, fullText) {
+var st = aiSafe('aiSearchStatus'); if (st) st.textContent = '正在生成课程... ' + fullText.length + ' 字';
+}
 }).then(function(text) {
 callback(text);
 }).catch(function(err) {
@@ -25347,7 +25504,7 @@ courseData.chapters = Object.keys(chSet);
 }
 try {
 StorageManager.saveCourse(name, courseData);
-switchCourse(name);
+switchCourse(name, true);
 showToast('✅ 「' + name + '」安装成功！已切换到新课程');
 renderExamMarket();
 } catch(e) {
@@ -25760,6 +25917,11 @@ if (data.groups[gi].key === g) { group = data.groups[gi]; break; }
 if (!group) { state.hotJingdianGroup = ''; g = ''; }
 }
 if (!g) {
+html += '<div class="jd-custom-search" style="display:flex;gap:10px;align-items:center;margin:16px 0 18px;background:var(--bg-hover,#f4efe6);border:1px dashed #d8c9ad;padding:12px 14px;border-radius:12px">';
+html += '<span style="font-size:13px;white-space:nowrap;color:var(--text-secondary,#7a6a5a)">📝 输入名篇</span>';
+html += '<input id="jdCustomInput" placeholder="如：岳阳楼记 / 出师表 / 洛神赋 / 桃花源记…" style="flex:1;min-width:0;padding:9px 12px;border:1px solid #ddd2c0;border-radius:8px;font-size:14px;background:#fff;outline:none" />';
+html += '<button onclick="startHotGenCustom()" style="padding:9px 18px;border:none;border-radius:8px;background:#6a8a5a;color:#fff;font-size:14px;cursor:pointer;white-space:nowrap">生成名篇课程</button>';
+html += '</div>';
 html += '<div class="jd-group-grid">';
 for (var gi = 0; gi < data.groups.length; gi++) {
 var gr = data.groups[gi];
@@ -25903,6 +26065,55 @@ prompt += '\n\n' + domainInstrMap[catKey];
 return prompt;
 }
 // ===== 热门资料分章生成（框架 + 逐章）=====
+function startHotGenCustom() {
+var input = document.getElementById('jdCustomInput');
+var name = input ? input.value.trim() : '';
+if (!name) { alert('请输入古典名篇名，如：岳阳楼记、出师表、洛神赋'); return; }
+if (!state.aiApiKey && !state.aiProxyEnabled) {
+showToast('🔒 请先在“🧠 学霸”→ AI设置中配置 API Key');
+return;
+}
+var keyInput = document.getElementById('aiApiKeyInput');
+if (!state.aiApiKey && keyInput && keyInput.value) { state.aiApiKey = keyInput.value; saveState(); }
+var epInput = document.getElementById('aiEndpointInput');
+if (epInput && epInput.value) { state.aiEndpoint = epInput.value; saveState(); }
+var modelSelect = document.getElementById('aiModelSelect');
+if (modelSelect && modelSelect.value) { state.aiModel = modelSelect.value; saveState(); }
+var groups = HOT_EXAM_TOPICS.jingdian.groups;
+for (var i = groups.length - 1; i >= 0; i--) {
+if (groups[i].key === 'jd-custom') { groups.splice(i, 1); }
+}
+var topicId = 'jd-custom-' + Date.now();
+var topic = { id: topicId, name: name, tags: [], pop: 0 };
+groups.unshift({ key: 'jd-custom', name: '⭐ ' + name, icon: '✨', desc: '自定义名篇', topics: [topic] });
+state.hotJingdianGroup = 'jd-custom';
+saveState();
+HOT_GEN_STATE[topicId] = { step: 'framework', time: Date.now(), catKey: 'jingdian' };
+renderExamMarket();
+aiGenerateHotFramework(topicId, topic, 'jingdian', HOT_EXAM_TOPICS.jingdian).catch(function(err) {});
+}
+function _tryParseFramework(text) {
+var clean = String(text).replace(/```[\s\S]*?```/g, '');
+var m = clean.match(/\{[\s\S]*\}/);
+if (m) {
+try {
+var d = JSON.parse(m[0]);
+if (d && Array.isArray(d.chapters) && d.chapters.length > 0) return d;
+} catch(e) {}
+}
+try {
+var d2 = JSON.parse(clean);
+if (d2 && Array.isArray(d2.chapters) && d2.chapters.length > 0) return d2;
+} catch(e) {}
+var ma = clean.match(/\[[\s\S]*\]/);
+if (ma) {
+try {
+var arr = JSON.parse(ma[0]);
+if (Array.isArray(arr) && arr.length > 0) return { name: '', chapters: arr };
+} catch(e) {}
+}
+return null;
+}
 function aiGenerateHotFramework(topicId, topic, catKey, catData) {
 var level = topic.level || '';
 var hasLevel = (catKey === 'k12' || catKey === 'tips') && level;
@@ -25913,9 +26124,9 @@ var role = hasLevel
 : '你是一位资深的' + catData.name + '考试培训专家'));
 var prompt = role + '，专门研究「' + topic.name + '」。\n\n'
 + '请为「' + topic.name + '」设计一个完整的课程大纲。\n'
-+ (catKey === 'jingdian' ? '根据该作品的原有篇目/章节结构划分章节。\n' : '根据该科目的核心知识体系，划分 4-6 个章节。\n')
++ (catKey === 'jingdian' ? '若为整部经典（如《论语》），按原有篇目结构划分章节；若为单篇名篇（如《岳阳楼记》），按原文自然段划分章节，每自然段一章。\n' : '根据该科目的核心知识体系，划分 4-6 个章节。\n')
 + '注意：\n'
-+ '- 章节名称要清晰简洁\n'
++ '- 章节名称只写标题（不超过 20 字），不要附带说明或描述\n'
 + '- 覆盖该科目的核心知识点\n'
 + '- 章节之间要有逻辑递进关系\n\n'
 + '请严格按以下 JSON 格式返回（不要使用 markdown 代码块）：\n'
@@ -25927,14 +26138,29 @@ showAILoading('正在生成《' + topic.name + '》课程框架...', 'AI正在�
 return callAI({
 prompt: prompt,
 temperature: 0.5,
-maxTokens: 1024,
+maxTokens: 8192,
 timeout: 60000,
 stream: function(chunk, fullText) { updateAILoadingStream(chunk, fullText); }
 }).then(function(text) {
 hideAILoading();
-var m = text.match(/\{[\s\S]*\}/);
-if (!m) throw new Error('AI 返回格式异常，无法解析课程框架');
-var data = JSON.parse(m[0]);
+var data = _tryParseFramework(text);
+if (!data) {
+showAILoading('首次返回格式异常，正在自动重试...', 'AI正在重试生成框架', true);
+return callAI({
+prompt: prompt + '\n\n【重要】你上次的回复不是合法 JSON。本次必须严格只输出下面的 JSON 对象本身，禁止任何解释、禁止 markdown 代码块标记：\n{"name":"' + topic.name + '","chapters":["第一章 ...","第二章 ...",...]}',
+temperature: 0.3,
+maxTokens: 8192,
+timeout: 60000,
+stream: function(chunk, fullText) { updateAILoadingStream(chunk, fullText); }
+}).then(function(text2) {
+hideAILoading();
+var data2 = _tryParseFramework(text2);
+if (!data2) throw new Error('AI 返回格式异常，无法解析课程框架（已自动重试一次）');
+return data2;
+});
+}
+return data;
+}).then(function(data) {
 if (!data.chapters || data.chapters.length < 2) {
 throw new Error('生成的章节数量不足（最少 2 章）');
 }
@@ -25970,13 +26196,14 @@ function startHotGenNextChapter(topicId) {
 var st = HOT_GEN_STATE[topicId];
 if (!st || st.step !== 'chapters') return;
 var chs = st.framework.chapters;
-for (var i = 0; i < chs.length; i++) {
+var started = 0;
+for (var i = 0; i < chs.length && started < AI_GEN_CONCURRENCY; i++) {
 if (st.chapterStates[chs[i]].status === 'pending') {
+started++;
 aiGenerateHotChapter(topicId, chs[i], i);
-return;
 }
 }
-// 所有章节已处理 → 检查结果
+if (started === 0) {
 var allDone = true, hasError = false;
 for (var i = 0; i < chs.length; i++) {
 if (st.chapterStates[chs[i]].status !== 'done') allDone = false;
@@ -25984,6 +26211,7 @@ if (st.chapterStates[chs[i]].status === 'error') hasError = true;
 }
 if (allDone && !hasError) {
 finishHotGen(topicId);
+}
 }
 }
 function aiGenerateHotChapter(topicId, chapterName, chIdx) {
@@ -26005,14 +26233,14 @@ var perCh = isJd ? '6-10' : (hasLevel && level === 'primary' ? '6-8' : (hasLevel
 var prompt = (isJd ? '你是一位资深的国学学者与中国古典文学研究专家，精通四书五经、诸子百家、史学典籍、诗词曲赋与古典小说，讲解深入浅出，重视原文训诂、主旨阐发与名句赏析' : '你是一位资深教育专家') + '，专门辅导「' + st.framework.name + '」。\n\n'
 + '请为「' + chapterName + '」生成试题。\n\n'
 + '要求：\n'
-+ '1. 根据该章节的核心知识点，生成 ' + perCh + ' 道高质量选择题\n'
++ (isJd ? '1. 根据该章覆盖的原文自然段落拆分，每段生成 1 条，完整覆盖全章所有自然段，不得遗漏\n' : '1. 根据该章节的核心知识点，生成 ' + perCh + ' 道高质量选择题\n')
 + '2. 题目覆盖该章节最重要的知识点\n'
-+ '3. 每道题包含：知识点原文（t字段）、题干（q字段）、4 个选项 A/B/C/D（o字段）、正确答案索引（a字段）、详细解析（e字段）\n\n'
-+ (isJd ? '所有知识点基于通行版本原文与权威译注，确保准确可靠。\n- t 字段为精讲：先呈现原文（节选）与白话译文，再讲主旨、名句赏析与文史背景\n- 解析需注明原文出处、写作背景及思想内涵' : '所有知识点准确可靠。\n- t 字段为精讲风格：先概括核心要点再详解知识点') + '\n\n'
++ (isJd ? '3. 每条包含：该段完整原文（t字段）、逐句白话译文（p字段）、题干（q字段）、4 个选项 A/B/C/D（o字段）、正确答案索引（a字段）、详细解析（e字段）\n\n' : '3. 每道题包含：知识点原文（t字段）、题干（q字段）、4 个选项 A/B/C/D（o字段）、正确答案索引（a字段）、详细解析（e字段）\n\n')
++ (isJd ? '基于通行版本原文与权威译注，确保准确可靠。\n- t 字段为该段完整原文：纯古文逐字保留，不可改写、不可节选、不可截断，不掺杂白话译文或赏析\n- p 字段为该段逐句白话译文（现代文翻译）\n- 解析需注明原文出处、写作背景及思想内涵' : '所有知识点准确可靠。\n- t 字段为精讲风格：先概括核心要点再详解知识点') + '\n\n'
 + '请严格按以下 JSON 数组格式返回（不要使用 markdown 代码块）：\n'
 + '[\n'
 + '  {\n'
-+ '    "t": "知识点原文",\n'
++ (isJd ? '    "t": "该段完整原文（纯古文）",\n    "p": "该段逐句白话译文",\n' : '    "t": "知识点原文",\n')
 + '    "q": "题目题干",\n'
 + '    "o": ["A选项", "B选项", "C选项", "D选项"],\n'
 + '    "a": <0-3>,\n'
@@ -26020,6 +26248,7 @@ var prompt = (isJd ? '你是一位资深的国学学者与中国古典文学研�
 + '  }\n'
 + ']\n\n'
 + '注意：\n'
++ (isJd ? '- 原文必须完整呈现，宁可拆多条也绝不截断或省略\n' : '')
 + '- 确保所有知识点准确可靠\n'
 + '- 选项中的正确答案必须唯一且明确\n'
 + '- 【专业要求】各选项文字长度要均衡，正确答案不能总是最长或最短的；错误选项要有迷惑性，与正确选项在措辞风格、详细程度上相似\n'
@@ -26045,6 +26274,7 @@ st.articles.push({
 id: startId + i,
 c: chapterName,
 t: items[i].t || '',
+p: items[i].p || '',
 q: items[i].q || '',
 o: items[i].o || ['','','',''],
 a: items[i].a !== undefined ? items[i].a : 0,
@@ -26059,6 +26289,14 @@ startHotGenNextChapter(topicId);
 }).catch(function(err) {
 console.error('[HotGen] 章节生成失败:', err.message || err);
 hideAILoading();
+var msg = (err.message || '').toLowerCase();
+var r = st.chapterStates[chapterName]._retry || 0;
+if ((msg.indexOf('429') !== -1 || msg.indexOf('rate_limit') !== -1) && r < 2) {
+st.chapterStates[chapterName]._retry = r + 1;
+showToast('⚠️ ' + chapterName + ' 触发限速，自动重试... (' + (r+1) + '/2)');
+setTimeout(function() { aiGenerateHotChapter(topicId, chapterName, chIdx); }, 3000);
+return;
+}
 st.chapterStates[chapterName].status = 'error';
 st.chapterStates[chapterName].error = err.message || '生成失败';
 showToast('❌ ' + chapterName + ' 生成失败，可点击 ❌ 重新生成');
@@ -26080,6 +26318,10 @@ if (!st || st.articles.length === 0) {
 showToast('❌ 没有成功生成的题目');
 return;
 }
+st.articles.sort(function(a, b) {
+return st.framework.chapters.indexOf(a.c) - st.framework.chapters.indexOf(b.c);
+});
+
 var course = {
 name: st.framework.name,
 chapters: st.framework.chapters,
@@ -26286,7 +26528,7 @@ courseData.chapters = Object.keys(chSet);
 }
 try {
 StorageManager.saveCourse(name, courseData);
-switchCourse(name);
+switchCourse(name, true);
 HOT_GEN_RESULT = null;
 showToast('✅ 「' + name + '」部署成功！已切换到新课程');
 } catch(e) {
@@ -28679,7 +28921,7 @@ chapters: [courseName],
 articles: articles
 });
 showToast('✅ 已部署! 正在切换到「' + courseName + '」');
-switchCourse(courseName);
+switchCourse(courseName, true);
 }
 
 // ==================== 语言宫殿 (Language Palace) v22 ====================
@@ -29652,7 +29894,7 @@ function deployVideoPalaceToSystem(courseId){
   StorageManager.saveCourse(cn, {chapters:[cn], articles:articles});
   state.rangeMode='all';
   showToast('✅ 已部署! 切换至「'+cn+'」');
-  switchCourse(cn);
+  switchCourse(cn, true);
   switchMode('sequential');
 }
 var _vpArticleVideoUrls = {};
@@ -29982,7 +30224,10 @@ html += '<div class="se-section"><div class="se-section-title">' + icon + ' ' + 
 container.innerHTML = html;
 }
 function simpleMarkdown(text) {
-var s = escHtml(text);
+var M = [];
+var s = protectMath(text, M);
+s = wrapBareLatex(s, M);
+s = escHtml(s);
 // Multi-level emphasis: ***critical*** (red), **bold**, __bold__, *italic*
 s = s.replace(/\*\*\*(.+?)\*\*\*/g, '<strong class="hl-core">$1</strong>');
 s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
@@ -30046,7 +30291,7 @@ result.push(list);
 result.push('<p>' + p.replace(/\n/g, '<br>') + '</p>');
 }
 }
-return result.join('\n');
+return restoreMath(result.join('\n'), M);
 }
 var SENTENCE_DELIMITER_RE = /([。！？；;?])/g;
 function sentenceMarkdown(text) {
@@ -30055,6 +30300,12 @@ return simpleMarkdown(s);
 }
 function _enhanceContent(html) {
 	if (!html) return html;
+	if (html.indexOf('math-raw') === -1 && /\\[a-zA-Z]|\$\$|\$(?=[^$\n]{1,120}\$)/.test(html)) {
+		var M = [];
+		html = protectMath(html, M);
+		html = wrapBareLatex(html, M);
+		html = restoreMath(html, M);
+	}
 	// *** critical emphasis (red)
 	html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong class="hl-core">$1</strong>');
 	// Table: pipe tables in format content (not processed by simpleMarkdown)
@@ -30088,6 +30339,8 @@ function _enhanceContent(html) {
 	html = html.replace(/^>(.+)$/gm, '<div class="content-blockquote">$1</div>');
 	return html;
 }
+
+function mathSafe(s){ return (typeof _enhanceContent==='function' && s) ? _enhanceContent(s) : s; }
 
 // === 提取结构 - 保存/历史功能 ===
 var _seCurrentTopic = '';
@@ -30164,9 +30417,8 @@ articles.push({ id: id++, c: found.topic, t: sections[si].heading, p: sections[s
 }
 var courseData = { chapters: chapters, articles: articles, coreFramework: [], conceptNames: [], chapterCoreMap: [], colors: [] };
 try {
-all[finalName] = courseData;
-safeSetItem(COURSES_DATA_KEY, JSON.stringify(all));
-switchCourse(finalName);
+StorageManager.saveCourse(finalName, courseData);
+switchCourse(finalName, true);
 showToast('✅ 已部署为课程「' + finalName + '」');
 } catch(e) { showToast('❌ 部署失败: ' + (e.message || e)); }
 }
@@ -30192,9 +30444,8 @@ articles.push({ id: id++, c: r.topic, t: sections[si].heading, p: sections[si].c
 }
 var courseData = { chapters: chapters, articles: articles, coreFramework: [], conceptNames: [], chapterCoreMap: [], colors: [] };
 try {
-all[finalName] = courseData;
-safeSetItem(COURSES_DATA_KEY, JSON.stringify(all));
-switchCourse(finalName);
+StorageManager.saveCourse(finalName, courseData);
+switchCourse(finalName, true);
 showToast('✅ 已部署合集课程「' + finalName + '」（' + chapters.length + '章共' + articles.length + '篇文章）');
 } catch(e) { showToast('❌ 部署失败: ' + (e.message || e)); }
 }
@@ -30223,7 +30474,7 @@ function deployAsCourse(baseName, chapterList, sourceTag) {
     }
   }
   var cd = {chapters:chapters, articles:articles, coreFramework:[], conceptNames:[], chapterCoreMap:[], colors:[]};
-  try { all[finalName] = cd; safeSetItem(COURSES_DATA_KEY, JSON.stringify(all)); switchCourse(finalName); showToast('✅ 已部署为课程「'+finalName+'」（'+chapters.length+'章 '+articles.length+'节）'); }
+  try { StorageManager.saveCourse(finalName, cd); switchCourse(finalName, true); showToast('✅ 已部署为课程「'+finalName+'」（'+chapters.length+'章 '+articles.length+'节）'); }
   catch(e) { showToast('❌ 部署失败: '+(e.message||e)); }
 }
 function formatDate(ts) {
@@ -31165,7 +31416,7 @@ prompt: '你是一个考试大纲分析专家。请将以下考试大纲内容�
 + '}\n\n'
 + '大纲内容：\n' + text.slice(0, 20000),
 temperature: 0.3,
-maxTokens: 12288,
+maxTokens: 16384,
 timeout: 60000,
 stream: function(chunk, fullText) {
 statusEl.textContent = '⏳ 正在解析考纲... (' + fullText.length + ' 字符已接收)';
@@ -31297,7 +31548,7 @@ return callAI({
 prompt: prompt,
 systemPrompt: '你是一位资深的认证考试培训专家，擅长将考试大纲知识点转化为高质量的学习内容。',
 temperature: 0.5,
-maxTokens: 12288,
+maxTokens: 16384,
 timeout: 120000,
 stream: function(chunk, fullText) { statusEl.textContent = '⏳ 生成中 (' + (idx+1) + '/' + articles.length + ')...'; }
 }).then(function(resp) {
@@ -32444,7 +32695,7 @@ function callThinkTank() {
     systemPrompt: systemPrompt,
     prompt: result.prompt,
     temperature: 0.7,
-    maxTokens: 12288,
+    maxTokens: 16384,
     timeout: 120000,
     stream: function(chunk, fullText) {
       if (loading) loading.style.display = 'none';
@@ -32856,6 +33107,12 @@ function renderPTDimContent() {
   var c = dims[active];
   var html = c ? formatPTContent(c) : '<div class="pt-empty">暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="pt-btn pt-btn-outline" onclick="callPTAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="pt-btn pt-btn-outline" onclick="toggleFollowUp(\'pt\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_pt_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_pt" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'pt\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="pt-btn pt-btn-outline" onclick="callPanelFollowUp(\'pt\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_pt_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function parsePTDims(text) {
@@ -33108,7 +33365,7 @@ function callMetaAnalysis() {
   callAI({
     prompt: prompt,
     temperature: 0.7,
-    maxTokens: 12288,
+    maxTokens: 16384,
     timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) {
@@ -33133,17 +33390,17 @@ function callMetaAnalysis() {
 }
 function formatMetaContent(txt) {
   if (!txt) return '<div class="meta-empty">暂无内容</div>';
-  var html = txt
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
+  var M = [];
+  var html = protectMath(txt, M);
+  html = wrapBareLatex(html, M);
+  html = escHtml(html)
     .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/###\s*(.+)/g, '<h4 class="meta-h4">$1</h4>')
     .replace(/##\s*(.+)/g, '<h3 class="meta-h3">$1</h3>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\n/g, '<br>');
-  html = renderLatex(html);
+  html = restoreMath(html, M);
   html = _enhanceContent(html);
 	return '<div class="meta-output">' + html + '</div>';
 }
@@ -33269,6 +33526,12 @@ function renderBizDimContent() {
   var content = dims[active];
   var html = content ? formatBizContent(content) : '<div class="biz-empty">该维度暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="biz-btn biz-btn-outline" onclick="callBizAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="biz-btn biz-btn-outline" onclick="toggleFollowUp(\'biz\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_biz_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_biz" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'biz\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="biz-btn biz-btn-outline" onclick="callPanelFollowUp(\'biz\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_biz_'+active+'" style="margin-top:8px"></div></div>';
   resultDiv.innerHTML = html;
 }
 function renderBizPanel() {
@@ -33344,7 +33607,7 @@ function callBizAnalysis() {
   callAI({
     prompt: prompt,
     temperature: 0.7,
-    maxTokens: 12288,
+    maxTokens: 16384,
     timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) {
@@ -33384,9 +33647,10 @@ function callBizAppend(dimId) {
   var resultDiv = document.getElementById('bizResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.7, maxTokens: 12288, timeout: 180000,
+    prompt: prompt, temperature: 0.7, maxTokens: 16384, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -33545,6 +33809,12 @@ function renderTcmDimContent() {
   var content = dims[active];
   var html = content ? formatTcmContent(content) : '<div class="tcm-empty">该维度暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="tcm-btn tcm-btn-outline" onclick="callTcmAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="tcm-btn tcm-btn-outline" onclick="toggleFollowUp(\'tcm\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_tcm_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_tcm" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'tcm\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="tcm-btn tcm-btn-outline" onclick="callPanelFollowUp(\'tcm\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_tcm_'+active+'" style="margin-top:8px"></div></div>';
   resultDiv.innerHTML = html;
 }
 function renderTcmPanel() {
@@ -33620,7 +33890,7 @@ function callTcmAnalysis() {
   callAI({
     prompt: prompt,
     temperature: 0.5,
-    maxTokens: 12288,
+    maxTokens: 16384,
     timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) {
@@ -33660,9 +33930,10 @@ function callTcmAppend(dimId) {
   var resultDiv = document.getElementById('tcmResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加辨证中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -33823,6 +34094,12 @@ function renderYangDimContent() {
   var c = dims[active];
   var html = c ? formatYangContent(c) : '<div class="yang-empty">暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="yang-btn yang-btn-outline" onclick="callYangAppend(\'' + active + '\')">\🔍 追加深度 - ' + labels[active] + '</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="yang-btn yang-btn-outline" onclick="toggleFollowUp(\'yang\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_yang_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_yang" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'yang\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="yang-btn yang-btn-outline" onclick="callPanelFollowUp(\'yang\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_yang_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function renderYangPanel() {
@@ -33890,7 +34167,7 @@ function callYangAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '\🌿 AI 养生方案生成中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '\🌿 AI 生成中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatYangContent(fullText);
@@ -33925,9 +34202,10 @@ function callYangAppend(dimId) {
   var resultDiv = document.getElementById('yangResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '\🔍 AI 追加深度分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '\🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -34062,6 +34340,12 @@ function renderChuangDimContent() {
   var c = dims[active];
   var html = c ? formatChuangContent(c) : '<div class="chuang-empty">暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="chuang-btn chuang-btn-outline" onclick="callChuangAppend(\'' + active + '\')">🔍 追加深度 - ' + labels[active] + '</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="chuang-btn chuang-btn-outline" onclick="toggleFollowUp(\'chuang\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_chuang_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_chuang" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'chuang\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="chuang-btn chuang-btn-outline" onclick="callPanelFollowUp(\'chuang\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_chuang_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function renderChuangPanel() {
@@ -34129,7 +34413,7 @@ function callChuangAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '💡 AI 创新分析中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '💡 AI 分析中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatChuangContent(fullText);
@@ -34164,9 +34448,10 @@ function callChuangAppend(dimId) {
   var resultDiv = document.getElementById('chuangResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加深度分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (resultDiv) resultDiv.innerHTML = formatChuangContent(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -34321,6 +34606,12 @@ function renderAskDimContent() {
   var label = dims[dim] || dim;
   var h = '<div class="ask-output"><h3>🤔 ' + label + '</h3>' + formatAskContent(content) + '</div>';
   h += '<div style="margin-top:12px"><button class="ask-btn ask-btn-outline" onclick="callAskAppend(\'' + dim + '\')">🔍 追问此维度</button></div>';
+  h += '<div style="text-align:center;margin-top:12px"><button class="ask-btn ask-btn-outline" onclick="toggleFollowUp(\'ask\',\''+dim+'\')">💬 追问</button></div>';
+  h += '<div id="fu_ask_'+dim+'" class="tutor-followup-area" style="display:none">';
+  h += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  h += '<div class="tutor-followup-row"><input id="fuInput_ask" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'ask\',\''+dim+'\',\''+label+'\')">';
+  h += '<button class="ask-btn ask-btn-outline" onclick="callPanelFollowUp(\'ask\',\''+dim+'\',\''+label+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  h += '<div id="fuResult_ask_'+dim+'" style="margin-top:8px"></div></div>';
   container.innerHTML = h;
 }
 
@@ -34392,7 +34683,7 @@ function callAskAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🤔 AI 深度提问中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.7, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.7, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🤔 AI 提问中 (' + fullText.length + ' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = '<div class="ask-output">' + formatAskContent(fullText) + '</div>';
@@ -34433,7 +34724,7 @@ function callAskAppend(dimId) {
   var resultDiv = document.getElementById('askResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 追加追问 ' + dimId + '...'; }
   callAI({
-    prompt: buildAskAppendPrompt(dimId), temperature: 0.7, maxTokens: 12288, timeout: 120000,
+    prompt: buildAskAppendPrompt(dimId), temperature: 0.7, maxTokens: 16384, timeout: 120000,
     stream: function(chunk, fullText) {
       if (resultDiv) resultDiv.innerHTML = '<div class="ask-output">' + formatAskContent(fullText) + '</div>';
     }
@@ -34751,6 +35042,12 @@ function renderHeResultsView(){
     h.push('<div class="he-panel-header">'+icon+' '+label+'</div>');
     h.push(formatHeContent(content));
     h.push('<div style="text-align:center;margin-top:12px"><button class="he-btn he-btn-outline" onclick="callHeAppend(\''+activeP+'\')">🔍 追加深度分析 - '+label+'</button></div>');
+    h.push('<div style="text-align:center;margin-top:12px"><button class="he-btn he-btn-outline" onclick="toggleFollowUp(\'he\',\''+activeP+'\')">💬 追问</button></div>');
+    h.push('<div id="fu_he_'+activeP+'" class="tutor-followup-area" style="display:none">');
+    h.push('<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>');
+    h.push('<div class="tutor-followup-row"><input id="fuInput_he" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'he\',\''+activeP+'\',\''+label+'\')">');
+    h.push('<button class="he-btn he-btn-outline" onclick="callPanelFollowUp(\'he\',\''+activeP+'\',\''+label+'\')" style="flex:0;padding:6px 16px">发送</button></div>');
+    h.push('<div id="fuResult_he_'+activeP+'" style="margin-top:8px"></div></div>');
     h.push('</div>');
   }else{
     h.push('<div class="he-empty">该视角暂无分析内容</div>');
@@ -34775,6 +35072,7 @@ function callHeAppend(panelId){
     prompt:prompt,temperature:0.6,maxTokens:12288,timeout:300000,
     stream:function(chunk,fullText){
       if(loading){var lt=loading.querySelector('span');if(lt)lt.textContent='🎯 AI 追加中 ('+fullText.length+' 字)...';}
+      var rd2=$id('heResult');if(rd2)rd2.innerHTML=simpleMarkdown(fullText);
     }
   }).then(function(fullText){
     if(loading)loading.style.display='none';
@@ -35047,7 +35345,7 @@ function callIdeaAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '💡 AI 策划中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.7, maxTokens: 12288, timeout: 180000,
+    prompt: prompt, temperature: 0.7, maxTokens: 16384, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '💡 AI 策划中 (' + fullText.length + ' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatIdeaContent(fullText);
@@ -35290,7 +35588,7 @@ function callNewsAnalysis() {
     var prompt = buildNewsPrompt(searchResults);
     if (!prompt) { if (loading) loading.style.display = 'none'; return; }
     return callAI({
-      prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000, search: false,
+      prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 180000, search: false,
       stream: function(chunk, fullText) {
         if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🧠 DeepSeek 分析中 ('+fullText.length+' 字)...'; }
         if (resultDiv) resultDiv.innerHTML = formatNewsContent(fullText);
@@ -35621,7 +35919,10 @@ function parsePPDims(text) {
 }
 function formatPPContent(text) {
   if (!text) return '';
-  var s = escHtml(text);
+  var M = [];
+  var s = protectMath(text, M);
+  s = wrapBareLatex(s, M);
+  s = escHtml(s);
   s = s.replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
   s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
   s = s.replace(/### (.+)/g, '<h3>$1</h3>');
@@ -35651,7 +35952,7 @@ function formatPPContent(text) {
   s = _enhanceContent(s);
   s = s.replace(/\n{2,}/g, '\n');
   s = s.replace(/\n/g, '<br>');
-  return s;
+  return restoreMath(s, M);
 }
 
 function savePPSession() {
@@ -35734,6 +36035,12 @@ function renderFinDimContent() {
   var c = dims[active];
   var html = c ? formatFinContent(c) : '<div class="fin-empty">暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="fin-btn fin-btn-outline" onclick="callFinAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="fin-btn fin-btn-outline" onclick="toggleFollowUp(\'fin\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_fin_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_fin" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'fin\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="fin-btn fin-btn-outline" onclick="callPanelFollowUp(\'fin\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_fin_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function renderFinPanel() {
@@ -35797,7 +36104,7 @@ function callFinAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🏦 AI 融资策划中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🏦 AI 策划中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatFinContent(fullText);
@@ -35833,9 +36140,10 @@ function callFinAppend(dimId) {
   var resultDiv = document.getElementById('finResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -35970,6 +36278,12 @@ function renderAnaLayerContent() {
   var c = layers[active];
   var html = c ? formatAnaContent(c) : '<div class="ana-empty">暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="ana-btn ana-btn-outline" onclick="callAnaAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="ana-btn ana-btn-outline" onclick="toggleFollowUp(\'ana\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_ana_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_ana" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'ana\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="ana-btn ana-btn-outline" onclick="callPanelFollowUp(\'ana\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_ana_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function renderAnaPanel() {
@@ -36035,7 +36349,7 @@ function callAnaAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F52C} AI \u{4E94}\u{5C42}\u{5206}\u{6790}\u{4E2D}...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F52C} AI \u{5206}\u{6790}\u{4E2D} ('+fullText.length+' \u{5B57})...'; }
       if (resultDiv) resultDiv.innerHTML = formatAnaContent(fullText);
@@ -36071,9 +36385,10 @@ function callAnaAppend(layerId) {
   var resultDiv = document.getElementById('anaResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -36209,6 +36524,12 @@ function renderAdvLevelContent() {
   var c = levels[active];
   var html = c ? formatAdvContent(c) : '<div class="adv-empty">暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="adv-btn adv-btn-outline" onclick="callAdvAppend(\''+active+'\')">🔍 追加深度</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="adv-btn adv-btn-outline" onclick="toggleFollowUp(\'adv\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_adv_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_adv" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'adv\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="adv-btn adv-btn-outline" onclick="callPanelFollowUp(\'adv\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_adv_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function renderAdvPanel() {
@@ -36266,6 +36587,7 @@ function parseAdvLevels(text) {
   }
   return levels;
 }
+function _advHasAnyLevel(levels) { return !!(levels && (levels.basic || levels.medium || levels.expert || levels.principle || levels.extend)); }
 function callAdvAnalysis() {
   var prompt = buildAdvPrompt();
   if (!prompt) return;
@@ -36274,16 +36596,37 @@ function callAdvAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F4D6} AI \u{8BB2}\u{9898}\u{4E2D}...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000, search: true,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '\u{1F4D6} AI \u{8BB2}\u{9898}\u{4E2D} ('+fullText.length+' \u{5B57})...'; }
       if (resultDiv) resultDiv.innerHTML = formatAdvContent(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
-    window._advLevels = parseAdvLevels(fullText);
-    window._advActiveLevel = 'basic';
-    switchAdvLevel('basic');
+    var levels = parseAdvLevels(fullText);
+    if (_advHasAnyLevel(levels)) {
+      window._advLevels = levels;
+      window._advActiveLevel = 'basic';
+      switchAdvLevel('basic');
+    } else if (fullText) {
+      window._advLevels = { basic: fullText };
+      window._advActiveLevel = 'basic';
+      var rd = $id('advResult');
+      if (rd) rd.innerHTML = formatAdvContent(fullText);
+    } else {
+      var rd2 = $id('advResult');
+      if (rd2) rd2.innerHTML = '<div class="adv-empty">⚠️ 模型未返回任何内容<br><span style="font-size:12px;color:#999">请检查网络 / API 配置 / 余额，或稍后重试</span></div>';
+    }
+    if (fullText && (readSSEStream._lastFinishReason === 'length' || readSSEStream._lastFinishReason === 'cut')) {
+      var rdw = $id('advResult');
+      if (rdw) {
+        var _w = document.createElement('div');
+        _w.style.cssText = 'margin-top:12px;padding:10px 12px;border:1px solid #c8a24a;background:#fff7e0;border-radius:8px;font-size:13px;color:#8a6d1a;line-height:1.6';
+        _w.innerHTML = '⚠️ 本次内容未完整返回（达到输出上限或被中断），末尾部分缺失。<br>可点击下方「🔍 追加深度」继续补全对应层级。';
+        rdw.appendChild(_w);
+      }
+      showToast('⚠️ 内容被截断，未完整返回');
+    }
     var input = $id('advInput');
     saveAdvSession(input ? input.value.trim() : '', window._advLevels);
   }).catch(function(err) {
@@ -36310,17 +36653,23 @@ function callAdvAppend(levelId) {
   var resultDiv = document.getElementById('advResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加讲解中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 180000, search: true,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 180000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (resultDiv) resultDiv.innerHTML = formatAdvContent(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
+    if (!fullText) { showToast('⚠️ 未返回内容，请重试'); var rdx = $id('advResult'); if (rdx) rdx.innerHTML = '<div class="adv-empty">⚠️ 未返回内容</div>'; return; }
     var labels = { basic:'基础解', medium:'进阶解', expert:'高手解', principle:'原理层', extend:'举一反三' };
     var label = labels[levelId] || levelId;
     var marker = '【' + label + '·续】';
     var start = fullText.indexOf(marker);
     var appendContent = start !== -1 ? fullText.substring(start + marker.length).trim() : fullText;
+    if (readSSEStream._lastFinishReason === 'length' || readSSEStream._lastFinishReason === 'cut') {
+      appendContent += '\n\n> ⚠️ 本次追加同样未完整返回，可再次点击「追加深度」继续。';
+      showToast('⚠️ 追加内容被截断，未完整返回');
+    }
     if (!window._advLevels) window._advLevels = {};
     var existing = window._advLevels[levelId] || '';
     window._advLevels[levelId] = existing + '\n\n---\n\n### 📌 追加深度讲解\n' + appendContent;
@@ -36423,17 +36772,283 @@ function renderLatex(text) {
   });
   return text;
 }
+
+// ===== 数学公式渲染（KaTeX）=====
+var KATEX_VER = '0.16.22';
+var KATEX_MIRRORS = [
+  'https://cdn.jsdelivr.net/npm/katex@' + KATEX_VER + '/',
+  'https://registry.npmmirror.com/katex/' + KATEX_VER + '/files/',
+  'https://unpkg.com/katex@' + KATEX_VER + '/'
+];
+var _katexPromise = null, _katexFailed = false;
+function _katexProbe() {
+  if (!window.katex) return false;
+  try { window.katex.renderToString('\\ce{H2O}', { throwOnError: true }); return true; }
+  catch (e) { return false; }
+}
+function ensureKaTeX(cb) {
+  if (window.katex) { if (cb) cb(); return; }
+  if (_katexFailed) { if (cb) cb(); return; }
+  if (_katexPromise) { if (cb) _katexPromise.then(cb, cb); return; }
+  var link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.setAttribute('data-katex-css', '1');
+  if (!document.querySelector('link[data-katex-css]')) document.head.appendChild(link);
+  _katexPromise = new Promise(function(resolve, reject) {
+    var i = 0;
+    function tryNext() {
+      if (i >= KATEX_MIRRORS.length) { _katexFailed = true; reject(new Error('KaTeX 加载失败')); return; }
+      var base = KATEX_MIRRORS[i++];
+      link.href = base + 'dist/katex.min.css';
+      loadScriptLib(base + 'dist/katex.min.js').then(function() {
+        loadScriptLib(base + 'dist/contrib/mhchem.min.js').catch(function() {});
+        resolve();
+      }).catch(function() { tryNext(); });
+    }
+    tryNext();
+  });
+  if (cb) _katexPromise.then(function() { cb(); }, function() { cb(); });
+}
+var BARE_MATH_CMDS = {
+  frac:1, dfrac:1, tfrac:1, cfrac:1, sqrt:1, ce:1, pu:1, sum:1, int:1, iint:1, prod:1,
+  lim:1, max:1, min:1, log:1, ln:1, lg:1, sin:1, cos:1, tan:1, cot:1, sec:1, csc:1,
+  cdot:1, times:1, div:1, pm:1, mp:1, ne:1, neq:1, approx:1, equiv:1, le:1, ge:1,
+  ll:1, gg:1, subset:1, supset:1, subseteq:1, supseteq:1, cup:1, cap:1, in:1, notin:1,
+  to:1, rightarrow:1, leftarrow:1, Rightarrow:1, Leftarrow:1, Leftrightarrow:1, longrightarrow:1, mapsto:1,
+  alpha:1, beta:1, gamma:1, delta:1, epsilon:1, varepsilon:1, theta:1, lambda:1, mu:1,
+  pi:1, sigma:1, phi:1, varphi:1, omega:1, Delta:1, Omega:1, Gamma:1, Sigma:1,
+  infty:1, partial:1, nabla:1, forall:1, exists:1, emptyset:1, varnothing:1, perp:1,
+  parallel:1, sim:1, simeq:1, cong:1, propto:1, dots:1, cdots:1, vdots:1, ddots:1,
+  prime:1, circ:1, angle:1, triangle:1, triangleq:1, deg:1, uparrow:1, downarrow:1,
+  text:1, mathrm:1, operatorname:1, overrightarrow:1, vec:1, hat:1, bar:1
+};
+function protectMath(s, M) {
+  var out = '', i = 0, n = s.length;
+  while (i < n) {
+    var c = s.charAt(i);
+    if (c === '<' && (s.substr(i, 4) === '<pre' || s.substr(i, 5) === '<code')) {
+      var eP = s.indexOf('</pre>', i), eC = s.indexOf('</code>', i);
+      var eCl;
+      if (eP === -1 && eC === -1) { out += s.slice(i); break; }
+      if (eP === -1) eCl = eC;
+      else if (eC === -1) eCl = eP;
+      else eCl = Math.min(eP, eC);
+      var skipLen = s.substr(eCl, 6) === '</pre>' ? 6 : 7;
+      out += s.slice(i, eCl + skipLen); i = eCl + skipLen; continue;
+    }
+    if (c === '`') {
+      if (s.substr(i, 3) === '```') {
+        var e = s.indexOf('```', i + 3);
+        if (e < 0) { out += s.slice(i); break; }
+        out += s.slice(i, e + 3); i = e + 3;
+      } else {
+        var e2 = s.indexOf('`', i + 1);
+        if (e2 < 0) { out += c; i++; }
+        else { out += s.slice(i, e2 + 1); i = e2 + 1; }
+      }
+      continue;
+    }
+    if (c === '$') {
+      var block = s.charAt(i + 1) === '$';
+      var dl = block ? 2 : 1, st = i + dl;
+      var ci = block ? s.indexOf('$$', st) : s.indexOf('$', st);
+      if (ci < 0) { out += c; i++; continue; }
+      var raw = s.slice(st, ci);
+      if (!block) {
+        if (raw.length > 120 || raw.indexOf('\n') >= 0) { out += c; i++; continue; }
+        if (raw.indexOf('\\') < 0 && !/[+\-*\/=<>^_{}×÷≈≤≥]/.test(raw)) { out += c; i++; continue; }
+      }
+      var k = M.length; M.push({ tex: raw.trim(), mode: block ? 'block' : 'inline' });
+      out += '@@MATH' + k + '@@'; i = ci + dl; continue;
+    }
+    if (c === '\\' && (s.charAt(i + 1) === '[' || s.charAt(i + 1) === '(')) {
+      var close = s.charAt(i + 1) === '[' ? '\\]' : '\\)';
+      var c2 = s.indexOf(close, i + 2);
+      if (c2 < 0) { out += c; i++; continue; }
+      var r2 = s.slice(i + 2, c2), k2 = M.length;
+      M.push({ tex: r2.trim(), mode: s.charAt(i + 1) === '[' ? 'block' : 'inline' });
+      out += '@@MATH' + k2 + '@@'; i = c2 + 2; continue;
+    }
+    out += c; i++;
+  }
+  return out;
+}
+function scanBareCommands(s, M) {
+  var out = '', i = 0, n = s.length;
+  while (i < n) {
+    var c = s.charAt(i);
+    if (c === '\\' && /[a-zA-Z]/.test(s.charAt(i + 1) || '')) {
+      var j = i + 1, cmd = '';
+      while (j < n && /[a-zA-Z]/.test(s.charAt(j))) { cmd += s.charAt(j); j++; }
+      if (cmd === 'left') {
+        var mr = s.indexOf('\\right', j);
+        if (mr < 0 || mr > i + 200) { out += c; i++; continue; }
+        var delim = s.charAt(mr + 6);
+        if ('()[]{}|.\\'.indexOf(delim) === -1) { out += c; i++; continue; }
+        var rr = mr + 7;
+        var k3 = M.length; M.push({ tex: s.slice(i, rr), mode: 'inline' }); out += '@@MATH' + k3 + '@@'; i = rr; continue;
+      }
+      if (!BARE_MATH_CMDS[cmd]) { out += c; i++; continue; }
+      var groups = '', balanced = true, k = j, gcount = 0;
+      while (k < n && gcount < 5) {
+        var ch = s.charAt(k);
+        if (ch === ' ') { k++; continue; }
+        if (ch === '[') { var eb = s.indexOf(']', k); if (eb < 0) break; groups += s.slice(k, eb + 1); k = eb + 1; gcount++; }
+        else if (ch === '{') {
+          var depth = 1, q = k + 1, body = '{';
+          while (q < n && depth > 0) {
+            var cc = s.charAt(q);
+            if (cc === '{') depth++;
+            else if (cc === '}') depth--;
+            body += cc; q++;
+          }
+          if (depth > 0) { balanced = false; break; }
+          groups += body; k = q; gcount++;
+        }
+        else if (ch === '_' || ch === '^') {
+          var nxt = s.charAt(k + 1);
+          if (nxt === '{') {
+            var depth2 = 1, q2 = k + 2, body2 = ch + '{';
+            while (q2 < n && depth2 > 0) {
+              var cc2 = s.charAt(q2);
+              if (cc2 === '{') depth2++;
+              else if (cc2 === '}') depth2--;
+              body2 += cc2; q2++;
+            }
+            if (depth2 > 0) { balanced = false; break; }
+            groups += body2; k = q2; gcount++;
+          } else if (/[0-9a-zA-Z]/.test(nxt)) {
+            groups += ch + nxt; k += 2; gcount++;
+          } else break;
+        }
+        else break;
+      }
+      if (!balanced) { out += c; i++; continue; }
+      var full = '\\' + cmd + groups;
+      if (groups.indexOf('@') !== -1) { out += c; i++; continue; }
+      var kk = M.length; M.push({ tex: full, mode: 'inline' });
+      out += '@@MATH' + kk + '@@'; i = k; continue;
+    }
+    out += c; i++;
+  }
+  return out;
+}
+function wrapBareLatex(s, M) {
+  s = s.replace(/\\begin\{([A-Za-z*]+)\}([\s\S]*?)\\end\{\1\}/g, function(m, env, body) {
+    if (body.indexOf('@') !== -1 || body.indexOf('\\begin') !== -1) return m;
+    var k = M.length; M.push({ tex: m, mode: 'block' }); return '@@MATH' + k + '@@';
+  });
+  s = scanBareCommands(s, M);
+  s = s.replace(/([A-Za-z0-9\)\]])\^(?:\{([^{}]{1,80})\}|([0-9A-Za-z]))/g, function(m, p, b, u) {
+    var k = M.length; M.push({ tex: p + '^' + (b || u), mode: 'inline' }); return '@@MATH' + k + '@@';
+  });
+  s = s.replace(/([A-Za-z0-9\)\]])\_(?:\{([^{}]{1,80})\}|([0-9]))/g, function(m, p, b, u) {
+    var k = M.length; M.push({ tex: p + '_' + (b || u), mode: 'inline' }); return '@@MATH' + k + '@@';
+  });
+  return s;
+}
+function restoreMath(s, M) {
+  return s.replace(/@@MATH(\d+)@@/g, function(m, idx) {
+    var obj = M[Number(idx)];
+    if (!obj) return m;
+    var tex = (obj.tex || '').replace(/&amp;/g, '&').replace(/<br\s*\/?>/gi, ' ');
+    return '<span class="math-raw ' + (obj.mode === 'block' ? 'math-block' : 'math-inline') + '">' + escHtml(tex) + '</span>';
+  });
+}
+function formatCeBody(c) {
+  var s = c;
+  s = s.replace(/\s*->\s*/g, ' → ').replace(/\s*<->\s*/g, ' ⇌ ').replace(/\s*<=\s*>\s*/g, ' ⇌ ');
+  s = s.replace(/([A-Za-z])(\d+)/g, '$1<sub>$2</sub>');
+  s = s.replace(/\s*\+\s*/g, ' + ');
+  return s;
+}
+function ceToHtml(tex) {
+  var s = escHtml(tex);
+  s = s.replace(/\\ce\{([^{}]*)\}/g, function(m, c) { return formatCeBody(c); });
+  s = s.replace(/\\pu\{([^{}]*)\}/g, function(m, c) { return escHtml(c); });
+  return convertLatexInline(s);
+}
+function convertMathFallback(tex, block) {
+  var inner;
+  if (/\\ce\{|\\pu\{/.test(tex)) inner = ceToHtml(tex);
+  else inner = convertLatexInline(escHtml(tex));
+  return block ? '<div class="formula">' + inner + '</div>' : '<span class="formula-inline">' + inner + '</span>';
+}
+var _katexCache = {};
+var _katexCacheOrder = [];
+var _katexCacheMax = 500;
+function _katexRender(tex, block) {
+  var key = (block ? 'B:' : 'I:') + tex;
+  if (_katexCache.hasOwnProperty(key)) return _katexCache[key];
+  var html = window.katex.renderToString(tex, { displayMode: block, throwOnError: true, strict: false });
+  if (!_katexCache.hasOwnProperty(key)) {
+    _katexCache[key] = html;
+    _katexCacheOrder.push(key);
+    if (_katexCacheOrder.length > _katexCacheMax) {
+      var evict = _katexCacheOrder.shift();
+      delete _katexCache[evict];
+    }
+  }
+  return html;
+}
+
+function applyMathRendering(root, force) {
+  root = root || document;
+  if (!root.querySelectorAll) return;
+  var spans = root.querySelectorAll('.math-raw');
+  var kx = !!window.katex;
+  var pending = 0;
+  for (var i = 0; i < spans.length; i++) {
+    var sp = spans[i];
+    var st = sp.getAttribute('data-kx');
+    if (st === 'done') continue;
+    if (st === 'skip') continue;
+    if (st === 'fallback' && !force) continue;
+    if (sp.children.length && st !== 'fallback') { sp.setAttribute('data-kx', 'skip'); continue; }
+    var tex = sp.getAttribute('data-tex');
+    if (!tex) { tex = sp.textContent; sp.setAttribute('data-tex', tex); }
+    var block = sp.classList.contains('math-block');
+    var needCe = tex.indexOf('\\ce') !== -1 || tex.indexOf('\\pu') !== -1;
+    if (kx && (!needCe || _katexProbe())) {
+      try {
+        sp.innerHTML = _katexRender(tex, block);
+        sp.setAttribute('data-kx', 'done');
+        continue;
+      } catch (e) { /* 单个公式失败回退 */ }
+    } else { pending++; }
+    sp.innerHTML = convertMathFallback(tex, block);
+    sp.setAttribute('data-kx', kx ? 'done' : 'fallback');
+  }
+  if (pending && !_katexFailed) ensureKaTeX(function() { applyMathRendering(document, true); });
+}
+var _mathObsTimer = null;
+function _installMathObserver() {
+  if (window._mathObserverInstalled) return;
+  window._mathObserverInstalled = true;
+  if (!window.MutationObserver || !document.body) return;
+  new MutationObserver(function() {
+    if (_mathObsTimer) return;
+    _mathObsTimer = setTimeout(function() {
+      _mathObsTimer = null;
+      try { applyMathRendering(document); } catch (e) {}
+    }, 120);
+  }).observe(document.body, { childList: true, subtree: true });
+  try { applyMathRendering(document); } catch (e) {}
+}
+
 function formatAdvContent(txt) {
   if (!txt) return '<div class="adv-empty">\u{6682}\u{65E0}\u{5185}\u{5BB9}</div>';
-  var html = txt
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  var M = [];
+  var html = protectMath(txt, M);
+  html = wrapBareLatex(html, M);
+  html = escHtml(html)
     .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
     .replace(/`([^`]+)`/g,'<code>$1</code>')
     .replace(/###\s*(.+)/g,'<h4 class="adv-h4">$1</h4>')
     .replace(/##\s*(.+)/g,'<h3 class="adv-h3">$1</h3>')
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/\n/g,'<br>');
-  html = renderLatex(html);
+  html = restoreMath(html, M);
   html = _enhanceContent(html);
 	return '<div class="adv-output">'+html+'</div>';
 }
@@ -36540,6 +37155,12 @@ function renderIndStepContent() {
   var labels = { market:'市场规模', lifecycle:'生命周期', chain:'产业链', landscape:'竞争格局', pest:'宏观环境', profit:'盈利模式' };
   var html = c ? formatIndContent(c) : '<div class="ind-empty">暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="ind-btn ind-btn-outline" onclick="callIndAppend(\''+active+'\')">🔍 追加深度分析 - '+labels[active]+'</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="ind-btn ind-btn-outline" onclick="toggleFollowUp(\'ind\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_ind_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_ind" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'ind\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="ind-btn ind-btn-outline" onclick="callPanelFollowUp(\'ind\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_ind_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function renderIndPanel() {
@@ -36616,7 +37237,7 @@ function callIndAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '📊 AI 行业分析中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '📊 AI 分析中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatIndContent(fullText);
@@ -36642,9 +37263,10 @@ function callIndAppend(stepId) {
   var resultDiv = $id('indResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '📊 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '📊 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -37180,12 +37802,13 @@ function renderDcePanel(){if(!window._dceInit){initDceState();window._dceInit=tr
 function buildDceSearchQueries(inputText,scores){var keyword=(inputText||'').substring(0,30);var weakDims=[];DCE_DIMS.forEach(function(d){if((scores[d.id]||5)<=4)weakDims.push(d.label);});var queries=[];if(keyword)queries.push(keyword+' 决策 最新方法 2026');if(weakDims.length)queries.push(weakDims[0]+' 提升方法 决策质量');queries.push('认知偏误 决策 最新研究 2026');return queries.slice(0,3);}
 function buildDcePrompt(inputText,scores,searchResults){var dims=[];DCE_DIMS.forEach(function(d){dims.push('  - '+d.icon+' '+d.label+'（'+d.desc+'）: '+(scores[d.id]||5)+'/10分');});var total=0;DCE_DIMS.forEach(function(d){total+=scores[d.id]||5;});var avg=(total/DCE_DIMS.length).toFixed(1);var weak=[],strong=[];DCE_DIMS.forEach(function(d){var v=scores[d.id]||5;if(v<=4)weak.push(d);else if(v>=8)strong.push(d);});var p='你是一位首席决策科学家。用户面临一个关键决策，已完成六维决策质量自评（1-10分）。请基于评分和决策描述进行深度分析。\n\n=== 用户决策描述 ===\n'+(inputText||'未提供')+'\n\n=== 六维自评结果 ===\n'+dims.join('\n')+'\n\n平均决策质量分: '+avg+'/10';if(strong.length)p+='\n\n优势维度：'+strong.map(function(d){return d.icon+d.label+'('+(scores[d.id]||5)+'分)';}).join('、');if(weak.length)p+='\n\n薄弱维度：'+weak.map(function(d){return d.icon+d.label+'('+(scores[d.id]||5)+'分)';}).join('、');if(searchResults&&searchResults.length){p+='\n\n=== 实时搜索到的决策科学最新信息 ===\n';searchResults.forEach(function(sr){p+='\n【'+sr.topic+'】\n';(sr.results||[]).forEach(function(r){p+='- '+r.title+'\n'+(r.content||'').substring(0,200)+'\n';});});p+='\n=== 以上为实时搜索数据，请优先参考 ===\n';}p+='\n\n请严格按照以下格式输出（每部分用指定标题开头）：\n\n【问题重述】\n重新定义核心问题，从更本质的角度描述\n\n【关键假设】\n列出用户决策中隐含的关键假设，指出哪些可能不成立\n\n【决策树选项】\n列出主要可选路径，分析利弊和可能后果\n\n【偏误预警】\n识别当前决策最可能受哪些认知偏误影响，及缓解方法\n\n【推荐方案】\n基于决策质量和风险收益的加权推荐\n\n【执行计划】\n具体的下一步行动和检查点\n\n要求：用中文，语言精炼有洞察，像决策科学家一样一针见血。';return p;}
 function formatDceContent(txt){if(!txt)return '<div class=\"dce-empty\">暂无内容</div>';var html=txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/###\s*(.+)/g,'<h4>$1</h4>').replace(/##\s*(.+)/g,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');if(typeof _enhanceContent==='function')html=_enhanceContent(html);return '<div class=\"dce-output\">'+html+'</div>';}
+function formatDceDevilContent(txt){if(!txt)return '';var h=txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/###\s*(.+)/g,'<h4>$1</h4>').replace(/##\s*(.+)/g,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');return mathSafe(h);}
 function callDceAnalysis(){var input=$id('dceInput');var inputText=input?input.value.trim():'';var sc=state.dceSettings&&state.dceSettings.scores||{};var loading=$id('dceLoading'),result=$id('dceResult'),devilResult=$id('dceDevilResult'),searchStatus=$id('dceSearchStatus'),searchText=$id('dceSearchText');if(loading){loading.style.display='flex';var lt=$id('dceLoadText');if(lt)lt.textContent='🧠 AI 决策分析中...';}if(result)result.innerHTML='';if(devilResult)devilResult.style.display='none';var doAnalysis=function(searchResults){var prompt=buildDcePrompt(inputText,sc,searchResults);if(!prompt)return;callAI({prompt:prompt,temperature:0.5,maxTokens:12288,timeout:300000,stream:function(chunk,fullText){if(result)result.innerHTML=formatDceContent(fullText);}}).then(function(fullText){if(loading)loading.style.display='none';if(result)result.innerHTML=formatDceContent(fullText);saveDceSession(inputText,JSON.parse(JSON.stringify(sc)),fullText,null);showToast('✅ 决策分析完成');}).catch(function(err){if(loading)loading.style.display='none';var msg=err&&err.message?err.message:'未知错误';showToast('❌ 分析失败：'+msg);if(result)result.innerHTML='<div class=\"dce-empty\">❌ '+msg.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</div>';});};var apiKey=state.tavilyApiKey||'';if(apiKey&&typeof callTavilySearch==='function'){var queries=buildDceSearchQueries(inputText,sc);if(searchStatus)searchStatus.style.display='flex';if(searchText)searchText.textContent='🔍 正在搜索决策科学最新研究...';callTavilySearch(queries).then(function(results){if(searchStatus)searchStatus.style.display='none';doAnalysis(results);}).catch(function(){if(searchStatus)searchStatus.style.display='none';doAnalysis(null);});}else{doAnalysis(null);}}
-function callDceDevilAdvocate(){var input=$id('dceInput');var inputText=input?input.value.trim():'';if(!inputText){showToast('请先描述你的决策');return;}var devilResult=$id('dceDevilResult'),loading=$id('dceLoading');if(devilResult)devilResult.style.display='block';if(devilResult)devilResult.innerHTML='<div class=\"dce-output\"><h3>⚔️ 魔鬼代言人 — 红队挑战</h3><p style=\"color:var(--text-muted);font-size:12px\">AI 正在扮演红队，系统性地挑战你的假设...</p></div>';if(loading)loading.style.display='flex';var lt=$id('dceLoadText');if(lt)lt.textContent='⚔️ 魔鬼代言人模式中...';if(!inputText)inputText='用户未提供具体决策描述';var prompt='你是一位魔鬼代言人（红队队长）。你的目标不是帮用户做决定，而是系统性地挑战用户的假设、发现盲点、指出推理漏洞。\n\n=== 用户面临的决策 ===\n'+inputText+'\n\n请从以下三个角度进行挑战：\n\n⚔️ 挑战假设\n逐个列出用户决策中依赖的关键假设，解释为什么每个假设可能不成立\n\n⚔️ 盲点揭示\n指出用户可能完全没考虑到的因素、风险或视角\n\n⚔️ 对抗方案\n如果用户错了，更好的选择可能是什么？为什么？\n\n要求：尖锐但不恶意，逻辑严密，直击要害。用中文。';callAI({prompt:prompt,temperature:0.7,maxTokens:8192,timeout:300000,stream:function(chunk,fullText){if(devilResult)devilResult.innerHTML='<div class=\"dce-output\">'+fullText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/###\s*(.+)/g,'<h4>$1</h4>').replace(/##\s*(.+)/g,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')+'</div>';}}).then(function(fullText){if(loading)loading.style.display='none';if(devilResult)devilResult.innerHTML='<div class=\"dce-output\" style=\"border-left:3px solid #ff4444;padding-left:12px\">'+fullText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/###\s*(.+)/g,'<h4>$1</h4>').replace(/##\s*(.+)/g,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')+'</div>';showToast('⚔️ 魔鬼代言人分析完成');}).catch(function(err){if(loading)loading.style.display='none';var msg=err&&err.message?err.message:'未知错误';showToast('❌ 挑战失败：'+msg);});}
+function callDceDevilAdvocate(){var input=$id('dceInput');var inputText=input?input.value.trim():'';if(!inputText){showToast('请先描述你的决策');return;}var devilResult=$id('dceDevilResult'),loading=$id('dceLoading');if(devilResult)devilResult.style.display='block';if(devilResult)devilResult.innerHTML='<div class=\"dce-output\"><h3>⚔️ 魔鬼代言人 — 红队挑战</h3><p style=\"color:var(--text-muted);font-size:12px\">AI 正在扮演红队，系统性地挑战你的假设...</p></div>';if(loading)loading.style.display='flex';var lt=$id('dceLoadText');if(lt)lt.textContent='⚔️ 魔鬼代言人模式中...';if(!inputText)inputText='用户未提供具体决策描述';var prompt='你是一位魔鬼代言人（红队队长）。你的目标不是帮用户做决定，而是系统性地挑战用户的假设、发现盲点、指出推理漏洞。\n\n=== 用户面临的决策 ===\n'+inputText+'\n\n请从以下三个角度进行挑战：\n\n⚔️ 挑战假设\n逐个列出用户决策中依赖的关键假设，解释为什么每个假设可能不成立\n\n⚔️ 盲点揭示\n指出用户可能完全没考虑到的因素、风险或视角\n\n⚔️ 对抗方案\n如果用户错了，更好的选择可能是什么？为什么？\n\n要求：尖锐但不恶意，逻辑严密，直击要害。用中文。';callAI({prompt:prompt,temperature:0.7,maxTokens:8192,timeout:300000,stream:function(chunk,fullText){if(devilResult)devilResult.innerHTML='<div class=\"dce-output\">'+formatDceDevilContent(fullText)+'</div>';}}).then(function(fullText){if(loading)loading.style.display='none';if(devilResult)devilResult.innerHTML='<div class=\"dce-output\" style=\"border-left:3px solid #ff4444;padding-left:12px\">'+formatDceDevilContent(fullText)+'</div>';showToast('⚔️ 魔鬼代言人分析完成');}).catch(function(err){if(loading)loading.style.display='none';var msg=err&&err.message?err.message:'未知错误';showToast('❌ 挑战失败：'+msg);});}
 function toggleDceFramework(){var body=$id('dceFrameworkBody');if(!body)return;var s=body.style.display==='none';body.style.display=s?'':'none';if(!s)return;body.innerHTML='<h4>📖 决策框架参考</h4><p>以下是经过验证的决策框架和工具：</p><h4>1. Cynefin 框架</h4><p>将问题分为五类，每类需要不同应对策略：</p><ul><li><strong>简单</strong>：因果关系明确 → 感知-分类-响应（最佳实践）</li><li><strong>繁琐</strong>：需分析但可找出答案 → 感知-分析-响应（专家判断）</li><li><strong>复杂</strong>：因果关系只能事后看清 → 探索-感知-响应（实验）</li><li><strong>混沌</strong>：无法理解 → 行动-感知-响应（快速干预）</li><li><strong>失序</strong>：不确定属于哪类 → 先拆解再分类</li></ul><h4>2. OODA 循环（观察-定向-决策-行动）</h4><p>快速迭代决策循环，比对手/环境更快的循环速度 = 竞争优势。</p><h4>3. 事前验尸（Premortem）</h4><p>在决策前假设项目已失败，倒推原因。揭示隐藏风险，绕过乐观偏见。</p><h4>4. WRAP 决策法</h4><p>拓宽选项 → 现实检验 → 拉开距离 → 准备出错。系统处理四个核心陷阱：狭隘思维、确认偏见、短期情绪、过度自信。</p><h4>5. 10-10-10 法则</h4><p>10分钟后怎么想？10个月后怎么想？10年后怎么想？拉开时间距离，过滤情绪噪声。</p><h4>6. 常见认知偏误参考</h4><ul><li><strong>确认偏误</strong>：只找支持已有信念的证据</li><li><strong>锚定效应</strong>：第一个数字绑架后续判断</li><li><strong>可得性启发</strong>：高估最近/生动事件的概率</li><li><strong>邓宁-克鲁格效应</strong>：新手高估自己，专家低估自己</li><li><strong>沉没成本谬误</strong>：因已投入而继续投入</li><li><strong>过度自信</strong>：90%置信区间实际只有50-60%准确</li><li><strong>框架效应</strong>：表述方式影响选择</li><li><strong>规划谬误</strong>：始终低估时间/成本/风险</li><li><strong>损失厌恶</strong>：损失痛苦≈收益快乐的两倍</li><li><strong>后见之明偏误</strong>：事后觉得自己一直知道</li><li><strong>虚假共识</strong>：高估他人同意自己的程度</li><li><strong>基本概率忽视</strong>：忽略一般统计数据</li><li><strong>幸存者偏差</strong>：只看到成功者，忽略失败者</li><li><strong>选择支持偏误</strong>：选择后高估其正确性</li><li><strong>结果偏误</strong>：根据结果而非过程评判决策</li></ul>';}
 function saveDceSession(inputText,scores,analysis,devil){if(!state.dceSessions)state.dceSessions=[];var total=0;DCE_DIMS.forEach(function(d){total+=scores[d.id]||5;});var avg=(total/DCE_DIMS.length).toFixed(1);var topic=(inputText||'').substring(0,40);state.dceSessions.unshift({id:Date.now(),topic:topic,input:inputText,scores:scores,analysis:analysis,devil:devil,date:new Date().toISOString(),avgScore:parseFloat(avg)});if(state.dceSessions.length>50)state.dceSessions.length=50;saveState();renderDceHistory();}
 function deleteDceSession(el){var id=parseInt(el.getAttribute('data-dce-sid'),10);if(!state.dceSessions||!id)return;state.dceSessions=state.dceSessions.filter(function(s){return s.id!==id;});saveState();renderDceHistory();}
-function viewDceSession(el){var id=parseInt(el.getAttribute('data-dce-sid'),10);if(!state.dceSessions)return;var session=null;state.dceSessions.forEach(function(s){if(s.id===id)session=s;});if(!session){showToast('记录未找到');return;}if(session.scores){if(!state.dceSettings)state.dceSettings={};state.dceSettings.scores=JSON.parse(JSON.stringify(session.scores));}saveState();var result=$id('dceResult'),devilResult=$id('dceDevilResult');if(result&&session.analysis)result.innerHTML=formatDceContent(session.analysis);if(devilResult&&session.devil)devilResult.style.display='block';if(devilResult&&session.devil)devilResult.innerHTML='<div class=\"dce-output\" style=\"border-left:3px solid #ff4444;padding-left:12px\">'+session.devil.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/###\s*(.+)/g,'<h4>$1</h4>').replace(/##\s*(.+)/g,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')+'</div>';showToast('已加载历史记录');renderDcePanel();}
+function viewDceSession(el){var id=parseInt(el.getAttribute('data-dce-sid'),10);if(!state.dceSessions)return;var session=null;state.dceSessions.forEach(function(s){if(s.id===id)session=s;});if(!session){showToast('记录未找到');return;}if(session.scores){if(!state.dceSettings)state.dceSettings={};state.dceSettings.scores=JSON.parse(JSON.stringify(session.scores));}saveState();var result=$id('dceResult'),devilResult=$id('dceDevilResult');if(result&&session.analysis)result.innerHTML=formatDceContent(session.analysis);if(devilResult&&session.devil)devilResult.style.display='block';if(devilResult&&session.devil)devilResult.innerHTML='<div class=\"dce-output\" style=\"border-left:3px solid #ff4444;padding-left:12px\">'+formatDceDevilContent(session.devil)+'</div>';showToast('已加载历史记录');renderDcePanel();}
 function renderDceHistory(){var list=$id('dceHistoryList');var count=$id('dceHistoryCount');if(!list)return;var sessions=state.dceSessions||[];if(count)count.textContent=sessions.length;if(!sessions.length){list.innerHTML='<div class=\"dce-empty\" style=\"padding:16px;text-align:center;color:var(--text-muted)\">暂无决策日志</div>';return;}var h=[];sessions.forEach(function(s){var d=new Date(s.date);var ds=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+' '+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();h.push('<div class=\"dce-history-item\" data-dce-sid=\"'+s.id+'\" onclick=\"viewDceSession(this)\"><div class=\"dce-history-main\"><div class=\"dce-history-date\">'+ds+'</div><div style=\"font-size:12px;color:var(--text-muted)\">'+(s.topic||'')+' · 均分：'+s.avgScore+'</div></div><button class=\"dce-history-del\" data-dce-sid=\"'+s.id+'\" onclick=\"deleteDceSession(this)\" title=\"删除\">✕</button></div>');});list.innerHTML=h.join('');}
 function toggleDceHistory(){var body=$id('dceHistoryBody');var toggle=$id('dceHistToggle');if(!body||!toggle)return;var s=body.style.display==='none';body.style.display=s?'':'none';toggle.textContent=s?'▼':'▶';if(s)renderDceHistory();}
 
@@ -37287,6 +37910,12 @@ function renderTrafficStepContent() {
   var labels = { keywords:'热词挖掘', headline:'爆款标题', selling:'卖点提炼', copy:'营销文案', media:'视觉素材', detail:'详情页' };
   var html = c ? formatTrafficContent(c, active) : '<div class="traffic-empty">暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="traffic-btn traffic-btn-outline" onclick="callTrafficAppend(\''+active+'\')">🔍 追加深度 - '+labels[active]+'</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="traffic-btn traffic-btn-outline" onclick="toggleFollowUp(\'traffic\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_traffic_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_traffic" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'traffic\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="traffic-btn traffic-btn-outline" onclick="callPanelFollowUp(\'traffic\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_traffic_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function buildTrafficPrompt(text, searchResults) {
@@ -37382,6 +38011,7 @@ function callTrafficAppend(stepId) {
     timeout: 180000,
     stream: function(chunk, fullText) {
       if (loadingText) loadingText.textContent = '🔍 正在追加深度分析...('+fullText.length+'字)';
+      var rd2 = $id('trafficResult'); if (rd2) rd2.innerHTML = formatTrafficContent(fullText, stepId);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -37439,6 +38069,7 @@ function formatTrafficContent(txt, stepId) {
     .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
     .replace(/\n\n/g, '</p><p>')
     .replace(/\n/g, '<br>');
+  html=mathSafe(html);
   return '<div class="traffic-output"><p>'+html+'</p></div>';
 }
 function saveTrafficSession(problem, dims) {
@@ -37600,7 +38231,7 @@ function callGgzAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '📜 AI 识人分析中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '📜 AI 分析中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatGgzContent(fullText);
@@ -37626,9 +38257,10 @@ function callGgzAppend(stepId) {
   var resultDiv = $id('ggzResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '📜 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '📜 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -37689,6 +38321,12 @@ function renderGgzStepContent() {
   resultDiv.innerHTML = formatGgzContent(content);
   if (content) {
     resultDiv.innerHTML += '<div style="text-align:right;margin-top:8px"><button class="ggz-btn ggz-btn-outline" onclick="callGgzAppend(\''+active+'\')" style="flex:none;padding:6px 16px;font-size:13px">🔍 追加深度分析</button></div>';
+    resultDiv.innerHTML += '<div style="text-align:right;margin-top:8px"><button class="ggz-btn ggz-btn-outline" onclick="toggleFollowUp(\'ggz\',\''+active+'\')" style="flex:none;padding:6px 16px;font-size:13px">💬 追问</button></div>';
+    resultDiv.innerHTML += '<div id="fu_ggz_'+active+'" class="tutor-followup-area" style="display:none">';
+    resultDiv.innerHTML += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+    resultDiv.innerHTML += '<div class="tutor-followup-row"><input id="fuInput_ggz" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'ggz\',\''+active+'\',\''+({observe:'察言观色',probe:'探其内心',emotion:'识其情绪',character:'辨其品性',talent:'审其才能',engage:'相处之道'}[active]||active)+'\')">';
+    resultDiv.innerHTML += '<button class="ggz-btn ggz-btn-outline" onclick="callPanelFollowUp(\'ggz\',\''+active+'\',\''+({observe:'察言观色',probe:'探其内心',emotion:'识其情绪',character:'辨其品性',talent:'审其才能',engage:'相处之道'}[active]||active)+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+    resultDiv.innerHTML += '<div id="fuResult_ggz_'+active+'" style="margin-top:8px"></div></div>';
   }
 }
 function deployGgzSession(id) {
@@ -37835,7 +38473,7 @@ function callSzAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '📖 AI 兵法分析中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '📖 AI 分析中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatSzContent(fullText);
@@ -37861,9 +38499,10 @@ function callSzAppend(stepId) {
   var resultDiv = $id('szResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '📖 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '📖 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -37924,6 +38563,12 @@ function renderSzStepContent() {
   resultDiv.innerHTML = formatSzContent(content);
   if (content) {
     resultDiv.innerHTML += '<div style="text-align:right;margin-top:8px"><button class="sz-btn sz-btn-outline" onclick="callSzAppend(\''+active+'\')" style="flex:none;padding:6px 16px;font-size:13px">🔍 追加深度分析</button></div>';
+    resultDiv.innerHTML += '<div style="text-align:right;margin-top:8px"><button class="sz-btn sz-btn-outline" onclick="toggleFollowUp(\'sz\',\''+active+'\')" style="flex:none;padding:6px 16px;font-size:13px">💬 追问</button></div>';
+    resultDiv.innerHTML += '<div id="fu_sz_'+active+'" class="tutor-followup-area" style="display:none">';
+    resultDiv.innerHTML += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+    resultDiv.innerHTML += '<div class="tutor-followup-row"><input id="fuInput_sz" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'sz\',\''+active+'\',\''+labels[active]+'\')">';
+    resultDiv.innerHTML += '<button class="sz-btn sz-btn-outline" onclick="callPanelFollowUp(\'sz\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+    resultDiv.innerHTML += '<div id="fuResult_sz_'+active+'" style="margin-top:8px"></div></div>';
   }
 }
 function deploySzSession(id) {
@@ -38070,7 +38715,7 @@ function callQmAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🚪 AI 破局分析中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🚪 AI 分析中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatQmContent(fullText);
@@ -38096,9 +38741,10 @@ function callQmAppend(stepId) {
   var resultDiv = $id('qmResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🚪 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🚪 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -38159,6 +38805,12 @@ function renderQmStepContent() {
   resultDiv.innerHTML = formatQmContent(content);
   if (content) {
     resultDiv.innerHTML += '<div style="text-align:right;margin-top:8px"><button class="qm-btn qm-btn-outline" onclick="callQmAppend(\''+active+'\')" style="flex:none;padding:6px 16px;font-size:13px">🔍 追加深度分析</button></div>';
+    resultDiv.innerHTML += '<div style="text-align:right;margin-top:8px"><button class="qm-btn qm-btn-outline" onclick="toggleFollowUp(\'qm\',\''+active+'\')" style="flex:none;padding:6px 16px;font-size:13px">💬 追问</button></div>';
+    resultDiv.innerHTML += '<div id="fu_qm_'+active+'" class="tutor-followup-area" style="display:none">';
+    resultDiv.innerHTML += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+    resultDiv.innerHTML += '<div class="tutor-followup-row"><input id="fuInput_qm" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'qm\',\''+active+'\',\''+labels[active]+'\')">';
+    resultDiv.innerHTML += '<button class="qm-btn qm-btn-outline" onclick="callPanelFollowUp(\'qm\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+    resultDiv.innerHTML += '<div id="fuResult_qm_'+active+'" style="margin-top:8px"></div></div>';
   }
 }
 function deployQmSession(id) {
@@ -38305,7 +38957,7 @@ function callZhAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '⚔️ AI 生成话术中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '⚔️ AI 生成中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatZhContent(fullText);
@@ -38331,9 +38983,10 @@ function callZhAppend(stepId) {
   var resultDiv = $id('zhResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '⚔️ AI 追加话术中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '⚔️ AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -38394,6 +39047,12 @@ function renderZhStepContent() {
   resultDiv.innerHTML = formatZhContent(content);
   if (content) {
     resultDiv.innerHTML += '<div style="text-align:right;margin-top:8px"><button class="zh-btn zh-btn-outline" onclick="callZhAppend(\''+active+'\')" style="flex:none;padding:6px 16px;font-size:13px">🔍 追加话术</button></div>';
+    resultDiv.innerHTML += '<div style="text-align:right;margin-top:8px"><button class="zh-btn zh-btn-outline" onclick="toggleFollowUp(\'zh\',\''+active+'\')" style="flex:none;padding:6px 16px;font-size:13px">💬 追问</button></div>';
+    resultDiv.innerHTML += '<div id="fu_zh_'+active+'" class="tutor-followup-area" style="display:none">';
+    resultDiv.innerHTML += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+    resultDiv.innerHTML += '<div class="tutor-followup-row"><input id="fuInput_zh" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'zh\',\''+active+'\',\''+labels[active]+'\')">';
+    resultDiv.innerHTML += '<button class="zh-btn zh-btn-outline" onclick="callPanelFollowUp(\'zh\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+    resultDiv.innerHTML += '<div id="fuResult_zh_'+active+'" style="margin-top:8px"></div></div>';
   }
 }
 function deployZhSession(id) {
@@ -38565,9 +39224,10 @@ function callMouAppend(stepId) {
   var resultDiv = $id('mouResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🧠 AI 追加方案中...'; }
   callAI({
-    prompt: prompt, temperature: 0.7, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.7, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '⚔️ AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -38628,6 +39288,12 @@ function renderMouStepContent() {
   resultDiv.innerHTML = formatMouContent(content);
   if (content) {
     resultDiv.innerHTML += '<div style="text-align:right;margin-top:8px"><button class="mou-btn mou-btn-outline" onclick="callMouAppend(\''+active+'\')" style="flex:none;padding:6px 16px;font-size:13px">🔍 追加深化</button></div>';
+    resultDiv.innerHTML += '<div style="text-align:right;margin-top:8px"><button class="mou-btn mou-btn-outline" onclick="toggleFollowUp(\'mou\',\''+active+'\')" style="flex:none;padding:6px 16px;font-size:13px">💬 追问</button></div>';
+    resultDiv.innerHTML += '<div id="fu_mou_'+active+'" class="tutor-followup-area" style="display:none">';
+    resultDiv.innerHTML += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+    resultDiv.innerHTML += '<div class="tutor-followup-row"><input id="fuInput_mou" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'mou\',\''+active+'\',\''+labels[active]+'\')">';
+    resultDiv.innerHTML += '<button class="mou-btn mou-btn-outline" onclick="callPanelFollowUp(\'mou\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+    resultDiv.innerHTML += '<div id="fuResult_mou_'+active+'" style="margin-top:8px"></div></div>';
   }
 }
 function deployMouSession(id) {
@@ -38743,6 +39409,12 @@ function renderLawDimContent() {
   var labels = { facts:'案情诊断', laws:'法律依据', risk:'风险评估', strategy:'策略方案', evidence:'证据规划', insight:'深度洞察' };
   var html = c ? formatLawContent(c) : '<div class="law-empty">暂无内容</div>';
   html += '<div style="text-align:center;margin-top:12px"><button class="law-btn law-btn-outline" onclick="callLawAppend(\''+active+'\')">🔍 追加深度分析 - '+labels[active]+'</button></div>';
+  html += '<div style="text-align:center;margin-top:12px"><button class="law-btn law-btn-outline" onclick="toggleFollowUp(\'law\',\''+active+'\')">💬 追问</button></div>';
+  html += '<div id="fu_law_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_law" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'law\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="law-btn law-btn-outline" onclick="callPanelFollowUp(\'law\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_law_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function renderLawPanel() {
@@ -38898,7 +39570,7 @@ function callLawAnalysis() {
   if (roleBar) { roleBar.classList.add('show'); startLawRoleRotation(roleBar); }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000, search: true,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '⚖️ AI 律师团分析中 ('+fullText.length+' 字)...'; }
       if (resultDiv) resultDiv.innerHTML = formatLawContent(fullText);
@@ -38926,9 +39598,10 @@ function callLawAppend(dimId) {
   var resultDiv = document.getElementById('lawResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加分析中...'; }
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 12288, timeout: 300000,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -39151,7 +39824,6 @@ function callViralAnalysis() {
     temperature: 0.7,
     maxTokens: 16384,
     timeout: 240000,
-    search: true,
     stream: function(chunk, fullText) {
       var lt = $id('viralLoadingText');
       if (lt) lt.textContent = '🎬AI生成中…('+fullText.length+'字)';
@@ -41739,7 +42411,9 @@ function callSkillAnalysis() {
     temperature: 0.5,
     maxTokens: 8192,
     timeout: 180000,
-    search: true
+    stream: function(chunk, fullText) {
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = formatSkillContent(fullText);
+    }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
     var plan = parseSkillPlan(fullText);
@@ -41844,6 +42518,7 @@ function formatSkillContent(txt) {
   s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   s = s.replace(/\n/g, '<br>');
+  s = mathSafe(s);
   return s;
 }
 function saveSkillSession(skill, plan) {
@@ -42114,6 +42789,7 @@ function callTutorAppend(stepId) {
     prompt: prompt, temperature: 0.6, maxTokens: 8192, timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🎓 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -42160,6 +42836,51 @@ function callTutorFollowUp(stepId) {
       window._tutorFollowUps[stepId].push({ q:question, a:answer });
       resultDiv.innerHTML = formatTutorContent('### 💬 追问\n' + question + '\n\n### 💡 解答\n' + answer);
     }
+  }).catch(function(err) {
+    if (resultDiv) resultDiv.innerHTML = '<div class="tutor-empty">❌ 回答失败</div>';
+  });
+}
+/* ===== 通用追问（同步自导师六步法；独立流式请求，不影响主生成速度）===== */
+var FOLLOW_UP_PANELS = {
+  pt:{role:'第一性原理导师',input:'ptInput'}, biz:{role:'商业思维导师',input:'bizInput'},
+  tcm:{role:'中医专家',input:'tcmInput'}, yang:{role:'中医养生专家',input:'yangInput'},
+  chuang:{role:'创新方法专家',input:'chuangInput'}, ask:{role:'深度提问导师',input:'askInput'},
+  he:{role:'跨领域分析专家',input:'heInput'}, fin:{role:'融资顾问',input:'finInput'},
+  ana:{role:'顶级认知分析师',input:'anaInput'}, adv:{role:'顶级教学名师',input:'advInput'},
+  ind:{role:'行业研究分析师',input:'indInput'}, traffic:{role:'课程营销专家',input:'trafficInput'},
+  ggz:{role:'识人专家',input:'ggzInput'}, sz:{role:'兵法国学专家',input:'szInput'},
+  qm:{role:'破局顾问',input:'qmInput'}, zh:{role:'说服力专家',input:'zhInput'},
+  mou:{role:'谋略顾问',input:'mouInput'}, law:{role:'法律专家',input:'lawInput'},
+  money:{role:'资深商业顾问',input:'moneyInput'}, cso:{role:'学习策略专家',input:'csoInput'},
+  creator:{role:'新媒体运营专家',input:'creatorInput'}
+};
+function toggleFollowUp(key, stepId) {
+  var box = $id('fu_' + key + '_' + stepId);
+  if (box) box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+}
+function callPanelFollowUp(key, stepId, label) {
+  var cfg = FOLLOW_UP_PANELS[key];
+  var input = $id('fuInput_' + key);
+  if (!cfg || !input) return;
+  var q = input.value.trim();
+  if (!q) { showToast('请输入你的问题'); return; }
+  input.value = '';
+  var resultDiv = $id('fuResult_' + key + '_' + stepId);
+  if (resultDiv) resultDiv.innerHTML = '<div class="tutor-loading" style="display:flex;padding:12px"><div class="tutor-spinner"></div><span>思考中…</span></div>';
+  var topic = '';
+  var ti = $id(cfg.input);
+  if (ti) topic = ti.value.trim();
+  var prompt = '你是一位' + cfg.role + '。关于「' + (topic || '当前主题') + '」的【' + (label || stepId) + '】内容，用户提出了追问：' + q + '\n\n请用通俗易懂的方式回答，保持耐心、详细，多用类比和例子。\n\n请用「【答疑】」作为开头输出。';
+  callAI({
+    prompt: prompt, temperature: 0.6, maxTokens: 4096, timeout: 180000,
+    stream: function(chunk, fullText) {
+      if (resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
+    }
+  }).then(function(fullText) {
+    var answer = fullText;
+    var m = fullText.indexOf('【答疑】');
+    if (m !== -1) answer = fullText.substring(m + 5).trim();
+    if (resultDiv) resultDiv.innerHTML = '<div><strong>💬 追问：</strong> <span>' + escHtml(q) + '</span></div><div style="margin-top:6px"><strong>💡 解答：</strong></div>' + simpleMarkdown(answer);
   }).catch(function(err) {
     if (resultDiv) resultDiv.innerHTML = '<div class="tutor-empty">❌ 回答失败</div>';
   });
@@ -42268,6 +42989,13 @@ function renderMoneyStepContent() {
   html += '<div style="text-align:center;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">';
   html += '<button class="money-btn money-btn-outline money-btn-sm" onclick="callMoneyAppend(\''+active+'\')">🔍 追加深度 - '+labels[active]+'</button>';
   html += '</div>';
+  html += '<button class="money-btn money-btn-outline money-btn-sm" onclick="toggleFollowUp(\'money\',\''+active+'\')">💬 追问</button>';
+  html += '</div>';
+  html += '<div id="fu_money_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_money" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'money\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="money-btn money-btn-outline money-btn-sm" onclick="callPanelFollowUp(\'money\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_money_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function renderMoneyPanel() {
@@ -42392,7 +43120,7 @@ function callMoneyAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '💰 AI 挖金分析中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.6, maxTokens: 16384, timeout: 300000, search: true,
+    prompt: prompt, temperature: 0.6, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (searchStatus) searchStatus.style.display = 'none';
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '💰 AI 分析中 ('+fullText.length+' 字)...'; }
@@ -42426,6 +43154,7 @@ function callMoneyAppend(stepId) {
     prompt: prompt, temperature: 0.6, maxTokens: 8192, timeout: 300000, search: false,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -43066,10 +43795,10 @@ function netsecAiAsk() {
     maxTokens: 2048,
     timeout: 120000,
     stream: function(chunk, fullText) {
-      out.innerHTML = '<div class="ns-ai-answer">' + netsecEsc(fullText).replace(/\n/g, '<br>') + '</div>';
+      out.innerHTML = '<div class="ns-ai-answer">' + mathSafe(netsecEsc(fullText)).replace(/\n/g, '<br>') + '</div>';
     }
   }).then(function(text) {
-    out.innerHTML = '<div class="ns-ai-answer">' + netsecEsc(text).replace(/\n/g, '<br>') + '</div>';
+    out.innerHTML = '<div class="ns-ai-answer">' + mathSafe(netsecEsc(text)).replace(/\n/g, '<br>') + '</div>';
     if (btn) { btn.disabled = false; btn.textContent = '💬 提问'; }
   }).catch(function(err) {
     out.innerHTML = '<div class="ns-ai-error">⚠️ ' + (err && err.message ? err.message : '请求失败') + '</div>';
@@ -45051,6 +45780,13 @@ function renderCsoStepContent() {
   html += '<div style="text-align:center;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">';
   html += '<button class="cso-btn cso-btn-outline cso-btn-sm" onclick="callCsoAppend(\''+active+'\')">🔍 追加深度 - '+labels[active]+'</button>';
   html += '</div>';
+  html += '<button class="cso-btn cso-btn-outline cso-btn-sm" onclick="toggleFollowUp(\'cso\',\''+active+'\')">💬 追问</button>';
+  html += '</div>';
+  html += '<div id="fu_cso_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_cso" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'cso\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="cso-btn cso-btn-outline cso-btn-sm" onclick="callPanelFollowUp(\'cso\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_cso_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function renderCsoPanel() {
@@ -45180,7 +45916,7 @@ function callCsoAnalysis() {
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🧠 AI 学习策略分析中...'; }
   if (resultDiv) resultDiv.innerHTML = '';
   callAI({
-    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000, search: true,
+    prompt: prompt, temperature: 0.5, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (searchStatus) searchStatus.style.display = 'none';
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🧠 AI 分析中 ('+fullText.length+' 字)...'; }
@@ -45214,6 +45950,7 @@ function callCsoAppend(stepId) {
     prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 300000, search: false,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
@@ -45349,6 +46086,13 @@ function renderCreatorStepContent() {
   html += '<div style="text-align:center;margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">';
   html += '<button class="creator-btn creator-btn-outline creator-btn-sm" onclick="callCreatorAppend(\''+active+'\')">🔍 追加深度 - '+labels[active]+'</button>';
   html += '</div>';
+  html += '<button class="creator-btn creator-btn-outline creator-btn-sm" onclick="toggleFollowUp(\'creator\',\''+active+'\')">💬 追问</button>';
+  html += '</div>';
+  html += '<div id="fu_creator_'+active+'" class="tutor-followup-area" style="display:none">';
+  html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px">💬 追问此部分</div>';
+  html += '<div class="tutor-followup-row"><input id="fuInput_creator" class="tutor-followup-input" placeholder="输入你的追问…" onkeydown="if(event.key===\'Enter\') callPanelFollowUp(\'creator\',\''+active+'\',\''+labels[active]+'\')">';
+  html += '<button class="creator-btn creator-btn-outline creator-btn-sm" onclick="callPanelFollowUp(\'creator\',\''+active+'\',\''+labels[active]+'\')" style="flex:0;padding:6px 16px">发送</button></div>';
+  html += '<div id="fuResult_creator_'+active+'" style="margin-top:8px"></div></div>';
   rd.innerHTML = html;
 }
 function renderCreatorPanel() {
@@ -45534,6 +46278,7 @@ function callCreatorAppend(stepId) {
     prompt: prompt, temperature: 0.5, maxTokens: 8192, timeout: 300000, search: false,
     stream: function(chunk, fullText) {
       if (loading) { var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 AI 追加中 ('+fullText.length+' 字)...'; }
+      if (typeof resultDiv !== 'undefined' && resultDiv) resultDiv.innerHTML = simpleMarkdown(fullText);
     }
   }).then(function(fullText) {
     if (loading) loading.style.display = 'none';
