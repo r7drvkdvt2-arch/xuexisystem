@@ -5,7 +5,7 @@
 set -e
 cd "$(dirname "$0")"
 
-cp "C:/Users/cxq/Desktop/学习系统.html" ./index.html
+cp "C:/Users/Administrator/Desktop/学习系统.html" ./index.html
 echo "[1/4] 主文件已同步 -> index.html"
 
 echo "[2/4] 部署 Surge ..."
