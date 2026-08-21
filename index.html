@@ -268,6 +268,44 @@ body:not(.show-panel-del) .top-bar .panel-del-btn{display:none!important}
 .timer-actions{display:flex;gap:10px}
 .timer-actions button{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;transition:opacity .2s}
 .timer-actions button:hover{opacity:.9}
+/* ===== 计时面板 & 每题限时 UI 重设计 ===== */
+.timer-panel{padding:18px;border-radius:14px}
+.tp-section-title{font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;margin:14px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:6px}
+.tp-section-title:first-child{margin-top:0}
+.timer-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.timer-presets button{padding:9px 0;border:1px solid var(--border);border-radius:9px;background:var(--bg-article);cursor:pointer;font-size:13px;font-weight:600;color:var(--text-secondary);transition:background .15s,color .15s,border-color .15s,transform .1s;min-width:0}
+.timer-presets button:hover{border-color:var(--primary);background:var(--bg-active);color:var(--primary-dark)}
+.timer-presets button:active{transform:scale(.97)}
+.timer-custom{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.timer-custom input{width:76px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font-size:14px;text-align:center;outline:none;background:var(--bg-article)}
+.timer-custom input:focus{border-color:var(--primary)}
+.tp-unit{font-size:13px;color:var(--text-muted)}
+.timer-custom button{padding:9px 18px;border:1px solid var(--primary);border-radius:9px;background:var(--primary);color:#fff;cursor:pointer;font-size:13px;font-weight:600;transition:opacity .15s}
+.timer-custom button:hover{opacity:.88}
+.timer-actions{display:flex;gap:8px;margin-bottom:4px}
+.timer-actions button{flex:1;padding:11px 0;border:none;border-radius:10px;cursor:pointer;font-size:14px;font-weight:700;transition:filter .15s,transform .1s}
+.timer-actions button:active{transform:scale(.98)}
+.timer-custom .btn-timer-start{flex:1.6;background:linear-gradient(135deg,var(--success),#2d9a4a);color:#fff;border-color:transparent}
+.timer-custom .btn-timer-pause{background:var(--warn);color:#fff;border-color:transparent}
+.timer-custom .btn-timer-resume{background:var(--success);color:#fff;border-color:transparent}
+.timer-custom .btn-timer-reset{background:var(--bg-dim);color:var(--text-secondary);flex:.8;border-color:transparent}
+.tp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 2px;border-bottom:1px solid var(--border-light);flex-wrap:wrap}
+.tp-row:last-child{border-bottom:none}
+.tp-label{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap}
+.tp-controls{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.tp-controls input[type=time]{border:1px solid var(--border);border-radius:8px;padding:6px 8px;font-size:13px;background:var(--bg-article);color:var(--text);outline:none}
+.pq-presets{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.pq-btn{padding:7px 0;font-size:12px;border:1px solid var(--border);border-radius:8px;background:var(--bg-article);cursor:pointer;color:var(--text-secondary);text-align:center;transition:background .15s,border-color .15s,color .15s,transform .1s;min-width:0}
+.pq-btn:hover{border-color:var(--primary);background:var(--bg-active);color:var(--primary-dark)}
+.pq-btn:active{transform:scale(.96)}
+.pq-custom{display:flex;align-items:center;gap:8px}
+.pq-custom input{width:64px;padding:7px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;text-align:center;outline:none;background:var(--bg-article);color:var(--text)}
+.pq-custom input:focus{border-color:var(--primary)}
+.pq-set-btn{padding:7px 16px;border:1px solid var(--primary);border-radius:8px;background:var(--primary);color:#fff;cursor:pointer;font-size:12px;font-weight:600;transition:opacity .15s}
+.pq-set-btn:hover{opacity:.88}
+.tp-row-tight{justify-content:flex-start;gap:8px 14px}
+.tp-select{font-size:12px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:var(--bg-article);color:var(--text);cursor:pointer;min-width:92px;outline:none}
+.tp-select:focus{border-color:var(--primary)}
 .btn-timer-start{background:var(--success);color:#fff}
 .btn-timer-pause{background:var(--warn);color:#fff}
 .btn-timer-resume{background:var(--success);color:#fff}
@@ -412,6 +450,24 @@ html,body{overflow-x:hidden}
 .mobile-nav-btn:disabled{opacity:.3;pointer-events:none}
 .dark-mode .mobile-nav{background:linear-gradient(to top,rgba(30,28,26,0.97),rgba(30,28,26,0.92))}
 body:not(.pwa-mode) .container{padding-bottom:80px}
+/* ===== 未设置面板手机适配(追加于块尾,覆盖旧规则) ===== */
+.timer-panel{padding:12px;overflow-x:hidden}
+.timer-custom{flex-wrap:wrap;gap:6px}
+.timer-custom input{width:68px;flex:0 0 68px;padding:8px}
+.timer-custom button{min-height:40px}
+.timer-custom .btn-timer-start{flex:1 1 auto;min-width:72px;padding:9px 6px;font-size:13px;min-height:40px}
+.tp-row{align-items:flex-start;gap:6px;padding:8px 0}
+.tp-row-tight{gap:6px 10px}
+.tp-label{font-size:12px;white-space:normal;line-height:1.4}
+.tp-select{min-width:0;max-width:130px;font-size:12px;padding:6px}
+.tp-row-tight .tp-select{flex:1 1 auto;max-width:110px}
+.tp-controls{flex:1 1 auto;min-width:0}
+.tp-controls input[type=time]{flex:0 1 auto;min-width:0;padding:5px}
+.pq-presets{grid-template-columns:repeat(4,1fr);gap:5px}
+.pq-btn{padding:8px 0;font-size:12px;min-height:40px}
+.pq-custom{flex-wrap:wrap;gap:6px}
+.tp-section-title{margin:10px 0 8px}
+.timer-panel .r-btn{min-height:40px;padding:6px 10px}
 }
 .ach-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
 .ach-card{padding:14px;border:1px solid var(--border);border-radius:10px;text-align:center;background:var(--bg-article);transition:background .2s,color .2s,border-color .2s,transform .2s,box-shadow .2s}
@@ -5673,144 +5729,63 @@ function toggleDecompHistory() {
 <div class="settings-bar" style="display:flex;gap:10px;margin-top:8px;padding:8px 12px;background:var(--bg-article);border-radius:8px;flex-wrap:wrap;align-items:center">
 </div>
 <div class="timer-panel" id="timerPanel">
-<div class="timer-presets">
-<button data-cmd="setTimer" data-arg="60">1分</button>
-<button data-cmd="setTimer" data-arg="300">5分</button>
-<button data-cmd="setTimer" data-arg="600">10分</button>
-<button data-cmd="setTimer" data-arg="900">15分</button>
-<button data-cmd="setTimer" data-arg="1800">30分</button>
-<button data-cmd="setTimer" data-arg="3600">60分</button>
-</div>
+<div class="tp-section-title">⏱ 计时器</div>
 <div class="timer-custom">
 <input type="number" id="timerMinutes" min="1" max="999" value="10" placeholder="分钟">
-<span style="color:#5c4040;font-size:14px">分钟</span>
+<span class="tp-unit">分钟</span>
 <button onclick="setCustomTimer()">设定</button>
-</div>
-<div class="timer-actions">
 <button class="btn-timer-start" id="timerStartBtn" onclick="startTimer()">▶ 开始</button>
 <button class="btn-timer-pause" id="timerPauseBtn" onclick="pauseTimer()" class="d-none">⏸ 暂停</button>
 <button class="btn-timer-resume" id="timerResumeBtn" onclick="resumeTimer()" class="d-none">▶ 继续</button>
 <button class="btn-timer-reset" onclick="resetTimer()">重置</button>
-<div class="section-divider">
-<div class="flex-row">
-<span style="font-size:13px;font-weight:600;color:#2c1810">🎯 每日目标</span>
-<span id="goalSetting" style="display:flex;gap:4px;flex-wrap:wrap">
-<span class="r-btn" data-goal="10" data-cmd="setDailyGoal" data-arg="10">10题</span>
-<span class="r-btn" data-goal="15" data-cmd="setDailyGoal" data-arg="15">15题</span>
-<span class="r-btn" data-goal="20" data-cmd="setDailyGoal" data-arg="20">20题</span>
-<span class="r-btn" data-goal="30" data-cmd="setDailyGoal" data-arg="30">30题</span>
-<span class="r-btn" data-goal="50" data-cmd="setDailyGoal" data-arg="50">50题</span>
-</span>
 </div>
-</div>
-<div class="section-divider">
-<div class="flex-row">
-<span style="font-size:13px;font-weight:600;color:#2c1810">🌙 夜间模式</span>
-<span id="dmToggleBtn" class="r-btn" onclick="toggleDarkMode()" style="cursor:pointer;user-select:none;-webkit-user-select:none;-moz-user-select:none;min-width:50px;text-align:center">❌ 关闭</span>
-</div>
-</div>
-<div class="section-divider">
-<div class="flex-row">
-<span style="font-size:13px;font-weight:600;color:#2c1810">🔔 学习提醒</span>
-<span id="reminderSetting" class="rminder">
-<input type="time" id="reminderTimeInput" value="20:00">
-<span id="reminderToggle" class="r-btn" onclick="toggleReminder()" style="cursor:pointer;min-width:50px;text-align:center">❌ 关闭</span>
-</span>
-</div>
-</div>
-<div class="section-divider">
-<div class="flex-row">
-<span style="font-size:13px;font-weight:600;color:#2c1810">🎒 学段预设</span>
-<span id="studyLevelSetting" style="display:flex;gap:4px;flex-wrap:wrap">
-<span class="r-btn" data-level="general" onclick="setStudyLevel('general')">通用</span>
-<span class="r-btn" data-level="primary" onclick="setStudyLevel('primary')">🎒 小学</span>
-<span class="r-btn" data-level="junior" onclick="setStudyLevel('junior')">📚 初中</span>
-<span class="r-btn" data-level="senior" onclick="setStudyLevel('senior')">🎓 高中</span>
-</span>
-</div>
-</div>
-<div class="section-divider">
-<div class="flex-row">
-<span style="font-size:13px;font-weight:600;color:#2c1810">🏷️ 难度筛选</span>
-<span id="diffFilterSetting" style="display:flex;gap:4px;flex-wrap:wrap">
-<span class="r-btn active" data-diff="" onclick="setDiffFilter('')">全部</span>
-<span class="r-btn" data-diff="hard" onclick="setDiffFilter('hard')">🔴 困难</span>
-<span class="r-btn" data-diff="doubtful" onclick="setDiffFilter('doubtful')">🟡 存疑</span>
-<span class="r-btn" data-diff="mastered" onclick="setDiffFilter('mastered')">🟢 掌握</span>
-</span>
-</div>
-</div>
-</div>
-<div class="read-bar" id="readBar" class="d-none">
-<span class="status" id="readStatus">🔊 朗读中</span>
-<div class="bar-fill"><div class="fill" id="readProgressFill" style="width:0%"></div></div>
-<div class="plan-banner" id="planBanner">
-<button class="pc" onclick="closePlan()">✕</button>
-<div class="pt" id="planTitle">📋 今日学习计划</div>
-<div class="pi" id="planItems"></div>
-</div>
-<span class="prog" id="readProgress">0/0</span>
-<div class="speed">
-<span class="s-label">语速</span>
-<button data-speed="-0.1" title="减速">−</button>
-<span class="s-val" id="speedDisplay">1.0×</span>
-<button data-speed="0.1" title="加速">+</button>
-</div>
-<div class="lang-select" style="display:flex;align-items:center;gap:4px;font-size:12px;flex-wrap:wrap">
-<select id="ttsLang" onchange="safeSetItem('ddj_ttsLang',this.value)" style="padding:2px 4px;border:1px solid var(--border);border-radius:4px;font-size:11px;background:#fff;color:var(--text);max-width:90px">
-<option value="auto">🌐 自动</option>
-<option value="zh-CN">中文</option>
-<option value="ja-JP">日本語</option>
-<option value="en-US">English</option>
-<option value="ar-SA">العربية</option>
-<option value="ko-KR">한국어</option>
-<option value="ru-RU">Русский</option>
-</select>
-<select id="ttsVoice" onchange="safeSetItem('ddj_ttsVoice',this.value);ttsVoice=this.value" style="padding:2px 4px;border:1px solid var(--border);border-radius:4px;font-size:11px;background:#fff;color:var(--text);max-width:140px">
-<option value="">🎤 默认音色</option>
+<div class="tp-section-title">🎯 学习设置</div>
+<div class="tp-row">
+<span class="tp-label">🎯 每日目标</span>
+<select id="goalSetting" class="tp-select" onchange="setDailyGoal(parseInt(this.value))">
+<option value="10">10 题</option>
+<option value="15">15 题</option>
+<option value="20">20 题</option>
+<option value="30">30 题</option>
+<option value="50">50 题</option>
 </select>
 </div>
-<div style="margin:2px 0;display:flex;align-items:center;gap:4px;font-size:11px">
-<span style="color:var(--text-muted);cursor:pointer" onclick="toggleTtsProxyHint()" title="自定义 TTS 代理">⚙️</span>
-<span style="font-size:10px;color:var(--text-muted)">代理</span>
-<input id="ttsProxyInput" type="text" placeholder="代理URL（自建 Cloudflare Worker）" value=""
-style="display:none;flex:1;min-width:120px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:11px;outline:none;-webkit-appearance:none"
-onchange="var v=this.value.trim();if(v){localStorage.setItem('ttsProxyUrl',v);showToast('✅ 已设置自定义代理')}else{localStorage.removeItem('ttsProxyUrl');}">
-<span id="ttsProxyHint" style="display:none;font-size:10px;color:var(--text-muted);cursor:pointer" onclick="var v='/tts?text=测试&voice=zh-CN-XiaoxiaoNeural&rate=0&volume=50&pitch=0&format=audio-24khz-48kbitrate-mono-mp3';document.getElementById('ttsProxyInput').value='https://'+v;localStorage.setItem('ttsProxyUrl','https://'+v);showToast('✅ 已设置示例代理，请替换为实际地址');">❓</span>
+<div class="tp-row">
+<span class="tp-label">🌙 夜间模式</span>
+<select id="dmToggleBtn" class="tp-select" onchange="if((this.value==='on')!==document.body.classList.contains('dark-mode'))toggleDarkMode()">
+<option value="off">关闭</option>
+<option value="on">开启</option>
+</select>
 </div>
-<script>(function(){
-var v = localStorage.getItem('ttsProxyUrl');
-if (v) { var el = document.getElementById('ttsProxyInput'); if (el) el.value = v; }
-})();
-function toggleTtsProxyHint(){
-var n=document.getElementById('ttsProxyInput');var h=document.getElementById('ttsProxyHint');
-if(n.style.display!=='block'){n.style.display='block';if(h)h.style.display='inline';}
-else{n.style.display='none';if(h)h.style.display='none';}
-}</script>
-<div class="ctrl">
-<button class="r-play" id="readPlayBtn" onclick="resumeReading()" class="d-none">▶</button>
-<button class="r-pause" id="readPauseBtn" onclick="pauseReading()">⏸</button>
-<button class="r-stop" onclick="stopReading()">⏹</button>
-<button class="r-btn" id="contPlayBtn" onclick="toggleContinuousPlay()" style="font-size:11px;padding:4px 8px">🎵 连播</button>
+<div class="tp-row">
+<span class="tp-label">🔔 学习提醒</span>
+<span class="tp-controls">
+<select id="reminderToggle" class="tp-select" onchange="if((this.value==='on')!==state.reminderEnabled)toggleReminder()">
+<option value="off">关闭</option>
+<option value="on">开启</option>
+</select>
+<input type="time" id="reminderTimeInput" value="20:00" onchange="if(state.reminderEnabled){state.reminderTime=this.value;saveState();showToast('提醒时间：'+this.value)}">
+</span>
 </div>
+<div class="tp-row">
+<span class="tp-label">🎒 学段预设</span>
+<select id="studyLevelSetting" class="tp-select" onchange="setStudyLevel(this.value)">
+<option value="general">通用</option>
+<option value="primary">🎒 小学</option>
+<option value="junior">📚 初中</option>
+<option value="senior">🎓 高中</option>
+</select>
 </div>
-<div id="pqConfig" style="display:none;margin:4px 0 4px">
-<div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center">
-<button class="r-btn" data-cmd="setPerQuestionSeconds" data-arg="3" style="font-size:11px;border-color:var(--border)">3s</button>
-<button class="r-btn" data-cmd="setPerQuestionSeconds" data-arg="5" style="font-size:11px;border-color:var(--border)">5s</button>
-<button class="r-btn" data-cmd="setPerQuestionSeconds" data-arg="10" style="font-size:11px;border-color:var(--border)">10s</button>
-<button class="r-btn" data-cmd="setPerQuestionSeconds" data-arg="15" style="font-size:11px;border-color:var(--border)">15s</button>
-<button class="r-btn" data-cmd="setPerQuestionSeconds" data-arg="20" style="font-size:11px;border-color:var(--border)">20s</button>
-<button class="r-btn" data-cmd="setPerQuestionSeconds" data-arg="30" style="font-size:11px;border-color:var(--border)">30s</button>
-<button class="r-btn" onclick="setPerQuestionSeconds(60)" style="font-size:11px;border-color:var(--border)">60s</button>
-<button class="r-btn" onclick="setPerQuestionSeconds(120)" style="font-size:11px;border-color:var(--border)">120s</button>
-<span style="font-size:11px;color:var(--text-muted);margin:0 2px">|</span>
-<input type="number" id="pqSecondsInput" min="3" max="600" value="15" placeholder="自定义" style="width:50px;padding:3px 4px;border:1px solid var(--border);border-radius:4px;font-size:12px;text-align:center;background:var(--card-bg);color:var(--text)">
-<span class="text-xs text-muted">秒</span>
-<button class="r-btn" onclick="setPerQuestionSeconds()" class="text-xs">设定</button>
+<div class="tp-row">
+<span class="tp-label">🏷️ 难度筛选</span>
+<select id="diffFilterSetting" class="tp-select" onchange="setDiffFilter(this.value)">
+<option value="">全部</option>
+<option value="hard">🔴 困难</option>
+<option value="doubtful">🟡 存疑</option>
+<option value="mastered">🟢 掌握</option>
+</select>
 </div>
-</div>
-<div id="contentArea"></div>
+<div class="tp-section-title">⚙️ 软件设置</div>
 <div class="ai-config-bar" id="aiExpToggle" onclick="toggleAIExp()" style="cursor:pointer;padding:10px 12px;margin:6px 0 2px;background:#f8f0e4;border-radius:8px;display:flex;align-items:center;gap:8px;user-select:none;-webkit-user-select:none;-moz-user-select:none">
 <span class="text-base">🤖 AI 设置</span>
 <span style="margin-left:auto;font-size:11px;color:#8a7a6a" id="aiExpArrow">▶</span>
@@ -6051,11 +6026,27 @@ else{n.style.display='none';if(h)h.style.display='none';}
 <input type="checkbox" id="panelDelBtnToggle" onchange="togglePanelDelBtn(this.checked)"> ✕ 显示板块删除按钮</label>
 <button id="pwaInstallBtn" class="pwa-install-btn" onclick="triggerInstall()">📲 安装到桌面</button>
 </div>
-<div class="section-divider">
-<div class="flex-row" style="flex-direction:column;gap:8px;padding:8px 0">
-<div style="display:flex;align-items:center;gap:6px">
-<span style="font-size:12px;font-weight:600;color:var(--text)">⏱ 每题限时</span>
-<select id="pqToggle" onchange="onPerQuestionSelect(this.value)" style="font-size:12px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);color:var(--text);cursor:pointer;min-width:90px">
+<div id="pqConfig" style="display:none;margin:4px 0 4px">
+<div class="tp-section-title">⏱ 每题限时</div>
+<div class="pq-presets">
+<button class="r-btn pq-btn" data-cmd="setPerQuestionSeconds" data-arg="3">3s</button>
+<button class="r-btn pq-btn" data-cmd="setPerQuestionSeconds" data-arg="5">5s</button>
+<button class="r-btn pq-btn" data-cmd="setPerQuestionSeconds" data-arg="10">10s</button>
+<button class="r-btn pq-btn" data-cmd="setPerQuestionSeconds" data-arg="15">15s</button>
+<button class="r-btn pq-btn" data-cmd="setPerQuestionSeconds" data-arg="20">20s</button>
+<button class="r-btn pq-btn" data-cmd="setPerQuestionSeconds" data-arg="30">30s</button>
+<button class="r-btn pq-btn" onclick="setPerQuestionSeconds(60)">60s</button>
+<button class="r-btn pq-btn" onclick="setPerQuestionSeconds(120)">120s</button>
+</div>
+<div class="pq-custom">
+<input type="number" id="pqSecondsInput" min="3" max="600" value="15" placeholder="自定义">
+<span class="tp-unit">秒</span>
+<button class="pq-set-btn" onclick="setPerQuestionSeconds()">设定</button>
+</div>
+</div>
+<div class="tp-row tp-row-tight">
+<span class="tp-label">⏱ 每题限时</span>
+<select id="pqToggle" onchange="onPerQuestionSelect(this.value)" class="tp-select">
 <option value="0">❌ 关闭</option>
 <option value="3">3 秒</option>
 <option value="5">5 秒</option>
@@ -6066,18 +6057,68 @@ else{n.style.display='none';if(h)h.style.display='none';}
 <option value="60">60 秒</option>
 <option value="120">120 秒</option>
 </select>
-</div><div style="display:flex;align-items:center;gap:6px">
-<span style="font-size:12px;font-weight:600;color:var(--text)">📊 自评</span>
-<span id="srToggle" class="r-btn" onclick="toggleSelfRating()" style="cursor:pointer;user-select:none;-webkit-user-select:none;-moz-user-select:none;min-width:50px;text-align:center">✅ 开启</span>
-</div><div style="display:flex;align-items:center;gap:6px">
-<span style="font-size:12px;font-weight:600;color:var(--text)">📕 错题集</span>
-<span id="wsToggle" class="r-btn" data-action="toggleWrongSet" style="cursor:pointer;user-select:none;-webkit-user-select:none;-moz-user-select:none;min-width:50px;text-align:center">✅ 开启</span>
-</div><div style="display:flex;align-items:center;gap:6px;margin-top:6px">
-<span style="font-size:12px;font-weight:600;color:var(--text)">🎯 自信度</span>
-<span id="metaToggle" class="r-btn" onclick="toggleMetaJudgment()" style="cursor:pointer;user-select:none;-webkit-user-select:none;-moz-user-select:none;min-width:50px;text-align:center">✅ 开启</span>
+<span class="tp-label">📊 自评</span>
+<span id="srToggle" class="r-btn" onclick="toggleSelfRating()">✅ 开启</span>
+<span class="tp-label">📕 错题集</span>
+<span id="wsToggle" class="r-btn" data-action="toggleWrongSet">✅ 开启</span>
+<span class="tp-label">🎯 自信度</span>
+<span id="metaToggle" class="r-btn" onclick="toggleMetaJudgment()">✅ 开启</span>
 </div>
 </div>
+<div class="read-bar" id="readBar" class="d-none">
+<span class="status" id="readStatus">🔊 朗读中</span>
+<div class="bar-fill"><div class="fill" id="readProgressFill" style="width:0%"></div></div>
+<div class="plan-banner" id="planBanner">
+<button class="pc" onclick="closePlan()">✕</button>
+<div class="pt" id="planTitle">📋 今日学习计划</div>
+<div class="pi" id="planItems"></div>
 </div>
+<span class="prog" id="readProgress">0/0</span>
+<div class="speed">
+<span class="s-label">语速</span>
+<button data-speed="-0.1" title="减速">−</button>
+<span class="s-val" id="speedDisplay">1.0×</span>
+<button data-speed="0.1" title="加速">+</button>
+</div>
+<div class="lang-select" style="display:flex;align-items:center;gap:4px;font-size:12px;flex-wrap:wrap">
+<select id="ttsLang" onchange="safeSetItem('ddj_ttsLang',this.value)" style="padding:2px 4px;border:1px solid var(--border);border-radius:4px;font-size:11px;background:#fff;color:var(--text);max-width:90px">
+<option value="auto">🌐 自动</option>
+<option value="zh-CN">中文</option>
+<option value="ja-JP">日本語</option>
+<option value="en-US">English</option>
+<option value="ar-SA">العربية</option>
+<option value="ko-KR">한국어</option>
+<option value="ru-RU">Русский</option>
+</select>
+<select id="ttsVoice" onchange="safeSetItem('ddj_ttsVoice',this.value);ttsVoice=this.value" style="padding:2px 4px;border:1px solid var(--border);border-radius:4px;font-size:11px;background:#fff;color:var(--text);max-width:140px">
+<option value="">🎤 默认音色</option>
+</select>
+</div>
+<div style="margin:2px 0;display:flex;align-items:center;gap:4px;font-size:11px">
+<span style="color:var(--text-muted);cursor:pointer" onclick="toggleTtsProxyHint()" title="自定义 TTS 代理">⚙️</span>
+<span style="font-size:10px;color:var(--text-muted)">代理</span>
+<input id="ttsProxyInput" type="text" placeholder="代理URL（自建 Cloudflare Worker）" value=""
+style="display:none;flex:1;min-width:120px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:11px;outline:none;-webkit-appearance:none"
+onchange="var v=this.value.trim();if(v){localStorage.setItem('ttsProxyUrl',v);showToast('✅ 已设置自定义代理')}else{localStorage.removeItem('ttsProxyUrl');}">
+<span id="ttsProxyHint" style="display:none;font-size:10px;color:var(--text-muted);cursor:pointer" onclick="var v='/tts?text=测试&voice=zh-CN-XiaoxiaoNeural&rate=0&volume=50&pitch=0&format=audio-24khz-48kbitrate-mono-mp3';document.getElementById('ttsProxyInput').value='https://'+v;localStorage.setItem('ttsProxyUrl','https://'+v);showToast('✅ 已设置示例代理，请替换为实际地址');">❓</span>
+</div>
+<script>(function(){
+var v = localStorage.getItem('ttsProxyUrl');
+if (v) { var el = document.getElementById('ttsProxyInput'); if (el) el.value = v; }
+})();
+function toggleTtsProxyHint(){
+var n=document.getElementById('ttsProxyInput');var h=document.getElementById('ttsProxyHint');
+if(n.style.display!=='block'){n.style.display='block';if(h)h.style.display='inline';}
+else{n.style.display='none';if(h)h.style.display='none';}
+}</script>
+<div class="ctrl">
+<button class="r-play" id="readPlayBtn" onclick="resumeReading()" class="d-none">▶</button>
+<button class="r-pause" id="readPauseBtn" onclick="pauseReading()">⏸</button>
+<button class="r-stop" onclick="stopReading()">⏹</button>
+<button class="r-btn" id="contPlayBtn" onclick="toggleContinuousPlay()" style="font-size:11px;padding:4px 8px">🎵 连播</button>
+</div>
+</div>
+<div id="contentArea"></div>
 </div>
 <script>
 // 道德经81章完整数据
@@ -7077,9 +7118,7 @@ function setStudyLevel(level) {
 state.studyLevel = level;
 state.dailyGoal = getDefaultDailyGoal();
 saveState();
-document.querySelectorAll('#studyLevelSetting .r-btn').forEach(function(b) {
-b.classList.toggle('active', b.getAttribute('data-level') === level);
-});
+var sl=document.getElementById('studyLevelSetting'); if(sl) sl.value=level;
 updateGoalUI();
 var labels = {primary:'\u{1F392} 小学', junior:'\u{1F4DA} 初中', senior:'\u{1F393} 高中', general:'通用'};
 showToast('\u{1F392} 学段已设为: ' + (labels[level] || level));
@@ -7214,7 +7253,7 @@ var AI_RETRY_MAX = 3;  // AI 调用最大重试次数
 var AI_RETRY_INTERVAL_JSON = 2000;  // JSON 解析重试间隔 ms
 var AI_RETRY_INTERVAL_NETWORK = 3000;  // 网络错误重试间隔 ms
 var AI_TIMEOUT_DEFAULT = 120000;  // AI 调用超时 ms
-var AI_MAX_TOKENS_GENERATE = 65535;  // AI 课程生成最大 token
+var AI_MAX_TOKENS_GENERATE = 16384;  // AI 课程生成最大 token(修正:65535/131070 超 DeepSeek 输出上限)
 var AI_MAX_TOKENS_QUICK = 4096;      // 快速生成最大 token（短响应 = 更快）
 var AI_GEN_CONCURRENCY = 3;          // 快速生成并发章数（设为极高值，相当于不限）
 var FILE_MAX_CHARS = 50000;  // 上传文件截断字符数
@@ -7819,7 +7858,7 @@ artHtml = '<div class="article-text">'+(_markedText || (currentMode === 'sequent
 }
 }
 // 展示模式
-var showQuiz = dm !== 'write' && dm !== 'cloze' && dm !== 'recall';
+var showQuiz = dm !== 'write' && dm !== 'cloze' && dm !== 'recall' && article.q;
 var _optOrder = showQuiz ? shuffleArray((article.o||[]).map(function(_oi,_ii){return _ii;})) : [];
 // 主动回忆模式：选项默认隐藏，点击后显示
 var recallQuizHtml = '';
@@ -12535,6 +12574,8 @@ try { generateDailyPlan(); } catch(e){}
 try { updateXpUI(); } catch(e){}
 try { updateGoalUI(); } catch(e){}
 try { updateDiffFilterUI(); } catch(e){}
+ try { var _gs=document.getElementById('goalSetting'); if(_gs) _gs.value=String(state.dailyGoal||15); } catch(e){}
+ try { var _sl=document.getElementById('studyLevelSetting'); if(_sl) _sl.value=state.studyLevel||'general'; } catch(e){}
 try { initPanelManager(); } catch(e){}
 try { migratePegImagesToIDB(); } catch(e){}
 try { migratePegSetVideos(); } catch(e){}
@@ -12770,7 +12811,167 @@ var ex = PROFESSIONAL_STANDARDS.exam;
 if (hadSys) opts.systemPrompt += ex; else opts.prompt += '\n\n' + ex;
 }
 opts._enhanced = true;
+try { window._lastAIPrompt = { user: opts.prompt || '', system: opts.systemPrompt || '', at: Date.now(), panel: (typeof currentMode !== 'undefined' ? currentMode : '') }; } catch(e) {}
 }
+// ===== 复制完整提示词（全局悬浮按钮）=====
+// ===== 无输入时复制当前板块提示词（模板，占位输入构建）=====
+var _PANEL_PROMPT_DEFS = {
+  thinktank:{fn:'buildThinkTankPrompt',input:'ttInput',sys:1},
+  pattern:{fn:'buildPatternPrompt',input:'ptInput',sys:1},
+  munger:{fn:'buildMungerPrompt',param:'state',sys:1},
+  fly:{fn:'buildFlyPrompt',param:'state'},
+  cyber:{fn:'buildCyberPrompt',input:'cyberInput'},
+  acu:{fn:'buildAcuPrompt',input:'acuInput'},
+  decomp:{fn:'buildDecompPrompt',input:'decompInput'},
+  meta:{fn:'buildMetaPrompt',input:'metaInput'},
+  biz:{fn:'buildBizPrompt',input:'bizInput'},
+  tcm:{fn:'buildTcmPrompt',input:'tcmInput'},
+  yang:{fn:'buildYangPrompt',input:'yangInput'},
+  chuang:{fn:'buildChuangPrompt',input:'chuangInput'},
+  ask:{fn:'buildAskPrompt',input:'askInput'},
+  he:{fn:'buildHePrompt',input:'heInput'},
+  idea:{fn:'buildIdeaPrompt',input:'ideaInput'},
+  fin:{fn:'buildFinPrompt',input:'finInput'},
+  ana:{fn:'buildAnaPrompt',input:'anaInput'},
+  adv:{fn:'buildAdvPrompt',input:'advInput'},
+  ind:{fn:'buildIndPrompt',input:'indInput'},
+  ggz:{fn:'buildGgzPrompt',input:'ggzInput'},
+  sz:{fn:'buildSzPrompt',input:'szInput'},
+  qm:{fn:'buildQmPrompt',input:'qmInput'},
+  zh:{fn:'buildZhPrompt',input:'zhInput'},
+  mou:{fn:'buildMouPrompt',input:'mouInput'},
+  law:{fn:'buildLawPrompt',input:'lawInput'},
+  viral:{fn:'buildViralPrompt',input:'viralInput'},
+  tutor:{fn:'buildTutorPrompt',input:'tutorInput'},
+  money:{fn:'buildMoneyPrompt',input:'moneyInput'},
+  cso:{fn:'buildCsoPrompt',input:'csoInput'},
+  wealth:{fn:'buildWealthPlanPrompt',input:'wealthGoal'},
+  games:{fn:'buildGamePlanPrompt',input:'gameGoal'},
+  traffic:{fn:'buildTrafficPrompt',input:'trafficInput',param:1},
+  skill:{fn:'buildSkillPrompt',input:'skillInput',param:1},
+  creator:{fn:'buildCreatorPrompt',input:'creatorInput',param:1},
+  dce:{fn:'buildDcePrompt',input:'dceInput',param:1},
+  speed:{fn:'buildSpeedPrompt',input:'spdInput',param:1},
+  ability:{fn:'buildAbilityPrompt',param:'state'},
+  aisearch:{fn:'_buildAISearchPrompt',sys:1}
+};
+function _buildPanelDefaultPrompt(mode){
+  var def = _PANEL_PROMPT_DEFS[mode];
+  if (!def) return '';
+  var fn = window[def.fn];
+  if (typeof fn !== 'function') return '';
+  var el = def.input ? document.getElementById(def.input) : null;
+  var PH = '【请填写你的问题/任务内容】';
+  var orig = null;
+  if (el) { orig = el.value; if (!String(el.value || '').trim()) el.value = PH; }
+  var p = null;
+  try {
+    if (def.param === 'state') {
+      if (def.fn === 'buildFlyPrompt') p = fn({}, {}, []);
+      else p = fn({}, []);
+    } else if (def.param) {
+      var v = el ? el.value.trim() : '';
+      if (def.fn === 'buildTrafficPrompt') p = fn(v, []);
+      else if (def.fn === 'buildSkillPrompt') p = fn(v);
+      else if (def.fn === 'buildCreatorPrompt') p = fn([]);
+      else if (def.fn === 'buildDcePrompt') p = fn(v, {}, []);
+      else if (def.fn === 'buildSpeedPrompt') p = fn(window._speedMode || 'feynman', v, []);
+      else p = fn(v, []);
+    } else {
+      p = fn();
+    }
+  } catch(e) { p = null; }
+  if (el && orig !== null) el.value = orig;
+  if (typeof p !== 'string' || !p) return '';
+  if (def.sys) return p;
+  return MATH_FORMAT_RULE + '\n\n' + PROFESSIONAL_STANDARDS.general + '\n\n' + p;
+}
+
+function _copyPromptText() {
+  var p = window._lastAIPrompt && window._lastAIPrompt.user ? window._lastAIPrompt.user : '';
+  return p;
+}
+function _fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed'; ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  return ok;
+}
+function copyFullPrompt(btn) {
+  var text = _buildPanelDefaultPrompt(typeof currentMode !== 'undefined' ? currentMode : '');
+  var fromDefault = !!text;
+  if (!text) { text = _copyPromptText(); }
+  if (!text) { showToast('⚠️ 该板块暂不支持复制提示词，请先输入内容发起 AI 生成'); return; }
+  var done = function(){
+    if (btn) { var old = btn.textContent; btn.textContent = '✅ 已复制'; setTimeout(function(){ btn.textContent = old; }, 1500); }
+    showToast(fromDefault ? '📋 已复制当前板块提示词' : '✅ 提示词已复制');
+  };
+  var fail = function(){ showToast('❌ 复制失败，请手动复制'); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(function(){ if (_fallbackCopy(text)) done(); else fail(); });
+  } else if (_fallbackCopy(text)) { done(); } else { fail(); }
+}
+function _buildAISearchPrompt() {
+  var nameInput = document.getElementById('aiSearchInput');
+  var name = nameInput ? nameInput.value.trim() : '';
+  if (!name && window.aiUploadedContent) name = (window.aiUploadedFileName || '资料').replace(/\.[^.]+$/, '');
+  if (!name) name = '【请填写书名/关键词】';
+  var g = document.getElementById('aiSearchGenConcepts');
+  var genConcepts = !g || g.checked;
+  var p = '你是一位课程设计师。请为《' + name + '》设计完整的学习课程。\n';
+  p += '要求：\n1. 列出全部篇章名称（按原书顺序）\n';
+  if (genConcepts) p += '2. 提炼5-8个核心概念\n3. 每章映射到一个核心概念\n';
+  p += '\n返回严格JSON格式（不要markdown包裹，不要其他文字）：\n{\n  "title": "' + name + '",\n  "chapters": ["篇名1", "篇名2", ...]\n';
+  if (genConcepts) p += '  "core_concepts": [{"name": "概念1", "desc": "一句话描述"}, ...],\n  "chapter_concept_map": [[1, 0], [2, 1], ...]\n';
+  p += '}';
+  try { var _o = aiSearchGetOptionsPrompt(); if (_o && _o.text) p += _o.text; } catch(e) {}
+  var cr = document.getElementById('aiSearchCustomReq');
+  if (cr && cr.value.trim()) p += '\n\n【额外要求】' + cr.value.trim();
+  if (window.aiUploadedContent) {
+    p += '\n\n【用户提供的参考资料】\n以下是用户上传的《' + (window.aiUploadedFileName || '文件') + '》的内容，请基于此内容生成课程，而不是依赖你已有的知识：\n\n--- 文件内容开始 ---\n' + window.aiUploadedContent.slice(0, AI_REF_MAX_CHARS) + '\n--- 文件内容结束 ---\n';
+  }
+  return p;
+}
+
+function isMainAIBtn(b) {
+  var oc = b.getAttribute('onclick') || '';
+  var m = oc.match(/^call([A-Z]\w+)\(\)\s*$/);
+  if (!m) return !!oc.match(/^aiSearch(Start|DetailedStart)\(\)\s*$/);
+  var EX = ['DceDevilAdvocate','SpeedAnalogy','FlyChallenge','MungerChallenge','IchingDivination'];
+  return EX.indexOf(m[1]) === -1;
+}
+function injectCopyPromptButtons() {
+  var area = document.getElementById('contentArea');
+  if (!area) return;
+  var btns = area.querySelectorAll('button');
+  for (var i = 0; i < btns.length; i++) {
+    var b = btns[i];
+    if (b.getAttribute('data-cp-btn')) continue;
+    var main = isMainAIBtn(b) || b.getAttribute('data-game-act') === 'plan';
+    if (!main) continue;
+    var cp = document.createElement('button');
+    cp.type = 'button'; cp.setAttribute('data-cp-btn', '1');
+    cp.textContent = '📋 复制提示词';
+    cp.title = '复制当前板块完整提示词（与实际发送内容一致）';
+    cp.style.cssText = 'margin-left:8px;padding:8px 14px;border:1px dashed #a29bfe;border-radius:8px;background:transparent;color:#6c5ce7;font-size:12px;font-weight:600;cursor:pointer';
+    cp.onclick = function(){ copyFullPrompt(this); };
+    b.parentNode.insertBefore(cp, b.nextSibling);
+    b.setAttribute('data-cp-btn', '1');
+  }
+}
+(function(){
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ injectCopyPromptButtons(); });
+  else injectCopyPromptButtons();
+  var area = document.getElementById('contentArea');
+  if (area && window.MutationObserver) {
+    new MutationObserver(function(){ injectCopyPromptButtons(); }).observe(area, { childList: true, subtree: true });
+  }
+})();
 // AI API 调用通用封装（超时 + 错误处理）
 // ===== v15 Phase 5: API 代理调用 =====
 function aiApiCallViaProxy(options) {
@@ -13299,7 +13500,7 @@ var merged = {};
 for (var _k in options) merged[_k] = options[_k];
 merged.controller = task.controller;
 if (streamFn) {
-var throttled = throttleStream(streamFn, 80);
+var throttled = throttleStream(streamFn, 150);
 merged.stream = function(chunk, fullText) {
 aiTaskManager.setContent(task.id, fullText);
 throttled(chunk, fullText);
@@ -14869,7 +15070,7 @@ setTimeout(function(){ el.style.transform='translate(-50%,-50%) scale(1.1)'; el.
 }
 function setDailyGoal(n) {
 state.dailyGoal = n; saveState();
-document.querySelectorAll('#goalSetting .r-btn').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-goal'))===n);});
+var gs=document.getElementById('goalSetting'); if(gs) gs.value=String(n);
 updateGoalUI(); showToast('\u6bcf\u65e5\u76ee\u6807\uff1a'+n+'\u9898');
 }
 function getTodayProgress() {
@@ -15041,16 +15242,12 @@ else delete state.errorReasons[id];
 saveState();
 }
 function updateDiffFilterUI() {
-document.querySelectorAll('#diffFilterSetting .r-btn').forEach(function(b){
-b.classList.toggle('active', b.getAttribute('data-diff')===diffFilter);
-});
+var df=document.getElementById('diffFilterSetting'); if(df) df.value=diffFilter;
 }
 var diffFilter = '';
 function setDiffFilter(val) {
 diffFilter = val;
-document.querySelectorAll('#diffFilterSetting .r-btn').forEach(function(b){
-b.classList.toggle('active', b.getAttribute('data-diff')===val);
-});
+var df=document.getElementById('diffFilterSetting'); if(df) df.value=val;
 saveState(); closeRangePanel();
 if (currentMode==='sequential'||currentMode==='random') nextQuestion();
 else if (currentMode==='wrongset') renderWrongSetList();
@@ -15199,7 +15396,7 @@ function toggleDarkMode() {
 state.darkMode = !state.darkMode; saveState();
 applyDarkMode();
 var btn = document.getElementById('dmToggleBtn');
-if (btn) btn.textContent = state.darkMode ? '✅ 开启' : '❌ 关闭';
+if (btn) btn.value = state.darkMode ? 'on' : 'off';
 var meta = document.querySelector('meta[name="theme-color"]');
 if (meta) meta.content = state.darkMode ? '#0f0f23' : '#1a3a6b';
 }
@@ -15221,7 +15418,7 @@ showToast(state.reminderEnabled ? '提醒已开启（'+state.reminderTime+'）' 
 }
 function updateReminderUI() {
 var btn = document.getElementById('reminderToggle');
-if (btn) btn.textContent = state.reminderEnabled ? '✅ '+state.reminderTime : '❌ 关闭';
+if (btn) btn.value = state.reminderEnabled ? 'on' : 'off';
 var inp = document.getElementById('reminderTimeInput');
 if (inp) inp.value = state.reminderTime || '20:00';
 }
@@ -18414,8 +18611,8 @@ html += ' ondrop="event.preventDefault();this.classList.remove(\'ai-drop-over\')
 html += ' onclick="document.getElementById(\'aiFileInput\').click()">';
 html += '<div style="font-size:24px;color:#8aaabc">📄</div>';
 html += '<div style="font-size:13px;color:#5a7a8a;margin-top:4px">拖入资料文档到此处，或点击选择文件</div>';
-html += '<div style="font-size:11px;color:#aabbcc;margin-top:2px">支持 .txt .docx .pdf .xlsx</div>';
-html += '<input id="aiFileInput" type="file" accept=".txt,.docx,.pdf,.xlsx" class="d-none" onchange="handleFileDrop(this.files[0])">';
+html += '<div style="font-size:11px;color:#aabbcc;margin-top:2px">支持 .txt .docx .pdf .xlsx .epub .mobi .azw3</div>';
+html += '<input id="aiFileInput" type="file" accept=".txt,.docx,.pdf,.xlsx,.epub,.mobi,.azw3" class="d-none" onchange="handleFileDrop(this.files[0])">';
 html += '<div id="aiFileStatus" style="display:none;margin-top:6px;font-size:13px"></div>';
 html += '<div id="aiFilePreview" style="display:none;margin-top:6px;max-height:120px;overflow-y:auto;font-size:12px;color:#555;text-align:left;background:#fff;border:1px solid #e0e6ec;border-radius:6px;padding:8px;white-space:pre-wrap;word-break:break-all"></div>';
 html += '</div>';
@@ -18706,8 +18903,8 @@ var _gen = ++_aiLearnPhaseCGen;
 var p = '你是一位顶尖学习策略专家。请你分析“' + s.topic + '”领域的知识体系。';
 if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请给出该领域所有专家都一致认同的 **5 个核心思维模型**。这些思维模型应该是：\n1. 该领域最基础、最底层的思考框架\n2. 所有专家都默认使用的分析工具\n3. 能帮助初学者快速建立专家思维\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "models": [\n    {"name": "思维模型名称", "explanation": "详细解释（100-200字）"}\n  ]\n}';
-showAILoading('正在提取核心思维模型...', 'AI正在分析 "' + s.topic + '" 领域的核心思维模型');
-callAI({systemPrompt: '你是一位在目标领域拥有超过20年研究经验的资深教授和学科方法论专家，长期从事该领域的教学与研究工作。\n\n你的核心能力：\n1. 精通该领域的思维模型体系，能从海量知识中提炼最根本的认知框架\n2. 擅长区分"真理解"与"死记硬背"，能剖析一个认知框架为何是底层而非表面的\n3. 对学术界的前沿争论和未解之谜有深入把握，能指出共识与分歧\n\n工作要求：\n1. 每个输出必须体现学者级别的思维深度，而非科普级别的表面介绍\n2. 给出的思维模型必须是该领域专家共同体真正认可的核心框架，而非随意列举\n3. 避免任何泛泛而谈或模板化的套话，每个论断要具体、可验证\n4. 如果某个问题在学术界有不同观点，必须呈现而不是回避单一视角\n5. 每个模型的解释需包含：其核心假设、适用边界、以及与该领域其他模型的关系', prompt: p, temperature: 0.3, maxTokens: 16384, timeout: 120000, taskType: 'education'})
+showAILoading('正在提取核心思维模型...', 'AI正在分析 "' + s.topic + '" 领域的核心思维模型', true);
+callAI({systemPrompt: '你是一位在目标领域拥有超过20年研究经验的资深教授和学科方法论专家，长期从事该领域的教学与研究工作。\n\n你的核心能力：\n1. 精通该领域的思维模型体系，能从海量知识中提炼最根本的认知框架\n2. 擅长区分"真理解"与"死记硬背"，能剖析一个认知框架为何是底层而非表面的\n3. 对学术界的前沿争论和未解之谜有深入把握，能指出共识与分歧\n\n工作要求：\n1. 每个输出必须体现学者级别的思维深度，而非科普级别的表面介绍\n2. 给出的思维模型必须是该领域专家共同体真正认可的核心框架，而非随意列举\n3. 避免任何泛泛而谈或模板化的套话，每个论断要具体、可验证\n4. 如果某个问题在学术界有不同观点，必须呈现而不是回避单一视角\n5. 每个模型的解释需包含：其核心假设、适用边界、以及与该领域其他模型的关系', prompt: p, temperature: 0.3, maxTokens: 16384, timeout: 300000, taskType: 'education', stream: updateAILoadingStream})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return;
@@ -18738,8 +18935,8 @@ var _gen = ++_aiLearnPhaseCGen;
 var p = '基于“' + s.topic + '”领域，请找出目前专家之间 **争论最大的 3 个问题/方面**。\n对于每个争论：\n1. 说明争论的核心问题是什么\n2. 列出观点A及其最强论据\n3. 列出观点B（对立面）及其最强论据';
 if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "debates": [\n    {"topic": "争论核心问题", "sideA": "观点A标题", "argA": "观点A的最强论据（100-200字）", "sideB": "观点B标题", "argB": "观点B的最强论据（100-200字）"}\n  ]\n}';
-showAILoading('正在探索领域争论...', 'AI正在分析 "' + s.topic + '" 领域的学术争论');
-callAI({systemPrompt: '你是一位治学严谨的学术研究方法论专家，熟悉该领域的主要学术流派、范式演化和关键争论。\n\n你的核心能力：\n1. 精准识别学术共识与分歧的边界，不会将边缘观点当作主流呈现\n2. 擅长剖析争论背后的深层原因：是定义分歧、方法论差异、还是世界观对立\n3. 能评估各派论据的强弱，而非简单地"各打五十大板"\n\n工作要求：\n1. 每个争论焦点的描述必须精确到具体主张和论据，而非含糊的"存在不同看法"\n2. 对于每个观点，需呈现其最强、最有代表性的论据，而非捏造的稻草人\n3. 明确指出哪些问题是已有定论的、哪些仍在争论中\n4. 评估各派观点在学术界的主流程度（是共识？多数派？还是少数派？）', prompt: p, temperature: 0.4, maxTokens: 16384, timeout: 120000, taskType: 'education'})
+showAILoading('正在探索领域争论...', 'AI正在分析 "' + s.topic + '" 领域的学术争论', true);
+callAI({systemPrompt: '你是一位治学严谨的学术研究方法论专家，熟悉该领域的主要学术流派、范式演化和关键争论。\n\n你的核心能力：\n1. 精准识别学术共识与分歧的边界，不会将边缘观点当作主流呈现\n2. 擅长剖析争论背后的深层原因：是定义分歧、方法论差异、还是世界观对立\n3. 能评估各派论据的强弱，而非简单地"各打五十大板"\n\n工作要求：\n1. 每个争论焦点的描述必须精确到具体主张和论据，而非含糊的"存在不同看法"\n2. 对于每个观点，需呈现其最强、最有代表性的论据，而非捏造的稻草人\n3. 明确指出哪些问题是已有定论的、哪些仍在争论中\n4. 评估各派观点在学术界的主流程度（是共识？多数派？还是少数派？）', prompt: p, temperature: 0.4, maxTokens: 16384, timeout: 300000, taskType: 'education', stream: updateAILoadingStream})
 .then(function(resp) {
 hideAILoading();
 if (_gen !== _aiLearnPhaseCGen) return;
@@ -18770,7 +18967,7 @@ if (s.reference) p += '\n\n参考材料：\n' + s.reference;
 p += '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "questions": [\n    {"id": 0, "type": "open", "question": "问题描述...", "modelAnswer": "标准的深度理解答案要点"},\n    {"id": 1, "type": "open", "question": "问题描述...", "modelAnswer": "标准的深度理解答案要点（包含评分要点）"}\n  ]\n}';
 var _gen = ++_aiLearnPhaseCGen;
 showAILoading('正在生成深度测试题...', 'AI正在为 "' + s.topic + '" 设计10道深度问答题', true);
-callAI({systemPrompt: '你是一位教育测评与测量学专家，专长于基于认知层次理论（如Bloom认知分类、SOLO分类法）设计高质量测评工具。\n\n你的核心能力：\n1. 精准区分"事实记忆"与"深层理解"，能设计出直击思维方式而非知识储备的题目\n2. 擅长多维度命题：能从概念理解、应用分析、综合评价等不同认知层次设计题目\n【出题标准】\n1. 每道题必须考查特定认知层次（在题目标注：理解/应用/分析/评价/创造）\n2. 题干表述精确无歧义，不能通过措辞暗示正确选项\n3. 开放题的modelAnswer需包含评分要点和不同层次答案的区分标准\n4. 整套题目应覆盖不同认知层次，从理解到高阶思维递进', prompt: p, temperature: 0.4, maxTokens: 16384, timeout: 120000, taskType: 'exam',
+callAI({systemPrompt: '你是一位教育测评与测量学专家，专长于基于认知层次理论（如Bloom认知分类、SOLO分类法）设计高质量测评工具。\n\n你的核心能力：\n1. 精准区分"事实记忆"与"深层理解"，能设计出直击思维方式而非知识储备的题目\n2. 擅长多维度命题：能从概念理解、应用分析、综合评价等不同认知层次设计题目\n【出题标准】\n1. 每道题必须考查特定认知层次（在题目标注：理解/应用/分析/评价/创造）\n2. 题干表述精确无歧义，不能通过措辞暗示正确选项\n3. 开放题的modelAnswer需包含评分要点和不同层次答案的区分标准\n4. 整套题目应覆盖不同认知层次，从理解到高阶思维递进', prompt: p, temperature: 0.4, maxTokens: 16384, timeout: 300000, taskType: 'exam',
   stream: updateAILoadingStream})
 .then(function(resp) {
 hideAILoading();
@@ -18824,8 +19021,8 @@ qas.push({id: qi, question: q.question, type: q.type, modelAnswer: q.modelAnswer
 if (!allAnswered) { showToast('请回答所有题目后再提交'); return; }
 var evalPrompt = '你是一个严格的学习评估专家。以下是一位学生对“' + s.topic + '”领域深度测试题的回答。\n\n请逐题评估他的回答是否展示了**真正的理解**还是**表面的记忆**。\n\n评分标准：\n- 8-10分：真正理解 - 能用自己的语言解释原理，能举一反三，能分析关联\n- 5-7分：较好理解 - 要点正确但深度不足，有初步的关联分析\n- 3-4分：部分理解 - 答案基本正确但缺乏深度，套用书本语言\n- 1-2分：微弱理解 - 触及表面但未掌握核心\n- 0分：不理解或死记硬背 - 答案错误或只是背诵定义\n\n题目和回答：\n' + JSON.stringify(qas, null, 2) + '\n\n请以JSON格式返回，不要包含其他内容：\n{\n  "overallScore": 75,\n  "maxScore": 100,\n  "evaluations": [\n    {"id": 0, "score": 8, "feedback": "你真正理解了...", "suggestion": "可以进一步思考..."}\n  ],\n  "summary": "总体评估和建议..."\n}';
 var _evalGen = _aiLearnPhaseCGen;
-showAILoading('正在评估你的答案...', 'AI正在逐题分析你的理解深度');
-callAI({systemPrompt: '你是一位严格的学术评估专家，擅长通过学生的答题表现精确诊断其理解深度。\n\n你的评估方法论：\n1. 逐题分析：对每道题进行独立评估，而非整体印象打分\n2. 多维判断：从"答案正确性"、"推理质量"、"概念关联能力"、"迁移应用能力"四个维度评估\n3. 证据驱动：评分必须有明确依据，指出学生的回答中哪些表述暴露/证明了真正的理解\n\n【评估标准】\n- 8-10分：真正理解 — 能用自己的语言解释原理，能举一反三（不仅限于课程中的例子），能分析关联\n- 5-7分：较好理解 — 要点正确但深度不足，有初步的关联分析但局限于课程内容\n- 3-4分：部分理解 — 答案基本正确但缺乏深度，套用课程语言而非自己的理解\n- 1-2分：微弱理解 — 触及表面但未掌握核心，或存在概念性错误\n- 0分：不理解或死记硬背 — 答案错误、无关，或只是逐字背诵定义而未展现理解\n\n工作要求：\n1. 每个评分必须附上具体的依据（引用学生回答的原文）\n2. 反馈要诊断性而非评价性：告诉学生"哪里没理解"和"为什么"比"答得好/差"更有价值\n3. 改进建议必须有可操作性，而非泛泛的"继续努力"', prompt: evalPrompt, temperature: 0.3, maxTokens: 16384, timeout: 120000, taskType: 'education'})
+showAILoading('正在评估你的答案...', 'AI正在逐题分析你的理解深度', true);
+callAI({systemPrompt: '你是一位严格的学术评估专家，擅长通过学生的答题表现精确诊断其理解深度。\n\n你的评估方法论：\n1. 逐题分析：对每道题进行独立评估，而非整体印象打分\n2. 多维判断：从"答案正确性"、"推理质量"、"概念关联能力"、"迁移应用能力"四个维度评估\n3. 证据驱动：评分必须有明确依据，指出学生的回答中哪些表述暴露/证明了真正的理解\n\n【评估标准】\n- 8-10分：真正理解 — 能用自己的语言解释原理，能举一反三（不仅限于课程中的例子），能分析关联\n- 5-7分：较好理解 — 要点正确但深度不足，有初步的关联分析但局限于课程内容\n- 3-4分：部分理解 — 答案基本正确但缺乏深度，套用课程语言而非自己的理解\n- 1-2分：微弱理解 — 触及表面但未掌握核心，或存在概念性错误\n- 0分：不理解或死记硬背 — 答案错误、无关，或只是逐字背诵定义而未展现理解\n\n工作要求：\n1. 每个评分必须附上具体的依据（引用学生回答的原文）\n2. 反馈要诊断性而非评价性：告诉学生"哪里没理解"和"为什么"比"答得好/差"更有价值\n3. 改进建议必须有可操作性，而非泛泛的"继续努力"', prompt: evalPrompt, temperature: 0.3, maxTokens: 16384, timeout: 300000, taskType: 'education', stream: updateAILoadingStream})
 .then(function(resp) {
 hideAILoading();
 if (_evalGen !== _aiLearnPhaseCGen) return; // 防止旧评估覆盖刷新后的数据
@@ -19277,7 +19474,7 @@ var cd = kbGetCourseData(courseName);
 if (!cd) { _kbProcessing = false; showToast('课程数据不存在'); return; }
 var prompt = buildPrompt(courseName, cd);
 showAILoading(loadingMsg, '正在分析 "' + courseName + '"', true);
-callAI({systemPrompt: systemPrompt, prompt: prompt, temperature: 0.3, maxTokens: 16384, timeout: 120000,
+callAI({systemPrompt: systemPrompt, prompt: prompt, temperature: 0.3, maxTokens: 16384, timeout: 300000,
   stream: updateAILoadingStream})
 .then(function(resp) {
 hideAILoading();
@@ -19434,8 +19631,8 @@ courseConceptText += '\n' + cn + ': ' + JSON.stringify(kb.courses[cn].concepts.d
 if (allConcepts.length < 2) { showToast('至少需要两门课程完成概念分析后才能生成跨课程图谱'); return; }
 _kbProcessing = true;
 var prompt = '请分析以下多门课程的核心概念，构建跨课程知识图谱。\n已分析课程及其核心概念：\n' + courseConceptText + '\n\n要求：\n1. 合并所有概念，去重同义概念\n2. 发现跨课程的概念关联\n3. 标注每个概念来源于哪些课程\n4. 标注概念间的语义关系类型\n\n请以JSON格式返回：\n{"nodes": [{"id":"概念唯一ID","label":"概念显示名","group":"来源课程","mastery":0.7}],"edges": [{"source":"概念ID1","target":"概念ID2","relationship":"支持/互补/对立"}]}';
-showAILoading('正在构建跨课程知识图谱...', 'AI 正在分析多门课程的概念关联');
-callAI({systemPrompt: '你是一位知识图谱和跨学科分析专家，擅长发现不同知识体系之间的深层结构关联。\n\n你的核心方法论：\n1. 关系类型精准分类：能在因果关系、类比关系、前提-推论关系、互补关系等不同类型间准确区分\n2. 跨域迁移识别：能发现同一抽象结构在不同领域的具体表现（如"反馈回路"在生物学、经济学和工程学中的不同形式）\n3. 整合性思维：不是简单罗列关联，而是构建整合性的知识网络\n\n工作要求：\n1. 每个关联必须有实质性的分析支撑，而非表面术语相似\n2. 标注关联的强度（strong/medium/weak）和类型\n3. 整合后的知识图谱应揭示出单个课程无法呈现的洞见\n4. 按关联强度或主题聚类组织呈现。请严格以JSON格式返回。', prompt: prompt, temperature: 0.3, maxTokens: 16384, timeout: 120000, taskType: 'education'})
+showAILoading('正在构建跨课程知识图谱...', 'AI 正在分析多门课程的概念关联', true);
+callAI({systemPrompt: '你是一位知识图谱和跨学科分析专家，擅长发现不同知识体系之间的深层结构关联。\n\n你的核心方法论：\n1. 关系类型精准分类：能在因果关系、类比关系、前提-推论关系、互补关系等不同类型间准确区分\n2. 跨域迁移识别：能发现同一抽象结构在不同领域的具体表现（如"反馈回路"在生物学、经济学和工程学中的不同形式）\n3. 整合性思维：不是简单罗列关联，而是构建整合性的知识网络\n\n工作要求：\n1. 每个关联必须有实质性的分析支撑，而非表面术语相似\n2. 标注关联的强度（strong/medium/weak）和类型\n3. 整合后的知识图谱应揭示出单个课程无法呈现的洞见\n4. 按关联强度或主题聚类组织呈现。请严格以JSON格式返回。', prompt: prompt, temperature: 0.3, maxTokens: 16384, timeout: 300000, taskType: 'education', stream: updateAILoadingStream})
 .then(function(resp) {
 hideAILoading();
 _kbProcessing = false;
@@ -19483,7 +19680,34 @@ if (ext === 'txt' || ext === 'md' || ext === 'csv') readTextFile(file);
 else if (ext === 'docx') extractDocx(file);
 else if (ext === 'pdf') extractPdf(file);
 else if (ext === 'xlsx' || ext === 'xls') extractXlsx(file);
+else if (ext === 'epub' || ext === 'mobi' || ext === 'azw3') readEbookFile(file);
 else { status.innerHTML = '❌ 不支持的文件格式: .' + escHtml(ext); status.style.color = '#c0392b'; }
+}
+function readEbookFile(file) {
+window.aiUploadedFileName = file.name;
+var status = document.getElementById('aiFileStatus');
+var preview = document.getElementById('aiFilePreview');
+status.style.display = 'block'; status.innerHTML = '⏳ 正在解析电子书 <b>' + escHtml(file.name) + '</b>...'; status.style.color = '#2a5a7a';
+preview.style.display = 'none'; preview.textContent = '';
+var ext = file.name.split('.').pop().toLowerCase();
+readerParseFile(file, ext).then(function(parsed) {
+var chapters = (parsed && Array.isArray(parsed.chapters)) ? parsed.chapters : [];
+var parts = [];
+for (var i = 0; i < chapters.length; i++) {
+var t = String((chapters[i] || {}).text || '').replace(/\s+/g, ' ').trim();
+if (t) parts.push('## ' + ((chapters[i] && chapters[i].title) || ('第' + (i + 1) + '节')) + '\n' + t);
+}
+var text = parts.join('\n\n');
+if (!text) { status.innerHTML = '❌ 未能从电子书中提取到文字'; status.style.color = '#c0392b'; return; }
+if (text.length > FILE_MAX_CHARS) { showToast('⚠️ 电子书较长，仅截取前5万字作为参考'); text = text.slice(0, FILE_MAX_CHARS) + '\n\n...[因文件过长已截断]'; }
+window.aiUploadedContent = text;
+status.innerHTML = '✅ 已解析 <b>' + escHtml(file.name) + '</b>（' + chapters.length + ' 章，' + (text.length / 10000).toFixed(1) + '万字）';
+status.style.color = '#1a6a3a';
+preview.style.display = 'block'; preview.textContent = text.slice(0, 300) + (text.length > 300 ? '\n...[截断]' : '');
+showToast('✅ 已加载 ' + file.name);
+}).catch(function(err) {
+status.innerHTML = '❌ 电子书解析失败（可能加密 DRM 或文件损坏）'; status.style.color = '#c0392b';
+});
 }
 function readTextFile(file) {
 window.aiUploadedFileName = file.name;
@@ -25225,6 +25449,7 @@ html += '<div class="market-tabs">';
 html += '<button class="market-tab' + (tab==='packs'?' active':'') + '" onclick="switchMarketTab(\'packs\')">📦 题库</button>';
 html += '<button class="market-tab' + (tab==='hot'?' active':'') + '" onclick="switchMarketTab(\'hot\')">🔥 热门资料</button>';
 html += '<button class="market-tab' + (tab==='jingdian'?' active':'') + '" onclick="switchMarketTab(\'jingdian\')">📜 古典文学</button>';
+html += '<button class="market-tab' + (tab==='simple'?' active':'') + '" onclick="switchMarketTab(\'simple\')">📚 简易课程</button>';
 html += '</div>';
 if (tab === 'hot') {
 html += renderHotExamSection();
@@ -25238,6 +25463,12 @@ html += renderJingdianSection();
 html += '</div>';
 area.innerHTML = html;
 initHotEvents();
+return;
+}
+if (tab === 'simple') {
+html += renderSimpleCourseSection();
+html += '</div>';
+area.innerHTML = html;
 return;
 }
 // === 题库 Tab ===
@@ -25941,6 +26172,614 @@ html += renderHotTopicCard(group.topics[i]);
 }
 return html;
 }
+// ===== 简易课程（原文拆分 + 白话/费曼讲解，只生成两点，不含题目）=====
+var SIMPLE_STATE = null;
+var SIMPLE_MEM_CAP = 400; // 单条记忆块原文上限（字），超过按句子拆，便于记忆
+
+function renderSimpleCourseSection() {
+var html = '';
+html += '<div class="market-hero"><h2>📚 简易课程</h2><p>三种方式任选：粘贴正文 / 上传文档 / 仅填书名。只填书名时 AI 多次调用、逐章还原全书（长书先预估调用量，确认后再开始），并按章拆成便于记忆的小块。上传电子书（.epub/.mobi/.azw3）自动逐章配讲解。古典名著 → 白话解析，现代文章 → 费曼讲解。只生成「原文 + 讲解」，不含任何题目</p></div>';
+html += '<div style="margin:14px 0 4px;font-size:12px;color:var(--text-muted,#9a8a6a)">💡 建议输入 ≤2 万字；长文会分批生成，耗时较长</div>';
+html += '<div style="display:flex;flex-direction:column;gap:12px">';
+html += '<div><label style="font-size:13px;font-weight:600;color:#5a4a3a">📚 书名（只填书名即可，AI 多次调用逐章还原全书，并按章拆成便于记忆的小块）</label>';
+html += '<input id="simpleTitleInput" type="text" placeholder="如：岳阳楼记 / 深度工作…" style="width:100%;padding:10px 14px;border:1px solid #d8c9ad;border-radius:8px;font-size:15px;margin-top:4px;background:#fff;color:#2c1810" value=""></div>';
+html += '<div><label style="font-size:13px;font-weight:600;color:#5a4a3a">📝 粘贴书本正文</label>';
+html += '<textarea id="simpleTextInput" placeholder="把书本的原文内容粘贴到这里…" style="width:100%;min-height:150px;padding:10px 14px;border:1px solid #d8c9ad;border-radius:8px;font-size:14px;margin-top:4px;background:#fff;color:#2c1810;resize:vertical;line-height:1.7;box-sizing:border-box"></textarea></div>';
+html += '<div id="aiFileDropZone" style="border:1px dashed #d8c9ad;border-radius:8px;padding:16px;text-align:center;cursor:pointer;background:#faf7ef;margin-top:2px"';
+html += ' ondragover="event.preventDefault();this.style.background=\'#f0e9d8\'"';
+html += ' ondragleave="this.style.background=\'#faf7ef\'"';
+html += ' ondrop="event.preventDefault();this.style.background=\'#faf7ef\';simpleFileDrop(event.dataTransfer.files[0])"';
+html += ' onclick="document.getElementById(\'aiFileInput\').click()">';
+html += '<div style="font-size:24px;color:#a08a5a">📄</div>';
+html += '<div style="font-size:13px;color:#7a6a5a;margin-top:4px">或拖入文档到此处，点击选择文件</div>';
+html += '<div style="font-size:11px;color:#a08a6a;margin-top:2px">支持 .txt .docx .pdf .xlsx（自动截取前 5 万字）+ .epub/.mobi/.azw3 电子书（逐章讲解）</div>';
+html += '<input id="aiFileInput" type="file" accept=".txt,.docx,.pdf,.xlsx,.epub,.mobi,.azw3,.md" class="d-none" onchange="simpleFileDrop(this.files[0])">';
+html += '<div id="aiFileStatus" style="display:none;margin-top:6px;font-size:13px"></div>';
+html += '<div id="aiFilePreview" style="display:none;margin-top:6px;max-height:120px;overflow-y:auto;font-size:12px;color:#555;text-align:left;background:#fff;border:1px solid #e6dcc8;border-radius:6px;padding:8px;white-space:pre-wrap;word-break:break-all"></div>';
+html += '</div>';
+html += '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">';
+html += '<button id="simpleStartBtn" class="btn-ai-gen" onclick="simpleStart()" style="padding:11px 26px;font-size:15px;border:none;border-radius:8px;cursor:pointer;font-weight:600">✨ 生成简易课程</button>';
+html += '<button id="simpleAbortBtn" class="btn-ai-gen" onclick="simpleAbort()" style="padding:11px 20px;font-size:14px;border:none;border-radius:8px;cursor:pointer;font-weight:600;background:#a05a3a;display:none">⏹ 停止</button>';
+html += '<span id="simpleStatus" style="font-size:13px;color:var(--text-muted,#9a8a6a)"></span>';
+html += '</div>';
+html += '</div>';
+html += '<div id="simpleProgress" style="margin-top:16px"></div>';
+return html;
+}
+
+function simpleStart() {
+if (SIMPLE_STATE && SIMPLE_STATE.running) { showToast('⏳ 正在生成中，请等待完成'); return; }
+// 从 DOM 同步 AI 配置（兼容用户填了但没保存）
+var keyInput = document.getElementById('aiApiKeyInput');
+if (!state.aiApiKey && keyInput && keyInput.value) { state.aiApiKey = keyInput.value; saveState(); }
+var epInput = document.getElementById('aiEndpointInput');
+if (epInput && epInput.value && epInput.value !== state.aiEndpoint) { state.aiEndpoint = epInput.value; saveState(); }
+var modelSelect = document.getElementById('aiModelSelect');
+if (modelSelect && modelSelect.value && modelSelect.value !== state.aiModel) { state.aiModel = modelSelect.value; saveState(); }
+if (!state.aiApiKey && !state.aiProxyEnabled) {
+showToast('⛔ 请先在「🧠 学霸」→ AI设置中配置 API Key');
+return;
+}
+var textEl = document.getElementById('simpleTextInput');
+var text = textEl ? textEl.value : '';
+var uploaded = window.aiUploadedContent || '';
+var nameEl = document.getElementById('simpleTitleInput');
+var name = nameEl && nameEl.value ? nameEl.value.trim() : '';
+if (!name && window.aiUploadedFileName) name = window.aiUploadedFileName.replace(/\.[^.]+$/, '');
+if (!name) name = '简易讲解课程';
+if (!text.trim() && !uploaded.trim() && !(nameEl && nameEl.value)) { showToast('⚠️ 请粘贴正文、上传文件，或填写书名'); return; }
+if (!text.trim() && !uploaded.trim()) {
+SIMPLE_STATE = { name: name, chunks: [], byTitle: true, articles: [], idx: 0, running: true, aborted: false, errors: 0, chunkOk: [], phase: 'plan', chapters: [], chapterIdx: 0, calls: 0, anchor: '', chapterFail: 0, maxCalls: 500 };
+var b = document.getElementById('simpleStartBtn');
+if (b) { b.classList.add('loading'); b.disabled = true; }
+var ab = document.getElementById('simpleAbortBtn');
+if (ab) ab.style.display = 'inline-block';
+var stEl = document.getElementById('simpleStatus');
+if (stEl) stEl.textContent = '正在根据书名生成「' + name + '」…';
+simpleGenByTitle();
+return;
+}
+var content = (text && text.trim()) ? text : uploaded;
+if (content.length > FILE_MAX_CHARS) {
+showToast('⚠️ 内容较长（' + (content.length/10000).toFixed(1) + '万字），仅取前 5 万字');
+content = content.slice(0, FILE_MAX_CHARS);
+}
+var chunks = simpleSplitChunks(content);
+SIMPLE_STATE = { name: name, chunks: chunks, articles: [], idx: 0, running: true, aborted: false, errors: 0, chunkOk: [] };
+var btn = document.getElementById('simpleStartBtn');
+if (btn) { btn.classList.add('loading'); btn.disabled = true; }
+var ab = document.getElementById('simpleAbortBtn');
+if (ab) ab.style.display = 'inline-block';
+var stEl = document.getElementById('simpleStatus');
+if (stEl) stEl.textContent = '共 ' + chunks.length + ' 块，开始生成…';
+simplePump();
+}
+
+
+function simpleGenByTitle() {
+var st = SIMPLE_STATE;
+if (!st) return;
+st.phase = 'plan';
+st.calls = 0;
+st.chapterFail = 0;
+st.errors = 0;
+simpleRenderProgress();
+var prompt = '请根据书名「' + st.name + '」列出这本书的章节结构，用于逐章还原全文。\n\n';
+prompt += '要求：\n1. 单篇文章/散文/诗词/短篇 → 返回恰一项，title 为「全文」\n2. 章回体/长篇 → 按书中顺序列出全部回目或章节名，使用书中的原章节标题\n3. 若你无法确定该书的章节结构 → 回退为恰一项「全文」\n\n';
+prompt += '只返回严格 JSON（以 { 开头，不要 markdown 代码块）：\n{"chapters":[{"title":"章节名"},{"title":"章节名"}]}';
+simpleCallAI(prompt, function(text) {
+if (!SIMPLE_STATE || SIMPLE_STATE.aborted) return;
+var st2 = SIMPLE_STATE;
+st2.calls++;
+var obj = null;
+try { obj = JSON.parse(aiSearchExtractJSON(text)); } catch(e) { obj = null; }
+var chapters = (obj && Array.isArray(obj.chapters)) ? obj.chapters : [];
+if (!chapters.length) {
+var arr = null;
+try { arr = JSON.parse(aiSearchExtractJSON(text)); } catch(e2) { arr = null; }
+if (Array.isArray(arr)) chapters = arr;
+}
+var list = [];
+for (var i = 0; i < chapters.length; i++) {
+var t = chapters[i];
+var title = (typeof t === 'string') ? t : (t && t.title ? t.title : '');
+title = String(title).trim();
+if (title) list.push({ title: title });
+}
+if (!list.length) list = [{ title: '全文' }];
+var MAXC = 200;
+if (list.length > MAXC) {
+list = list.slice(0, MAXC);
+st2.errors++;
+showToast('⚠️ 该书章节超过 ' + MAXC + ' 章，仅还原前 ' + MAXC + ' 章，如需完整请粘贴正文');
+}
+st2.chapters = list;
+st2.phase = 'confirm';
+simpleRenderProgress();
+}, function(err) {
+if (!SIMPLE_STATE || SIMPLE_STATE.aborted) return;
+var st3 = SIMPLE_STATE;
+st3.calls++;
+st3.chapters = [{ title: '全文' }];
+st3.phase = 'confirm';
+st3.errors++;
+simpleRenderProgress();
+});
+}
+
+function simpleBeginReconstruct() {
+if (!SIMPLE_STATE) return;
+var st = SIMPLE_STATE;
+st.phase = 'reconstruct';
+st.chapterIdx = 0;
+st.anchor = '';
+st.chapterFail = 0;
+st.errors = 0;
+simpleRenderProgress();
+simpleReconstructLoop();
+}
+
+function simpleReconstructLoop() {
+if (!SIMPLE_STATE) return;
+var st = SIMPLE_STATE;
+if (st.aborted || st.calls >= st.maxCalls || st.chapterIdx >= st.chapters.length) { simpleFinishRun(); return; }
+var ch = st.chapters[st.chapterIdx] || { title: '全文' };
+var isFirst = !st.anchor;
+var prompt = '你正在凭记忆还原《' + st.name + '》的完整原文。现在是这一部分：「' + ch.title + '」。\n\n';
+prompt += '要求：\n';
+prompt += '1. 逐字还原原文，一字不改，不概括、不改写、不遗漏\n';
+prompt += '2. 每次输出若干连续片段，每段约 80~300 字原文（便于记忆的小知识块）；每段同时给出讲解 p：文言/古文/诗词 → 白话解析（逐句用大白话讲清含义、生僻字给通俗解释）；现代文 → 费曼学习技巧（最简单语言 + 生活类比讲透核心）\n';
+prompt += '3. 每段判断 type：文言/古文/诗词 → "guwen"；现代白话/科普/论述 → "xiandai"\n';
+prompt += '4. 若「' + ch.title + '」这一部分原文已全部输出完毕，done 为 true；否则 done 为 false\n';
+prompt += '5. 严禁生成选择题/选项/答案等任何题目字段\n\n';
+if (!isFirst) {
+prompt += '【上文末尾】（紧接上文的结尾继续，不要重复这段文字）\n' + st.anchor + '\n\n';
+}
+prompt += '只返回严格 JSON（以 { 开头，不要 markdown 代码块）：\n{"done":true或false,"items":[{"t":"原文片段","type":"guwen","p":"讲解内容"}]}';
+simpleCallAI(prompt, function(text) {
+if (!SIMPLE_STATE || SIMPLE_STATE.aborted) return;
+var st2 = SIMPLE_STATE;
+st2.calls++;
+var obj = null;
+try { obj = JSON.parse(aiSearchExtractJSON(text)); } catch(e) { obj = null; }
+var items = (obj && Array.isArray(obj.items)) ? obj.items : null;
+if (!items || !items.length) {
+st2.chapterFail++;
+if (st2.chapterFail < 3 && !st2.anchor) { simpleRenderProgress(); setTimeout(simpleReconstructLoop, 200); return; }
+st2.chapterIdx++;
+st2.anchor = '';
+st2.errors++;
+simpleRenderProgress();
+simpleReconstructLoop();
+return;
+}
+if (st2.anchor) {
+var t0 = String(items[0].t || '');
+var cut = 0;
+var mMax = Math.min(st2.anchor.length, t0.length);
+for (var m = mMax; m > 0; m--) {
+if (st2.anchor.slice(-m) === t0.slice(0, m)) { cut = m; break; }
+}
+if (cut) items[0].t = t0.slice(cut);
+}
+var added = 0;
+for (var i = 0; i < items.length; i++) {
+var it = items[i];
+if (!it || !it.t) continue;
+var tt = String(it.t).trim();
+if (!tt) continue;
+var tp = String(it.p || '').slice(0, 8000);
+var ty = it.type === 'guwen' ? 'guwen' : 'xiandai';
+var parts = (tt.length > SIMPLE_MEM_CAP) ? simpleMemSplit(tt, SIMPLE_MEM_CAP) : [tt];
+for (var j = 0; j < parts.length; j++) {
+var pt = parts[j];
+if (!String(pt).trim()) continue;
+st2.articles.push({
+id: st2.articles.length + 1,
+c: st2.name,
+t: String(pt).slice(0, SIMPLE_MEM_CAP),
+p: (j === 0 ? tp : ''),
+type: ty
+});
+added++;
+}
+}
+st2.chapterFail = 0;
+var done = !!(obj && obj.done === true);
+var lastT = '';
+for (var k = items.length - 1; k >= 0; k--) {
+if (items[k] && items[k].t) { lastT = String(items[k].t); break; }
+}
+if (done) {
+st2.chapterIdx++;
+st2.anchor = '';
+} else if (lastT) {
+st2.anchor = lastT.slice(-200);
+}
+if (!added) st2.errors++;
+simpleRenderProgress();
+simpleReconstructLoop();
+}, function(err) {
+if (!SIMPLE_STATE || SIMPLE_STATE.aborted) return;
+var st3 = SIMPLE_STATE;
+st3.calls++;
+st3.chapterFail++;
+if (st3.chapterFail >= 3 || st3.anchor) {
+st3.chapterIdx++;
+st3.anchor = '';
+st3.errors++;
+} else {
+setTimeout(simpleReconstructLoop, 300);
+return;
+}
+simpleRenderProgress();
+simpleReconstructLoop();
+});
+}
+
+function simpleMemSplit(text, cap) {
+var parts = String(text).split(/(?<=[。！？；.!?;\n])/);
+var out = [];
+var cur = '';
+for (var i = 0; i < parts.length; i++) {
+var seg = parts[i];
+if (!seg) continue;
+if (cur && (cur.length + seg.length) > cap) { out.push(cur.trim()); cur = ''; }
+cur += seg;
+while (cur.length > cap) { out.push(cur.slice(0, cap).trim()); cur = cur.slice(cap); }
+}
+if (cur && cur.trim()) out.push(cur.trim());
+return out;
+}
+
+function simpleCancelByTitle() {
+if (!SIMPLE_STATE) return;
+SIMPLE_STATE.aborted = true;
+simpleFinishRun();
+}
+
+function simpleFileDrop(file) {
+if (!file) return;
+var ext = (file.name.split('.').pop() || '').toLowerCase();
+if (ext === 'epub' || ext === 'mobi' || ext === 'azw3') { simpleEbookImport(file); return; }
+handleFileDrop(file);
+}
+
+function simpleEbookImport(file) {
+if (SIMPLE_STATE && SIMPLE_STATE.running) { showToast('⏳ 正在生成中，请先等待完成'); return; }
+var name = readerTitleFromName(file.name);
+var ext = (file.name.split('.').pop() || '').toLowerCase();
+SIMPLE_STATE = { name: name, byEbook: true, blocks: [], blockIdx: 0, phase: 'plan', calls: 0, errors: 0, running: true, aborted: false, articles: [], maxCalls: 500 };
+var b = document.getElementById('simpleStartBtn');
+if (b) { b.classList.add('loading'); b.disabled = true; }
+var ab = document.getElementById('simpleAbortBtn');
+if (ab) ab.style.display = 'inline-block';
+var stEl = document.getElementById('simpleStatus');
+if (stEl) stEl.textContent = '正在解析《' + name + '》…';
+simpleRenderProgress();
+readerParseFile(file, ext).then(function(parsed) {
+if (!SIMPLE_STATE || SIMPLE_STATE.aborted) return;
+var st = SIMPLE_STATE;
+var chapters = (parsed && Array.isArray(parsed.chapters)) ? parsed.chapters : [];
+var blocks = simpleEbookBlocks(chapters);
+if (!blocks.length) {
+showToast('❌ 未能从电子书中提取到文字');
+simpleFinishRun();
+return;
+}
+st.blocks = blocks;
+st.phase = blocks.length >= 20 ? 'confirm' : 'gen';
+simpleRenderProgress();
+if (st.phase === 'gen') simpleEbookBegin();
+}).catch(function(err) {
+if (!SIMPLE_STATE || SIMPLE_STATE.aborted) return;
+showToast('❌ 该电子书无法解析（可能已加密 DRM 或文件损坏）');
+simpleFinishRun();
+});
+}
+
+function simpleEbookBlocks(chapters) {
+var blocks = [];
+for (var i = 0; i < chapters.length; i++) {
+var ch = chapters[i] || {};
+var text = String(ch.text || '').replace(/\s+/g, ' ').trim();
+if (!text) continue;
+var title = String(ch.title || ('第' + (i + 1) + '节')).trim();
+var parts = String(text).split(/(?<=[。！？；.!?;\n])/);
+var cur = '';
+for (var j = 0; j < parts.length; j++) {
+var seg = parts[j];
+if (!seg) continue;
+if (cur && (cur.length + seg.length) > 2500) { blocks.push({ ch: title, t: cur.trim() }); cur = ''; }
+cur += seg;
+while (cur.length > 2500) { blocks.push({ ch: title, t: cur.slice(0, 2500) }); cur = cur.slice(2500); }
+}
+if (cur && cur.trim()) blocks.push({ ch: title, t: cur.trim() });
+}
+return blocks;
+}
+
+function simpleEbookBegin() {
+if (!SIMPLE_STATE) return;
+var st = SIMPLE_STATE;
+st.phase = 'gen';
+st.blockIdx = 0;
+st.errors = 0;
+simpleRenderProgress();
+simpleEbookLoop();
+}
+
+function simpleEbookLoop() {
+if (!SIMPLE_STATE) return;
+var st = SIMPLE_STATE;
+if (st.aborted || st.blockIdx >= st.blocks.length || st.calls >= st.maxCalls) { simpleFinishRun(); return; }
+var blk = st.blocks[st.blockIdx];
+var prompt = '你是书籍内容讲解专家。下面是《' + st.name + '》中「' + blk.ch + '」的原文。\n\n';
+prompt += '请为这段原文写讲解，要求：\n';
+prompt += '1. 文言/古文/诗词 → 白话解析：逐句用大白话讲清含义，生僻字词给通俗解释\n';
+prompt += '2. 现代白话/科普/论述 → 费曼学习技巧：用最简单语言和生活类比把核心讲透\n';
+prompt += '3. 判断类型 type：文言/古文/诗词 → "guwen"；现代白话 → "xiandai"\n';
+prompt += '4. 只生成讲解，严禁生成选择题/选项/答案等任何题目字段\n\n';
+prompt += '只返回严格 JSON（以 { 开头，不要 markdown 代码块）：\n{"type":"guwen","p":"讲解内容"}\n\n';
+prompt += '【原文开始】\n' + blk.t + '\n【原文结束】';
+simpleCallAI(prompt, function(text) {
+if (!SIMPLE_STATE || SIMPLE_STATE.aborted) return;
+var st2 = SIMPLE_STATE;
+st2.calls++;
+var obj = null;
+try { obj = JSON.parse(aiSearchExtractJSON(text)); } catch(e) { obj = null; }
+var p = (obj && typeof obj.p === 'string') ? obj.p : '';
+var type = (obj && obj.type === 'guwen') ? 'guwen' : 'xiandai';
+if (!p) p = aiSearchExtractJSON(text) || '';
+st2.articles.push({
+id: st2.articles.length + 1,
+c: st2.name,
+t: String(blk.t).slice(0, 4000),
+p: String(p).slice(0, 8000),
+type: type
+});
+st2.blockIdx++;
+simpleRenderProgress();
+simpleEbookLoop();
+}, function(err) {
+if (!SIMPLE_STATE || SIMPLE_STATE.aborted) return;
+var st3 = SIMPLE_STATE;
+st3.calls++;
+st3.errors++;
+st3.articles.push({ id: st3.articles.length + 1, c: st3.name, t: String(blk.t).slice(0, 4000), p: '', type: 'xiandai' });
+st3.blockIdx++;
+simpleRenderProgress();
+simpleEbookLoop();
+});
+}
+
+function simpleEbookCancel() {
+if (!SIMPLE_STATE) return;
+SIMPLE_STATE.aborted = true;
+simpleFinishRun();
+}
+
+function simpleSplitChunks(text) {
+var paras = String(text || '').replace(/\r/g, '').split(/\n+/);
+var chunks = [];
+var cur = '';
+function flush() { if (cur) { chunks.push(cur); cur = ''; } }
+for (var i = 0; i < paras.length; i++) {
+var p = paras[i].trim();
+if (!p) continue;
+if (cur && (cur.length + p.length + 1) > 3000) flush();
+if (p.length > 3000) {
+flush();
+var rest = p;
+while (rest.length > 3000) { chunks.push(rest.slice(0, 3000)); rest = rest.slice(3000); }
+cur = rest;
+} else {
+cur = cur ? (cur + '\n' + p) : p;
+}
+}
+flush();
+if (chunks.length === 0 && String(text || '').trim()) chunks.push(String(text).trim().slice(0, 3000));
+return chunks;
+}
+
+function simplePump() {
+if (!SIMPLE_STATE) return;
+if (SIMPLE_STATE.aborted || SIMPLE_STATE.idx >= SIMPLE_STATE.chunks.length) { simpleFinishRun(); return; }
+var _si = SIMPLE_STATE.idx;
+SIMPLE_STATE.idx++;
+simpleGenOne(_si);
+}
+
+function simpleGenOne(chunkIdx) {
+var st = SIMPLE_STATE;
+var chunk = st.chunks[chunkIdx];
+var prompt = '你是书籍内容讲解专家。请把下面【原文】按语义块拆分，并为每块写讲解。\n\n';
+prompt += '拆分要求：\n1. 每个片段是语义完整的一段原文，保持原始文字，一字不改，不可概括或改写\n2. 每段约80~400字；不足50字的与相邻片段合并；按原文顺序排列，不遗漏不重复\n3. 为每个片段判断类型 type：文言文/古文/诗词 → "guwen"；现代白话文/科普/论述 → "xiandai"\n\n';
+prompt += '讲解要求：\n- type 为 guwen：输出白话解析，逐句/逐段用大白话讲清含义，生僻字词给通俗解释\n- type 为 xiandai：用费曼学习技巧讲解，用最简单的语言和生活类比把核心思想讲透\n- 只生成讲解内容，严格禁止生成选择题/选项/答案等任何题目字段\n\n';
+prompt += '只返回严格 JSON 数组（以 [ 开头，不要 markdown 代码块）：\n[{"t":"原文片段","type":"guwen","p":"讲解内容"}]\n\n【原文开始】\n' + chunk + '\n【原文结束】';
+simpleCallAI(prompt, function(text) {
+var items = null;
+try { items = JSON.parse(aiSearchExtractJSON(text)); } catch(e) { items = null; }
+if (!items || !items.length) {
+items = [{ t: chunk, type: 'xiandai', p: (aiSearchExtractJSON(text) || '') }];
+}
+for (var i = 0; i < items.length; i++) {
+var it = items[i];
+if (!it || !it.t) continue;
+st.articles.push({
+id: st.articles.length + 1,
+c: st.name,
+t: String(it.t).slice(0, 4000),
+p: String(it.p || '').slice(0, 8000),
+type: it.type === 'guwen' ? 'guwen' : 'xiandai'
+});
+}
+st.chunkOk[chunkIdx] = true;
+simpleRenderProgress();
+simplePump();
+}, function(err) {
+st.errors++;
+st.chunkOk[chunkIdx] = false;
+// 兜底保留原文，避免内容丢失
+st.articles.push({ id: st.articles.length + 1, c: st.name, t: chunk, p: '', type: 'xiandai' });
+simpleRenderProgress();
+simplePump();
+});
+}
+
+function simpleCallAI(prompt, callback, onError) {
+var epInput = document.getElementById('aiEndpointInput');
+var modelSelect = document.getElementById('aiModelSelect');
+if (epInput && epInput.value && epInput.value !== state.aiEndpoint) { state.aiEndpoint = epInput.value; saveState(); }
+if (modelSelect && modelSelect.value && modelSelect.value !== state.aiModel) { state.aiModel = modelSelect.value; saveState(); }
+callAI({
+systemPrompt: '你是一位书籍讲解专家，擅长把古文的含义用大白话解析清楚，也擅长用费曼学习技巧把现代文讲透。你的输出严谨、通俗，绝不生成任何选择题或考试题目。',
+prompt: prompt,
+temperature: 0.5,
+maxTokens: 8192,
+timeout: 180000,
+stream: null
+}).then(function(text) {
+callback(text);
+}).catch(function(err) {
+if (onError) onError(err);
+});
+}
+
+
+function simpleRenderProgress() {
+if (!SIMPLE_STATE) return;
+var st = SIMPLE_STATE;
+var area = document.getElementById('simpleProgress');
+var statusEl = document.getElementById('simpleStatus');
+if (!area) return;
+var pct = 100;
+var statusTxt = '';
+var total = 0;
+var processed = 0;
+if (st.byTitle) {
+if (!st.running) {
+statusTxt = st.aborted
+? ('⏹ 已停止：' + st.name + ' · 已还原 ' + st.articles.length + ' 个片段')
+: ('✅ 已还原《' + st.name + '》' + (st.chapters.length > 1 ? ('共 ' + st.chapters.length + ' 章 · ') : '') + st.articles.length + ' 个「原文+讲解」片段 · 调用 ' + st.calls + ' 次' + (st.errors ? '（失败 ' + st.errors + ' 次）' : ''));
+} else if (st.phase === 'plan') {
+pct = 20;
+statusTxt = '正在分析《' + st.name + '》的结构…';
+} else if (st.phase === 'confirm') {
+pct = 30;
+var n1 = st.chapters.length || 1;
+statusTxt = '《' + st.name + '》共 ' + n1 + ' 章，预计约 ' + (n1 * 4) + ' 次调用、耗时约 ' + Math.max(1, Math.round(n1 * 2)) + ' 分钟，将消耗 API 额度。模型凭记忆还原，经典公版书最准。确认开始？';
+} else {
+var ci = st.chapterIdx;
+var tt2 = st.chapters.length || 1;
+var chTxt = (ci < st.chapters.length) ? ('第 ' + (ci + 1) + '/' + tt2 + ' 章「' + st.chapters[ci].title + '」') : '收尾';
+statusTxt = '正在还原《' + st.name + '》' + chTxt + ' · 已还原 ' + st.articles.length + ' 段 · 已调用 ' + st.calls + ' 次';
+pct = Math.min(95, 5 + Math.round((ci / tt2) * 90));
+}
+} else if (st.byEbook) {
+if (!st.running) {
+statusTxt = st.aborted
+? ('⏹ 已停止：' + st.name + ' · 已生成 ' + st.articles.length + ' 个片段')
+: ('✅ 已讲解《' + st.name + '》' + st.articles.length + ' 个「原文+讲解」片段 · 调用 ' + st.calls + ' 次' + (st.errors ? '（失败 ' + st.errors + ' 次）' : ''));
+} else if (st.phase === 'plan') {
+pct = 15;
+statusTxt = '正在解析《' + st.name + '》…';
+} else if (st.phase === 'confirm') {
+pct = 25;
+var nb0 = st.blocks.length || 1;
+statusTxt = '《' + st.name + '》共 ' + nb0 + ' 块，预计约 ' + nb0 + ' 次调用、耗时约 ' + Math.max(1, Math.round(nb0 * 0.5)) + ' 分钟，将消耗 API 额度，超出 500 次自动停止并保留已生成内容。确认？';
+} else {
+var bi0 = st.blockIdx;
+var nb1 = st.blocks.length || 1;
+var curCh0 = (bi0 < st.blocks.length) ? st.blocks[bi0].ch : '收尾';
+statusTxt = '正在讲解《' + st.name + '》第 ' + Math.min(bi0 + 1, nb1) + '/' + nb1 + ' 块（「' + curCh0 + '」）· 已生成 ' + st.articles.length + ' 段 · 已调用 ' + st.calls + ' 次';
+pct = Math.min(95, 5 + Math.round((bi0 / nb1) * 90));
+}
+} else {
+total = st.chunks.length;
+processed = Math.min(st.idx, st.chunks.length);
+pct = total ? Math.round(processed / total * 100) : 100;
+statusTxt = '已处理 ' + processed + '/' + total + ' 块，生成 ' + st.articles.length + ' 个片段' + (st.errors ? '（失败 ' + st.errors + ' 块）' : '');
+}
+if (statusEl) statusEl.textContent = statusTxt;
+var html = '<div style="border:1px solid var(--border-light,#e0d5c5);border-radius:10px;padding:14px;background:#faf7ef">';
+html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:13px;font-weight:600;color:#5a4a3a">📊 生成进度</span><span style="font-size:12px;color:#9a8a6a">' + pct + '%</span></div>';
+html += '<div style="background:#e8ddc8;border-radius:10px;height:10px;overflow:hidden"><div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#8a6a20,#d4a030);border-radius:10px;transition:width .3s"></div></div>';
+if (!st.running) {
+var _doneColor = (st.errors && !st.articles.length) ? '#a03a2a' : '#1a6a3a';
+var _doneTxt = st.aborted ? '⏹ 已停止' : ((st.errors && !st.articles.length) ? '❌ 生成失败，请重试' : '✅ 生成完成');
+html += '<div style="margin-top:12px;text-align:center;font-size:14px;color:' + _doneColor + ';font-weight:600">' + _doneTxt + '：' + escHtml(st.name) + ' · ' + st.articles.length + ' 个「原文+讲解」片段</div>';
+if (st.articles.length) {
+html += '<div style="margin-top:10px;text-align:center"><button onclick="simpleDeploy()" style="padding:12px 34px;font-size:16px;background:#1a6a3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600">🚀 部署到系统</button></div>';
+}
+} else if (st.byTitle && st.phase === 'confirm') {
+var n2 = st.chapters.length || 1;
+var m2 = n2 * 4;
+var t2 = Math.max(1, Math.round(m2 * 0.5));
+html += '<div style="margin-top:12px;text-align:center;font-size:13px;color:#6a5a3a;line-height:1.7">《' + escHtml(st.name) + '》共 ' + n2 + ' 章，预计约 ' + m2 + ' 次调用、耗时约 ' + t2 + ' 分钟，将消耗你的 API 额度。<br>模型凭记忆还原，经典公版书最准；长篇书费时较长。</div>';
+html += '<div style="margin-top:12px;text-align:center"><button onclick="simpleBeginReconstruct()" style="padding:12px 28px;font-size:15px;background:#1a6a3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600">✅ 确认开始还原</button> <button onclick="simpleCancelByTitle()" style="padding:12px 28px;font-size:15px;background:#a03a2a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600">✖ 取消</button></div>';
+} else if (st.byEbook && st.phase === 'confirm') {
+var nb3 = st.blocks.length || 1;
+var m3 = nb3;
+var t3 = Math.max(1, Math.round(m3 * 0.5));
+html += '<div style="margin-top:12px;text-align:center;font-size:13px;color:#6a5a3a;line-height:1.7">《' + escHtml(st.name) + '》共 ' + nb3 + ' 块，预计约 ' + m3 + ' 次调用、耗时约 ' + t3 + ' 分钟，将消耗你的 API 额度；超出 500 次自动停止并保留已生成内容。<br>每块用电子书内的真实原文配讲解。</div>';
+html += '<div style="margin-top:12px;text-align:center"><button onclick="simpleEbookBegin()" style="padding:12px 28px;font-size:15px;background:#1a6a3a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600">✅ 确认开始讲解</button> <button onclick="simpleEbookCancel()" style="padding:12px 28px;font-size:15px;background:#a03a2a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600">✖ 取消</button></div>';
+} else {
+html += '<div style="margin-top:10px;max-height:220px;overflow-y:auto">';
+if (!st.byTitle && !st.byEbook) {
+for (var i = 0; i < processed; i++) {
+html += '<div style="padding:4px 8px;font-size:12px;color:#555;border-bottom:1px dashed #eee">#' + (i + 1) + ' ' + (st.chunkOk[i] ? '✅' : '❌') + ' ' + escHtml(st.chunks[i].slice(0, 40)) + (st.chunks[i].length > 40 ? '…' : '') + '</div>';
+}
+} else {
+var shown = Math.max(0, st.articles.length - 15);
+for (var j = shown; j < st.articles.length; j++) {
+var it2 = st.articles[j];
+html += '<div style="padding:4px 8px;font-size:12px;color:#555;border-bottom:1px dashed #eee">#' + it2.id + ' ' + escHtml(String(it2.t || '').slice(0, 30)) + '</div>';
+}
+}
+html += '</div>';
+}
+html += '</div>';
+area.innerHTML = html;
+}
+
+function simpleDeploy() {
+if (!SIMPLE_STATE || !SIMPLE_STATE.articles.length) { showToast('⚠️ 没有可部署的内容'); return; }
+var st = SIMPLE_STATE;
+var name = st.name;
+var courseData = {
+name: name,
+chapters: [name],
+articles: st.articles,
+coreFramework: [],
+conceptNames: [],
+chapterCoreMap: {},
+colors: ['#3a6a8a', '#5a8aaa']
+};
+try {
+StorageManager.saveCourse(name, courseData);
+switchCourse(name, true);
+showToast('✅ 「' + name + '」部署成功！已切换到新课程，点击「学习」开始');
+} catch(e) {
+showToast('❌ 部署失败: ' + e.message);
+}
+}
+
+function simpleAbort() {
+if (SIMPLE_STATE) SIMPLE_STATE.aborted = true;
+}
+
+function simpleFinishRun() {
+if (!SIMPLE_STATE) return;
+var st = SIMPLE_STATE;
+st.running = false;
+var btn = document.getElementById('simpleStartBtn');
+if (btn) { btn.classList.remove('loading'); btn.disabled = false; }
+var ab = document.getElementById('simpleAbortBtn');
+if (ab) ab.style.display = 'none';
+simpleRenderProgress();
+}
+
 function startHotGen(topicId) {
 var cat = state.hotExamCategory || 'gongkao';
 var data = HOT_EXAM_TOPICS[cat];
@@ -26139,7 +26978,7 @@ return callAI({
 prompt: prompt,
 temperature: 0.5,
 maxTokens: 8192,
-timeout: 60000,
+timeout: 180000,
 stream: function(chunk, fullText) { updateAILoadingStream(chunk, fullText); }
 }).then(function(text) {
 hideAILoading();
@@ -26150,7 +26989,7 @@ return callAI({
 prompt: prompt + '\n\n【重要】你上次的回复不是合法 JSON。本次必须严格只输出下面的 JSON 对象本身，禁止任何解释、禁止 markdown 代码块标记：\n{"name":"' + topic.name + '","chapters":["第一章 ...","第二章 ...",...]}',
 temperature: 0.3,
 maxTokens: 8192,
-timeout: 60000,
+timeout: 180000,
 stream: function(chunk, fullText) { updateAILoadingStream(chunk, fullText); }
 }).then(function(text2) {
 hideAILoading();
@@ -26358,7 +27197,7 @@ var temperature = topic.level && tempMap[topic.level] !== undefined ? tempMap[to
 return callAI({
 prompt: prompt,
 temperature: temperature,
-maxTokens: AI_MAX_TOKENS_GENERATE * 2,
+maxTokens: AI_MAX_TOKENS_GENERATE,
 timeout: 180000,
   stream: updateAILoadingStream
 }).then(function(text) {
@@ -26431,7 +27270,7 @@ return callAI({
 prompt: prompt,
 temperature: 0.3,
 maxTokens: 8192,
-timeout: 120000,
+timeout: 180000,
 stream: function(chunk, fullText) { updateAILoadingStream(chunk, fullText); }
 }).then(function(text) {
 hideAILoading();
@@ -31417,7 +32256,7 @@ prompt: '你是一个考试大纲分析专家。请将以下考试大纲内容�
 + '大纲内容：\n' + text.slice(0, 20000),
 temperature: 0.3,
 maxTokens: 16384,
-timeout: 60000,
+timeout: 300000,
 stream: function(chunk, fullText) {
 statusEl.textContent = '⏳ 正在解析考纲... (' + fullText.length + ' 字符已接收)';
 }
@@ -31549,7 +32388,7 @@ prompt: prompt,
 systemPrompt: '你是一位资深的认证考试培训专家，擅长将考试大纲知识点转化为高质量的学习内容。',
 temperature: 0.5,
 maxTokens: 16384,
-timeout: 120000,
+timeout: 300000,
 stream: function(chunk, fullText) { statusEl.textContent = '⏳ 生成中 (' + (idx+1) + '/' + articles.length + ')...'; }
 }).then(function(resp) {
 var m = resp.match(/\{[\s\S]*\}/);
@@ -32696,7 +33535,7 @@ function callThinkTank() {
     prompt: result.prompt,
     temperature: 0.7,
     maxTokens: 16384,
-    timeout: 120000,
+    timeout: 300000,
     stream: function(chunk, fullText) {
       if (loading) loading.style.display = 'none';
       renderThinkTankResult(fullText);
@@ -33099,6 +33938,7 @@ function switchPTDim(dim) {
   renderPTDimContent();
 }
 function renderPTDimContent() {
+  var labels = {essence:'本质定义',crossDomain:'跨域映射',history:'历史案例',action:'行动指引'};
   var rd = $id('ptResult');
   if (!rd) return;
   var dims = window._ptDims;
@@ -33518,6 +34358,7 @@ function switchBizDim(dim) {
   renderBizDimContent();
 }
 function renderBizDimContent() {
+  var labels = {value:'价值洞察',model:'模式拆解',leverage:'杠杆匹配',action:'行动路线'};
   var resultDiv = $id('bizResult');
   if (!resultDiv) return;
   var dims = window._bizDims;
@@ -33801,6 +34642,7 @@ function switchTcmDim(dim) {
   renderTcmDimContent();
 }
 function renderTcmDimContent() {
+  var labels = {pattern:'辨证审机',formula:'立法处方',herbs:'用药精解',patent:'中成药+医案'};
   var resultDiv = $id('tcmResult');
   if (!resultDiv) return;
   var dims = window._tcmDims;
@@ -34724,7 +35566,7 @@ function callAskAppend(dimId) {
   var resultDiv = document.getElementById('askResult');
   if (loading) { loading.style.display = 'flex'; var lt = loading.querySelector('span'); if (lt) lt.textContent = '🔍 追加追问 ' + dimId + '...'; }
   callAI({
-    prompt: buildAskAppendPrompt(dimId), temperature: 0.7, maxTokens: 16384, timeout: 120000,
+    prompt: buildAskAppendPrompt(dimId), temperature: 0.7, maxTokens: 16384, timeout: 300000,
     stream: function(chunk, fullText) {
       if (resultDiv) resultDiv.innerHTML = '<div class="ask-output">' + formatAskContent(fullText) + '</div>';
     }
@@ -34995,7 +35837,7 @@ function callHeAnalysis(){
   if(loading){loading.style.display='flex';var lt=loading.querySelector('span');if(lt)lt.textContent='🎯 AI 多模分析中...';}
   if(resultDiv)resultDiv.innerHTML='';
   callAI({
-    prompt:prompt,temperature:0.6,maxTokens:32768,timeout:300000,
+    prompt:prompt,temperature:0.6,maxTokens:16384,timeout:300000,
     stream:function(chunk,fullText){
       if(loading){var lt=loading.querySelector('span');if(lt)lt.textContent='🎯 AI 多模分析中 ('+fullText.length+' 字)...';}
       if(resultDiv)resultDiv.innerHTML=formatHeContent(fullText);
@@ -36027,6 +36869,7 @@ function switchFinDim(dim) {
   renderFinDimContent();
 }
 function renderFinDimContent() {
+  var labels = {diagnosis:'融资诊断',design:'方案设计',risk:'风险推演',advanced:'资本进阶'};
   var rd = $id('finResult');
   if (!rd) return;
   var dims = window._finDims;
@@ -36270,6 +37113,7 @@ function switchAnaLayer(layer) {
   renderAnaLayerContent();
 }
 function renderAnaLayerContent() {
+  var labels = {info:'信息层',logic:'逻辑层',system:'系统层',human:'人性层',meaning:'意义层'};
   var rd = $id('anaResult');
   if (!rd) return;
   var layers = window._anaLayers;
@@ -36516,6 +37360,7 @@ function switchAdvLevel(level) {
   renderAdvLevelContent();
 }
 function renderAdvLevelContent() {
+  var labels = {basic:'基础解',medium:'进阶解',expert:'高手解',principle:'原理层',extend:'举一反三'};
   var rd = $id('advResult');
   if (!rd) return;
   var levels = window._advLevels;
@@ -38555,6 +39400,7 @@ function switchSzStep(step) {
   renderSzStepContent();
 }
 function renderSzStepContent() {
+  var labels = {know:'知己知彼',plan:'庙算制胜',resource:'资源运筹',strength:'先胜后战',creative:'奇正相生',adapt:'因敌制胜'};
   var resultDiv = $id('szResult');
   if (!resultDiv) return;
   var active = window._szActiveStep || 'know';
@@ -38797,6 +39643,7 @@ function switchQmStep(step) {
   renderQmStepContent();
 }
 function renderQmStepContent() {
+  var labels = {id:'识局辨类',see:'看穿迷障',mind:'洞察人心',risk:'量己审势',break:'破局拆招',shield:'固本筑防'};
   var resultDiv = $id('qmResult');
   if (!resultDiv) return;
   var active = window._qmActiveStep || 'id';
@@ -39039,6 +39886,7 @@ function switchZhStep(step) {
   renderZhStepContent();
 }
 function renderZhStepContent() {
+  var labels = {read:'审时度势',frame:'确立立场',emotion:'动之以情',logic:'晓之以理',object:'预判破执',action:'促成行动'};
   var resultDiv = $id('zhResult');
   if (!resultDiv) return;
   var active = window._zhActiveStep || 'read';
@@ -39280,6 +40128,7 @@ function switchMouStep(step) {
   renderMouStepContent();
 }
 function renderMouStepContent() {
+  var labels = {assess:'洞察局势',design:'谋定后动',superior:'上计',medium:'中计',inferior:'下计',venom:'毒计'};
   var resultDiv = $id('mouResult');
   if (!resultDiv) return;
   var active = window._mouActiveStep || 'assess';
