@@ -16563,6 +16563,10 @@ function initFromIDB() {
                 if (lsBroken) delete state._lsFallback;
                 migrateState(state);
                 _deobfuscateStateKeys(state);
+                /* ==FONTTRIM== 2026-09-23：IDB 恢复路径必须重跑字体迁移。
+                   本函数异步晚于 init 的 applyTypography，用 IDB 快照整体覆盖 state 后
+                   只调 updateUI()，会把已下架的字体档位写回。补一次 applyTypography() 修正。 */
+                try { applyTypography(); } catch(e) {}
                 saveState();
                 try { updateUI(); } catch(e) {}
                 if (lsBroken) { showToast('已从 IndexedDB 恢复数据（本地存储已满）'); }
@@ -18986,33 +18990,33 @@ var FONT_PRESETS = {
      ★ classic 必须保持逐字节不变（默认档 = 零变化前提）。
      ★ 带 emb 标记的档位，字体已随文件内嵌，任何设备都生效，无需回落。 */
   classic:    { label:'楷体',   desc:'经典原文', stack:'"KaiTi","STKaiti",serif' },
-  wenkai:     { label:'文楷',   desc:'手写楷书', stack:'"WBWenKai","KaiTi","STKaiti",serif', emb:1 },
+  wenkai:     { label:'文楷',   desc:'手写楷书', stack:'"WBWenKai","KaiTi","STKaiti",serif' },
   songti:     { label:'宋体',   desc:'长文耐读', stack:'"SimSun","Songti SC","STSong",serif' },
-  xiaowei:    { label:'小薇宋', desc:'清秀雅致', stack:'"WBXiaoWei","SimSun","Songti SC",serif', emb:1 },
-  sourceSerif:{ label:'思源宋', desc:'印刷品质', stack:'"WBSourceSerif","SimSun","Songti SC",serif', emb:1 },
+  xiaowei:    { label:'小薇宋', desc:'清秀雅致', stack:'"WBXiaoWei","SimSun","Songti SC",serif' },
+  sourceSerif:{ label:'思源宋', desc:'印刷品质', stack:'"WBSourceSerif","SimSun","Songti SC",serif' },
   fangsong:   { label:'仿宋',   desc:'公文雅致', stack:'"FangSong","STFangsong","FangSong_GB2312",serif' },
   system:     { label:'雅黑',   desc:'屏幕首选', stack:'"Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif' },
   heiti:      { label:'黑体',   desc:'清晰醒目', stack:'"SimHei","Heiti SC",sans-serif' },
   dengxian:   { label:'等线',   desc:'现代清爽', stack:'"DengXian","Microsoft YaHei","PingFang SC",sans-serif' },
   jhenghei:   { label:'正黑',   desc:'繁体风骨', stack:'"Microsoft JhengHei","Microsoft YaHei",sans-serif' },
-  sourceSans: { label:'思源黑', desc:'现代黑体', stack:'"WBSourceSans","Microsoft YaHei","PingFang SC",sans-serif', emb:1 },
+  sourceSans: { label:'思源黑', desc:'现代黑体', stack:'"WBSourceSans","Microsoft YaHei","PingFang SC",sans-serif' },
   xingshu:    { label:'行书',   desc:'行云流水', stack:'"WBXingShu","KaiTi","STKaiti",serif', emb:1 },
-  longcang:   { label:'龙藏',   desc:'手写随性', stack:'"WBLongCang","KaiTi","STKaiti",serif', emb:1 },
-  maobi:      { label:'毛笔',   desc:'毛笔楷书', stack:'"WBMaobi","KaiTi","STKaiti",serif', emb:1 },
+  longcang:   { label:'龙藏',   desc:'手写随性', stack:'"WBLongCang","KaiTi","STKaiti",serif' },
+  maobi:      { label:'毛笔',   desc:'毛笔楷书', stack:'"WBMaobi","KaiTi","STKaiti",serif' },
   caoshu:     { label:'草书',   desc:'狂放连绵', stack:'"WBCaoShu","KaiTi","STKaiti",serif', emb:1 },
-  kuaile:     { label:'快乐',   desc:'圆润活泼', stack:'"WBKuaiLe","Microsoft YaHei",sans-serif', emb:1 },
-  huangyou:   { label:'黄油',   desc:'圆粗醒目', stack:'"WBHuangYou","Microsoft YaHei",sans-serif', emb:1 },
-  mono:       { label:'等宽',   desc:'代码数据', stack:'"WBMono","Consolas","Courier New",monospace', emb:1 }
+  kuaile:     { label:'快乐',   desc:'圆润活泼', stack:'"WBKuaiLe","Microsoft YaHei",sans-serif' },
+  huangyou:   { label:'黄油',   desc:'圆粗醒目', stack:'"WBHuangYou","Microsoft YaHei",sans-serif' },
+  mono:       { label:'等宽',   desc:'代码数据', stack:'"WBMono","Consolas","Courier New",monospace' }
 };
 var FONT_GROUPS = [
-  { name:'衬线 · 传统', keys:['classic','wenkai','songti','xiaowei','sourceSerif','fangsong'] },
-  { name:'无衬线 · 现代', keys:['system','heiti','dengxian','jhenghei','sourceSans'] },
-  { name:'书法 · 手写', keys:['xingshu','longcang','maobi','caoshu','kuaile'] },
-  { name:'圆体 · 等宽', keys:['huangyou','mono'] }
+  /* ==FONTTRIM== 2026-09-23：下架 9 档内嵌字体后同步收缩分组 */
+  { name:'衬线 · 传统', keys:['classic','songti','fangsong'] },
+  { name:'无衬线 · 现代', keys:['system','heiti','dengxian','jhenghei'] },
+  { name:'书法 · 手写', keys:['xingshu','caoshu'] }
 ];
-var FONT_ORDER = ['classic','wenkai','songti','xiaowei','sourceSerif','fangsong','system','heiti','dengxian','jhenghei','sourceSans','xingshu','longcang','maobi','caoshu','kuaile','huangyou','mono'];
+var FONT_ORDER = ['classic','songti','fangsong','system','heiti','dengxian','jhenghei','xingshu','caoshu'];   /* ==FONTTRIM== 2026-09-23：18 档 → 9 档 */
 /* 批 F3：内嵌字体族名集合 / 老键位迁移表 */
-var _FF_EMBED = { 'WBWenKai':1,'WBXiaoWei':1,'WBSourceSerif':1,'WBSourceSans':1,'WBXingShu':1,'WBLongCang':1,'WBMaobi':1,'WBCaoShu':1,'WBKuaiLe':1,'WBHuangYou':1,'WBMono':1 };
+var _FF_EMBED = { 'WBXingShu':1,'WBCaoShu':1 };   /* ==FONTTRIM== 2026-09-23：内嵌字体收敛为 2 档（行书 / 草书），其余 9 档已下架 */
 var _FF_MIGRATE = { nsimsun:'songti', zhongsong:'sourceSerif', yahei:'system', xihei:'sourceSans', yuanti:'huangyou', youyuan:'kuaile', courier:'mono', xingkai:'xingshu' };
 var _ffInjected = {};   /* 批 F4：已注入的族名（按档懒注入，避免一次性解析 15 MB CSS）*/
 var _ffDataOK = null;   /* 批 F4：字体数据块存在性缓存（null=未检查）*/
@@ -19164,6 +19168,9 @@ function _closeTypoDrops() {
 }
 function applyTypography() {
   if (!FONT_PRESETS[state.contentFontFamily]) state.contentFontFamily = (_FF_MIGRATE[state.contentFontFamily] || 'classic');
+  /* ==FONTTRIM== 2026-09-23：字体列表收缩后，把指向已下架档位的旧设置迁回默认档，
+     否则下拉按钮会显示一个列表里已不存在的档位名。 */
+  if (FONT_ORDER.indexOf(state.contentFontFamily) === -1) state.contentFontFamily = 'classic';
   if (FONT_PRESETS[state.contentFontFamily] && FONT_PRESETS[state.contentFontFamily].emb) { ensureEmbedFonts(state.contentFontFamily); _warmFont(state.contentFontFamily); }
   if (typeof state.contentLineHeight !== 'number') state.contentLineHeight = 1.9;
   var c = document.getElementById('app');
