@@ -1,0 +1,25 @@
+# .surgeignore —— Surge 上传排除清单（2026-09-23 新增）
+# 事故背景：Surge 会【整目录上传】，.gitignore 完全挡不住它 ——
+#   凭据文件 local-secrets.ps1 曾被公开发布到
+#   https://xuexisystem.surge.sh/local-secrets.ps1 （含 GitHub PAT + Surge Token 明文）。
+#   （.git / .gitignore 之所以没泄露，只是因为 Surge 默认跳过点文件。）
+# ★ 原则：部署目录里【只放需要对外服务的文件】；凭据一律放在部署目录之外。
+#   GitHub 推送只提交 index.html + fonts/（见 deploy.sh 的 git add），不受本文件影响。
+
+# ── 凭据（已移至 ~/.xuexisystem-secrets.ps1，此处双保险）──
+local-secrets.ps1
+*secrets*
+*.ps1
+
+# ── 备份与日志 ──
+*.bak
+_deploy_*.log
+*.log
+
+# ── 部署脚本自身（无需对外）──
+deploy.sh
+
+# ── 版本控制与工具 ──
+.git
+.gitignore
+.vercel
