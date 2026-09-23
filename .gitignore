@@ -1,3 +1,5 @@
 .vercel
 CNAME
 local-secrets.ps1
+*.bak
+_deploy_*.log

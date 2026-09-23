@@ -21,7 +21,7 @@ if git diff --cached --quiet; then
 else
   git commit -m "update"
 fi
-git push origin main
+git push origin HEAD:main
 
 echo "=== 三站部署完成 ==="
 echo "GitHub:  https://r7drvkdvt2-arch.github.io/xuexisystem/"
