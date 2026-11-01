@@ -9045,17 +9045,20 @@ function _cpkOpenExportWizard(courseName){
 var course=StorageManager.loadCourse(courseName);
 if(!course){showToast("❌ 课程不存在");return}
 var sets=state.pegImageSets||[];
-var pre={};
-for(var i=0;i<sets.length;i++)if((sets[i].course||"")===courseName)pre[sets[i].id]=true;
+var pre={},routeSetMap={},courseRoutes=[];
+var _scs=state.pegsetScenes||[];
+for(var _ri=0;_ri<_scs.length;_ri++)if((_scs[_ri].courseName||"")===courseName){courseRoutes.push(_scs[_ri]);var _pids=_scs[_ri].pegSetIds||[];for(var _pi=0;_pi<_pids.length;_pi++)routeSetMap[_pids[_pi]]=(_scs[_ri].name||"线路")}
+for(var i=0;i<sets.length;i++)if((sets[i].course||"")===courseName||routeSetMap[sets[i].id])pre[sets[i].id]=true;
 var old=document.getElementById("cpkOverlay");if(old)old.remove();
 var overlay=document.createElement("div");overlay.className="market-detail-overlay";overlay.id="cpkOverlay";
 overlay.onclick=function(e){if(e.target===overlay)overlay.remove()};
 var html='<div class="market-detail-card" style="max-width:640px"><h2>📦 导出课程包（含地点桩）</h2>';
 html+='<div style="font-size:var(--fs-ui-sm,12px);color:var(--text-muted);margin:6px 0">课程《'+escHtml(courseName)+'》'+((course.articles||[]).length)+' 篇。已默认勾选关联桩组，可手动增减。</div>';
+if(courseRoutes.length>0){var _rt=[];for(var _r2=0;_r2<courseRoutes.length;_r2++){var _rc=courseRoutes[_r2];_rt.push(escHtml(_rc.name||"未命名")+"("+((_rc.pegSetIds||[]).length)+"组)")}html+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:4px 0;font-size:var(--fs-ui-sm,12px)"><span style="color:var(--text-muted)">🛣 绑定线路:'+_rt.join(" · ")+'</span><button class="market-detail-btn-close" data-cpkx="selroute" style="padding:2px 8px">🛣 按线路勾选</button><button class="market-detail-btn-close" data-cpkx="clearsel" style="padding:2px 8px">◻ 清空</button></div>'}
 if(sets.length===0){html+='<div style="color:var(--text-muted);padding:8px 0">该课程暂无桩图集，将只导出课程内容。</div>'}
 else{var assocCnt=0;for(var k1 in pre)assocCnt++;html+=(assocCnt===0?'<div style="color:var(--text-muted);padding:4px 0 6px">ⓘ 该课程暂无关联桩组：以下为全部桩组，可手动勾选并入课程包。</div>':'');html+='<div class="bpw-checkbox-list" id="cpkSetList" style="max-height:300px;overflow:auto">';
 for(var s=0;s<sets.length;s++){var st1=sets[s];var vc=st1.videos&&st1.videos.length||0;
-html+='<div class="bpw-checkbox-item"><input type="checkbox" class="cpk-set-cb" data-setid="'+escAttr(st1.id)+'"'+(pre[st1.id]?' checked':'')+'> <span class="bpw-item-label">'+escHtml(st1.name)+'</span><span class="bpw-item-meta">'+(st1.totalImages||0)+' 图'+(vc?' / '+vc+' 视频':'')+(st1.course?' · 课程:'+escHtml(st1.course):'')+'</span></div>'}
+html+='<div class="bpw-checkbox-item"><input type="checkbox" class="cpk-set-cb" data-setid="'+escAttr(st1.id)+'"'+(pre[st1.id]?' checked':'')+'> <span class="bpw-item-label">'+escHtml(st1.name)+'</span><span class="bpw-item-meta">'+(st1.totalImages||0)+' 图'+(vc?' / '+vc+' 视频':'')+(st1.course?' · 课程:'+escHtml(st1.course):'')+(routeSetMap[st1.id]?' · 🛣'+escHtml(routeSetMap[st1.id]):'')+'</span></div>'}
 html+='</div>'}
 html+='<div class="mdc-actions">';
 html+='<button class="market-detail-btn-install" data-cpkx="go">📦 导出课程包</button>';
@@ -9066,6 +9069,8 @@ overlay.addEventListener("click",function(e){
 var b=e.target.closest("[data-cpkx]");if(!b)return;
 var act=b.getAttribute("data-cpkx");
 if(act==="cancel"){overlay.remove();return}
+if(act==="selroute"){var _scbs=overlay.querySelectorAll(".cpk-set-cb");for(var _sk=0;_sk<_scbs.length;_sk++)_scbs[_sk].checked=!!routeSetMap[_scbs[_sk].getAttribute("data-setid")];return}
+if(act==="clearsel"){var _ccbs=overlay.querySelectorAll(".cpk-set-cb");for(var _ck=0;_ck<_ccbs.length;_ck++)_ccbs[_ck].checked=false;return}
 if(act==="go"){
 var sel={};
 var cbs=overlay.querySelectorAll(".cpk-set-cb");
